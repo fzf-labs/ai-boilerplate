@@ -1,0 +1,265 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//AI 聊天
+service AiIndexAudio {
+  //AI 音乐表-创建一条数据
+  rpc CreateAiIndexAudioRecord(CreateAiIndexAudioRecordReq) returns (CreateAiIndexAudioRecordReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_index_audio/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 音乐表-删除一条数据
+  rpc DeleteAiIndexAudioRecord(DeleteAiIndexAudioRecordReq) returns (DeleteAiIndexAudioRecordReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_index_audio/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 音乐表-单条数据查询
+  rpc GetAiIndexAudioRecordInfo(GetAiIndexAudioRecordInfoReq) returns (GetAiIndexAudioRecordInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/ai_index_audio/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 音乐表-列表数据查询
+  rpc GetAiIndexAudioRecordList(GetAiIndexAudioRecordListReq) returns (GetAiIndexAudioRecordListReply) {
+    option (google.api.http) = {get: "/admin/v1/ai_index_audio/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+//AI 音乐表信息
+message AiIndexAudioRecordInfo {
+  string id = 1; // 编号
+  string tenantId = 2; // 租户编号
+  string adminId = 3; // 用户编号
+  string title = 4; // 音乐名称
+  string lyric = 5; // 歌词
+  string imageURL = 6; // 图片地址
+  string audioURL = 7; // 音频地址
+  int32 status = 8; // 音频状态
+  string description = 9; // 描述词
+  string prompt = 10; // 提示词
+  string platform = 11; // 模型平台
+  string modelId = 12; // 模型编号
+  string model = 13; // 模型
+  int32 generateMode = 14; // 生成模式
+  string tags = 15; // 风格标签
+  double duration = 16; // 时长
+  bool publicStatus = 17; // 是否发布
+  string taskId = 18; // 任务编号
+  string errorMessage = 19; // 错误信息
+  string createdAt = 20; // 创建时间
+  string updatedAt = 21; // 更新时间
+}
+
+//请求-AI 音乐表-创建一条数据
+message CreateAiIndexAudioRecordReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "tenantId",
+        "adminId",
+        "title",
+        "status",
+        "platform",
+        "modelId",
+        "model",
+        "generateMode",
+        "publicStatus"
+      ]
+    }
+  };
+  string tenantId = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }]; // 租户编号
+  string adminId = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }]; // 用户编号
+  string title = 3 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 200
+  }]; // 音乐名称
+  string lyric = 4 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 9223372036854775807
+    }
+  ]; // 歌词
+  string imageURL = 5 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 600
+    }
+  ]; // 图片地址
+  string audioURL = 6 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 600
+    }
+  ]; // 音频地址
+  int32 status = 7; // 音频状态
+  string description = 8 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 9223372036854775807
+    }
+  ]; // 描述词
+  string prompt = 9 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 9223372036854775807
+    }
+  ]; // 提示词
+  string platform = 10 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }]; // 模型平台
+  string modelId = 11 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }]; // 模型编号
+  string model = 12 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 50
+  }]; // 模型
+  int32 generateMode = 13; // 生成模式
+  string tags = 14 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 600
+    }
+  ]; // 风格标签
+  double duration = 15 [(buf.validate.field).ignore = IGNORE_IF_UNPOPULATED]; // 时长
+  bool publicStatus = 16; // 是否发布
+  string taskId = 17 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 255
+    }
+  ]; // 任务编号
+  string errorMessage = 18 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 1024
+    }
+  ]; // 错误信息
+}
+
+//响应-AI 音乐表-创建一条数据
+message CreateAiIndexAudioRecordReply {
+  string id = 1; // 编号
+}
+
+//请求-AI 音乐表-删除一条数据
+message DeleteAiIndexAudioRecordReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 编号
+}
+
+//响应-AI 音乐表-删除一条数据
+message DeleteAiIndexAudioRecordReply {}
+
+//请求-AI 音乐表-单条数据查询
+message GetAiIndexAudioRecordInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 编号
+}
+
+//响应-AI 音乐表-单条数据查询
+message GetAiIndexAudioRecordInfoReply {
+  AiIndexAudioRecordInfo info = 1;
+}
+
+//请求-AI 音乐表-列表数据查询
+message GetAiIndexAudioRecordListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1 [(buf.validate.field).int32 = {gte: 1}]; //页码
+  int32 pageSize = 2 [(buf.validate.field).int32 = {
+    gte: 1
+    lte: 1000
+  }]; //页数
+}
+
+//响应-AI 音乐表-列表数据查询
+message GetAiIndexAudioRecordListReply {
+  int32 total = 1; //总数
+  repeated AiIndexAudioRecordInfo list = 2; // 列表数据
+}

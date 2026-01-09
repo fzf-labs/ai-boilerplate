@@ -1,0 +1,542 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/sys_post.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "SysPost"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/sys_post/create": {
+      "post": {
+        "summary": "系统-工作岗位-创建一条数据",
+        "operationId": "SysPost_CreateSysPost",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateSysPostReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateSysPostReq"
+            }
+          }
+        ],
+        "tags": [
+          "SysPost"
+        ]
+      }
+    },
+    "/admin/v1/sys_post/delete": {
+      "post": {
+        "summary": "系统-工作岗位-删除一条数据",
+        "operationId": "SysPost_DeleteSysPost",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteSysPostReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteSysPostReq"
+            }
+          }
+        ],
+        "tags": [
+          "SysPost"
+        ]
+      }
+    },
+    "/admin/v1/sys_post/info": {
+      "get": {
+        "summary": "系统-工作岗位-单条数据查询",
+        "operationId": "SysPost_GetSysPostInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetSysPostInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "编号",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SysPost"
+        ]
+      }
+    },
+    "/admin/v1/sys_post/list": {
+      "get": {
+        "summary": "系统-工作岗位-列表数据查询",
+        "operationId": "SysPost_GetSysPostList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetSysPostListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "name",
+            "description": "岗位名称",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "code",
+            "description": "岗位编码",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "description": "状态",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "createdAt",
+            "description": "创建时间",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": [
+          "SysPost"
+        ]
+      }
+    },
+    "/admin/v1/sys_post/selector": {
+      "get": {
+        "summary": "系统-工作岗位-选择器",
+        "operationId": "SysPost_GetSysPostSelector",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetSysPostSelectorReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "tags": [
+          "SysPost"
+        ]
+      }
+    },
+    "/admin/v1/sys_post/update": {
+      "post": {
+        "summary": "系统-工作岗位-更新一条数据",
+        "operationId": "SysPost_UpdateSysPost",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateSysPostReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateSysPostReq"
+            }
+          }
+        ],
+        "tags": [
+          "SysPost"
+        ]
+      }
+    },
+    "/admin/v1/sys_post/update/status": {
+      "post": {
+        "summary": "系统-工作岗位-更新状态",
+        "operationId": "SysPost_UpdateSysPostStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateSysPostStatusReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateSysPostStatusReq"
+            }
+          }
+        ],
+        "tags": [
+          "SysPost"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "admin.v1.CreateSysPostReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        }
+      },
+      "title": "响应-系统-工作岗位-创建一条数据"
+    },
+    "admin.v1.CreateSysPostReq": {
+      "type": "object",
+      "properties": {
+        "tenantId": {
+          "type": "string",
+          "title": "租户Id"
+        },
+        "name": {
+          "type": "string",
+          "title": "岗位名称"
+        },
+        "code": {
+          "type": "string",
+          "title": "岗位编码"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "排序值"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "0=禁用 1=开启"
+        }
+      },
+      "title": "请求-系统-工作岗位-创建一条数据",
+      "required": [
+        "name",
+        "sort",
+        "status"
+      ]
+    },
+    "admin.v1.DeleteSysPostReply": {
+      "type": "object",
+      "title": "响应-系统-工作岗位-删除一条数据"
+    },
+    "admin.v1.DeleteSysPostReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        }
+      },
+      "title": "请求-系统-工作岗位-删除一条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "admin.v1.GetSysPostInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/admin.v1.SysPostInfo"
+        }
+      },
+      "title": "响应-系统-工作岗位-单条数据查询"
+    },
+    "admin.v1.GetSysPostListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.SysPostInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-系统-工作岗位-列表数据查询"
+    },
+    "admin.v1.GetSysPostSelectorReply": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.SysPostSelectorItem"
+          },
+          "title": "列表数据"
+        }
+      }
+    },
+    "admin.v1.SysPostInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "tenantId": {
+          "type": "string",
+          "title": "租户Id"
+        },
+        "name": {
+          "type": "string",
+          "title": "岗位名称"
+        },
+        "code": {
+          "type": "string",
+          "title": "岗位编码"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "排序值"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "0=禁用 1=开启"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "系统-工作岗位信息"
+    },
+    "admin.v1.SysPostSelectorItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "name": {
+          "type": "string",
+          "title": "岗位名称"
+        }
+      }
+    },
+    "admin.v1.UpdateSysPostReply": {
+      "type": "object",
+      "title": "响应-系统-工作岗位-更新一条数据"
+    },
+    "admin.v1.UpdateSysPostReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "tenantId": {
+          "type": "string",
+          "title": "租户Id"
+        },
+        "name": {
+          "type": "string",
+          "title": "岗位名称"
+        },
+        "code": {
+          "type": "string",
+          "title": "岗位编码"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "排序值"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "0=禁用 1=开启"
+        }
+      },
+      "title": "请求-系统-工作岗位-更新一条数据",
+      "required": [
+        "id",
+        "name",
+        "sort",
+        "status"
+      ]
+    },
+    "admin.v1.UpdateSysPostStatusReply": {
+      "type": "object",
+      "title": "响应-系统-工作岗位-更新状态"
+    },
+    "admin.v1.UpdateSysPostStatusReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "0=禁用 1=开启"
+        }
+      },
+      "title": "请求-系统-工作岗位-更新状态",
+      "required": [
+        "id",
+        "status"
+      ]
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

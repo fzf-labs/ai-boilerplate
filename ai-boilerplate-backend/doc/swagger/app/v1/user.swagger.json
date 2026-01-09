@@ -1,0 +1,525 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "app/v1/user.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "User"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/app/v1/user/account/delete": {
+      "post": {
+        "summary": "注销账号",
+        "operationId": "User_DeleteAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.DeleteAccountReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/app.v1.DeleteAccountReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/app/v1/user/code/send": {
+      "post": {
+        "summary": "发送验证码",
+        "operationId": "User_SendVerifyCode",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.SendVerifyCodeReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/app.v1.SendVerifyCodeReq"
+            }
+          }
+        ],
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/app/v1/user/login": {
+      "post": {
+        "summary": "登录",
+        "operationId": "User_Login",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.LoginReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/app.v1.LoginReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/app/v1/user/password/change": {
+      "post": {
+        "summary": "修改密码",
+        "operationId": "User_ChangePassword",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.ChangePasswordReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/app.v1.ChangePasswordReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/app/v1/user/phone/bind": {
+      "post": {
+        "summary": "绑定手机号",
+        "operationId": "User_BindPhone",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.BindPhoneReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/app.v1.BindPhoneReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/app/v1/user/profile": {
+      "get": {
+        "summary": "获取用户详情",
+        "operationId": "User_GetUserInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.GetUserInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/app/v1/user/profile/update": {
+      "post": {
+        "summary": "更新用户信息",
+        "operationId": "User_UpdateUserInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.UpdateUserInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/app.v1.UpdateUserInfoReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "User"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "app.v1.BindPhoneReply": {
+      "type": "object",
+      "title": "响应-绑定手机号"
+    },
+    "app.v1.BindPhoneReq": {
+      "type": "object",
+      "properties": {
+        "phone": {
+          "type": "string",
+          "title": "手机号"
+        },
+        "code": {
+          "type": "string",
+          "title": "验证码"
+        }
+      },
+      "title": "请求-绑定手机号",
+      "required": [
+        "phone",
+        "code"
+      ]
+    },
+    "app.v1.ChangePasswordReply": {
+      "type": "object",
+      "title": "响应-修改密码"
+    },
+    "app.v1.ChangePasswordReq": {
+      "type": "object",
+      "properties": {
+        "oldPassword": {
+          "type": "string",
+          "title": "旧密码"
+        },
+        "newPassword": {
+          "type": "string",
+          "title": "新密码"
+        },
+        "confirmPassword": {
+          "type": "string",
+          "title": "确认新密码"
+        }
+      },
+      "title": "请求-修改密码",
+      "required": [
+        "oldPassword",
+        "newPassword",
+        "confirmPassword"
+      ]
+    },
+    "app.v1.DeleteAccountReply": {
+      "type": "object",
+      "title": "响应-注销账号"
+    },
+    "app.v1.DeleteAccountReq": {
+      "type": "object",
+      "properties": {
+        "password": {
+          "type": "string",
+          "title": "密码"
+        }
+      },
+      "title": "请求-注销账号",
+      "required": [
+        "password"
+      ]
+    },
+    "app.v1.GetUserInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/app.v1.UserInfo",
+          "title": "用户详情"
+        }
+      },
+      "title": "响应-获取用户详情"
+    },
+    "app.v1.LoginReply": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "title": "token"
+        },
+        "expiredAt": {
+          "type": "string",
+          "format": "int64",
+          "title": "过期时间"
+        },
+        "refreshAt": {
+          "type": "string",
+          "format": "int64",
+          "title": "刷新时间"
+        }
+      },
+      "title": "响应-登录"
+    },
+    "app.v1.LoginReq": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "title": "账号(默认使用手机号)"
+        },
+        "password": {
+          "type": "string",
+          "title": "密码"
+        }
+      },
+      "title": "请求-登录",
+      "required": [
+        "username",
+        "password"
+      ]
+    },
+    "app.v1.SendVerifyCodeReply": {
+      "type": "object",
+      "title": "响应-发送验证码"
+    },
+    "app.v1.SendVerifyCodeReq": {
+      "type": "object",
+      "properties": {
+        "phone": {
+          "type": "string",
+          "title": "手机号"
+        }
+      },
+      "title": "请求-发送验证码",
+      "required": [
+        "phone"
+      ]
+    },
+    "app.v1.UpdateUserInfoReply": {
+      "type": "object",
+      "title": "响应-更新用户信息"
+    },
+    "app.v1.UpdateUserInfoReq": {
+      "type": "object",
+      "properties": {
+        "nickname": {
+          "type": "string",
+          "title": "昵称"
+        },
+        "avatar": {
+          "type": "string",
+          "title": "头像"
+        },
+        "gender": {
+          "type": "integer",
+          "format": "int32",
+          "title": "性别：0-未知，1-男，2-女"
+        },
+        "profile": {
+          "type": "string",
+          "title": "简介"
+        }
+      },
+      "title": "请求-更新用户信息"
+    },
+    "app.v1.UserInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "用户ID"
+        },
+        "phone": {
+          "type": "string",
+          "title": "手机号（脱敏）"
+        },
+        "nickname": {
+          "type": "string",
+          "title": "昵称"
+        },
+        "gender": {
+          "type": "integer",
+          "format": "int32",
+          "title": "性别：0-未知，1-男，2-女"
+        },
+        "avatar": {
+          "type": "string",
+          "title": "头像"
+        },
+        "profile": {
+          "type": "string",
+          "title": "简介"
+        },
+        "wxGzhUserId": {
+          "type": "string",
+          "title": "公众号用户Id"
+        },
+        "wxGzhXcxId": {
+          "type": "string",
+          "title": "小程序用户Id"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态：1-正常"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "用户详情信息（基于数据库实际字段）"
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

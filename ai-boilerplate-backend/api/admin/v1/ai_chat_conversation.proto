@@ -1,0 +1,157 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//AI 聊天对话表
+service AiChatConversation {
+  //AI 聊天对话表-删除一条数据
+  rpc DeleteAiChatConversation(DeleteAiChatConversationReq) returns (DeleteAiChatConversationReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_chat_conversation/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 聊天对话表-单条数据查询
+  rpc GetAiChatConversationInfo(GetAiChatConversationInfoReq) returns (GetAiChatConversationInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/ai_chat_conversation/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 聊天对话表-列表数据查询
+  rpc GetAiChatConversationList(GetAiChatConversationListReq) returns (GetAiChatConversationListReply) {
+    option (google.api.http) = {get: "/admin/v1/ai_chat_conversation/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+//AI 聊天对话表信息
+message AiChatConversationInfo {
+  message PromptSetting {
+    string name = 1; // 名称
+    string desc = 2; // 描述
+    string prompt = 3; // 提示词
+  }
+
+  message ModelSetting {
+    string platform = 1; // 平台
+    string platformId = 2; // 编号
+    string modelType = 3; // 模型类型
+    string modelId = 4; // 模型id
+    double temperature = 5; // 采样温度。控制了生成文本时对每个候选词的概率分布进行平滑的程度。当取值为 0 时模型仅考虑对数概率最大的一个 token。
+    double top_p = 6; // 核采样概率阈值。模型会考虑概率质量在 top_p 内的 token 结果。当取值为 0 时模型仅考虑对数概率最大的一个 token。
+    int32 max_tokens = 7; // 模型回答最大长度（单位 token）。
+    int32 max_contexts = 8; // 控制模型输出的最大长度（包括模型回答和模型思维链内容长度，单位 token）。
+  }
+
+  message KnowledgeSetting {
+    repeated string knowledgeIds = 1; // 知识库编号
+  }
+
+  message McpSetting {
+    repeated string mcpIds = 1; // mcp编号
+  }
+  string id = 1; // 对话编号
+  string tenantId = 2; // 租户编号
+  string adminId = 3; // 用户编号
+  string title = 4; // 对话标题
+  bool pinned = 5; // 是否置顶
+  string pinnedTime = 6; // 置顶时间
+  PromptSetting promptSetting = 7; // 提示词设置
+  ModelSetting modelSetting = 8; // 模型设置
+  KnowledgeSetting knowledgeSetting = 9; // 知识库设置
+  McpSetting mcpSetting = 10; // mcp设置
+  string createdAt = 11; // 创建时间
+  string updatedAt = 12; // 更新时间
+}
+
+//请求-AI 聊天对话表-删除一条数据
+message DeleteAiChatConversationReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 对话编号
+}
+
+//响应-AI 聊天对话表-删除一条数据
+message DeleteAiChatConversationReply {}
+
+//请求-AI 聊天对话表-单条数据查询
+message GetAiChatConversationInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 对话编号
+}
+
+//响应-AI 聊天对话表-单条数据查询
+message GetAiChatConversationInfoReply {
+  AiChatConversationInfo info = 1;
+}
+
+//请求-AI 聊天对话表-列表数据查询
+message GetAiChatConversationListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1 [(buf.validate.field).int32 = {gte: 1}]; //页码
+  int32 pageSize = 2 [(buf.validate.field).int32 = {
+    gte: 1
+    lte: 1000
+  }]; //页数
+}
+
+//响应-AI 聊天对话表-列表数据查询
+message GetAiChatConversationListReply {
+  int32 total = 1; //总数
+  repeated AiChatConversationInfo list = 2; // 列表数据
+}

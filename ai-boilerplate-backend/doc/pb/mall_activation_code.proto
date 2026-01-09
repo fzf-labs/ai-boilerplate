@@ -1,0 +1,254 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//激活码管理表
+service MallActivationCode {
+  //激活码管理表-创建一条数据
+  rpc CreateMallActivationCode(CreateMallActivationCodeReq) returns (CreateMallActivationCodeReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/mall_activation_code/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //激活码管理表-更新一条数据
+  rpc UpdateMallActivationCode(UpdateMallActivationCodeReq) returns (UpdateMallActivationCodeReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/mall_activation_code/update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //激活码管理表-更新状态
+  rpc UpdateMallActivationCodeStatus(UpdateMallActivationCodeStatusReq) returns (UpdateMallActivationCodeStatusReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/mall_activation_code/update/status"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //激活码管理表-删除一条数据
+  rpc DeleteMallActivationCode(DeleteMallActivationCodeReq) returns (DeleteMallActivationCodeReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/mall_activation_code/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //激活码管理表-单条数据查询
+  rpc GetMallActivationCodeInfo(GetMallActivationCodeInfoReq) returns (GetMallActivationCodeInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/mall_activation_code/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //激活码管理表-列表数据查询
+  rpc GetMallActivationCodeList(GetMallActivationCodeListReq) returns (GetMallActivationCodeListReply) {
+    option (google.api.http) = {get: "/admin/v1/mall_activation_code/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+//激活码管理表信息
+message MallActivationCodeInfo {
+  string id = 1; // id
+	string productType = 2; // 商品类型(membership:会员,service:服务)
+	string productId = 3; // 商品ID
+	string batchNo = 4; // 批次号
+	string code = 5; // 激活码
+	string validSt = 6; // 激活码有效期开始时间
+	string validEd = 7; // 激活码有效期截止时间
+	string activatedAt = 8; // 激活时间
+	string userId = 9; // 用户ID
+	string userChange = 10; // 用户属性变化
+	string platform = 11; // 平台
+	string platformSoldAt = 12; // 平台售出时间
+	string platformOrderNo = 13; // 平台订单号
+	string platformBuyerId = 14; // 平台买家ID
+	string platformBuyerName = 15; // 平台买家昵称
+	string remark = 16; // 备注
+	int32 status = 17; // 状态(-2已退款,-1禁用,0库存,1已售出,2已激活,3已过期)
+	string createdAt = 18; // 创建时间
+	string updatedAt = 19; // 更新时间
+}
+
+//请求-激活码管理表-创建一条数据
+message CreateMallActivationCodeReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["productType","productId","batchNo","code","validSt","validEd","status"]
+    }
+  };
+  string productType = 1 [(buf.validate.field).string={min_len: 1, max_len: 20}]; // 商品类型(membership:会员,service:服务)
+	string productId = 2 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 商品ID
+	string batchNo = 3 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 批次号
+	string code = 4 [(buf.validate.field).string={min_len: 1, max_len: 32}]; // 激活码
+	string validSt = 5 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 激活码有效期开始时间
+	string validEd = 6 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 激活码有效期截止时间
+	string activatedAt = 7 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 激活时间
+	string userId = 8 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 用户ID
+	string userChange = 9 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // 用户属性变化
+	string platform = 10 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 20}]; // 平台
+	string platformSoldAt = 11 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 平台售出时间
+	string platformOrderNo = 12 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 100}]; // 平台订单号
+	string platformBuyerId = 13 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 100}]; // 平台买家ID
+	string platformBuyerName = 14 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 100}]; // 平台买家昵称
+	string remark = 15 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 255}]; // 备注
+	int32 status = 16 ; // 状态(-2已退款,-1禁用,0库存,1已售出,2已激活,3已过期)
+}
+
+//响应-激活码管理表-创建一条数据
+message CreateMallActivationCodeReply {
+  	string id = 1; // id
+}
+
+//请求-激活码管理表-更新一条数据
+message UpdateMallActivationCodeReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","productType","productId","batchNo","code","validSt","validEd","status"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+	string productType = 2 [(buf.validate.field).string={min_len: 1, max_len: 20}]; // 商品类型(membership:会员,service:服务)
+	string productId = 3 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 商品ID
+	string batchNo = 4 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 批次号
+	string code = 5 [(buf.validate.field).string={min_len: 1, max_len: 32}]; // 激活码
+	string validSt = 6 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 激活码有效期开始时间
+	string validEd = 7 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 激活码有效期截止时间
+	string activatedAt = 8 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 激活时间
+	string userId = 9 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 用户ID
+	string userChange = 10 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // 用户属性变化
+	string platform = 11 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 20}]; // 平台
+	string platformSoldAt = 12 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 平台售出时间
+	string platformOrderNo = 13 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 100}]; // 平台订单号
+	string platformBuyerId = 14 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 100}]; // 平台买家ID
+	string platformBuyerName = 15 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 100}]; // 平台买家昵称
+	string remark = 16 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 255}]; // 备注
+	int32 status = 17 ; // 状态(-2已退款,-1禁用,0库存,1已售出,2已激活,3已过期)
+}
+
+//响应-激活码管理表-更新一条数据
+message UpdateMallActivationCodeReply {}
+
+//请求-激活码管理表-更新状态
+message UpdateMallActivationCodeStatusReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","status"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+	int32 status = 2 ; // 状态(-2已退款,-1禁用,0库存,1已售出,2已激活,3已过期)
+}
+
+//响应-激活码管理表-更新状态
+message UpdateMallActivationCodeStatusReply {}
+
+//请求-激活码管理表-删除一条数据
+message DeleteMallActivationCodeReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+}
+
+//响应-激活码管理表-删除一条数据
+message DeleteMallActivationCodeReply {}
+
+//请求-激活码管理表-单条数据查询
+message GetMallActivationCodeInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+}
+
+//响应-激活码管理表-单条数据查询
+message GetMallActivationCodeInfoReply {
+  MallActivationCodeInfo info = 1;
+}
+
+//请求-激活码管理表-列表数据查询
+message GetMallActivationCodeListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1[(buf.validate.field).int32={gte: 1}]; //页码
+  int32 pageSize = 2[(buf.validate.field).int32={gte: 1, lte: 1000}]; //页数
+}
+
+//响应-激活码管理表-列表数据查询
+message GetMallActivationCodeListReply {
+  int32 total = 1; //总数
+  repeated MallActivationCodeInfo list = 2; // 列表数据
+}
+

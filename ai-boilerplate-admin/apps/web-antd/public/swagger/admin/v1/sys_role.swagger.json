@@ -1,0 +1,530 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/sys_role.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "SysRole"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/sys_role/create": {
+      "post": {
+        "summary": "系统-角色-创建一条数据",
+        "operationId": "SysRole_CreateSysRole",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateSysRoleReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateSysRoleReq"
+            }
+          }
+        ],
+        "tags": [
+          "SysRole"
+        ]
+      }
+    },
+    "/admin/v1/sys_role/delete": {
+      "post": {
+        "summary": "系统-角色-删除多条数据",
+        "operationId": "SysRole_DeleteSysRole",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteSysRoleReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1DeleteSysRoleReq"
+            }
+          }
+        ],
+        "tags": [
+          "SysRole"
+        ]
+      }
+    },
+    "/admin/v1/sys_role/info": {
+      "get": {
+        "summary": "系统-角色-单条数据查询",
+        "operationId": "SysRole_GetSysRoleInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetSysRoleInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "编号",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SysRole"
+        ]
+      }
+    },
+    "/admin/v1/sys_role/list": {
+      "get": {
+        "summary": "系统-角色-列表数据查询",
+        "operationId": "SysRole_GetSysRoleList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetSysRoleListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "name",
+            "description": "名称",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "description": "状态 -1=禁用 1=开启",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "createdAt",
+            "description": "创建时间",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": [
+          "SysRole"
+        ]
+      }
+    },
+    "/admin/v1/sys_role/selector": {
+      "get": {
+        "summary": "系统-角色-选择器",
+        "operationId": "SysRole_GetSysRoleSelector",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetSysRoleSelectorReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "SysRole"
+        ]
+      }
+    },
+    "/admin/v1/sys_role/update": {
+      "post": {
+        "summary": "系统-角色-更新一条数据",
+        "operationId": "SysRole_UpdateSysRole",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateSysRoleReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateSysRoleReq"
+            }
+          }
+        ],
+        "tags": [
+          "SysRole"
+        ]
+      }
+    },
+    "/admin/v1/sys_role/update/status": {
+      "post": {
+        "summary": "系统-角色-更新状态",
+        "operationId": "SysRole_UpdateSysRoleStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateSysRoleStatusReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateSysRoleStatusReq"
+            }
+          }
+        ],
+        "tags": [
+          "SysRole"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1CreateSysRoleReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        }
+      },
+      "title": "响应-系统-角色-创建一条数据"
+    },
+    "v1CreateSysRoleReq": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "名称"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "dataScope": {
+          "type": "string",
+          "title": "数据范围"
+        },
+        "menuIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "菜单id集合"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "排序值"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态 -1=禁用 1=开启"
+        }
+      },
+      "title": "请求-系统-角色-创建一条数据"
+    },
+    "v1DeleteSysRoleReply": {
+      "type": "object",
+      "title": "响应-系统-角色-删除多条数据"
+    },
+    "v1DeleteSysRoleReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号集合"
+        }
+      },
+      "title": "请求-系统-角色-删除多条数据"
+    },
+    "v1GetSysRoleInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/v1SysRoleInfo"
+        }
+      },
+      "title": "响应-系统-角色-单条数据查询"
+    },
+    "v1GetSysRoleListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1SysRoleInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-系统-角色-列表数据查询"
+    },
+    "v1GetSysRoleSelectorItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "name": {
+          "type": "string",
+          "title": "名称"
+        }
+      }
+    },
+    "v1GetSysRoleSelectorReply": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1GetSysRoleSelectorItem"
+          },
+          "title": "列表数据"
+        }
+      }
+    },
+    "v1SysRoleInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "tenantId": {
+          "type": "string",
+          "title": "租户id"
+        },
+        "name": {
+          "type": "string",
+          "title": "名称"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "dataScope": {
+          "type": "string",
+          "title": "数据范围"
+        },
+        "menuIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "菜单id集合"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "排序值"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态 -1=禁用 1=开启"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "系统-角色信息"
+    },
+    "v1UpdateSysRoleReply": {
+      "type": "object",
+      "title": "响应-系统-角色-更新一条数据"
+    },
+    "v1UpdateSysRoleReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "name": {
+          "type": "string",
+          "title": "名称"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "dataScope": {
+          "type": "string",
+          "title": "数据范围"
+        },
+        "menuIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "菜单id集合"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "排序值"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态 -1=禁用 1=开启"
+        }
+      },
+      "title": "请求-系统-角色-更新一条数据"
+    },
+    "v1UpdateSysRoleStatusReply": {
+      "type": "object",
+      "title": "响应-系统-角色-更新状态"
+    },
+    "v1UpdateSysRoleStatusReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态 -1=禁用 1=开启"
+        }
+      },
+      "title": "请求-系统-角色-更新状态"
+    }
+  }
+}

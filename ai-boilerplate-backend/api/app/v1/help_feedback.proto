@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package app.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/app/v1;v1";
+
+//用户反馈表
+service HelpFeedback {
+  //用户反馈表-提交反馈
+  rpc SubmitFeedback(SubmitFeedbackReq) returns (SubmitFeedbackReply) {
+    option (google.api.http) = {
+      post: "/app/v1/help/feedback"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+//请求-用户反馈表-提交反馈
+message SubmitFeedbackReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "category",
+        "description"
+      ]
+    }
+  };
+  string category = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 50
+  }]; // 问题分类
+  string description = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 1000
+  }]; // 问题描述
+  string images = 3 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {min_len: 1}
+  ]; // 图片列表（JSON数组）
+  string contact = 4 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 100
+    }
+  ]; // 联系方式
+}
+
+//响应-用户反馈表-提交反馈
+message SubmitFeedbackReply {
+  string id = 1; // 反馈ID
+}

@@ -1,0 +1,195 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/sys_operate_log.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "SysOperateLog"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/sys_operate_log/list": {
+      "get": {
+        "summary": "系统-操作日志-列表数据查询",
+        "operationId": "SysOperateLog_GetSysOperateLogList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetSysOperateLogListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "traceId",
+            "description": "链路ID",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "adminId",
+            "description": "管理员ID",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "createdAt",
+            "description": "创建时间",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": [
+          "SysOperateLog"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1CreateSysOperateLogReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        }
+      },
+      "title": "响应-系统-日志-创建一条数据"
+    },
+    "v1GetSysOperateLogListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1SysOperateLogInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-系统-日志-列表数据查询"
+    },
+    "v1SysOperateLogInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "traceId": {
+          "type": "string",
+          "title": "链路ID"
+        },
+        "adminId": {
+          "type": "string",
+          "title": "管理员ID"
+        },
+        "IP": {
+          "type": "string",
+          "title": "ip"
+        },
+        "URI": {
+          "type": "string",
+          "title": "请求路径"
+        },
+        "useragent": {
+          "type": "string",
+          "title": "浏览器标识"
+        },
+        "header": {
+          "type": "string",
+          "title": "header"
+        },
+        "req": {
+          "type": "string",
+          "title": "请求数据"
+        },
+        "resp": {
+          "type": "string",
+          "title": "响应数据"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "nickname": {
+          "type": "string",
+          "title": "管理员昵称"
+        }
+      },
+      "title": "系统-日志信息"
+    }
+  }
+}

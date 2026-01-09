@@ -1,0 +1,202 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//AI 聊天对话表
+service AiChatConversation {
+  //AI 聊天对话表-创建一条数据
+  rpc CreateAiChatConversation(CreateAiChatConversationReq) returns (CreateAiChatConversationReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_chat_conversation/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 聊天对话表-更新一条数据
+  rpc UpdateAiChatConversation(UpdateAiChatConversationReq) returns (UpdateAiChatConversationReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_chat_conversation/update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 聊天对话表-删除一条数据
+  rpc DeleteAiChatConversation(DeleteAiChatConversationReq) returns (DeleteAiChatConversationReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_chat_conversation/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 聊天对话表-单条数据查询
+  rpc GetAiChatConversationInfo(GetAiChatConversationInfoReq) returns (GetAiChatConversationInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/ai_chat_conversation/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 聊天对话表-列表数据查询
+  rpc GetAiChatConversationList(GetAiChatConversationListReq) returns (GetAiChatConversationListReply) {
+    option (google.api.http) = {get: "/admin/v1/ai_chat_conversation/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+//AI 聊天对话表信息
+message AiChatConversationInfo {
+  string id = 1; // 对话编号
+	string tenantId = 2; // 租户编号
+	string adminId = 3; // 用户编号
+	string title = 4; // 对话标题
+	bool pinned = 5; // 是否置顶
+	string pinnedTime = 6; // 置顶时间
+	string promptSetting = 7; // 提示词设置
+	string modelSetting = 8; // 模型设置
+	string knowledgeSetting = 9; // 知识库设置
+	string mcpSetting = 10; // mcp设置
+	string createdAt = 11; // 创建时间
+	string updatedAt = 12; // 更新时间
+}
+
+//请求-AI 聊天对话表-创建一条数据
+message CreateAiChatConversationReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["tenantId","adminId","title","pinned"]
+    }
+  };
+  string tenantId = 1 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 租户编号
+	string adminId = 2 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 用户编号
+	string title = 3 [(buf.validate.field).string={min_len: 1, max_len: 256}]; // 对话标题
+	bool pinned = 4 ; // 是否置顶
+	string pinnedTime = 5 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 置顶时间
+	string promptSetting = 6 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // 提示词设置
+	string modelSetting = 7 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // 模型设置
+	string knowledgeSetting = 8 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // 知识库设置
+	string mcpSetting = 9 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // mcp设置
+}
+
+//响应-AI 聊天对话表-创建一条数据
+message CreateAiChatConversationReply {
+  	string id = 1; // 对话编号
+}
+
+//请求-AI 聊天对话表-更新一条数据
+message UpdateAiChatConversationReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","tenantId","adminId","title","pinned"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 对话编号
+	string tenantId = 2 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 租户编号
+	string adminId = 3 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 用户编号
+	string title = 4 [(buf.validate.field).string={min_len: 1, max_len: 256}]; // 对话标题
+	bool pinned = 5 ; // 是否置顶
+	string pinnedTime = 6 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 置顶时间
+	string promptSetting = 7 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // 提示词设置
+	string modelSetting = 8 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // 模型设置
+	string knowledgeSetting = 9 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // 知识库设置
+	string mcpSetting = 10 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // mcp设置
+}
+
+//响应-AI 聊天对话表-更新一条数据
+message UpdateAiChatConversationReply {}
+
+//请求-AI 聊天对话表-删除一条数据
+message DeleteAiChatConversationReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 对话编号
+}
+
+//响应-AI 聊天对话表-删除一条数据
+message DeleteAiChatConversationReply {}
+
+//请求-AI 聊天对话表-单条数据查询
+message GetAiChatConversationInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 对话编号
+}
+
+//响应-AI 聊天对话表-单条数据查询
+message GetAiChatConversationInfoReply {
+  AiChatConversationInfo info = 1;
+}
+
+//请求-AI 聊天对话表-列表数据查询
+message GetAiChatConversationListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1[(buf.validate.field).int32={gte: 1}]; //页码
+  int32 pageSize = 2[(buf.validate.field).int32={gte: 1, lte: 1000}]; //页数
+}
+
+//响应-AI 聊天对话表-列表数据查询
+message GetAiChatConversationListReply {
+  int32 total = 1; //总数
+  repeated AiChatConversationInfo list = 2; // 列表数据
+}
+

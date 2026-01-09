@@ -1,0 +1,577 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/ai_chat_role.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "AiChatRole"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/ai_chat_role/create": {
+      "post": {
+        "summary": "AI 聊天角色表-创建一条数据",
+        "operationId": "AiChatRole_CreateAiChatRole",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateAiChatRoleReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateAiChatRoleReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiChatRole"
+        ]
+      }
+    },
+    "/admin/v1/ai_chat_role/delete": {
+      "post": {
+        "summary": "AI 聊天角色表-删除多条数据",
+        "operationId": "AiChatRole_DeleteAiChatRole",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteAiChatRoleReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1DeleteAiChatRoleReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiChatRole"
+        ]
+      }
+    },
+    "/admin/v1/ai_chat_role/info": {
+      "get": {
+        "summary": "AI 聊天角色表-单条数据查询",
+        "operationId": "AiChatRole_GetAiChatRoleInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetAiChatRoleInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "角色编号",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiChatRole"
+        ]
+      }
+    },
+    "/admin/v1/ai_chat_role/list": {
+      "get": {
+        "summary": "AI 聊天角色表-列表数据查询",
+        "operationId": "AiChatRole_GetAiChatRoleList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetAiChatRoleListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiChatRole"
+        ]
+      }
+    },
+    "/admin/v1/ai_chat_role/update": {
+      "post": {
+        "summary": "AI 聊天角色表-更新一条数据",
+        "operationId": "AiChatRole_UpdateAiChatRole",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateAiChatRoleReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateAiChatRoleReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiChatRole"
+        ]
+      }
+    },
+    "/admin/v1/ai_chat_role/update/status": {
+      "post": {
+        "summary": "AI 聊天角色表-更新状态",
+        "operationId": "AiChatRole_UpdateAiChatRoleStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateAiChatRoleStatusReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateAiChatRoleStatusReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiChatRole"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1AiChatRoleInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "角色编号"
+        },
+        "adminId": {
+          "type": "string",
+          "title": "用户编号"
+        },
+        "modelId": {
+          "type": "string",
+          "title": "模型编号"
+        },
+        "name": {
+          "type": "string",
+          "title": "角色名称"
+        },
+        "avatar": {
+          "type": "string",
+          "title": "头像"
+        },
+        "category": {
+          "type": "string",
+          "title": "角色类别"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "角色排序"
+        },
+        "description": {
+          "type": "string",
+          "title": "角色描述"
+        },
+        "systemMessage": {
+          "type": "string",
+          "title": "角色上下文"
+        },
+        "knowledgeIds": {
+          "type": "string",
+          "title": "关联的知识库编号数组"
+        },
+        "toolIds": {
+          "type": "string",
+          "title": "关联的工具编号数组"
+        },
+        "publicStatus": {
+          "type": "boolean",
+          "title": "是否公开"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "AI 聊天角色表信息"
+    },
+    "v1CreateAiChatRoleReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "角色编号"
+        }
+      },
+      "title": "响应-AI 聊天角色表-创建一条数据"
+    },
+    "v1CreateAiChatRoleReq": {
+      "type": "object",
+      "properties": {
+        "adminId": {
+          "type": "string",
+          "title": "用户编号"
+        },
+        "modelId": {
+          "type": "string",
+          "title": "模型编号"
+        },
+        "name": {
+          "type": "string",
+          "title": "角色名称"
+        },
+        "avatar": {
+          "type": "string",
+          "title": "头像"
+        },
+        "category": {
+          "type": "string",
+          "title": "角色类别"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "角色排序"
+        },
+        "description": {
+          "type": "string",
+          "title": "角色描述"
+        },
+        "systemMessage": {
+          "type": "string",
+          "title": "角色上下文"
+        },
+        "knowledgeIds": {
+          "type": "string",
+          "title": "关联的知识库编号数组"
+        },
+        "toolIds": {
+          "type": "string",
+          "title": "关联的工具编号数组"
+        },
+        "publicStatus": {
+          "type": "boolean",
+          "title": "是否公开"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态"
+        }
+      },
+      "title": "请求-AI 聊天角色表-创建一条数据",
+      "required": [
+        "name",
+        "avatar",
+        "sort",
+        "description",
+        "publicStatus"
+      ]
+    },
+    "v1DeleteAiChatRoleReply": {
+      "type": "object",
+      "title": "响应-AI 聊天角色表-删除多条数据"
+    },
+    "v1DeleteAiChatRoleReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "角色编号"
+        }
+      },
+      "title": "请求-AI 聊天角色表-删除多条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "v1GetAiChatRoleInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/v1AiChatRoleInfo"
+        }
+      },
+      "title": "响应-AI 聊天角色表-单条数据查询"
+    },
+    "v1GetAiChatRoleListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1AiChatRoleInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-AI 聊天角色表-列表数据查询"
+    },
+    "v1UpdateAiChatRoleReply": {
+      "type": "object",
+      "title": "响应-AI 聊天角色表-更新一条数据"
+    },
+    "v1UpdateAiChatRoleReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "角色编号"
+        },
+        "adminId": {
+          "type": "string",
+          "title": "用户编号"
+        },
+        "modelId": {
+          "type": "string",
+          "title": "模型编号"
+        },
+        "name": {
+          "type": "string",
+          "title": "角色名称"
+        },
+        "avatar": {
+          "type": "string",
+          "title": "头像"
+        },
+        "category": {
+          "type": "string",
+          "title": "角色类别"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "角色排序"
+        },
+        "description": {
+          "type": "string",
+          "title": "角色描述"
+        },
+        "systemMessage": {
+          "type": "string",
+          "title": "角色上下文"
+        },
+        "knowledgeIds": {
+          "type": "string",
+          "title": "关联的知识库编号数组"
+        },
+        "toolIds": {
+          "type": "string",
+          "title": "关联的工具编号数组"
+        },
+        "publicStatus": {
+          "type": "boolean",
+          "title": "是否公开"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态"
+        }
+      },
+      "title": "请求-AI 聊天角色表-更新一条数据",
+      "required": [
+        "id",
+        "name",
+        "avatar",
+        "sort",
+        "description",
+        "publicStatus"
+      ]
+    },
+    "v1UpdateAiChatRoleStatusReply": {
+      "type": "object",
+      "title": "响应-AI 聊天角色表-更新状态"
+    },
+    "v1UpdateAiChatRoleStatusReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "角色编号"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态"
+        }
+      },
+      "title": "请求-AI 聊天角色表-更新状态",
+      "required": [
+        "id"
+      ]
+    }
+  }
+}

@@ -1,0 +1,278 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "errors/errors.proto";
+
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+enum ErrorReason {
+  option (errors.default_code) = 500;
+  option (errors.default_message) = "UNKNOWN";
+  option (errors.default_lang) = "zh_CN";
+  option (errors.default_i18n) = {
+    zh_CN: "未知错误"
+    en_US: "Unknown error"
+  };
+  RequestCanceledErr = 0 [
+    (errors.code) = 409,
+    (errors.message) = "RequestCanceledErr",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "请求取消"
+      en_US: "Request canceled"
+    }
+  ];
+  RequestTimeoutErr = 1 [
+    (errors.code) = 409,
+    (errors.message) = "RequestTimeoutErr",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "请求超时"
+      en_US: "Request timeout"
+    }
+  ];
+  RequestFrequentErr = 2 [
+    (errors.code) = 409,
+    (errors.message) = "RequestFrequentErr",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "请求频繁"
+      en_US: "Request frequent"
+    }
+  ];
+  APIInternalErr = 3 [
+    (errors.code) = 409,
+    (errors.message) = "APIInternalErr",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "API内部错误"
+      en_US: "API internal error"
+    }
+  ];
+  APIThirdErr = 4 [
+    (errors.code) = 409,
+    (errors.message) = "APIThirdErr",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "第三方API错误"
+      en_US: "API third error"
+    }
+  ];
+  ParamError = 5 [
+    (errors.code) = 409,
+    (errors.message) = "ParamError",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "参数错误"
+      en_US: "Param error"
+    }
+  ];
+  DataSQLError = 6 [
+    (errors.code) = 500,
+    (errors.message) = "DataSQLError",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "数据SQL错误"
+      en_US: "Data SQL error"
+    }
+  ];
+  DataRedisErr = 7 [
+    (errors.code) = 500,
+    (errors.message) = "DataRedisErr",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "数据Redis错误"
+      en_US: "Data Redis error"
+    }
+  ];
+  DataMQErr = 8 [
+    (errors.code) = 500,
+    (errors.message) = "DataMQErr",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "数据MQ错误"
+      en_US: "Data MQ error"
+    }
+  ];
+  DataFormattingError = 9 [
+    (errors.code) = 500,
+    (errors.message) = "DataFormattingError",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "数据格式化错误"
+      en_US: "Data formatting error"
+    }
+  ];
+  DataProcessingError = 10 [
+    (errors.code) = 409,
+    (errors.message) = "DataProcessingError",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "数据处理错误"
+      en_US: "Data processing error"
+    }
+  ];
+  DataRecordNotFound = 11 [
+    (errors.code) = 409,
+    (errors.message) = "DataRecordNotFound",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "数据记录未找到"
+      en_US: "Data record not found"
+    }
+  ];
+  DataDuplicateRecord = 12 [
+    (errors.code) = 409,
+    (errors.message) = "DataDuplicateRecord",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "数据重复"
+      en_US: "Data duplicate record"
+    }
+  ];
+  TokenNotRequest = 13 [
+    (errors.code) = 401,
+    (errors.message) = "TokenNotRequest",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "Token未请求"
+      en_US: "Token not requested"
+    }
+  ];
+  TokenFormatErr = 14 [
+    (errors.code) = 401,
+    (errors.message) = "TokenFormatErr",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "Token格式错误"
+      en_US: "Token format error"
+    }
+  ];
+  TokenExpiredErr = 15 [
+    (errors.code) = 401,
+    (errors.message) = "TokenExpiredErr",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "Token过期"
+      en_US: "Token expired"
+    }
+  ];
+  TokenInvalidErr = 16 [
+    (errors.code) = 401,
+    (errors.message) = "TokenInvalidErr",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "Token无效"
+      en_US: "Token invalid"
+    }
+  ];
+  TokenErr = 17 [
+    (errors.code) = 401,
+    (errors.message) = "TokenErr",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "Token错误"
+      en_US: "Token error"
+    }
+  ];
+  // 账号已存在
+  AccountAlreadyExists = 18 [
+    (errors.code) = 409,
+    (errors.message) = "AccountAlreadyExists",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "账号已存在"
+      en_US: "Account already exists"
+    }
+  ];
+  // 账号不存在
+  AccountNotFound = 19 [
+    (errors.code) = 409,
+    (errors.message) = "AccountNotFound",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "账号不存在"
+      en_US: "Account not found"
+    }
+  ];
+  // 账号密码错误
+  AccountPasswordError = 20 [
+    (errors.code) = 409,
+    (errors.message) = "AccountPasswordError",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "账号密码错误"
+      en_US: "Account password error"
+    }
+  ];
+  // 账号无数据访问权限
+  AccountNoDataPermission = 21 [
+    (errors.code) = 409,
+    (errors.message) = "AccountNoDataPermission",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "账号无数据访问权限"
+      en_US: "Account no data permission"
+    }
+  ];
+  // 菜单操作失败
+  MenuOperationFailed = 22 [
+    (errors.code) = 409,
+    (errors.message) = "MenuOperationFailed",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "菜单操作失败:%s"
+      en_US: "Menu operation failed:%s"
+    }
+  ];
+  // 素材上传失败
+  MaterialUploadFailed = 23 [
+    (errors.code) = 409,
+    (errors.message) = "MaterialUploadFailed",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "素材上传失败"
+      en_US: "Material upload failed"
+    }
+  ];
+  // 存储器不存在
+  StorageNotFound = 24 [
+    (errors.code) = 409,
+    (errors.message) = "StorageNotFound",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "存储器不存在"
+      en_US: "Storage not found"
+    }
+  ];
+  // 存储器获取配置失败
+  StorageGetConfigFailed = 25 [
+    (errors.code) = 409,
+    (errors.message) = "StorageGetConfigFailed",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "存储器获取配置失败"
+      en_US: "Storage get config failed"
+    }
+  ];
+  // 短信验证码发送频率限制
+  SmsFrequencyLimit = 26 [
+    (errors.code) = 429,
+    (errors.message) = "SmsFrequencyLimit",
+    (errors.i18n) = {
+      zh_CN: "短信验证码发送频率超限"
+      en_US: "SMS verification code frequency limit exceeded"
+    }
+  ];
+
+  // 短信验证码无效
+  SmsCodeInvalid = 27 [
+    (errors.code) = 409,
+    (errors.message) = "SmsCodeInvalid",
+    (errors.i18n) = {
+      zh_CN: "短信验证码无效"
+      en_US: "SMS verification code invalid"
+    }
+  ];
+}

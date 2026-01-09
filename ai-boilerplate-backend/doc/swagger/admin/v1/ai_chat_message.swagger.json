@@ -1,0 +1,186 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/ai_chat_message.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "AiChatMessage"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/ai_chat_message/list": {
+      "get": {
+        "summary": "AI 聊天消息表-列表数据查询",
+        "operationId": "AiChatMessage_GetAiChatMessageList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetAiChatMessageListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "conversationId",
+            "description": "对话编号",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiChatMessage"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "admin.v1.AiChatMessageInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "消息编号"
+        },
+        "tenantId": {
+          "type": "string",
+          "title": "租户编号"
+        },
+        "conversationId": {
+          "type": "string",
+          "title": "对话编号"
+        },
+        "replyId": {
+          "type": "string",
+          "title": "回复编号"
+        },
+        "adminId": {
+          "type": "string",
+          "title": "用户编号"
+        },
+        "roleId": {
+          "type": "string",
+          "title": "角色编号"
+        },
+        "type": {
+          "type": "string",
+          "title": "消息类型"
+        },
+        "model": {
+          "type": "string",
+          "title": "模型标识"
+        },
+        "modelId": {
+          "type": "string",
+          "title": "模型编号"
+        },
+        "content": {
+          "type": "string",
+          "title": "消息内容"
+        },
+        "useContext": {
+          "type": "boolean",
+          "title": "是否携带上下文"
+        },
+        "segmentIds": {
+          "type": "string",
+          "title": "段落编号数组"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "AI 聊天消息表信息"
+    },
+    "admin.v1.GetAiChatMessageListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.AiChatMessageInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-AI 聊天消息表-列表数据查询"
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

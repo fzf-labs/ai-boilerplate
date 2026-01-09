@@ -1,0 +1,326 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//AI 配置模型表
+service AiProviderModel {
+  //AI 配置模型表-创建一条数据
+  rpc CreateAiProviderModel(CreateAiProviderModelReq) returns (CreateAiProviderModelReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_provider_model/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 配置模型表-更新一条数据
+  rpc UpdateAiProviderModel(UpdateAiProviderModelReq) returns (UpdateAiProviderModelReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_provider_model/update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 配置模型表-更新状态
+  rpc UpdateAiProviderModelStatus(UpdateAiProviderModelStatusReq) returns (UpdateAiProviderModelStatusReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_provider_model/update/status"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 配置模型表-删除一条数据
+  rpc DeleteAiProviderModel(DeleteAiProviderModelReq) returns (DeleteAiProviderModelReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_provider_model/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 配置模型表-单条数据查询
+  rpc GetAiProviderModelInfo(GetAiProviderModelInfoReq) returns (GetAiProviderModelInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/ai_provider_model/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 配置模型表-列表数据查询
+  rpc GetAiProviderModelList(GetAiProviderModelListReq) returns (GetAiProviderModelListReply) {
+    option (google.api.http) = {get: "/admin/v1/ai_provider_model/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 配置模型表-标签选择器
+  rpc GetAiProviderModelLabelSelector(GetAiProviderModelLabelSelectorReq) returns (GetAiProviderModelLabelSelectorReply) {
+    option (google.api.http) = {get: "/admin/v1/ai_provider_model/selector"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+message ModelConfig {}
+
+//AI 配置模型表信息
+message AiProviderModelInfo {
+  string id = 1; // 编号
+  string platformId = 2; // 平台编号
+  string modelType = 3; // 模型类型
+  string modelId = 4; // 模型id
+  string modelName = 5; // 模型名字
+  ModelConfig modelConfig = 6; // 模型配置
+  int32 sort = 7; // 排序
+  int32 status = 8; // 状态
+  string createdAt = 9; // 创建时间
+  string updatedAt = 10; // 更新时间
+}
+
+//请求-AI 配置模型表-创建一条数据
+message CreateAiProviderModelReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "platformId",
+        "modelType",
+        "modelId",
+        "modelName",
+        "sort",
+        "status"
+      ]
+    }
+  };
+  string platformId = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }]; // 平台编号
+  string modelType = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }]; // 模型类型
+  string modelId = 3 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }]; // 模型id
+  string modelName = 4 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 64
+    }
+  ]; // 模型名字
+  ModelConfig modelConfig = 5 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {min_len: 1}
+  ]; // 模型配置
+  int32 sort = 6; // 排序
+  int32 status = 7; // 状态
+}
+
+//响应-AI 配置模型表-创建一条数据
+message CreateAiProviderModelReply {
+  string id = 1; // 编号
+}
+
+//请求-AI 配置模型表-更新一条数据
+message UpdateAiProviderModelReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "id",
+        "platformId",
+        "modelType",
+        "modelId",
+        "modelName",
+        "sort",
+        "status"
+      ]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 编号
+  string platformId = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }]; // 平台编号
+  string modelType = 3 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }]; // 模型类型
+  string modelId = 4 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }]; // 模型id
+  string modelName = 5 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 64
+    }
+  ]; // 模型名字
+  ModelConfig modelConfig = 6 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {min_len: 1}
+  ]; // 模型配置
+  int32 sort = 7; // 排序
+  int32 status = 8; // 状态
+}
+
+//响应-AI 配置模型表-更新一条数据
+message UpdateAiProviderModelReply {}
+
+//请求-AI 配置模型表-更新状态
+message UpdateAiProviderModelStatusReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "id",
+        "status"
+      ]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 编号
+  int32 status = 2; // 状态
+}
+
+//响应-AI 配置模型表-更新状态
+message UpdateAiProviderModelStatusReply {}
+
+//请求-AI 配置模型表-删除一条数据
+message DeleteAiProviderModelReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 编号
+}
+
+//响应-AI 配置模型表-删除一条数据
+message DeleteAiProviderModelReply {}
+
+//请求-AI 配置模型表-单条数据查询
+message GetAiProviderModelInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 编号
+}
+
+//响应-AI 配置模型表-单条数据查询
+message GetAiProviderModelInfoReply {
+  AiProviderModelInfo info = 1;
+}
+
+//请求-AI 配置模型表-列表数据查询
+message GetAiProviderModelListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1 [(buf.validate.field).int32 = {gte: 1}]; //页码
+  int32 pageSize = 2 [(buf.validate.field).int32 = {
+    gte: 1
+    lte: 1000
+  }]; //页数
+}
+
+//响应-AI 配置模型表-列表数据查询
+message GetAiProviderModelListReply {
+  int32 total = 1; //总数
+  repeated AiProviderModelInfo list = 2; // 列表数据
+}
+
+//AI 配置模型表-标签选择器
+message AiProviderModelLabelSelectorItem {
+  string label = 1; // 标签
+  string value = 2; // 值
+}
+
+//请求-AI 配置模型表-标签选择器
+message GetAiProviderModelLabelSelectorReq {}
+
+//响应-AI 配置模型表-标签选择器
+message GetAiProviderModelLabelSelectorReply {
+  repeated AiProviderModelLabelSelectorItem list = 1; // 列表数据
+}

@@ -1,0 +1,43 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(find:*)",
+      "Skill(backend-database)",
+      "mcp__dbhub__search_objects",
+      "mcp__dbhub__execute_sql",
+      "Skill(skill-creator)",
+      "Bash(cat:*)",
+      "Bash(go list:*)",
+      "Bash(curl:*)",
+      "Bash(make api-schema-test:*)",
+      "Bash(make build:*)",
+      "Bash(TOKEN=\"<SET_YOUR_JWT_TOKEN_HERE>\")",
+      "Bash(pkill:*)",
+      "Bash(lsof:*)",
+      "Bash(xargs kill:*)",
+      "Bash(make api:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(python3:*)",
+      "Bash(git push)",
+      "Bash(.claude/bin/claude tasks:*)",
+      "Bash(tree:*)",
+      "Bash(pnpm api:gen:*)",
+      "Bash(chmod:*)",
+      "Bash(pnpm api:gen:all:*)",
+      "Bash(pnpm:*)",
+      "Bash(npx tsx:*)",
+      "Skill(product-requirements)",
+      "Skill(product-requirements:*)",
+      "Skill(app-codeing)",
+      "Skill(app-codeing:*)",
+      "Skill(requirement)",
+      "Skill(requirement:*)",
+      "Bash(mkdir:*)",
+      "Skill(prototype-design)",
+      "Skill(prototype-design:*)"
+    ]
+  },
+  "enabledPlugins": {}
+}

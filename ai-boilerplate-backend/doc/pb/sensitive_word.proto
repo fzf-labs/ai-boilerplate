@@ -1,0 +1,181 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//敏感词
+service SensitiveWord {
+  //敏感词-创建一条数据
+  rpc CreateSensitiveWord(CreateSensitiveWordReq) returns (CreateSensitiveWordReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sensitive_word/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //敏感词-更新一条数据
+  rpc UpdateSensitiveWord(UpdateSensitiveWordReq) returns (UpdateSensitiveWordReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sensitive_word/update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //敏感词-删除一条数据
+  rpc DeleteSensitiveWord(DeleteSensitiveWordReq) returns (DeleteSensitiveWordReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sensitive_word/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //敏感词-单条数据查询
+  rpc GetSensitiveWordInfo(GetSensitiveWordInfoReq) returns (GetSensitiveWordInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/sensitive_word/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //敏感词-列表数据查询
+  rpc GetSensitiveWordList(GetSensitiveWordListReq) returns (GetSensitiveWordListReply) {
+    option (google.api.http) = {get: "/admin/v1/sensitive_word/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+//敏感词信息
+message SensitiveWordInfo {
+  string id = 1; // id
+	string word = 2; // 敏感词
+	string lab = 3; // 标签
+	string createdAt = 4; // 创建时间
+	string updatedAt = 5; // 更新时间
+}
+
+//请求-敏感词-创建一条数据
+message CreateSensitiveWordReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["word"]
+    }
+  };
+  string word = 1 [(buf.validate.field).string={min_len: 1}]; // 敏感词
+	string lab = 2 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // 标签
+}
+
+//响应-敏感词-创建一条数据
+message CreateSensitiveWordReply {
+  	string id = 1; // id
+}
+
+//请求-敏感词-更新一条数据
+message UpdateSensitiveWordReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","word"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+	string word = 2 [(buf.validate.field).string={min_len: 1}]; // 敏感词
+	string lab = 3 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // 标签
+}
+
+//响应-敏感词-更新一条数据
+message UpdateSensitiveWordReply {}
+
+//请求-敏感词-删除一条数据
+message DeleteSensitiveWordReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+}
+
+//响应-敏感词-删除一条数据
+message DeleteSensitiveWordReply {}
+
+//请求-敏感词-单条数据查询
+message GetSensitiveWordInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+}
+
+//响应-敏感词-单条数据查询
+message GetSensitiveWordInfoReply {
+  SensitiveWordInfo info = 1;
+}
+
+//请求-敏感词-列表数据查询
+message GetSensitiveWordListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1[(buf.validate.field).int32={gte: 1}]; //页码
+  int32 pageSize = 2[(buf.validate.field).int32={gte: 1, lte: 1000}]; //页数
+}
+
+//响应-敏感词-列表数据查询
+message GetSensitiveWordListReply {
+  int32 total = 1; //总数
+  repeated SensitiveWordInfo list = 2; // 列表数据
+}
+

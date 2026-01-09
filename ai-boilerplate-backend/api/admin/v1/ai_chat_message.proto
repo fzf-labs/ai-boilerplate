@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//AI 聊天消息表
+service AiChatMessage {
+  //AI 聊天消息表-列表数据查询
+  rpc GetAiChatMessageList(GetAiChatMessageListReq) returns (GetAiChatMessageListReply) {
+    option (google.api.http) = {get: "/admin/v1/ai_chat_message/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+//AI 聊天消息表信息
+message AiChatMessageInfo {
+  string id = 1; // 消息编号
+  string tenantId = 2; // 租户编号
+  string conversationId = 3; // 对话编号
+  string replyId = 4; // 回复编号
+  string adminId = 5; // 用户编号
+  string roleId = 6; // 角色编号
+  string type = 7; // 消息类型
+  string model = 8; // 模型标识
+  string modelId = 9; // 模型编号
+  string content = 10; // 消息内容
+  bool useContext = 11; // 是否携带上下文
+  string segmentIds = 12; // 段落编号数组
+  string createdAt = 13; // 创建时间
+  string updatedAt = 14; // 更新时间
+}
+
+//请求-AI 聊天消息表-列表数据查询
+message GetAiChatMessageListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "conversationId",
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1 [(buf.validate.field).int32 = {gte: 1}]; //页码
+  int32 pageSize = 2 [(buf.validate.field).int32 = {
+    gte: 1
+    lte: 1000
+  }]; //页数
+  string conversationId = 3 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 对话编号
+}
+
+//响应-AI 聊天消息表-列表数据查询
+message GetAiChatMessageListReply {
+  int32 total = 1; //总数
+  repeated AiChatMessageInfo list = 2; // 列表数据
+}

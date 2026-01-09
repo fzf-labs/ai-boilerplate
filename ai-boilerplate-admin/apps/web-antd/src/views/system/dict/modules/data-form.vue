@@ -1,0 +1,95 @@
+<script lang="ts" setup>
+import type { DictDatumInfo } from '#/api/v1/dict-data';
+
+import { computed, ref } from 'vue';
+
+import { useVbenModal } from '@vben/common-ui';
+
+import { message } from 'ant-design-vue';
+
+import { useVbenForm } from '#/adapter/form';
+import {
+  createDictDatum,
+  getDictDatumInfo,
+  updateDictDatum,
+} from '#/api/v1/dict-data';
+import { $t } from '#/locales';
+
+import { useDataFormSchema } from '../data';
+
+defineOptions({ name: 'SystemDictDataForm' });
+
+const emit = defineEmits(['success']);
+const formData = ref<DictDatumInfo>();
+const getTitle = computed(() => {
+  return formData.value?.id
+    ? $t('ui.actionTitle.edit', ['字典数据'])
+    : $t('ui.actionTitle.create', ['字典数据']);
+});
+
+const [Form, formApi] = useVbenForm({
+  layout: 'horizontal',
+  schema: useDataFormSchema(),
+  showDefaultActions: false,
+});
+
+const [Modal, modalApi] = useVbenModal({
+  async onConfirm() {
+    const { valid } = await formApi.validate();
+    if (!valid) {
+      return;
+    }
+    modalApi.lock();
+    // 提交表单
+    const data = (await formApi.getValues()) as DictDatumInfo;
+    try {
+      await (formData.value?.id
+        ? updateDictDatum({ body: data })
+        : createDictDatum({ body: data }));
+      // 关闭并提示
+      await modalApi.close();
+      emit('success');
+      message.success({
+        content: $t('ui.actionMessage.operationSuccess'),
+        key: 'action_process_msg',
+      });
+    } finally {
+      modalApi.lock(false);
+    }
+  },
+  async onOpenChange(isOpen: boolean) {
+    if (!isOpen) {
+      formData.value = undefined;
+      return;
+    }
+    // 加载数据
+    const data = modalApi.getData<DictDatumInfo | { dictType?: string }>();
+
+    // 如果有ID，表示是编辑
+    if (data && 'id' in data && data.id) {
+      modalApi.lock();
+      try {
+        const res = await getDictDatumInfo({ params: { id: data.id } });
+        formData.value = res.info;
+        // 设置到 values
+        if (formData.value) {
+          await formApi.setValues(formData.value);
+        }
+      } finally {
+        modalApi.lock(false);
+      }
+    } else if (data && 'dictType' in data && data.dictType) {
+      // 新增时，如果传入了dictType，则需要设置
+      await formApi.setValues({
+        dictType: data.dictType,
+      });
+    }
+  },
+});
+</script>
+
+<template>
+  <Modal :title="getTitle">
+    <Form class="mx-4" />
+  </Modal>
+</template>

@@ -1,0 +1,671 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/mall_activation_code.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "MallActivationCode"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/mall_activation_code/batch_generate": {
+      "post": {
+        "summary": "激活码管理表-批量生成激活码",
+        "operationId": "MallActivationCode_BatchGenerateMallActivationCode",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.BatchGenerateMallActivationCodeReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.BatchGenerateMallActivationCodeReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MallActivationCode"
+        ]
+      }
+    },
+    "/admin/v1/mall_activation_code/delete": {
+      "post": {
+        "summary": "激活码管理表-删除一条数据",
+        "operationId": "MallActivationCode_DeleteMallActivationCode",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteMallActivationCodeReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteMallActivationCodeReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MallActivationCode"
+        ]
+      }
+    },
+    "/admin/v1/mall_activation_code/info": {
+      "get": {
+        "summary": "激活码管理表-单条数据查询",
+        "operationId": "MallActivationCode_GetMallActivationCodeInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetMallActivationCodeInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "id",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MallActivationCode"
+        ]
+      }
+    },
+    "/admin/v1/mall_activation_code/list": {
+      "get": {
+        "summary": "激活码管理表-列表数据查询",
+        "operationId": "MallActivationCode_GetMallActivationCodeList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetMallActivationCodeListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "productType",
+            "description": "商品类型(membership:会员,service:服务)",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "productId",
+            "description": "商品ID",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "batchNo",
+            "description": "批次号",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "code",
+            "description": "激活码",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "description": "用户ID",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "platform",
+            "description": "平台",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "platformOrderNo",
+            "description": "平台订单号",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "description": "状态(-2已退款,-1禁用,0库存,1已售出,2已激活,3已过期)",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "activatedAt",
+            "description": "激活时间范围",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "createdAt",
+            "description": "创建时间范围",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MallActivationCode"
+        ]
+      }
+    },
+    "/admin/v1/mall_activation_code/update": {
+      "post": {
+        "summary": "激活码管理表-更新一条数据",
+        "operationId": "MallActivationCode_UpdateMallActivationCode",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateMallActivationCodeReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateMallActivationCodeReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MallActivationCode"
+        ]
+      }
+    },
+    "/admin/v1/mall_activation_code/update/status": {
+      "post": {
+        "summary": "激活码管理表-更新状态",
+        "operationId": "MallActivationCode_UpdateMallActivationCodeStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateMallActivationCodeStatusReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateMallActivationCodeStatusReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MallActivationCode"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "admin.v1.BatchGenerateMallActivationCodeReply": {
+      "type": "object",
+      "properties": {
+        "batchNo": {
+          "type": "string",
+          "title": "批次号"
+        }
+      },
+      "title": "响应-激活码管理表-批量生成激活码"
+    },
+    "admin.v1.BatchGenerateMallActivationCodeReq": {
+      "type": "object",
+      "properties": {
+        "productType": {
+          "type": "string",
+          "title": "商品类型(membership:会员,service:服务)"
+        },
+        "productId": {
+          "type": "string",
+          "title": "商品ID"
+        },
+        "validSt": {
+          "type": "string",
+          "title": "激活码有效期开始时间"
+        },
+        "validEd": {
+          "type": "string",
+          "title": "激活码有效期截止时间"
+        },
+        "platform": {
+          "type": "string",
+          "title": "平台"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "num": {
+          "type": "integer",
+          "format": "int32",
+          "title": "生成数量"
+        }
+      },
+      "title": "请求-激活码管理表-批量生成激活码",
+      "required": [
+        "productType",
+        "productId",
+        "validSt",
+        "validEd",
+        "num"
+      ]
+    },
+    "admin.v1.DeleteMallActivationCodeReply": {
+      "type": "object",
+      "title": "响应-激活码管理表-删除一条数据"
+    },
+    "admin.v1.DeleteMallActivationCodeReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        }
+      },
+      "title": "请求-激活码管理表-删除一条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "admin.v1.GetMallActivationCodeInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/admin.v1.MallActivationCodeInfo"
+        }
+      },
+      "title": "响应-激活码管理表-单条数据查询"
+    },
+    "admin.v1.GetMallActivationCodeListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.MallActivationCodeInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-激活码管理表-列表数据查询"
+    },
+    "admin.v1.MallActivationCodeInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "productType": {
+          "type": "string",
+          "title": "商品类型(membership:会员,service:服务)"
+        },
+        "productId": {
+          "type": "string",
+          "title": "商品ID"
+        },
+        "batchNo": {
+          "type": "string",
+          "title": "批次号"
+        },
+        "code": {
+          "type": "string",
+          "title": "激活码"
+        },
+        "validSt": {
+          "type": "string",
+          "title": "激活码有效期开始时间"
+        },
+        "validEd": {
+          "type": "string",
+          "title": "激活码有效期截止时间"
+        },
+        "activatedAt": {
+          "type": "string",
+          "title": "激活时间"
+        },
+        "userId": {
+          "type": "string",
+          "title": "用户ID"
+        },
+        "userChange": {
+          "$ref": "#/definitions/admin.v1.UserChange",
+          "title": "用户权益变化"
+        },
+        "platform": {
+          "type": "string",
+          "title": "平台"
+        },
+        "platformSoldAt": {
+          "type": "string",
+          "title": "平台售出时间"
+        },
+        "platformOrderNo": {
+          "type": "string",
+          "title": "平台订单号"
+        },
+        "platformBuyerId": {
+          "type": "string",
+          "title": "平台买家ID"
+        },
+        "platformBuyerName": {
+          "type": "string",
+          "title": "平台买家昵称"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-2已退款,-1禁用,0库存,1已售出,2已激活,3已过期)"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        },
+        "productName": {
+          "type": "string",
+          "title": "商品名称"
+        },
+        "userNickname": {
+          "type": "string",
+          "title": "用户昵称"
+        }
+      },
+      "title": "激活码管理表信息"
+    },
+    "admin.v1.UpdateMallActivationCodeReply": {
+      "type": "object",
+      "title": "响应-激活码管理表-更新一条数据"
+    },
+    "admin.v1.UpdateMallActivationCodeReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "platform": {
+          "type": "string",
+          "title": "平台"
+        },
+        "platformSoldAt": {
+          "type": "string",
+          "title": "平台售出时间"
+        },
+        "platformOrderNo": {
+          "type": "string",
+          "title": "平台订单号"
+        },
+        "platformBuyerId": {
+          "type": "string",
+          "title": "平台买家ID"
+        },
+        "platformBuyerName": {
+          "type": "string",
+          "title": "平台买家昵称"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        }
+      },
+      "title": "请求-激活码管理表-更新一条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "admin.v1.UpdateMallActivationCodeStatusReply": {
+      "type": "object",
+      "title": "响应-激活码管理表-更新状态"
+    },
+    "admin.v1.UpdateMallActivationCodeStatusReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-2已退款,-1禁用,0库存,1已售出,2已激活,3已过期)"
+        }
+      },
+      "title": "请求-激活码管理表-更新状态",
+      "required": [
+        "id",
+        "status"
+      ]
+    },
+    "admin.v1.UserChange": {
+      "type": "object",
+      "properties": {
+        "userMembershipChange": {
+          "$ref": "#/definitions/admin.v1.UserMembershipChange",
+          "title": "用户权益变化"
+        }
+      },
+      "title": "用户属性变化"
+    },
+    "admin.v1.UserMembershipChange": {
+      "type": "object",
+      "properties": {
+        "before": {
+          "$ref": "#/definitions/admin.v1.UserMembershipChangeItem",
+          "title": "变更前"
+        },
+        "after": {
+          "$ref": "#/definitions/admin.v1.UserMembershipChangeItem",
+          "title": "变更后"
+        }
+      },
+      "title": "用户权益变化"
+    },
+    "admin.v1.UserMembershipChangeItem": {
+      "type": "object",
+      "properties": {
+        "membershipType": {
+          "type": "string",
+          "title": "会员类型编码(normal,vip,svip)"
+        },
+        "expiredAt": {
+          "type": "string",
+          "title": "到期时间(普通会员为NULL,表示永不过期)"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用,1正常)"
+        }
+      },
+      "title": "用户权益变化项"
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

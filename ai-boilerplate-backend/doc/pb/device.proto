@@ -1,0 +1,260 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//设备表
+service Device {
+  //设备表-创建一条数据
+  rpc CreateDevice(CreateDeviceReq) returns (CreateDeviceReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/device/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //设备表-更新一条数据
+  rpc UpdateDevice(UpdateDeviceReq) returns (UpdateDeviceReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/device/update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //设备表-更新状态
+  rpc UpdateDeviceStatus(UpdateDeviceStatusReq) returns (UpdateDeviceStatusReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/device/update/status"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //设备表-删除一条数据
+  rpc DeleteDevice(DeleteDeviceReq) returns (DeleteDeviceReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/device/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //设备表-单条数据查询
+  rpc GetDeviceInfo(GetDeviceInfoReq) returns (GetDeviceInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/device/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //设备表-列表数据查询
+  rpc GetDeviceList(GetDeviceListReq) returns (GetDeviceListReply) {
+    option (google.api.http) = {get: "/admin/v1/device/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+//设备表信息
+message DeviceInfo {
+  string id = 1; // ID
+	string sn = 2; // 设备ID
+	string name = 3; // 设备名称
+	string desc = 4; // 描述
+	string brand = 5; // 设备品牌
+	string model = 6; // 设备型号
+	string network = 7; // 入网型号
+	string imei = 8; // IMEI
+	string CPU = 9; // cpu型号
+	string mac = 10; // mac地址
+	string appVersion = 11; // app版本
+	string androidVersion = 12; // 安卓版本
+	double RAMSize = 13; // RAM大小
+	double ddrSize = 14; // DDR大小
+	string certificate = 15; // 设备证书
+	string secureKey = 16; // 设备密钥
+	string registryTime = 17; // 激活时间
+	string push = 18; // 推送
+	int32 status = 19; // 状态
+	string createdAt = 20; // 创建时间
+	string updatedAt = 21; // 更新时间
+}
+
+//请求-设备表-创建一条数据
+message CreateDeviceReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["sn","status"]
+    }
+  };
+  string sn = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 设备ID
+	string name = 2 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 225}]; // 设备名称
+	string desc = 3 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 225}]; // 描述
+	string brand = 4 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 225}]; // 设备品牌
+	string model = 5 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 225}]; // 设备型号
+	string network = 6 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 225}]; // 入网型号
+	string imei = 7 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 225}]; // IMEI
+	string CPU = 8 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 125}]; // cpu型号
+	string mac = 9 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 125}]; // mac地址
+	string appVersion = 10 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 125}]; // app版本
+	string androidVersion = 11 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 125}]; // 安卓版本
+	double RAMSize = 12 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED]; // RAM大小
+	double ddrSize = 13 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED]; // DDR大小
+	string certificate = 14 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 225}]; // 设备证书
+	string secureKey = 15 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 225}]; // 设备密钥
+	string registryTime = 16 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 激活时间
+	string push = 17 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // 推送
+	int32 status = 18 ; // 状态
+}
+
+//响应-设备表-创建一条数据
+message CreateDeviceReply {
+  	string id = 1; // ID
+}
+
+//请求-设备表-更新一条数据
+message UpdateDeviceReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","sn","status"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // ID
+	string sn = 2 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 设备ID
+	string name = 3 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 225}]; // 设备名称
+	string desc = 4 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 225}]; // 描述
+	string brand = 5 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 225}]; // 设备品牌
+	string model = 6 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 225}]; // 设备型号
+	string network = 7 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 225}]; // 入网型号
+	string imei = 8 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 225}]; // IMEI
+	string CPU = 9 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 125}]; // cpu型号
+	string mac = 10 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 125}]; // mac地址
+	string appVersion = 11 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 125}]; // app版本
+	string androidVersion = 12 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 125}]; // 安卓版本
+	double RAMSize = 13 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED]; // RAM大小
+	double ddrSize = 14 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED]; // DDR大小
+	string certificate = 15 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 225}]; // 设备证书
+	string secureKey = 16 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 225}]; // 设备密钥
+	string registryTime = 17 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 激活时间
+	string push = 18 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // 推送
+	int32 status = 19 ; // 状态
+}
+
+//响应-设备表-更新一条数据
+message UpdateDeviceReply {}
+
+//请求-设备表-更新状态
+message UpdateDeviceStatusReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","status"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // ID
+	int32 status = 2 ; // 状态
+}
+
+//响应-设备表-更新状态
+message UpdateDeviceStatusReply {}
+
+//请求-设备表-删除一条数据
+message DeleteDeviceReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // ID
+}
+
+//响应-设备表-删除一条数据
+message DeleteDeviceReply {}
+
+//请求-设备表-单条数据查询
+message GetDeviceInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // ID
+}
+
+//响应-设备表-单条数据查询
+message GetDeviceInfoReply {
+  DeviceInfo info = 1;
+}
+
+//请求-设备表-列表数据查询
+message GetDeviceListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1[(buf.validate.field).int32={gte: 1}]; //页码
+  int32 pageSize = 2[(buf.validate.field).int32={gte: 1, lte: 1000}]; //页数
+}
+
+//响应-设备表-列表数据查询
+message GetDeviceListReply {
+  int32 total = 1; //总数
+  repeated DeviceInfo list = 2; // 列表数据
+}
+

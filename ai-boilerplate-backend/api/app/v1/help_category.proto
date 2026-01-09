@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package app.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/app/v1;v1";
+
+//帮助分类表
+service HelpCategory {
+  //帮助分类表-列表数据查询
+  rpc ListHelpCategories(ListHelpCategoriesReq) returns (ListHelpCategoriesReply) {
+    option (google.api.http) = {get: "/app/v1/help/categories"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+//帮助分类表信息
+message HelpCategoryInfo {
+  string id = 1; // id
+  string name = 2; // 分类名称
+  string icon = 3; // 图标
+  int32 order = 4; // 排序
+  int32 status = 5; // 状态(1启用 0禁用)
+  string createdAt = 6; // 创建时间
+  string updatedAt = 7; // 更新时间
+}
+
+//请求-帮助分类表-列表数据查询（无分页，返回所有启用的分类）
+message ListHelpCategoriesReq {}
+
+//响应-帮助分类表-列表数据查询
+message ListHelpCategoriesReply {
+  repeated HelpCategoryInfo list = 1; // 列表数据
+}

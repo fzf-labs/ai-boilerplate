@@ -1,0 +1,250 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//公众号消息表 
+service WxGzhMessage {
+  //公众号消息表 -创建一条数据
+  rpc CreateWxGzhMessage(CreateWxGzhMessageReq) returns (CreateWxGzhMessageReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/wx_gzh_message/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //公众号消息表 -更新一条数据
+  rpc UpdateWxGzhMessage(UpdateWxGzhMessageReq) returns (UpdateWxGzhMessageReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/wx_gzh_message/update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //公众号消息表 -删除一条数据
+  rpc DeleteWxGzhMessage(DeleteWxGzhMessageReq) returns (DeleteWxGzhMessageReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/wx_gzh_message/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //公众号消息表 -单条数据查询
+  rpc GetWxGzhMessageInfo(GetWxGzhMessageInfoReq) returns (GetWxGzhMessageInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/wx_gzh_message/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //公众号消息表 -列表数据查询
+  rpc GetWxGzhMessageList(GetWxGzhMessageListReq) returns (GetWxGzhMessageListReply) {
+    option (google.api.http) = {get: "/admin/v1/wx_gzh_message/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+//公众号消息表 信息
+message WxGzhMessageInfo {
+  string id = 1; // 主键
+	string appId = 2; // 公众号 appId
+	string msgId = 3; // 微信公众号的消息编号
+	string userId = 4; // 公众号粉丝的编号
+	string openid = 5; // 公众号粉丝标志
+	string messageType = 6; // 消息类型
+	int32 sendFrom = 7; // 消息来源
+	string content = 8; // 消息内容
+	string mediaId = 9; // 媒体文件 id
+	string mediaURL = 10; // 媒体文件 URL
+	string recognition = 11; // 语音识别后文本
+	string format = 12; // 语音格式
+	string title = 13; // 标题
+	string description = 14; // 描述
+	string thumbMediaId = 15; // 缩略图的媒体 id
+	string thumbMediaURL = 16; // 缩略图的媒体 URL
+	string URL = 17; // 点击图文消息跳转链接
+	double locationX = 18; // 地理位置维度
+	double locationY = 19; // 地理位置经度
+	double scale = 20; // 地图缩放大小
+	string label = 21; // 详细地址
+	string articles = 22; // 图文消息数组
+	string musicURL = 23; // 音乐链接
+	string hqMusicURL = 24; // 高质量音乐链接
+	string event = 25; // 事件类型
+	string eventKey = 26; // 事件 Key
+	string createdAt = 27; // 创建时间
+	string updatedAt = 28; // 更新时间
+}
+
+//请求-公众号消息表 -创建一条数据
+message CreateWxGzhMessageReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["appId","userId","openid","messageType","sendFrom"]
+    }
+  };
+  string appId = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 公众号 appId
+	string msgId = 2 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 100}]; // 微信公众号的消息编号
+	string userId = 3 [(buf.validate.field).string={min_len: 1, max_len: 100}]; // 公众号粉丝的编号
+	string openid = 4 [(buf.validate.field).string={min_len: 1, max_len: 100}]; // 公众号粉丝标志
+	string messageType = 5 [(buf.validate.field).string={min_len: 1, max_len: 32}]; // 消息类型
+	int32 sendFrom = 6 ; // 消息来源
+	string content = 7 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 1024}]; // 消息内容
+	string mediaId = 8 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 128}]; // 媒体文件 id
+	string mediaURL = 9 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 1024}]; // 媒体文件 URL
+	string recognition = 10 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 1024}]; // 语音识别后文本
+	string format = 11 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 16}]; // 语音格式
+	string title = 12 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 128}]; // 标题
+	string description = 13 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 256}]; // 描述
+	string thumbMediaId = 14 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 128}]; // 缩略图的媒体 id
+	string thumbMediaURL = 15 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 1024}]; // 缩略图的媒体 URL
+	string URL = 16 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 500}]; // 点击图文消息跳转链接
+	double locationX = 17 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED]; // 地理位置维度
+	double locationY = 18 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED]; // 地理位置经度
+	double scale = 19 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED]; // 地图缩放大小
+	string label = 20 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 128}]; // 详细地址
+	string articles = 21 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 1024}]; // 图文消息数组
+	string musicURL = 22 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 1024}]; // 音乐链接
+	string hqMusicURL = 23 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 1024}]; // 高质量音乐链接
+	string event = 24 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 事件类型
+	string eventKey = 25 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 事件 Key
+}
+
+//响应-公众号消息表 -创建一条数据
+message CreateWxGzhMessageReply {
+  	string id = 1; // 主键
+}
+
+//请求-公众号消息表 -更新一条数据
+message UpdateWxGzhMessageReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","appId","userId","openid","messageType","sendFrom"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 主键
+	string appId = 2 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 公众号 appId
+	string msgId = 3 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 100}]; // 微信公众号的消息编号
+	string userId = 4 [(buf.validate.field).string={min_len: 1, max_len: 100}]; // 公众号粉丝的编号
+	string openid = 5 [(buf.validate.field).string={min_len: 1, max_len: 100}]; // 公众号粉丝标志
+	string messageType = 6 [(buf.validate.field).string={min_len: 1, max_len: 32}]; // 消息类型
+	int32 sendFrom = 7 ; // 消息来源
+	string content = 8 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 1024}]; // 消息内容
+	string mediaId = 9 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 128}]; // 媒体文件 id
+	string mediaURL = 10 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 1024}]; // 媒体文件 URL
+	string recognition = 11 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 1024}]; // 语音识别后文本
+	string format = 12 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 16}]; // 语音格式
+	string title = 13 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 128}]; // 标题
+	string description = 14 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 256}]; // 描述
+	string thumbMediaId = 15 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 128}]; // 缩略图的媒体 id
+	string thumbMediaURL = 16 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 1024}]; // 缩略图的媒体 URL
+	string URL = 17 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 500}]; // 点击图文消息跳转链接
+	double locationX = 18 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED]; // 地理位置维度
+	double locationY = 19 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED]; // 地理位置经度
+	double scale = 20 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED]; // 地图缩放大小
+	string label = 21 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 128}]; // 详细地址
+	string articles = 22 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 1024}]; // 图文消息数组
+	string musicURL = 23 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 1024}]; // 音乐链接
+	string hqMusicURL = 24 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 1024}]; // 高质量音乐链接
+	string event = 25 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 事件类型
+	string eventKey = 26 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 事件 Key
+}
+
+//响应-公众号消息表 -更新一条数据
+message UpdateWxGzhMessageReply {}
+
+//请求-公众号消息表 -删除一条数据
+message DeleteWxGzhMessageReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 主键
+}
+
+//响应-公众号消息表 -删除一条数据
+message DeleteWxGzhMessageReply {}
+
+//请求-公众号消息表 -单条数据查询
+message GetWxGzhMessageInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 主键
+}
+
+//响应-公众号消息表 -单条数据查询
+message GetWxGzhMessageInfoReply {
+  WxGzhMessageInfo info = 1;
+}
+
+//请求-公众号消息表 -列表数据查询
+message GetWxGzhMessageListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1[(buf.validate.field).int32={gte: 1}]; //页码
+  int32 pageSize = 2[(buf.validate.field).int32={gte: 1, lte: 1000}]; //页数
+}
+
+//响应-公众号消息表 -列表数据查询
+message GetWxGzhMessageListReply {
+  int32 total = 1; //总数
+  repeated WxGzhMessageInfo list = 2; // 列表数据
+}
+

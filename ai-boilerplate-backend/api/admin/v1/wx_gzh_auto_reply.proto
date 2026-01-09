@@ -1,0 +1,332 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//公众号消息自动回复表
+service WxGzhAutoReply {
+  //公众号消息自动回复表-创建一条数据
+  rpc CreateWxGzhAutoReply(CreateWxGzhAutoReplyReq) returns (CreateWxGzhAutoReplyReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/wx_gzh_auto_reply/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //公众号消息自动回复表-更新一条数据
+  rpc UpdateWxGzhAutoReply(UpdateWxGzhAutoReplyReq) returns (UpdateWxGzhAutoReplyReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/wx_gzh_auto_reply/update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //公众号消息自动回复表-更新状态
+  rpc UpdateWxGzhAutoReplyStatus(UpdateWxGzhAutoReplyStatusReq) returns (UpdateWxGzhAutoReplyStatusReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/wx_gzh_auto_reply/update/status"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //公众号消息自动回复表-删除一条数据
+  rpc DeleteWxGzhAutoReply(DeleteWxGzhAutoReplyReq) returns (DeleteWxGzhAutoReplyReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/wx_gzh_auto_reply/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //公众号消息自动回复表-单条数据查询
+  rpc GetWxGzhAutoReplyInfo(GetWxGzhAutoReplyInfoReq) returns (GetWxGzhAutoReplyInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/wx_gzh_auto_reply/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //公众号消息自动回复表-列表数据查询
+  rpc GetWxGzhAutoReplyList(GetWxGzhAutoReplyListReq) returns (GetWxGzhAutoReplyListReply) {
+    option (google.api.http) = {get: "/admin/v1/wx_gzh_auto_reply/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+//公众号消息自动回复表信息
+message WxGzhAutoReplyInfo {
+  string id = 1; // 主键
+  string appId = 2; // 公众号 appId
+  int32 type = 3; // 回复类型(关键词回复,收到消息回复,被关注回复)
+  string requestKeyword = 4; // 请求的关键字
+  int32 requestKeywordMatch = 5; // 请求的关键字匹配类型
+  string responseMessageType = 6; // 回复的消息类型
+  string responseContent = 7; // 回复的消息内容
+  string responseMediaId = 8; // 回复的媒体文件 id
+  int32 status = 9; // 状态(-1禁用,1开启)
+  string createdAt = 10; // 创建时间
+  string updatedAt = 11; // 更新时间
+}
+
+//请求-公众号消息自动回复表-创建一条数据
+message CreateWxGzhAutoReplyReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "appId",
+        "type",
+        "responseMessageType",
+        "status"
+      ]
+    }
+  };
+  string appId = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 公众号 appId
+  int32 type = 2 [(buf.validate.field).int32 = {
+    gt: 0
+    lte: 32
+  }]; // 回复类型(关键词回复,收到消息回复,被关注回复)
+  string requestKeyword = 3 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 255
+    }
+  ]; // 请求的关键字
+  int32 requestKeywordMatch = 4 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).int32 = {
+      gt: 0
+      lte: 32
+    }
+  ]; // 请求的关键字匹配类型
+  string responseMessageType = 5 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 32
+  }]; // 回复的消息类型
+  string responseContent = 6 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 9223372036854775807
+    }
+  ]; // 回复的消息内容
+  string responseMediaId = 7 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 1000
+    }
+  ]; // 回复的媒体文件 id
+  int32 status = 8 [(buf.validate.field).int32 = {
+    gt: 0
+    lte: 32
+  }]; // 状态(-1禁用,1开启)
+}
+
+//响应-公众号消息自动回复表-创建一条数据
+message CreateWxGzhAutoReplyReply {
+  string id = 1; // 主键
+}
+
+//请求-公众号消息自动回复表-更新一条数据
+message UpdateWxGzhAutoReplyReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "id",
+        "appId",
+        "type",
+        "responseMessageType",
+        "status"
+      ]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 主键
+  string appId = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 公众号 appId
+  int32 type = 3 [(buf.validate.field).int32 = {
+    gt: 0
+    lte: 32
+  }]; // 回复类型(关键词回复,收到消息回复,被关注回复)
+  string requestKeyword = 4 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 255
+    }
+  ]; // 请求的关键字
+  int32 requestKeywordMatch = 5 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).int32 = {
+      gt: 0
+      lte: 32
+    }
+  ]; // 请求的关键字匹配类型
+  string responseMessageType = 6 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 32
+  }]; // 回复的消息类型
+  string responseContent = 7 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 9223372036854775807
+    }
+  ]; // 回复的消息内容
+  string responseMediaId = 8 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 1000
+    }
+  ]; // 回复的媒体文件 id
+  int32 status = 9 [(buf.validate.field).int32 = {
+    gt: 0
+    lte: 32
+  }]; // 状态(-1禁用,1开启)
+}
+
+//响应-公众号消息自动回复表-更新一条数据
+message UpdateWxGzhAutoReplyReply {}
+
+//请求-公众号消息自动回复表-更新状态
+message UpdateWxGzhAutoReplyStatusReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "id",
+        "status"
+      ]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 主键
+  int32 status = 2 [(buf.validate.field).int32 = {
+    gt: 0
+    lte: 32
+  }]; // 状态(-1禁用,1开启)
+}
+
+//响应-公众号消息自动回复表-更新状态
+message UpdateWxGzhAutoReplyStatusReply {}
+
+//请求-公众号消息自动回复表-删除一条数据
+message DeleteWxGzhAutoReplyReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 主键
+}
+
+//响应-公众号消息自动回复表-删除一条数据
+message DeleteWxGzhAutoReplyReply {}
+
+//请求-公众号消息自动回复表-单条数据查询
+message GetWxGzhAutoReplyInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 主键
+}
+
+//响应-公众号消息自动回复表-单条数据查询
+message GetWxGzhAutoReplyInfoReply {
+  WxGzhAutoReplyInfo info = 1;
+}
+
+//请求-公众号消息自动回复表-列表数据查询
+message GetWxGzhAutoReplyListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1; //页码
+  int32 pageSize = 2; //页数
+  string appId = 3; //公众号appId
+  int32 type = 4; //回复类型(关键词回复,收到消息回复,被关注回复)
+}
+
+//响应-公众号消息自动回复表-列表数据查询
+message GetWxGzhAutoReplyListReply {
+  int32 total = 1; //总数
+  repeated WxGzhAutoReplyInfo list = 2; // 列表数据
+}

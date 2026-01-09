@@ -1,0 +1,224 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//用户会员关系表
+service UserMembership {
+  //用户会员关系表-创建一条数据
+  rpc CreateUserMembership(CreateUserMembershipReq) returns (CreateUserMembershipReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/user_membership/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //用户会员关系表-更新一条数据
+  rpc UpdateUserMembership(UpdateUserMembershipReq) returns (UpdateUserMembershipReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/user_membership/update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //用户会员关系表-更新状态
+  rpc UpdateUserMembershipStatus(UpdateUserMembershipStatusReq) returns (UpdateUserMembershipStatusReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/user_membership/update/status"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //用户会员关系表-删除一条数据
+  rpc DeleteUserMembership(DeleteUserMembershipReq) returns (DeleteUserMembershipReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/user_membership/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //用户会员关系表-单条数据查询
+  rpc GetUserMembershipInfo(GetUserMembershipInfoReq) returns (GetUserMembershipInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/user_membership/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //用户会员关系表-列表数据查询
+  rpc GetUserMembershipList(GetUserMembershipListReq) returns (GetUserMembershipListReply) {
+    option (google.api.http) = {get: "/admin/v1/user_membership/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+//用户会员关系表信息
+message UserMembershipInfo {
+  string id = 1; // id
+	string userId = 2; // 用户ID
+	string membershipType = 3; // 会员类型编码(normal,vip,svip)
+	string expiredAt = 4; // 到期时间(普通会员为NULL,表示永不过期)
+	int32 autoRenew = 5; // 是否自动续费(0否,1是)
+	int32 autoRenewDays = 6; // 自动续费天数
+	int32 status = 7; // 状态(-1禁用,1正常)
+	string createdAt = 8; // 创建时间
+	string updatedAt = 9; // 更新时间
+}
+
+//请求-用户会员关系表-创建一条数据
+message CreateUserMembershipReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["userId","membershipType","status"]
+    }
+  };
+  string userId = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 用户ID
+	string membershipType = 2 [(buf.validate.field).string={min_len: 1, max_len: 20}]; // 会员类型编码(normal,vip,svip)
+	string expiredAt = 3 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 到期时间(普通会员为NULL,表示永不过期)
+	int32 autoRenew = 4 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED]; // 是否自动续费(0否,1是)
+	int32 autoRenewDays = 5 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED]; // 自动续费天数
+	int32 status = 6 ; // 状态(-1禁用,1正常)
+}
+
+//响应-用户会员关系表-创建一条数据
+message CreateUserMembershipReply {
+  	string id = 1; // id
+}
+
+//请求-用户会员关系表-更新一条数据
+message UpdateUserMembershipReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","userId","membershipType","status"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+	string userId = 2 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 用户ID
+	string membershipType = 3 [(buf.validate.field).string={min_len: 1, max_len: 20}]; // 会员类型编码(normal,vip,svip)
+	string expiredAt = 4 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 到期时间(普通会员为NULL,表示永不过期)
+	int32 autoRenew = 5 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED]; // 是否自动续费(0否,1是)
+	int32 autoRenewDays = 6 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED]; // 自动续费天数
+	int32 status = 7 ; // 状态(-1禁用,1正常)
+}
+
+//响应-用户会员关系表-更新一条数据
+message UpdateUserMembershipReply {}
+
+//请求-用户会员关系表-更新状态
+message UpdateUserMembershipStatusReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","status"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+	int32 status = 2 ; // 状态(-1禁用,1正常)
+}
+
+//响应-用户会员关系表-更新状态
+message UpdateUserMembershipStatusReply {}
+
+//请求-用户会员关系表-删除一条数据
+message DeleteUserMembershipReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+}
+
+//响应-用户会员关系表-删除一条数据
+message DeleteUserMembershipReply {}
+
+//请求-用户会员关系表-单条数据查询
+message GetUserMembershipInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+}
+
+//响应-用户会员关系表-单条数据查询
+message GetUserMembershipInfoReply {
+  UserMembershipInfo info = 1;
+}
+
+//请求-用户会员关系表-列表数据查询
+message GetUserMembershipListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1[(buf.validate.field).int32={gte: 1}]; //页码
+  int32 pageSize = 2[(buf.validate.field).int32={gte: 1, lte: 1000}]; //页数
+}
+
+//响应-用户会员关系表-列表数据查询
+message GetUserMembershipListReply {
+  int32 total = 1; //总数
+  repeated UserMembershipInfo list = 2; // 列表数据
+}
+

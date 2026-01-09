@@ -1,0 +1,553 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/user_membership.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "UserMembership"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/user_membership/create": {
+      "post": {
+        "summary": "用户会员关系表-创建一条数据",
+        "operationId": "UserMembership_CreateUserMembership",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateUserMembershipReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateUserMembershipReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UserMembership"
+        ]
+      }
+    },
+    "/admin/v1/user_membership/delete": {
+      "post": {
+        "summary": "用户会员关系表-删除多条数据",
+        "operationId": "UserMembership_DeleteUserMembership",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteUserMembershipReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1DeleteUserMembershipReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UserMembership"
+        ]
+      }
+    },
+    "/admin/v1/user_membership/info": {
+      "get": {
+        "summary": "用户会员关系表-单条数据查询",
+        "operationId": "UserMembership_GetUserMembershipInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetUserMembershipInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "id",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UserMembership"
+        ]
+      }
+    },
+    "/admin/v1/user_membership/info/by_user_id": {
+      "get": {
+        "summary": "用户会员关系表-根据用户ID查询单条数据",
+        "operationId": "UserMembership_GetUserMembershipInfoByUserId",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetUserMembershipInfoByUserIdReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "description": "用户ID",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UserMembership"
+        ]
+      }
+    },
+    "/admin/v1/user_membership/list": {
+      "get": {
+        "summary": "用户会员关系表-列表数据查询",
+        "operationId": "UserMembership_GetUserMembershipList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetUserMembershipListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UserMembership"
+        ]
+      }
+    },
+    "/admin/v1/user_membership/update": {
+      "post": {
+        "summary": "用户会员关系表-更新一条数据",
+        "operationId": "UserMembership_UpdateUserMembership",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateUserMembershipReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateUserMembershipReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UserMembership"
+        ]
+      }
+    },
+    "/admin/v1/user_membership/update/status": {
+      "post": {
+        "summary": "用户会员关系表-更新状态",
+        "operationId": "UserMembership_UpdateUserMembershipStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateUserMembershipStatusReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateUserMembershipStatusReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UserMembership"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1CreateUserMembershipReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        }
+      },
+      "title": "响应-用户会员关系表-创建一条数据"
+    },
+    "v1CreateUserMembershipReq": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "title": "用户ID"
+        },
+        "membershipType": {
+          "type": "string",
+          "title": "会员类型编码(normal,vip,svip)"
+        },
+        "expiredAt": {
+          "type": "string",
+          "title": "到期时间(普通会员为NULL,表示永不过期)"
+        },
+        "autoRenew": {
+          "type": "integer",
+          "format": "int32",
+          "title": "是否自动续费(0否,1是)"
+        },
+        "autoRenewDays": {
+          "type": "integer",
+          "format": "int32",
+          "title": "自动续费天数"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用,1正常)"
+        }
+      },
+      "title": "请求-用户会员关系表-创建一条数据",
+      "required": [
+        "userId",
+        "membershipType",
+        "status"
+      ]
+    },
+    "v1DeleteUserMembershipReply": {
+      "type": "object",
+      "title": "响应-用户会员关系表-删除多条数据"
+    },
+    "v1DeleteUserMembershipReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        }
+      },
+      "title": "请求-用户会员关系表-删除多条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "v1GetUserMembershipInfoByUserIdReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/v1UserMembershipInfo"
+        }
+      },
+      "title": "响应-用户会员关系表-根据用户ID查询单条数据"
+    },
+    "v1GetUserMembershipInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/v1UserMembershipInfo"
+        }
+      },
+      "title": "响应-用户会员关系表-单条数据查询"
+    },
+    "v1GetUserMembershipListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1UserMembershipInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-用户会员关系表-列表数据查询"
+    },
+    "v1UpdateUserMembershipReply": {
+      "type": "object",
+      "title": "响应-用户会员关系表-更新一条数据"
+    },
+    "v1UpdateUserMembershipReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "userId": {
+          "type": "string",
+          "title": "用户ID"
+        },
+        "membershipType": {
+          "type": "string",
+          "title": "会员类型编码(normal,vip,svip)"
+        },
+        "expiredAt": {
+          "type": "string",
+          "title": "到期时间(普通会员为NULL,表示永不过期)"
+        },
+        "autoRenew": {
+          "type": "integer",
+          "format": "int32",
+          "title": "是否自动续费(0否,1是)"
+        },
+        "autoRenewDays": {
+          "type": "integer",
+          "format": "int32",
+          "title": "自动续费天数"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用,1正常)"
+        }
+      },
+      "title": "请求-用户会员关系表-更新一条数据",
+      "required": [
+        "id",
+        "userId",
+        "membershipType",
+        "status"
+      ]
+    },
+    "v1UpdateUserMembershipStatusReply": {
+      "type": "object",
+      "title": "响应-用户会员关系表-更新状态"
+    },
+    "v1UpdateUserMembershipStatusReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用,1正常)"
+        }
+      },
+      "title": "请求-用户会员关系表-更新状态",
+      "required": [
+        "id",
+        "status"
+      ]
+    },
+    "v1UserMembershipInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "userId": {
+          "type": "string",
+          "title": "用户ID"
+        },
+        "membershipType": {
+          "type": "string",
+          "title": "会员类型编码(normal,vip,svip)"
+        },
+        "expiredAt": {
+          "type": "string",
+          "title": "到期时间(普通会员为NULL,表示永不过期)"
+        },
+        "autoRenew": {
+          "type": "integer",
+          "format": "int32",
+          "title": "是否自动续费(0否,1是)"
+        },
+        "autoRenewDays": {
+          "type": "integer",
+          "format": "int32",
+          "title": "自动续费天数"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用,1正常)"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "用户会员关系表信息"
+    }
+  }
+}

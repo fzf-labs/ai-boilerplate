@@ -1,0 +1,21 @@
+# Docker 配置文件
+# 注意：此文件包含敏感信息，应添加到 .gitignore 中
+# 可以复制为 .docker-config.local 进行本地配置
+
+# ==================== Docker 配置 ====================
+
+# Docker Context 配置
+DOCKER_CONTEXT_PREFIX="guard"
+
+# Docker 镜像仓库配置
+DOCKER_REGISTRY="registry.cn-shenzhen.aliyuncs.com"
+DOCKER_NAMESPACE="green-orange-guard"
+DOCKER_IMAGE_NAME="guard-admin"
+
+# Docker 镜像仓库认证信息
+DOCKER_USERNAME="hb_zhifei@163.com"
+DOCKER_PASSWORD="alyimage666"
+
+# Dockerfile 配置
+# Dockerfile 所在目录的路径（相对于项目根目录）
+DOCKERFILE_PATH="./scripts/deploy/"

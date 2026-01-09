@@ -1,0 +1,276 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/mall_order.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "MallOrder"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/mall_order/info": {
+      "get": {
+        "summary": "订单信息表-单条数据查询",
+        "operationId": "MallOrder_GetMallOrderInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetMallOrderInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "id",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MallOrder"
+        ]
+      }
+    },
+    "/admin/v1/mall_order/list": {
+      "get": {
+        "summary": "订单信息表-列表数据查询",
+        "operationId": "MallOrder_GetMallOrderList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetMallOrderListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "userId",
+            "description": "用户ID",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "orderId",
+            "description": "订单ID",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "productType",
+            "description": "商品类型(membership:会员,service:服务,goods:商品)",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "productId",
+            "description": "商品ID",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MallOrder"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "admin.v1.GetMallOrderInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/admin.v1.MallOrderInfo"
+        }
+      },
+      "title": "响应-订单信息表-单条数据查询"
+    },
+    "admin.v1.GetMallOrderListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.MallOrderInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-订单信息表-列表数据查询"
+    },
+    "admin.v1.MallOrderInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "userId": {
+          "type": "string",
+          "title": "用户ID"
+        },
+        "productType": {
+          "type": "string",
+          "title": "商品类型(membership:会员,service:服务,goods:商品)"
+        },
+        "productId": {
+          "type": "string",
+          "title": "商品ID"
+        },
+        "originalAmount": {
+          "type": "number",
+          "format": "double",
+          "title": "原价"
+        },
+        "discountAmount": {
+          "type": "number",
+          "format": "double",
+          "title": "优惠金额"
+        },
+        "actualAmount": {
+          "type": "number",
+          "format": "double",
+          "title": "实付金额"
+        },
+        "refundAmount": {
+          "type": "number",
+          "format": "double",
+          "title": "退款金额"
+        },
+        "currency": {
+          "type": "string",
+          "title": "币种"
+        },
+        "paymentMethod": {
+          "type": "string",
+          "title": "支付方式(微信,支付宝)"
+        },
+        "paymentStatus": {
+          "type": "integer",
+          "format": "int32",
+          "title": "支付状态(0待支付,1已支付,2支付失败,3已退款)"
+        },
+        "paymentTime": {
+          "type": "string",
+          "title": "支付时间"
+        },
+        "deliveryTime": {
+          "type": "string",
+          "title": "确认时间"
+        },
+        "expiredTime": {
+          "type": "string",
+          "title": "订单过期时间"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "status": {
+          "type": "string",
+          "title": "状态(待付款pendingPayment,待发货pendingDelivery,待收货pendingReceipt,已完成completed,已取消canceled,已退款refunded)"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "订单信息表信息"
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,592 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/ai_provider_platform.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "AiProviderPlatform"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/ai_provider_platform/create": {
+      "post": {
+        "summary": "AI 配置平台表-创建一条数据",
+        "operationId": "AiProviderPlatform_CreateAiProviderPlatform",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateAiProviderPlatformReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateAiProviderPlatformReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiProviderPlatform"
+        ]
+      }
+    },
+    "/admin/v1/ai_provider_platform/delete": {
+      "post": {
+        "summary": "AI 配置平台表-删除多条数据",
+        "operationId": "AiProviderPlatform_DeleteAiProviderPlatform",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteAiProviderPlatformReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1DeleteAiProviderPlatformReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiProviderPlatform"
+        ]
+      }
+    },
+    "/admin/v1/ai_provider_platform/info": {
+      "get": {
+        "summary": "AI 配置平台表-单条数据查询",
+        "operationId": "AiProviderPlatform_GetAiProviderPlatformInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetAiProviderPlatformInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "编号",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiProviderPlatform"
+        ]
+      }
+    },
+    "/admin/v1/ai_provider_platform/list": {
+      "get": {
+        "summary": "AI 配置平台表-列表数据查询",
+        "operationId": "AiProviderPlatform_GetAiProviderPlatformList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetAiProviderPlatformListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "platform",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiProviderPlatform"
+        ]
+      }
+    },
+    "/admin/v1/ai_provider_platform/selector": {
+      "get": {
+        "summary": "AI 配置平台表-获取平台选择器",
+        "operationId": "AiProviderPlatform_GetAiProviderPlatformSelector",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetAiProviderPlatformSelectorReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "AiProviderPlatform"
+        ]
+      }
+    },
+    "/admin/v1/ai_provider_platform/update": {
+      "post": {
+        "summary": "AI 配置平台表-更新一条数据",
+        "operationId": "AiProviderPlatform_UpdateAiProviderPlatform",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateAiProviderPlatformReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateAiProviderPlatformReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiProviderPlatform"
+        ]
+      }
+    },
+    "/admin/v1/ai_provider_platform/update/status": {
+      "post": {
+        "summary": "AI 配置平台表-更新状态",
+        "operationId": "AiProviderPlatform_UpdateAiProviderPlatformStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateAiProviderPlatformStatusReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateAiProviderPlatformStatusReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiProviderPlatform"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1AiProviderPlatformInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "tenantId": {
+          "type": "string",
+          "title": "租户编号"
+        },
+        "platform": {
+          "type": "string",
+          "title": "平台"
+        },
+        "name": {
+          "type": "string",
+          "title": "名称"
+        },
+        "APIURL": {
+          "type": "string",
+          "title": "API 地址"
+        },
+        "APIKey": {
+          "type": "string",
+          "title": "API KEY"
+        },
+        "docURL": {
+          "type": "string",
+          "title": "文档地址"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "排序"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "AI 配置平台表信息"
+    },
+    "v1AiProviderPlatformSelectorItem": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "title": "标签"
+        },
+        "value": {
+          "type": "string",
+          "title": "值"
+        }
+      },
+      "title": "AI 配置平台表-平台选择器"
+    },
+    "v1CreateAiProviderPlatformReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        }
+      },
+      "title": "响应-AI 配置平台表-创建一条数据"
+    },
+    "v1CreateAiProviderPlatformReq": {
+      "type": "object",
+      "properties": {
+        "tenantId": {
+          "type": "string",
+          "title": "租户编号"
+        },
+        "platform": {
+          "type": "string",
+          "title": "平台"
+        },
+        "name": {
+          "type": "string",
+          "title": "名称"
+        },
+        "APIURL": {
+          "type": "string",
+          "title": "API 地址"
+        },
+        "APIKey": {
+          "type": "string",
+          "title": "API KEY"
+        },
+        "docURL": {
+          "type": "string",
+          "title": "文档地址"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "排序"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态"
+        }
+      },
+      "title": "请求-AI 配置平台表-创建一条数据",
+      "required": [
+        "tenantId",
+        "platform",
+        "name",
+        "status"
+      ]
+    },
+    "v1DeleteAiProviderPlatformReply": {
+      "type": "object",
+      "title": "响应-AI 配置平台表-删除多条数据"
+    },
+    "v1DeleteAiProviderPlatformReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        }
+      },
+      "title": "请求-AI 配置平台表-删除多条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "v1GetAiProviderPlatformInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/v1AiProviderPlatformInfo"
+        }
+      },
+      "title": "响应-AI 配置平台表-单条数据查询"
+    },
+    "v1GetAiProviderPlatformListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1AiProviderPlatformInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-AI 配置平台表-列表数据查询"
+    },
+    "v1GetAiProviderPlatformSelectorReply": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1AiProviderPlatformSelectorItem"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-AI 配置平台表-获取平台选择器"
+    },
+    "v1UpdateAiProviderPlatformReply": {
+      "type": "object",
+      "title": "响应-AI 配置平台表-更新一条数据"
+    },
+    "v1UpdateAiProviderPlatformReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "tenantId": {
+          "type": "string",
+          "title": "租户编号"
+        },
+        "platform": {
+          "type": "string",
+          "title": "平台"
+        },
+        "name": {
+          "type": "string",
+          "title": "名称"
+        },
+        "APIURL": {
+          "type": "string",
+          "title": "API 地址"
+        },
+        "APIKey": {
+          "type": "string",
+          "title": "API KEY"
+        },
+        "docURL": {
+          "type": "string",
+          "title": "文档地址"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "排序"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态"
+        }
+      },
+      "title": "请求-AI 配置平台表-更新一条数据",
+      "required": [
+        "id",
+        "tenantId",
+        "platform",
+        "name",
+        "status"
+      ]
+    },
+    "v1UpdateAiProviderPlatformStatusReply": {
+      "type": "object",
+      "title": "响应-AI 配置平台表-更新状态"
+    },
+    "v1UpdateAiProviderPlatformStatusReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态"
+        }
+      },
+      "title": "请求-AI 配置平台表-更新状态",
+      "required": [
+        "id",
+        "status"
+      ]
+    }
+  }
+}

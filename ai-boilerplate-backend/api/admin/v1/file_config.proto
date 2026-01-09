@@ -1,0 +1,362 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//文件配置表
+service FileConfig {
+  //文件配置表-获取存储器选择器
+  rpc GetFileConfigStorageSelect(GetFileConfigStorageSelectReq) returns (GetFileConfigStorageSelectReply) {
+    option (google.api.http) = {get: "/admin/v1/file_config/storage/select"};
+  }
+  //文件配置表-创建一条数据
+  rpc CreateFileConfig(CreateFileConfigReq) returns (CreateFileConfigReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/file_config/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //文件配置表-更新一条数据
+  rpc UpdateFileConfig(UpdateFileConfigReq) returns (UpdateFileConfigReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/file_config/update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //文件配置表-设置主配置
+  rpc SetFileConfigMaster(SetFileConfigMasterReq) returns (SetFileConfigMasterReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/file_config/set_master"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //文件配置表-删除一条数据
+  rpc DeleteFileConfig(DeleteFileConfigReq) returns (DeleteFileConfigReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/file_config/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //文件配置表-单条数据查询
+  rpc GetFileConfigInfo(GetFileConfigInfoReq) returns (GetFileConfigInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/file_config/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //文件配置表-列表数据查询
+  rpc GetFileConfigList(GetFileConfigListReq) returns (GetFileConfigListReply) {
+    option (google.api.http) = {get: "/admin/v1/file_config/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //文件配置表-获取所有选择器
+  rpc GetFileConfigSelect(GetFileConfigSelectReq) returns (GetFileConfigSelectReply) {
+    option (google.api.http) = {get: "/admin/v1/file_config/select"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+// 火山云配置
+message VolcengineConfig {
+  string accessKey = 1; // 访问密钥
+  string secretKey = 2; // 密钥
+  string endpoint = 3; // 端点
+  string region = 4; // 区域
+  string bucket = 5; // 桶
+  string accountID = 6; // 账号ID
+  string roleName = 7; // 角色名称
+}
+
+// 阿里云配置
+message AliyunConfig {
+  string accessKey = 1; // 访问密钥
+  string secretKey = 2; // 密钥
+  string bucket = 3; // 桶
+  string endpoint = 4; // 端点
+  string host = 5; // 主机
+  string prefix = 6; // 前缀
+  string salt = 7; // 盐
+}
+
+// 腾讯云配置
+message TencentConfig {
+  string accessKey = 1; // 访问密钥
+  string secretKey = 2; // 密钥
+  string endpoint = 3; // 端点
+  string region = 4; // 区域
+  string bucket = 5; // 桶
+}
+
+// 七牛云配置
+message QiniuConfig {
+  string accessKey = 1; // 访问密钥
+  string secretKey = 2; // 密钥
+  string bucket = 3; // 桶
+  string action = 4;
+}
+
+message StorageConfig {
+  VolcengineConfig volcengine = 1;
+  AliyunConfig aliyun = 2;
+  TencentConfig tencent = 3;
+  QiniuConfig qiniu = 4;
+}
+
+//文件配置表信息
+message FileConfigInfo {
+  string id = 1; // 编号
+  string name = 2; // 配置名
+  string storage = 3; // 存储器
+  string remark = 4; // 备注
+  bool master = 5; // 是否为主配置
+  StorageConfig config = 6; // 存储配置
+  string createdAt = 7; // 创建时间
+  string updatedAt = 8; // 更新时间
+}
+
+//请求-文件配置表-创建一条数据
+message CreateFileConfigReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "name",
+        "storage"
+      ]
+    }
+  };
+
+  string name = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 63
+  }]; // 配置名
+  string storage = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 32
+  }]; // 存储器
+  string remark = 3 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 255
+    }
+  ]; // 备注
+  StorageConfig config = 4; // 存储配置
+}
+
+//文件配置表-存储器
+message FileConfigStorage {
+  string label = 1; // 标签
+  string value = 2; // 存储器
+}
+
+//文件配置表-选择器
+message FileConfigSelect {
+  string id = 1; // 编号
+  string name = 2; // 配置名
+}
+
+//请求-文件配置表-获取所有存储器
+message GetFileConfigStorageSelectReq {}
+
+//响应-文件配置表-获取所有存储器
+message GetFileConfigStorageSelectReply {
+  repeated FileConfigStorage list = 1; // 列表数据
+}
+
+//响应-文件配置表-创建一条数据
+message CreateFileConfigReply {
+  string id = 1; // 编号
+}
+
+//请求-文件配置表-更新一条数据
+message UpdateFileConfigReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "id",
+        "name",
+        "storage"
+      ]
+    }
+  };
+
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 编号
+  string name = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 63
+  }]; // 配置名
+  string storage = 3 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 32
+  }]; // 存储器
+  string remark = 4 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 255
+    }
+  ]; // 备注
+  StorageConfig config = 5; // 存储配置
+}
+
+//响应-文件配置表-更新一条数据
+message UpdateFileConfigReply {}
+
+//请求-文件配置表-设置主配置
+message SetFileConfigMasterReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 编号
+}
+
+//响应-文件配置表-设置主配置
+message SetFileConfigMasterReply {}
+
+//请求-文件配置表-删除一条数据
+message DeleteFileConfigReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 编号
+}
+
+//响应-文件配置表-删除一条数据
+message DeleteFileConfigReply {}
+
+//请求-文件配置表-单条数据查询
+message GetFileConfigInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 编号
+}
+
+//响应-文件配置表-单条数据查询
+message GetFileConfigInfoReply {
+  FileConfigInfo info = 1;
+}
+
+//请求-文件配置表-列表数据查询
+message GetFileConfigListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1 [(buf.validate.field).int32 = {gte: 1}]; //页码
+  int32 pageSize = 2 [(buf.validate.field).int32 = {
+    gte: 1
+    lte: 1000
+  }]; //页数
+  string name = 3; // 配置名
+  string storage = 4; // 存储器
+}
+
+//响应-文件配置表-列表数据查询
+message GetFileConfigListReply {
+  int32 total = 1; //总数
+  repeated FileConfigInfo list = 2; // 列表数据
+}
+
+//请求-文件配置表-获取所有选择器
+message GetFileConfigSelectReq {}
+
+//响应-文件配置表-获取所有选择器
+message GetFileConfigSelectReply {
+  repeated FileConfigSelect list = 1; // 列表数据
+}

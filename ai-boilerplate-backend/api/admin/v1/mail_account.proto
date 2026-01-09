@@ -1,0 +1,317 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//邮箱账号表
+service MailAccount {
+  //邮箱账号表-创建一条数据
+  rpc CreateMailAccount(CreateMailAccountReq) returns (CreateMailAccountReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/mail_account/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //邮箱账号表-更新一条数据
+  rpc UpdateMailAccount(UpdateMailAccountReq) returns (UpdateMailAccountReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/mail_account/update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //邮箱账号表-更新状态
+  rpc UpdateMailAccountStatus(UpdateMailAccountStatusReq) returns (UpdateMailAccountStatusReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/mail_account/update/status"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //邮箱账号表-删除一条数据
+  rpc DeleteMailAccount(DeleteMailAccountReq) returns (DeleteMailAccountReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/mail_account/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //邮箱账号表-单条数据查询
+  rpc GetMailAccountInfo(GetMailAccountInfoReq) returns (GetMailAccountInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/mail_account/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //邮箱账号表-列表数据查询
+  rpc GetMailAccountList(GetMailAccountListReq) returns (GetMailAccountListReply) {
+    option (google.api.http) = {get: "/admin/v1/mail_account/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //邮箱账号表-选择器
+  rpc GetMailAccountSelector(GetMailAccountSelectorReq) returns (GetMailAccountSelectorReply) {
+    option (google.api.http) = {get: "/admin/v1/mail_account/selector"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+//邮箱账号表信息
+message MailAccountInfo {
+  string id = 1; // id
+  string mail = 2; // 邮箱
+  string username = 3; // 用户名
+  string password = 4; // 密码
+  string host = 5; // SMTP 服务器域名
+  int32 port = 6; // SMTP 服务器端口
+  bool sslEnable = 7; // 是否开启 SSL
+  string remark = 8; // 备注
+  int32 status = 9; // 开启状态
+  string createdAt = 10; // 创建时间
+  string updatedAt = 11; // 更新时间
+}
+
+//请求-邮箱账号表-创建一条数据
+message CreateMailAccountReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "mail",
+        "username",
+        "password",
+        "host",
+        "port"
+      ]
+    }
+  };
+
+  string mail = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 255
+  }]; // 邮箱
+  string username = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 255
+  }]; // 用户名
+  string password = 3 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 255
+  }]; // 密码
+  string host = 4 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 255
+  }]; // SMTP 服务器域名
+  int32 port = 5 [(buf.validate.field).int32 = {
+    gt: 0
+    lte: 65535
+  }]; // SMTP 服务器端口
+  bool sslEnable = 6; // 是否开启 SSL
+  string remark = 7 [(buf.validate.field).string = {max_len: 255}]; // 备注
+  int32 status = 8; // 开启状态
+}
+
+//响应-邮箱账号表-创建一条数据
+message CreateMailAccountReply {
+  string id = 1; // id
+}
+
+//请求-邮箱账号表-更新一条数据
+message UpdateMailAccountReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "id",
+        "mail",
+        "username",
+        "password",
+        "host",
+        "port"
+      ]
+    }
+  };
+
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // id
+  string mail = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 255
+  }]; // 邮箱
+  string username = 3 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 255
+  }]; // 用户名
+  string password = 4 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 255
+  }]; // 密码
+  string host = 5 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 255
+  }]; // SMTP 服务器域名
+  int32 port = 6 [(buf.validate.field).int32 = {
+    gt: 0
+    lte: 65535
+  }]; // SMTP 服务器端口
+  bool sslEnable = 7; // 是否开启 SSL
+  string remark = 8 [(buf.validate.field).string = {max_len: 255}]; // 备注
+  int32 status = 9; // 开启状态
+}
+
+//响应-邮箱账号表-更新一条数据
+message UpdateMailAccountReply {}
+
+//请求-邮箱账号表-更新状态
+message UpdateMailAccountStatusReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "id",
+        "status"
+      ]
+    }
+  };
+
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // id
+  int32 status = 2 [(buf.validate.field).int32 = {
+    gt: 0
+    lte: 32
+  }]; // 开启状态
+}
+
+//响应-邮箱账号表-更新状态
+message UpdateMailAccountStatusReply {}
+
+//请求-邮箱账号表-删除一条数据
+message DeleteMailAccountReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // id
+}
+
+//响应-邮箱账号表-删除一条数据
+message DeleteMailAccountReply {}
+
+//请求-邮箱账号表-单条数据查询
+message GetMailAccountInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // id
+}
+
+//响应-邮箱账号表-单条数据查询
+message GetMailAccountInfoReply {
+  MailAccountInfo info = 1;
+}
+
+//请求-邮箱账号表-列表数据查询
+message GetMailAccountListReq {
+  int32 page = 1; //页码
+  int32 pageSize = 2; //页数
+  string mail = 3; // 邮箱
+  string username = 4; // 用户名
+}
+
+//响应-邮箱账号表-列表数据查询
+message GetMailAccountListReply {
+  int32 total = 1; //总数
+  repeated MailAccountInfo list = 2; // 列表数据
+}
+
+//邮箱账号表-选择器信息
+message MailAccountSelector {
+  string id = 1; // id
+  string mail = 2; // 邮箱
+}
+
+//请求-邮箱账号表-选择器
+message GetMailAccountSelectorReq {}
+
+//响应-邮箱账号表-选择器
+message GetMailAccountSelectorReply {
+  repeated MailAccountSelector list = 1; // 列表数据
+}

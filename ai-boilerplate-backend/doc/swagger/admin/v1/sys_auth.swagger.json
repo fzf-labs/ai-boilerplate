@@ -1,0 +1,511 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/sys_auth.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "SysAuth"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/sys_auth/admin_info": {
+      "get": {
+        "summary": "Auth-查询用户信息",
+        "operationId": "SysAuth_SysAuthAdminInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.SysAuthAdminInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "tags": [
+          "SysAuth"
+        ]
+      }
+    },
+    "/admin/v1/sys_auth/login": {
+      "post": {
+        "summary": "Auth-登录",
+        "operationId": "SysAuth_SysAuthLogin",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.SysAuthLoginReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.SysAuthLoginReq"
+            }
+          }
+        ],
+        "tags": [
+          "SysAuth"
+        ]
+      }
+    },
+    "/admin/v1/sys_auth/logout": {
+      "post": {
+        "summary": "Auth-退出",
+        "operationId": "SysAuth_SysAuthLogout",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.SysAuthLogoutReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.SysAuthLogoutReq"
+            }
+          }
+        ],
+        "tags": [
+          "SysAuth"
+        ]
+      }
+    },
+    "/admin/v1/sys_auth/menu": {
+      "get": {
+        "summary": "Auth-获取菜单",
+        "operationId": "SysAuth_SysAuthMenu",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.SysAuthMenuReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "tags": [
+          "SysAuth"
+        ]
+      }
+    },
+    "/admin/v1/sys_auth/permission": {
+      "get": {
+        "summary": "Auth-获取权限",
+        "operationId": "SysAuth_SysAuthPermission",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.SysAuthPermissionReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "tags": [
+          "SysAuth"
+        ]
+      }
+    },
+    "/admin/v1/sys_auth/update/admin_info": {
+      "post": {
+        "summary": "Auth-更新用户信息",
+        "operationId": "SysAuth_SysAuthUpdateAdminInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.SysAuthUpdateAdminInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.SysAuthUpdateAdminInfoReq"
+            }
+          }
+        ],
+        "tags": [
+          "SysAuth"
+        ]
+      }
+    },
+    "/admin/v1/sys_auth/update/admin_password": {
+      "post": {
+        "summary": "Auth-更新密码",
+        "operationId": "SysAuth_SysAuthUpdateAdminPassword",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.SysAuthUpdateAdminPasswordReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.SysAuthUpdateAdminPasswordReq"
+            }
+          }
+        ],
+        "tags": [
+          "SysAuth"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "admin.v1.SysAdminInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "username": {
+          "type": "string",
+          "title": "用户名"
+        },
+        "nickname": {
+          "type": "string",
+          "title": "昵称"
+        },
+        "avatar": {
+          "type": "string",
+          "title": "头像"
+        },
+        "sex": {
+          "type": "integer",
+          "format": "int32",
+          "title": "0=保密 1=女 2=男"
+        },
+        "email": {
+          "type": "string",
+          "title": "邮件"
+        },
+        "mobile": {
+          "type": "string",
+          "title": "手机号"
+        },
+        "roleId": {
+          "type": "string",
+          "title": "角色"
+        },
+        "deptId": {
+          "type": "string",
+          "title": "部门"
+        },
+        "postId": {
+          "type": "string",
+          "title": "岗位"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态 -1=禁用 1=开启"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        },
+        "roleName": {
+          "type": "string",
+          "title": "角色名称"
+        },
+        "deptName": {
+          "type": "string",
+          "title": "部门名称"
+        },
+        "postName": {
+          "type": "string",
+          "title": "岗位名称"
+        }
+      },
+      "title": "系统-用户信息"
+    },
+    "admin.v1.SysAuthAdminInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/admin.v1.SysAdminInfo",
+          "title": "用户信息"
+        }
+      },
+      "title": "响应-查询用户信息"
+    },
+    "admin.v1.SysAuthLoginReply": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "title": "token"
+        },
+        "expiredAt": {
+          "type": "string",
+          "format": "int64",
+          "title": "过期时间"
+        },
+        "refreshAt": {
+          "type": "string",
+          "format": "int64",
+          "title": "刷新时间"
+        }
+      },
+      "title": "响应-登录"
+    },
+    "admin.v1.SysAuthLoginReq": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "title": "账号"
+        },
+        "password": {
+          "type": "string",
+          "title": "密码"
+        }
+      },
+      "title": "请求-登录",
+      "required": [
+        "username",
+        "password"
+      ]
+    },
+    "admin.v1.SysAuthLogoutReply": {
+      "type": "object",
+      "title": "响应-退出"
+    },
+    "admin.v1.SysAuthLogoutReq": {
+      "type": "object",
+      "title": "请求-退出"
+    },
+    "admin.v1.SysAuthMenuReply": {
+      "type": "object",
+      "properties": {
+        "menu": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.SysMenuItem"
+          },
+          "title": "菜单"
+        }
+      },
+      "title": "响应-获取菜单"
+    },
+    "admin.v1.SysAuthPermissionReply": {
+      "type": "object",
+      "properties": {
+        "permission": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "权限"
+        }
+      },
+      "title": "响应-获取权限"
+    },
+    "admin.v1.SysAuthUpdateAdminInfoReply": {
+      "type": "object",
+      "title": "响应-更新用户信息"
+    },
+    "admin.v1.SysAuthUpdateAdminInfoReq": {
+      "type": "object",
+      "properties": {
+        "nickname": {
+          "type": "string",
+          "title": "昵称"
+        },
+        "avatar": {
+          "type": "string",
+          "title": "头像"
+        },
+        "sex": {
+          "type": "integer",
+          "format": "int32",
+          "title": "0=保密 1=女 2=男"
+        }
+      },
+      "title": "请求-更新用户信息"
+    },
+    "admin.v1.SysAuthUpdateAdminPasswordReply": {
+      "type": "object",
+      "title": "响应-更新密码"
+    },
+    "admin.v1.SysAuthUpdateAdminPasswordReq": {
+      "type": "object",
+      "properties": {
+        "oldPassword": {
+          "type": "string",
+          "title": "旧密码"
+        },
+        "newPassword": {
+          "type": "string",
+          "title": "新密码"
+        }
+      },
+      "title": "请求-更新密码",
+      "required": [
+        "oldPassword",
+        "newPassword"
+      ]
+    },
+    "admin.v1.SysMenuItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "pid": {
+          "type": "string",
+          "title": "上级菜单"
+        },
+        "name": {
+          "type": "string",
+          "title": "菜单名称"
+        },
+        "type": {
+          "type": "string",
+          "title": "菜单类型(dir,menu,button)"
+        },
+        "path": {
+          "type": "string",
+          "title": "路由路径"
+        },
+        "permission": {
+          "type": "string",
+          "title": "权限标识"
+        },
+        "icon": {
+          "type": "string",
+          "title": "图标"
+        },
+        "component": {
+          "type": "string",
+          "title": "组件路径"
+        },
+        "componentName": {
+          "type": "string",
+          "title": "组件名"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "权重(排序)"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "0=禁用 1=开启"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.SysMenuItem"
+          },
+          "title": "子级菜单"
+        }
+      },
+      "title": "菜单"
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

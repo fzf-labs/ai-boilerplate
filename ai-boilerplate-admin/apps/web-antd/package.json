@@ -1,0 +1,60 @@
+{
+  "name": "@vben/web-antd",
+  "version": "5.5.9",
+  "homepage": "https://vben.pro",
+  "bugs": "https://github.com/vbenjs/vue-vben-admin/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vbenjs/vue-vben-admin.git",
+    "directory": "apps/web-antd"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "vben",
+    "email": "ann.vben@gmail.com",
+    "url": "https://github.com/anncwb"
+  },
+  "type": "module",
+  "scripts": {
+    "build:production": "pnpm vite build --mode production",
+    "build:testing": "pnpm vite build --mode testing",
+    "build:analyze": "pnpm vite build --mode analyze",
+    "dev": "pnpm vite --mode development",
+    "preview": "vite preview",
+    "typecheck": "vue-tsc --noEmit --skipLibCheck"
+  },
+  "imports": {
+    "#/*": "./src/*"
+  },
+  "dependencies": {
+    "@amap/amap-jsapi-loader": "^1.0.1",
+    "@ant-design/icons-vue": "^7.0.1",
+    "@types/dompurify": "^3.2.0",
+    "@vben/access": "workspace:*",
+    "@vben/common-ui": "workspace:*",
+    "@vben/constants": "workspace:*",
+    "@vben/hooks": "workspace:*",
+    "@vben/icons": "workspace:*",
+    "@vben/layouts": "workspace:*",
+    "@vben/locales": "workspace:*",
+    "@vben/plugins": "workspace:*",
+    "@vben/preferences": "workspace:*",
+    "@vben/request": "workspace:*",
+    "@vben/stores": "workspace:*",
+    "@vben/styles": "workspace:*",
+    "@vben/types": "workspace:*",
+    "@vben/utils": "workspace:*",
+    "@volcengine/tos-sdk": "^2.7.5",
+    "@vueuse/core": "catalog:",
+    "ant-design-vue": "catalog:",
+    "cropperjs": "1.6.2",
+    "dayjs": "catalog:",
+    "dompurify": "^3.2.6",
+    "highlight.js": "catalog:",
+    "pinia": "catalog:",
+    "vue": "catalog:",
+    "vue-color": "^3.3.2",
+    "vue-router": "catalog:"
+  },
+  "devDependencies": {}
+}

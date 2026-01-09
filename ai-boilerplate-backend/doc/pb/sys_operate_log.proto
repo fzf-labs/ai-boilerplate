@@ -1,0 +1,201 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//系统-日志
+service SysOperateLog {
+  //系统-日志-创建一条数据
+  rpc CreateSysOperateLog(CreateSysOperateLogReq) returns (CreateSysOperateLogReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sys_operate_log/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //系统-日志-更新一条数据
+  rpc UpdateSysOperateLog(UpdateSysOperateLogReq) returns (UpdateSysOperateLogReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sys_operate_log/update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //系统-日志-删除一条数据
+  rpc DeleteSysOperateLog(DeleteSysOperateLogReq) returns (DeleteSysOperateLogReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sys_operate_log/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //系统-日志-单条数据查询
+  rpc GetSysOperateLogInfo(GetSysOperateLogInfoReq) returns (GetSysOperateLogInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/sys_operate_log/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //系统-日志-列表数据查询
+  rpc GetSysOperateLogList(GetSysOperateLogListReq) returns (GetSysOperateLogListReply) {
+    option (google.api.http) = {get: "/admin/v1/sys_operate_log/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+//系统-日志信息
+message SysOperateLogInfo {
+  string id = 1; // id
+	string tenantId = 2; // 租户Id
+	string traceId = 3; // 链路Id
+	string adminId = 4; // 管理员ID
+	string IP = 5; // ip
+	string URI = 6; // 请求路径
+	string useragent = 7; // 浏览器标识
+	string header = 8; // header
+	string req = 9; // 请求数据
+	string resp = 10; // 响应数据
+	string createdAt = 11; // 创建时间
+}
+
+//请求-系统-日志-创建一条数据
+message CreateSysOperateLogReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["tenantId","adminId","IP","URI"]
+    }
+  };
+  string tenantId = 1 [(buf.validate.field).string={min_len: 1}]; // 租户Id
+	string traceId = 2 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // 链路Id
+	string adminId = 3 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 管理员ID
+	string IP = 4 [(buf.validate.field).string={min_len: 1, max_len: 32}]; // ip
+	string URI = 5 [(buf.validate.field).string={min_len: 1, max_len: 200}]; // 请求路径
+	string useragent = 6 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 255}]; // 浏览器标识
+	string header = 7 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // header
+	string req = 8 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // 请求数据
+	string resp = 9 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // 响应数据
+}
+
+//响应-系统-日志-创建一条数据
+message CreateSysOperateLogReply {
+  	string id = 1; // id
+}
+
+//请求-系统-日志-更新一条数据
+message UpdateSysOperateLogReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","tenantId","adminId","IP","URI"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+	string tenantId = 2 [(buf.validate.field).string={min_len: 1}]; // 租户Id
+	string traceId = 3 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // 链路Id
+	string adminId = 4 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 管理员ID
+	string IP = 5 [(buf.validate.field).string={min_len: 1, max_len: 32}]; // ip
+	string URI = 6 [(buf.validate.field).string={min_len: 1, max_len: 200}]; // 请求路径
+	string useragent = 7 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 255}]; // 浏览器标识
+	string header = 8 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // header
+	string req = 9 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // 请求数据
+	string resp = 10 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // 响应数据
+}
+
+//响应-系统-日志-更新一条数据
+message UpdateSysOperateLogReply {}
+
+//请求-系统-日志-删除一条数据
+message DeleteSysOperateLogReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+}
+
+//响应-系统-日志-删除一条数据
+message DeleteSysOperateLogReply {}
+
+//请求-系统-日志-单条数据查询
+message GetSysOperateLogInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+}
+
+//响应-系统-日志-单条数据查询
+message GetSysOperateLogInfoReply {
+  SysOperateLogInfo info = 1;
+}
+
+//请求-系统-日志-列表数据查询
+message GetSysOperateLogListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1[(buf.validate.field).int32={gte: 1}]; //页码
+  int32 pageSize = 2[(buf.validate.field).int32={gte: 1, lte: 1000}]; //页数
+}
+
+//响应-系统-日志-列表数据查询
+message GetSysOperateLogListReply {
+  int32 total = 1; //总数
+  repeated SysOperateLogInfo list = 2; // 列表数据
+}
+

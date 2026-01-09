@@ -1,0 +1,359 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//AI 聊天
+service AiIndexChat {
+  //AI 聊天对话表-创建一条数据
+  rpc CreateAiIndexChatConversation(CreateAiIndexChatConversationReq) returns (CreateAiIndexChatConversationReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_index_chat/conversation/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 聊天对话表-更新一条数据
+  rpc UpdateAiIndexChatConversation(UpdateAiIndexChatConversationReq) returns (UpdateAiIndexChatConversationReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_index_chat/conversation/update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 聊天对话表-置顶和取消置顶
+  rpc PinAiIndexChatConversation(PinAiIndexChatConversationReq) returns (PinAiIndexChatConversationReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_index_chat/conversation/pin"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 聊天对话表-删除一条数据
+  rpc DeleteAiIndexChatConversation(DeleteAiIndexChatConversationReq) returns (DeleteAiIndexChatConversationReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_index_chat/conversation/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 聊天对话表-单条数据查询
+  rpc GetAiIndexChatConversationItem(GetAiIndexChatConversationItemReq) returns (GetAiIndexChatConversationItemReply) {
+    option (google.api.http) = {get: "/admin/v1/ai_index_chat/conversation/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 聊天对话表-列表数据查询
+  rpc GetAiIndexChatConversationList(GetAiIndexChatConversationListReq) returns (GetAiIndexChatConversationListReply) {
+    option (google.api.http) = {get: "/admin/v1/ai_index_chat/conversation/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 聊天消息表-列表数据查询
+  rpc GetAiIndexChatMessageList(GetAiIndexChatMessageListReq) returns (GetAiIndexChatMessageListReply) {
+    option (google.api.http) = {get: "/admin/v1/ai_index_chat/message/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+//AI 聊天对话表信息
+message AiIndexChatConversationItem {
+  message PromptSetting {
+    string name = 1; // 名称
+    string desc = 2; // 描述
+    string prompt = 3; // 提示词
+  }
+
+  message ModelSetting {
+    string platform = 1; // 平台
+    string platformId = 2; // 编号
+    string modelType = 3; // 模型类型
+    string modelId = 4; // 模型id
+    double temperature = 5; // 采样温度。控制了生成文本时对每个候选词的概率分布进行平滑的程度。当取值为 0 时模型仅考虑对数概率最大的一个 token。
+    double top_p = 6; // 核采样概率阈值。模型会考虑概率质量在 top_p 内的 token 结果。当取值为 0 时模型仅考虑对数概率最大的一个 token。
+    int32 max_tokens = 7; // 模型回答最大长度（单位 token）。
+    int32 max_contexts = 8; // 控制模型输出的最大长度（包括模型回答和模型思维链内容长度，单位 token）。
+  }
+
+  message KnowledgeSetting {
+    repeated string knowledgeIds = 1; // 知识库编号
+  }
+
+  message McpSetting {
+    repeated string mcpIds = 1; // mcp编号
+  }
+  string id = 1; // 对话编号
+  string tenantId = 2; // 租户编号
+  string adminId = 3; // 用户编号
+  string title = 4; // 对话标题
+  bool pinned = 5; // 是否置顶
+  string pinnedTime = 6; // 置顶时间
+  PromptSetting promptSetting = 7; // 提示词设置
+  ModelSetting modelSetting = 8; // 模型设置
+  KnowledgeSetting knowledgeSetting = 9; // 知识库设置
+  McpSetting mcpSetting = 10; // mcp设置
+  string createdAt = 11; // 创建时间
+  string updatedAt = 12; // 更新时间
+}
+
+//AI 聊天消息表信息
+message AiIndexChatMessageItem {
+  string id = 1; // 消息编号
+  string tenantId = 2; // 租户编号
+  string conversationId = 3; // 对话编号
+  string replyId = 4; // 回复编号
+  string adminId = 5; // 用户编号
+  string roleId = 6; // 角色编号
+  string type = 7; // 消息类型
+  string model = 8; // 模型标识
+  string modelId = 9; // 模型编号
+  string content = 10; // 消息内容
+  bool useContext = 11; // 是否携带上下文
+  string segmentIds = 12; // 段落编号数组
+  string createdAt = 13; // 创建时间
+  string updatedAt = 14; // 更新时间
+}
+
+//请求-AI 聊天对话表-创建一条数据
+message CreateAiIndexChatConversationReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "tenantId",
+        "adminId",
+        "title",
+        "pinned"
+      ]
+    }
+  };
+  string title = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 256
+  }]; // 对话标题
+  AiIndexChatConversationItem.PromptSetting promptSetting = 2; // 提示词设置
+  AiIndexChatConversationItem.ModelSetting modelSetting = 3; // 模型设置
+  AiIndexChatConversationItem.KnowledgeSetting knowledgeSetting = 4; // 知识库设置
+  AiIndexChatConversationItem.McpSetting mcpSetting = 5; // mcp设置
+}
+
+//响应-AI 聊天对话表-创建一条数据
+message CreateAiIndexChatConversationReply {
+  string id = 1; // 对话编号
+}
+
+//请求-AI 聊天对话表-置顶和取消置顶
+message PinAiIndexChatConversationReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 对话编号
+  bool pinned = 2; // 是否置顶
+}
+
+//响应-AI 聊天对话表-置顶和取消置顶
+message PinAiIndexChatConversationReply {}
+
+//请求-AI 聊天对话表-更新一条数据
+message UpdateAiIndexChatConversationReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "id",
+        "title"
+      ]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 对话编号
+  string title = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 256
+  }]; // 对话标题
+  AiIndexChatConversationItem.PromptSetting promptSetting = 3; // 提示词设置
+  AiIndexChatConversationItem.ModelSetting modelSetting = 4; // 模型设置
+  AiIndexChatConversationItem.KnowledgeSetting knowledgeSetting = 5; // 知识库设置
+  AiIndexChatConversationItem.McpSetting mcpSetting = 6; // mcp设置
+}
+
+//响应-AI 聊天对话表-更新一条数据
+message UpdateAiIndexChatConversationReply {}
+
+//请求-AI 聊天对话表-删除一条数据
+message DeleteAiIndexChatConversationReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 对话编号
+}
+
+//响应-AI 聊天对话表-删除一条数据
+message DeleteAiIndexChatConversationReply {}
+
+//请求-AI 聊天对话表-单条数据查询
+message GetAiIndexChatConversationItemReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 对话编号
+}
+
+//响应-AI 聊天对话表-单条数据查询
+message GetAiIndexChatConversationItemReply {
+  AiIndexChatConversationItem info = 1;
+}
+
+//请求-AI 聊天对话表-列表数据查询
+message GetAiIndexChatConversationListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1 [(buf.validate.field).int32 = {gte: 1}]; //页码
+  int32 pageSize = 2 [(buf.validate.field).int32 = {
+    gte: 1
+    lte: 1000
+  }]; //页数
+}
+
+//响应-AI 聊天对话表-列表数据查询
+message GetAiIndexChatConversationListReply {
+  int32 total = 1; //总数
+  repeated AiIndexChatConversationItem list = 2; // 列表数据
+}
+
+//请求-AI 聊天消息表-列表数据查询
+message GetAiIndexChatMessageListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1 [(buf.validate.field).int32 = {gte: 1}]; //页码
+  int32 pageSize = 2 [(buf.validate.field).int32 = {
+    gte: 1
+    lte: 1000
+  }]; //页数
+}
+
+//响应-AI 聊天消息表-列表数据查询
+message GetAiIndexChatMessageListReply {
+  int32 total = 1; //总数
+  repeated AiIndexChatMessageItem list = 2; // 列表数据
+}
+
+//请求-AI 聊天-聊天 ChatCompletions格式
+message AiIndexChatCompletionsReq {
+  message Message {
+    string type = 1; // 消息类型
+    string text = 2; // 文本
+    string image_url = 3; // 图片地址
+    string video_url = 4; // 视频地址
+  }
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "conversationId",
+        "messages"
+      ]
+    }
+  };
+  string conversationId = 1; // 对话编号
+  repeated Message messages = 2; // 消息列表
+}
+
+//响应-AI 聊天-聊天 ChatCompletions格式
+message AiIndexChatCompletionsReply {
+  string content = 1; // 流式返回的内容片段
+}

@@ -1,0 +1,198 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//公众号菜单表
+service WxGzhMenu {
+  //公众号菜单表-创建/更新一条数据
+  rpc StoreWxGzhMenu(StoreWxGzhMenuReq) returns (StoreWxGzhMenuReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/wx_gzh_menu/store"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //公众号菜单表-删除一条数据
+  rpc DeleteWxGzhMenu(DeleteWxGzhMenuReq) returns (DeleteWxGzhMenuReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/wx_gzh_menu/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //公众号菜单表-单条数据查询
+  rpc GetWxGzhMenuInfo(GetWxGzhMenuInfoReq) returns (GetWxGzhMenuInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/wx_gzh_menu/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //公众号菜单表-列表数据查询
+  rpc GetWxGzhMenuList(GetWxGzhMenuListReq) returns (GetWxGzhMenuListReply) {
+    option (google.api.http) = {get: "/admin/v1/wx_gzh_menu/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+// 自定义菜单信息
+message SelfmenuInfo {
+  // 新闻信息
+  message NewsInfo {
+    repeated NewsItem list = 1;
+  }
+
+  // 新闻条目
+  message NewsItem {
+    string title = 1; // 标题
+    string author = 2; // 作者
+    string digest = 3; // 摘要
+    int32 show_cover = 4; // 是否显示封面
+    string cover_url = 5; // 封面URL
+    string content_url = 6; // 内容URL
+    string source_url = 7; // 来源URL
+  }
+
+  // 按钮项
+  message ButtonItem {
+    string type = 1; // 按钮类型
+    string name = 2; // 按钮名称
+    string url = 3; // URL（可选）
+    string appid = 4; // 小程序appid（可选）
+    string pagepath = 5; // 小程序页面路径（可选）
+    string key = 6; // 按钮key（可选）
+    string value = 7; // 按钮值（可选）
+    NewsInfo news_info = 8; // 新闻信息（可选）
+  }
+
+  // 子按钮
+  message SubButton {
+    repeated ButtonItem list = 1;
+  }
+
+  // 自定义按钮
+  message SelfButton {
+    string type = 1; // 按钮类型
+    string name = 2; // 按钮名称
+    string key = 3; // 按钮key
+    string value = 4; // 按钮值（可选）
+    string url = 5; // URL（可选）
+    SubButton sub_button = 6; // 子按钮（可选）
+  }
+  repeated SelfButton button = 1; // 按钮列表
+}
+
+//公众号菜单表信息
+message WxGzhMenuInfo {
+  string id = 1; // 主键
+  string appId = 2; // 微信公众号 appid
+  int32 isMenuOpen = 3; // 菜单是否开启，0代表未开启，1代表开启
+  SelfmenuInfo selfmenuInfo = 4; // 菜单信息
+  string createdAt = 5; // 创建时间
+  string updatedAt = 6; // 更新时间
+}
+
+//请求-公众号菜单表-创建/更新一条数据
+message StoreWxGzhMenuReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["appId"]
+    }
+  };
+
+  string appId = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 微信公众号 appid
+  SelfmenuInfo selfmenuInfo = 2; // 菜单信息
+}
+
+//响应-公众号菜单表-创建/更新一条数据
+message StoreWxGzhMenuReply {}
+
+//请求-公众号菜单表-删除一条数据
+message DeleteWxGzhMenuReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["appId"]
+    }
+  };
+
+  string appId = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 主键
+}
+
+//响应-公众号菜单表-删除一条数据
+message DeleteWxGzhMenuReply {}
+
+//请求-公众号菜单表-单条数据查询
+message GetWxGzhMenuInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["appId"]
+    }
+  };
+
+  string appId = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 主键
+}
+
+//响应-公众号菜单表-单条数据查询
+message GetWxGzhMenuInfoReply {
+  WxGzhMenuInfo info = 1;
+}
+
+//请求-公众号菜单表-列表数据查询
+message GetWxGzhMenuListReq {
+  int32 page = 1; //页码
+  int32 pageSize = 2; //页数
+}
+
+//响应-公众号菜单表-列表数据查询
+message GetWxGzhMenuListReply {
+  int32 total = 1; //总数
+  repeated WxGzhMenuInfo list = 2; // 列表数据
+}

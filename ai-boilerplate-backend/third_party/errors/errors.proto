@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package errors;
+
+import "google/protobuf/descriptor.proto";
+
+option go_package = "github.com/go-kratos/kratos/v2/errors;errors";
+option java_multiple_files = true;
+option java_package = "com.github.kratos.errors";
+option objc_class_prefix = "KratosErrors";
+
+
+message I18N {
+  string en_US = 1; // 美国英语
+  string zh_CN = 2; // 中国大陆简体中文
+  string zh_TW = 3; // 台湾繁体中文
+  string es_ES = 4; // 西班牙西班牙语
+  string fr_FR = 5; // 法国法语
+  string de_DE = 6; // 德国德语
+  string it_IT = 7; // 意大利意大利语
+  string ja_JP = 8; // 日本日语
+  string ko_KR = 9; // 韩国韩语
+  string pt_BR = 10; // 巴西葡萄牙语
+  string ru_RU = 11; // 俄罗斯俄语
+  string ar_SA = 12; // 沙特阿拉伯阿拉伯语
+  string hi_IN = 13; // 印度印地语
+  string nl_NL = 14; // 荷兰荷兰语
+  string pl_PL = 15; // 波兰波兰语
+  string sv_SE = 16; // 瑞典瑞典语
+  string tr_TR = 17; // 土耳其土耳其语
+  string vi_VN = 18; // 越南越南语
+  string th_TH = 19; // 泰国泰语
+  string id_ID = 20; // 印度尼西亚印度尼西亚语
+  string ms_MY = 21; // 马来西亚马来语
+}
+
+extend google.protobuf.EnumOptions {
+  int32 default_code = 1108;
+  string default_message = 2108;
+  string default_lang = 3108;
+  optional I18N default_i18n = 4108;
+}
+
+extend google.protobuf.EnumValueOptions {
+  int32 code = 1109;
+  string message = 2109;
+  string lang = 3109;
+  optional I18N i18n = 4109;
+}

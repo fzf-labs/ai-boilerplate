@@ -1,0 +1,318 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/mail_log.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "MailLog"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/mail_log/delete": {
+      "post": {
+        "summary": "邮件日志表-删除多条数据",
+        "operationId": "MailLog_DeleteMailLog",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteMailLogReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1DeleteMailLogReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MailLog"
+        ]
+      }
+    },
+    "/admin/v1/mail_log/info": {
+      "get": {
+        "summary": "邮件日志表-单条数据查询",
+        "operationId": "MailLog_GetMailLogInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetMailLogInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MailLog"
+        ]
+      }
+    },
+    "/admin/v1/mail_log/list": {
+      "get": {
+        "summary": "邮件日志表-列表数据查询",
+        "operationId": "MailLog_GetMailLogList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetMailLogListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "accountId",
+            "description": "邮箱账号编号",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "fromMail",
+            "description": "发送邮箱地址",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "toMail",
+            "description": "接收邮箱地址",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "templateId",
+            "description": "模板编号",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MailLog"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1DeleteMailLogReply": {
+      "type": "object",
+      "title": "响应-邮件日志表-删除多条数据"
+    },
+    "v1DeleteMailLogReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        }
+      },
+      "title": "请求-邮件日志表-删除多条数据"
+    },
+    "v1GetMailLogInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/v1MailLogInfo"
+        }
+      },
+      "title": "响应-邮件日志表-单条数据查询"
+    },
+    "v1GetMailLogListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1MailLogInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-邮件日志表-列表数据查询"
+    },
+    "v1MailLogInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "accountId": {
+          "type": "string",
+          "title": "邮箱账号编号"
+        },
+        "fromMail": {
+          "type": "string",
+          "title": "发送邮箱地址"
+        },
+        "toMail": {
+          "type": "string",
+          "title": "接收邮箱地址"
+        },
+        "templateId": {
+          "type": "string",
+          "title": "模板编号"
+        },
+        "templateCode": {
+          "type": "string",
+          "title": "模板编码"
+        },
+        "templateNickname": {
+          "type": "string",
+          "title": "模版发送人名称"
+        },
+        "templateTitle": {
+          "type": "string",
+          "title": "邮件标题"
+        },
+        "templateContent": {
+          "type": "string",
+          "title": "邮件内容"
+        },
+        "templateParams": {
+          "type": "string",
+          "title": "邮件参数"
+        },
+        "sendStatus": {
+          "type": "integer",
+          "format": "int32",
+          "title": "发送状态"
+        },
+        "sendTime": {
+          "type": "string",
+          "title": "发送时间"
+        },
+        "sendMessageId": {
+          "type": "string",
+          "title": "发送返回的消息 ID"
+        },
+        "sendException": {
+          "type": "string",
+          "title": "发送异常"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "邮件日志表信息"
+    }
+  }
+}

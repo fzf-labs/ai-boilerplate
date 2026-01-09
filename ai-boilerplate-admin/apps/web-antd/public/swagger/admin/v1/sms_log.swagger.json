@@ -1,0 +1,239 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/sms_log.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "SmsLog"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/sms_log/info": {
+      "get": {
+        "summary": "短信日志-单条数据查询",
+        "operationId": "SmsLog_GetSmsLogInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetSmsLogInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "编号",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SmsLog"
+        ]
+      }
+    },
+    "/admin/v1/sms_log/list": {
+      "get": {
+        "summary": "短信日志-列表数据查询",
+        "operationId": "SmsLog_GetSmsLogList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetSmsLogListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SmsLog"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1GetSmsLogInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/v1SmsLogInfo"
+        }
+      },
+      "title": "响应-短信日志-单条数据查询"
+    },
+    "v1GetSmsLogListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1SmsLogInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-短信日志-列表数据查询"
+    },
+    "v1SmsLogInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "smsChannelId": {
+          "type": "string",
+          "title": "短信渠道编号"
+        },
+        "smsTemplateId": {
+          "type": "string",
+          "title": "模板编号"
+        },
+        "smsParamsContent": {
+          "type": "string",
+          "title": "短信参数内容"
+        },
+        "mobile": {
+          "type": "string",
+          "title": "手机号"
+        },
+        "userId": {
+          "type": "string",
+          "title": "用户id"
+        },
+        "sendStatus": {
+          "type": "string",
+          "title": "发送状态"
+        },
+        "sendTime": {
+          "type": "string",
+          "title": "发送时间"
+        },
+        "receiveStatus": {
+          "type": "string",
+          "title": "接收状态"
+        },
+        "receiveTime": {
+          "type": "string",
+          "title": "接收时间"
+        },
+        "APISendCode": {
+          "type": "string",
+          "title": "短信 API 发送结果的编码"
+        },
+        "APISendMsg": {
+          "type": "string",
+          "title": "短信 API 发送失败的提示"
+        },
+        "APIRequestID": {
+          "type": "string",
+          "title": "短信 API 发送返回的唯一请求 ID"
+        },
+        "APISerialNo": {
+          "type": "string",
+          "title": "短信 API 发送返回的序号"
+        },
+        "APIReceiveCode": {
+          "type": "string",
+          "title": "API 接收结果的编码"
+        },
+        "APIReceiveMsg": {
+          "type": "string",
+          "title": "API 接收结果的说明"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        }
+      },
+      "title": "短信日志信息"
+    }
+  }
+}

@@ -1,0 +1,371 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//系统-用户
+service SysAdmin {
+  //系统-用户-创建一条数据
+  rpc CreateSysAdmin(CreateSysAdminReq) returns (CreateSysAdminReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sys_admin/create"
+      body: "*"
+    };
+  }
+  //系统-用户-更新一条数据
+  rpc UpdateSysAdmin(UpdateSysAdminReq) returns (UpdateSysAdminReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sys_admin/update"
+      body: "*"
+    };
+  }
+  //系统-用户-更新状态
+  rpc UpdateSysAdminStatus(UpdateSysAdminStatusReq) returns (UpdateSysAdminStatusReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sys_admin/update/status"
+      body: "*"
+    };
+  }
+  //系统-用户-重置密码
+  rpc UpdateSysAdminPassword(UpdateSysAdminPasswordReq) returns (UpdateSysAdminPasswordReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sys_admin/update/password"
+      body: "*"
+    };
+  }
+  //系统-用户-删除一条数据
+  rpc DeleteSysAdmin(DeleteSysAdminReq) returns (DeleteSysAdminReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sys_admin/delete"
+      body: "*"
+    };
+  }
+  //系统-用户-单条数据查询
+  rpc GetSysAdminInfo(GetSysAdminInfoReq) returns (GetSysAdminInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/sys_admin/info"};
+  }
+  //系统-用户-列表数据查询
+  rpc GetSysAdminList(GetSysAdminListReq) returns (GetSysAdminListReply) {
+    option (google.api.http) = {get: "/admin/v1/sys_admin/list"};
+  }
+  //系统-用户-选择器
+  rpc GetSysAdminSelector(GetSysAdminSelectorReq) returns (GetSysAdminSelectorReply) {
+    option (google.api.http) = {get: "/admin/v1/sys_admin/selector"};
+  }
+}
+
+//系统-用户-选择器
+message GetSysAdminSelectorItem {
+  string id = 1; // 编号
+  string nickname = 2; // 名称
+}
+
+//系统-用户信息
+message SysAdminInfo {
+  string id = 1; // 编号
+  string username = 2; // 用户名
+  string nickname = 3; // 昵称
+  string avatar = 4; // 头像
+  int32 sex = 5; // 0=保密 1=女 2=男
+  string email = 6; // 邮件
+  string mobile = 7; // 手机号
+  string roleId = 8; // 角色
+  string deptId = 9; // 部门
+  string postId = 10; // 岗位
+  int32 status = 11; // 状态 -1=禁用 1=开启
+  string createdAt = 12; // 创建时间
+  string updatedAt = 13; // 更新时间
+  string roleName = 14; // 角色名称
+  string deptName = 15; // 部门名称
+  string postName = 16; // 岗位名称
+}
+
+//请求-系统-用户-创建一条数据
+message CreateSysAdminReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["username"]
+    }
+  };
+
+  string username = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }]; // 用户名
+  string password = 2 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 128
+    }
+  ]; // 密码
+  string nickname = 3 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 64
+    }
+  ]; // 昵称
+  string avatar = 4 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 255
+    }
+  ]; // 头像
+  int32 sex = 5 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).int32 = {
+      gt: 0
+      lte: 16
+    }
+  ]; // 0=保密 1=女 2=男
+  string email = 6 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 64
+    }
+  ]; // 邮件
+  string mobile = 7 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 15
+    }
+  ]; // 手机号
+  string roleId = 8 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 64
+    }
+  ]; // 角色
+  string deptId = 9 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 64
+    }
+  ]; // 部门
+  string postId = 10 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 64
+    }
+  ]; // 岗位
+  int32 status = 11 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).int32 = {
+      in: [
+        -1,
+        1
+      ]
+    }
+  ]; //状态 -1=禁用 1=开启
+}
+
+//响应-系统-用户-创建一条数据
+message CreateSysAdminReply {
+  string id = 1; // 编号
+}
+
+//请求-系统-用户-更新一条数据
+message UpdateSysAdminReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "id",
+        "username"
+      ]
+    }
+  };
+
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 编号
+  string username = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }]; // 用户名
+  string nickname = 3 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 64
+    }
+  ]; // 昵称
+  string avatar = 4 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 255
+    }
+  ]; // 头像
+  int32 sex = 5 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).int32 = {
+      gt: 0
+      lte: 16
+    }
+  ]; // 0=保密 1=女 2=男
+  string email = 6 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 64
+    }
+  ]; // 邮件
+  string mobile = 7 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 15
+    }
+  ]; // 手机号
+  string roleId = 8 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 64
+    }
+  ]; // 角色
+  string deptId = 9 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 64
+    }
+  ]; // 部门
+  string postId = 10 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 64
+    }
+  ]; // 岗位
+  int32 status = 11 [(buf.validate.field).int32 = {
+    in: [
+      -1,
+      1
+    ]
+  }]; //状态 -1=禁用 1=开启
+}
+
+//响应-系统-用户-更新一条数据
+message UpdateSysAdminReply {}
+
+//请求-系统-用户-更新状态
+message UpdateSysAdminStatusReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 编号
+  int32 status = 2 [(buf.validate.field).int32 = {
+    in: [
+      -1,
+      1
+    ]
+  }]; // -1=禁用 1=开启
+}
+
+//响应-系统-用户-更新状态
+message UpdateSysAdminStatusReply {}
+
+//请求-系统-用户-重置密码
+message UpdateSysAdminPasswordReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "id",
+        "password"
+      ]
+    }
+  };
+
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 编号
+  string password = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 密码
+}
+
+//响应-系统-用户-重置密码
+message UpdateSysAdminPasswordReply {}
+
+//请求-系统-用户-删除一条数据
+message DeleteSysAdminReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 编号
+}
+
+//响应-系统-用户-删除一条数据
+message DeleteSysAdminReply {}
+
+//请求-系统-用户-单条数据查询
+message GetSysAdminInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 编号
+}
+
+//响应-系统-用户-单条数据查询
+message GetSysAdminInfoReply {
+  SysAdminInfo info = 1;
+}
+
+//请求-系统-用户-列表数据查询
+message GetSysAdminListReq {
+  int32 page = 1; //页码
+  int32 pageSize = 2; //页数
+  string username = 3; //用户名
+  string nickname = 4; //昵称
+  string mobile = 5; //手机号
+  string roleId = 6; //角色
+  string deptId = 7; //部门
+  string postId = 8; //岗位
+  int32 status = 9; //状态
+  repeated string createdAt = 10; //创建时间
+}
+
+//响应-系统-用户-列表数据查询
+message GetSysAdminListReply {
+  int32 total = 1; //总数
+  repeated SysAdminInfo list = 2; // 列表数据
+}
+
+message GetSysAdminSelectorReq {}
+
+message GetSysAdminSelectorReply {
+  repeated GetSysAdminSelectorItem list = 1; // 列表数据
+}

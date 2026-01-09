@@ -1,0 +1,429 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/sys_dept.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "SysDept"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/sys_dept/create": {
+      "post": {
+        "summary": "系统-部门-创建一条数据",
+        "operationId": "SysDept_CreateSysDept",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateSysDeptReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateSysDeptReq"
+            }
+          }
+        ],
+        "tags": [
+          "SysDept"
+        ]
+      }
+    },
+    "/admin/v1/sys_dept/delete": {
+      "post": {
+        "summary": "系统-部门-删除一条数据",
+        "operationId": "SysDept_DeleteSysDept",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteSysDeptReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteSysDeptReq"
+            }
+          }
+        ],
+        "tags": [
+          "SysDept"
+        ]
+      }
+    },
+    "/admin/v1/sys_dept/info": {
+      "get": {
+        "summary": "系统-部门-单条数据查询",
+        "operationId": "SysDept_GetSysDeptInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetSysDeptInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "编号",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SysDept"
+        ]
+      }
+    },
+    "/admin/v1/sys_dept/list": {
+      "get": {
+        "summary": "系统-部门-列表数据查询",
+        "operationId": "SysDept_GetSysDeptList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetSysDeptListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "tags": [
+          "SysDept"
+        ]
+      }
+    },
+    "/admin/v1/sys_dept/update": {
+      "post": {
+        "summary": "系统-部门-更新一条数据",
+        "operationId": "SysDept_UpdateSysDept",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateSysDeptReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateSysDeptReq"
+            }
+          }
+        ],
+        "tags": [
+          "SysDept"
+        ]
+      }
+    },
+    "/admin/v1/sys_dept/update/status": {
+      "post": {
+        "summary": "系统-部门-更新状态",
+        "operationId": "SysDept_UpdateSysDeptStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateSysDeptStatusReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateSysDeptStatusReq"
+            }
+          }
+        ],
+        "tags": [
+          "SysDept"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "admin.v1.CreateSysDeptReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        }
+      },
+      "title": "响应-系统-部门-创建一条数据"
+    },
+    "admin.v1.CreateSysDeptReq": {
+      "type": "object",
+      "properties": {
+        "pid": {
+          "type": "string",
+          "title": "父级id"
+        },
+        "name": {
+          "type": "string",
+          "title": "部门简称"
+        },
+        "adminId": {
+          "type": "string",
+          "title": "负责人"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "排序值"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "-1=禁用 1=开启"
+        }
+      },
+      "title": "请求-系统-部门-创建一条数据",
+      "required": [
+        "name"
+      ]
+    },
+    "admin.v1.DeleteSysDeptReply": {
+      "type": "object",
+      "title": "响应-系统-部门-删除一条数据"
+    },
+    "admin.v1.DeleteSysDeptReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号集合"
+        }
+      },
+      "title": "请求-系统-部门-删除一条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "admin.v1.GetSysDeptInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/admin.v1.SysDeptInfo"
+        }
+      },
+      "title": "响应-系统-部门-单条数据查询"
+    },
+    "admin.v1.GetSysDeptListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.SysDeptInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-系统-部门-列表数据查询"
+    },
+    "admin.v1.SysDeptInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "pid": {
+          "type": "string",
+          "title": "父级id"
+        },
+        "name": {
+          "type": "string",
+          "title": "部门简称"
+        },
+        "adminId": {
+          "type": "string",
+          "title": "负责人id"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "-1=禁用 1=开启"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "排序值"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        },
+        "adminName": {
+          "type": "string",
+          "title": "负责人名称"
+        }
+      },
+      "title": "系统-部门信息"
+    },
+    "admin.v1.UpdateSysDeptReply": {
+      "type": "object",
+      "title": "响应-系统-部门-更新一条数据"
+    },
+    "admin.v1.UpdateSysDeptReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "pid": {
+          "type": "string",
+          "title": "父级id"
+        },
+        "name": {
+          "type": "string",
+          "title": "部门简称"
+        },
+        "adminId": {
+          "type": "string",
+          "title": "负责人id"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "排序值"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "-1=禁用 1=开启"
+        }
+      },
+      "title": "请求-系统-部门-更新一条数据",
+      "required": [
+        "id",
+        "name"
+      ]
+    },
+    "admin.v1.UpdateSysDeptStatusReply": {
+      "type": "object",
+      "title": "响应-系统-部门-更新状态"
+    },
+    "admin.v1.UpdateSysDeptStatusReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "-1=禁用 1=开启"
+        }
+      },
+      "title": "请求-系统-部门-更新状态",
+      "required": [
+        "id"
+      ]
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

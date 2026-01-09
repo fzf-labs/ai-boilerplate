@@ -1,0 +1,546 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/wx_gzh_auto_reply.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "WxGzhAutoReply"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/wx_gzh_auto_reply/create": {
+      "post": {
+        "summary": "公众号消息自动回复表-创建一条数据",
+        "operationId": "WxGzhAutoReply_CreateWxGzhAutoReply",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateWxGzhAutoReplyReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateWxGzhAutoReplyReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxGzhAutoReply"
+        ]
+      }
+    },
+    "/admin/v1/wx_gzh_auto_reply/delete": {
+      "post": {
+        "summary": "公众号消息自动回复表-删除一条数据",
+        "operationId": "WxGzhAutoReply_DeleteWxGzhAutoReply",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteWxGzhAutoReplyReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteWxGzhAutoReplyReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxGzhAutoReply"
+        ]
+      }
+    },
+    "/admin/v1/wx_gzh_auto_reply/info": {
+      "get": {
+        "summary": "公众号消息自动回复表-单条数据查询",
+        "operationId": "WxGzhAutoReply_GetWxGzhAutoReplyInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetWxGzhAutoReplyInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "主键",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxGzhAutoReply"
+        ]
+      }
+    },
+    "/admin/v1/wx_gzh_auto_reply/list": {
+      "get": {
+        "summary": "公众号消息自动回复表-列表数据查询",
+        "operationId": "WxGzhAutoReply_GetWxGzhAutoReplyList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetWxGzhAutoReplyListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "appId",
+            "description": "公众号appId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "description": "回复类型(关键词回复,收到消息回复,被关注回复)",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxGzhAutoReply"
+        ]
+      }
+    },
+    "/admin/v1/wx_gzh_auto_reply/update": {
+      "post": {
+        "summary": "公众号消息自动回复表-更新一条数据",
+        "operationId": "WxGzhAutoReply_UpdateWxGzhAutoReply",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateWxGzhAutoReplyReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateWxGzhAutoReplyReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxGzhAutoReply"
+        ]
+      }
+    },
+    "/admin/v1/wx_gzh_auto_reply/update/status": {
+      "post": {
+        "summary": "公众号消息自动回复表-更新状态",
+        "operationId": "WxGzhAutoReply_UpdateWxGzhAutoReplyStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateWxGzhAutoReplyStatusReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateWxGzhAutoReplyStatusReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxGzhAutoReply"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "admin.v1.CreateWxGzhAutoReplyReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "主键"
+        }
+      },
+      "title": "响应-公众号消息自动回复表-创建一条数据"
+    },
+    "admin.v1.CreateWxGzhAutoReplyReq": {
+      "type": "object",
+      "properties": {
+        "appId": {
+          "type": "string",
+          "title": "公众号 appId"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int32",
+          "title": "回复类型(关键词回复,收到消息回复,被关注回复)"
+        },
+        "requestKeyword": {
+          "type": "string",
+          "title": "请求的关键字"
+        },
+        "requestKeywordMatch": {
+          "type": "integer",
+          "format": "int32",
+          "title": "请求的关键字匹配类型"
+        },
+        "responseMessageType": {
+          "type": "string",
+          "title": "回复的消息类型"
+        },
+        "responseContent": {
+          "type": "string",
+          "title": "回复的消息内容"
+        },
+        "responseMediaId": {
+          "type": "string",
+          "title": "回复的媒体文件 id"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用,1开启)"
+        }
+      },
+      "title": "请求-公众号消息自动回复表-创建一条数据",
+      "required": [
+        "appId",
+        "type",
+        "responseMessageType",
+        "status"
+      ]
+    },
+    "admin.v1.DeleteWxGzhAutoReplyReply": {
+      "type": "object",
+      "title": "响应-公众号消息自动回复表-删除一条数据"
+    },
+    "admin.v1.DeleteWxGzhAutoReplyReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "主键"
+        }
+      },
+      "title": "请求-公众号消息自动回复表-删除一条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "admin.v1.GetWxGzhAutoReplyInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/admin.v1.WxGzhAutoReplyInfo"
+        }
+      },
+      "title": "响应-公众号消息自动回复表-单条数据查询"
+    },
+    "admin.v1.GetWxGzhAutoReplyListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.WxGzhAutoReplyInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-公众号消息自动回复表-列表数据查询"
+    },
+    "admin.v1.UpdateWxGzhAutoReplyReply": {
+      "type": "object",
+      "title": "响应-公众号消息自动回复表-更新一条数据"
+    },
+    "admin.v1.UpdateWxGzhAutoReplyReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "主键"
+        },
+        "appId": {
+          "type": "string",
+          "title": "公众号 appId"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int32",
+          "title": "回复类型(关键词回复,收到消息回复,被关注回复)"
+        },
+        "requestKeyword": {
+          "type": "string",
+          "title": "请求的关键字"
+        },
+        "requestKeywordMatch": {
+          "type": "integer",
+          "format": "int32",
+          "title": "请求的关键字匹配类型"
+        },
+        "responseMessageType": {
+          "type": "string",
+          "title": "回复的消息类型"
+        },
+        "responseContent": {
+          "type": "string",
+          "title": "回复的消息内容"
+        },
+        "responseMediaId": {
+          "type": "string",
+          "title": "回复的媒体文件 id"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用,1开启)"
+        }
+      },
+      "title": "请求-公众号消息自动回复表-更新一条数据",
+      "required": [
+        "id",
+        "appId",
+        "type",
+        "responseMessageType",
+        "status"
+      ]
+    },
+    "admin.v1.UpdateWxGzhAutoReplyStatusReply": {
+      "type": "object",
+      "title": "响应-公众号消息自动回复表-更新状态"
+    },
+    "admin.v1.UpdateWxGzhAutoReplyStatusReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "主键"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用,1开启)"
+        }
+      },
+      "title": "请求-公众号消息自动回复表-更新状态",
+      "required": [
+        "id",
+        "status"
+      ]
+    },
+    "admin.v1.WxGzhAutoReplyInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "主键"
+        },
+        "appId": {
+          "type": "string",
+          "title": "公众号 appId"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int32",
+          "title": "回复类型(关键词回复,收到消息回复,被关注回复)"
+        },
+        "requestKeyword": {
+          "type": "string",
+          "title": "请求的关键字"
+        },
+        "requestKeywordMatch": {
+          "type": "integer",
+          "format": "int32",
+          "title": "请求的关键字匹配类型"
+        },
+        "responseMessageType": {
+          "type": "string",
+          "title": "回复的消息类型"
+        },
+        "responseContent": {
+          "type": "string",
+          "title": "回复的消息内容"
+        },
+        "responseMediaId": {
+          "type": "string",
+          "title": "回复的媒体文件 id"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用,1开启)"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "公众号消息自动回复表信息"
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

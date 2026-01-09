@@ -1,0 +1,623 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/mail_template.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "MailTemplate"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/mail_template/create": {
+      "post": {
+        "summary": "邮件模版表-创建一条数据",
+        "operationId": "MailTemplate_CreateMailTemplate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateMailTemplateReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateMailTemplateReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MailTemplate"
+        ]
+      }
+    },
+    "/admin/v1/mail_template/delete": {
+      "post": {
+        "summary": "邮件模版表-删除多条数据",
+        "operationId": "MailTemplate_DeleteMailTemplate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteMailTemplateReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1DeleteMailTemplateReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MailTemplate"
+        ]
+      }
+    },
+    "/admin/v1/mail_template/info": {
+      "get": {
+        "summary": "邮件模版表-单条数据查询",
+        "operationId": "MailTemplate_GetMailTemplateInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetMailTemplateInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MailTemplate"
+        ]
+      }
+    },
+    "/admin/v1/mail_template/list": {
+      "get": {
+        "summary": "邮件模版表-列表数据查询",
+        "operationId": "MailTemplate_GetMailTemplateList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetMailTemplateListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "code",
+            "description": "模板编码",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "description": "模板名称",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "accountId",
+            "description": "发送的邮箱账号编号",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "createdAt",
+            "description": "创建时间",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "status",
+            "description": "开启状态",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MailTemplate"
+        ]
+      }
+    },
+    "/admin/v1/mail_template/selector": {
+      "get": {
+        "summary": "邮件模版表-选择器",
+        "operationId": "MailTemplate_GetMailTemplateSelector",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetMailTemplateSelectorReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "description": "发送的邮箱账号编号",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MailTemplate"
+        ]
+      }
+    },
+    "/admin/v1/mail_template/update": {
+      "post": {
+        "summary": "邮件模版表-更新一条数据",
+        "operationId": "MailTemplate_UpdateMailTemplate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateMailTemplateReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateMailTemplateReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MailTemplate"
+        ]
+      }
+    },
+    "/admin/v1/mail_template/update/status": {
+      "post": {
+        "summary": "邮件模版表-更新状态",
+        "operationId": "MailTemplate_UpdateMailTemplateStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateMailTemplateStatusReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateMailTemplateStatusReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MailTemplate"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1CreateMailTemplateReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        }
+      },
+      "title": "响应-邮件模版表-创建一条数据"
+    },
+    "v1CreateMailTemplateReq": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "模板名称"
+        },
+        "code": {
+          "type": "string",
+          "title": "模板编码"
+        },
+        "accountId": {
+          "type": "string",
+          "title": "发送的邮箱账号编号"
+        },
+        "nickname": {
+          "type": "string",
+          "title": "发送人名称"
+        },
+        "title": {
+          "type": "string",
+          "title": "模板标题"
+        },
+        "content": {
+          "type": "string",
+          "title": "模板内容"
+        },
+        "params": {
+          "type": "string",
+          "title": "参数数组"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "开启状态"
+        }
+      },
+      "title": "请求-邮件模版表-创建一条数据"
+    },
+    "v1DeleteMailTemplateReply": {
+      "type": "object",
+      "title": "响应-邮件模版表-删除多条数据"
+    },
+    "v1DeleteMailTemplateReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        }
+      },
+      "title": "请求-邮件模版表-删除多条数据"
+    },
+    "v1GetMailTemplateInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/v1MailTemplateInfo"
+        }
+      },
+      "title": "响应-邮件模版表-单条数据查询"
+    },
+    "v1GetMailTemplateListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1MailTemplateInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-邮件模版表-列表数据查询"
+    },
+    "v1GetMailTemplateSelectorReply": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1MailTemplateSelectorItem"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-邮件模版表-选择器"
+    },
+    "v1MailTemplateInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "name": {
+          "type": "string",
+          "title": "模板名称"
+        },
+        "code": {
+          "type": "string",
+          "title": "模板编码"
+        },
+        "accountId": {
+          "type": "string",
+          "title": "发送的邮箱账号编号"
+        },
+        "nickname": {
+          "type": "string",
+          "title": "发送人名称"
+        },
+        "title": {
+          "type": "string",
+          "title": "模板标题"
+        },
+        "content": {
+          "type": "string",
+          "title": "模板内容"
+        },
+        "params": {
+          "type": "string",
+          "title": "参数数组"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "开启状态"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "邮件模版表信息"
+    },
+    "v1MailTemplateSelectorItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "name": {
+          "type": "string",
+          "title": "模板名称"
+        }
+      }
+    },
+    "v1UpdateMailTemplateReply": {
+      "type": "object",
+      "title": "响应-邮件模版表-更新一条数据"
+    },
+    "v1UpdateMailTemplateReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "name": {
+          "type": "string",
+          "title": "模板名称"
+        },
+        "code": {
+          "type": "string",
+          "title": "模板编码"
+        },
+        "accountId": {
+          "type": "string",
+          "title": "发送的邮箱账号编号"
+        },
+        "nickname": {
+          "type": "string",
+          "title": "发送人名称"
+        },
+        "title": {
+          "type": "string",
+          "title": "模板标题"
+        },
+        "content": {
+          "type": "string",
+          "title": "模板内容"
+        },
+        "params": {
+          "type": "string",
+          "title": "参数数组"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "开启状态"
+        }
+      },
+      "title": "请求-邮件模版表-更新一条数据"
+    },
+    "v1UpdateMailTemplateStatusReply": {
+      "type": "object",
+      "title": "响应-邮件模版表-更新状态"
+    },
+    "v1UpdateMailTemplateStatusReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "开启状态"
+        }
+      },
+      "title": "请求-邮件模版表-更新状态"
+    }
+  }
+}

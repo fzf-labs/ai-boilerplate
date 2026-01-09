@@ -1,0 +1,227 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//文件表
+service FileDatum {
+  //文件表-创建一条数据
+  rpc CreateFileDatum(CreateFileDatumReq) returns (CreateFileDatumReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/file_data/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //文件表-更新一条数据
+  rpc UpdateFileDatum(UpdateFileDatumReq) returns (UpdateFileDatumReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/file_data/update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //文件表-更新状态
+  rpc UpdateFileDatumStatus(UpdateFileDatumStatusReq) returns (UpdateFileDatumStatusReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/file_data/update/status"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //文件表-删除一条数据
+  rpc DeleteFileDatum(DeleteFileDatumReq) returns (DeleteFileDatumReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/file_data/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //文件表-单条数据查询
+  rpc GetFileDatumInfo(GetFileDatumInfoReq) returns (GetFileDatumInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/file_data/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //文件表-列表数据查询
+  rpc GetFileDatumList(GetFileDatumListReq) returns (GetFileDatumListReply) {
+    option (google.api.http) = {get: "/admin/v1/file_data/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+//文件表信息
+message FileDatumInfo {
+  string id = 1; // 文件编号
+	string configId = 2; // 配置编号
+	string name = 3; // 文件名
+	string path = 4; // 文件路径
+	string URL = 5; // 文件 URL
+	string ext = 6; // 文件类型
+	int32 size = 7; // 文件大小
+	int32 status = 8; // 状态（-1失败,1未知,2 成功）
+	string createdAt = 9; // 创建时间
+	string updatedAt = 10; // 更新时间
+}
+
+//请求-文件表-创建一条数据
+message CreateFileDatumReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["path","URL","size","status"]
+    }
+  };
+  string configId = 1 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 配置编号
+	string name = 2 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 255}]; // 文件名
+	string path = 3 [(buf.validate.field).string={min_len: 1, max_len: 512}]; // 文件路径
+	string URL = 4 [(buf.validate.field).string={min_len: 1, max_len: 1024}]; // 文件 URL
+	string ext = 5 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 32}]; // 文件类型
+	int32 size = 6 ; // 文件大小
+	int32 status = 7 ; // 状态（-1失败,1未知,2 成功）
+}
+
+//响应-文件表-创建一条数据
+message CreateFileDatumReply {
+  	string id = 1; // 文件编号
+}
+
+//请求-文件表-更新一条数据
+message UpdateFileDatumReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","path","URL","size","status"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 文件编号
+	string configId = 2 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 配置编号
+	string name = 3 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 255}]; // 文件名
+	string path = 4 [(buf.validate.field).string={min_len: 1, max_len: 512}]; // 文件路径
+	string URL = 5 [(buf.validate.field).string={min_len: 1, max_len: 1024}]; // 文件 URL
+	string ext = 6 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 32}]; // 文件类型
+	int32 size = 7 ; // 文件大小
+	int32 status = 8 ; // 状态（-1失败,1未知,2 成功）
+}
+
+//响应-文件表-更新一条数据
+message UpdateFileDatumReply {}
+
+//请求-文件表-更新状态
+message UpdateFileDatumStatusReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","status"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 文件编号
+	int32 status = 2 ; // 状态（-1失败,1未知,2 成功）
+}
+
+//响应-文件表-更新状态
+message UpdateFileDatumStatusReply {}
+
+//请求-文件表-删除一条数据
+message DeleteFileDatumReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 文件编号
+}
+
+//响应-文件表-删除一条数据
+message DeleteFileDatumReply {}
+
+//请求-文件表-单条数据查询
+message GetFileDatumInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 文件编号
+}
+
+//响应-文件表-单条数据查询
+message GetFileDatumInfoReply {
+  FileDatumInfo info = 1;
+}
+
+//请求-文件表-列表数据查询
+message GetFileDatumListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1[(buf.validate.field).int32={gte: 1}]; //页码
+  int32 pageSize = 2[(buf.validate.field).int32={gte: 1, lte: 1000}]; //页数
+}
+
+//响应-文件表-列表数据查询
+message GetFileDatumListReply {
+  int32 total = 1; //总数
+  repeated FileDatumInfo list = 2; // 列表数据
+}
+

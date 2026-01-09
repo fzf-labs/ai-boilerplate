@@ -1,0 +1,218 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//公众号素材表
+service WxGzhMaterial {
+  //公众号素材表-删除一条数据
+  rpc DeleteWxGzhMaterial(DeleteWxGzhMaterialReq) returns (DeleteWxGzhMaterialReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/wx_gzh_material/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //公众号素材表-单条数据查询
+  rpc GetWxGzhMaterialInfo(GetWxGzhMaterialInfoReq) returns (GetWxGzhMaterialInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/wx_gzh_material/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //公众号素材表-列表数据查询
+  rpc GetWxGzhMaterialList(GetWxGzhMaterialListReq) returns (GetWxGzhMaterialListReply) {
+    option (google.api.http) = {get: "/admin/v1/wx_gzh_material/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //公众号素材表-统计
+  rpc GetWxGzhMaterialStats(GetWxGzhMaterialStatsReq) returns (GetWxGzhMaterialStatsReply) {
+    option (google.api.http) = {get: "/admin/v1/wx_gzh_material/stats"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //公众号素材表-素材同步
+  rpc SyncWxGzhMaterial(SyncWxGzhMaterialReq) returns (SyncWxGzhMaterialReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/wx_gzh_material/sync"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+//公众号素材表信息
+message WxGzhMaterialInfo {
+  string id = 1; // 主键
+  string appId = 2; // 公众号 appId
+  string type = 3; // 素材的类型，图片（image）、视频（video）、语音 （voice）
+  string mediaId = 4; // 消息ID
+  repeated string tags = 5; // 标签
+  string updateTime = 6; // 更新日期
+  string name = 7; // 图片、语音、视频素材的名字
+  string URL = 8; // 图片、语音、视频素材URL
+  string coverURL = 9; // 视频封面 URL
+  string description = 10; // 视频描述
+  string newcat = 11; // 视频分类
+  string newsubcat = 12; // 视频子分类
+  string vid = 13; // 视频 ID
+  string createdAt = 14; // 创建时间
+  string updatedAt = 15; // 更新时间
+}
+
+//请求-公众号素材表-删除一条数据
+message DeleteWxGzhMaterialReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["ids"]
+    }
+  };
+
+  repeated string ids = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 主键
+}
+
+//响应-公众号素材表-删除一条数据
+message DeleteWxGzhMaterialReply {}
+
+//请求-公众号素材表-单条数据查询
+message GetWxGzhMaterialInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 主键
+}
+
+//响应-公众号素材表-单条数据查询
+message GetWxGzhMaterialInfoReply {
+  WxGzhMaterialInfo info = 1;
+}
+
+//请求-公众号素材表-列表数据查询
+message GetWxGzhMaterialListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize",
+        "appId",
+        "type"
+      ]
+    }
+  };
+
+  int32 page = 1 [(buf.validate.field).int32 = {gte: 1}]; //页码
+  int32 pageSize = 2 [(buf.validate.field).int32 = {
+    gte: 1
+    lte: 1000
+  }]; //页数
+  string appId = 3 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 公众号 appId
+  string type = 4 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 32
+  }]; // 文件类型
+  string name = 5; // 文件名称
+}
+
+//响应-公众号素材表-列表数据查询
+message GetWxGzhMaterialListReply {
+  int32 total = 1; //总数
+  repeated WxGzhMaterialInfo list = 2; // 列表数据
+}
+
+//请求-公众号素材表-统计
+message GetWxGzhMaterialStatsReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["appId"]
+    }
+  };
+
+  string appId = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 公众号 appId
+}
+
+//响应-公众号素材表-统计
+message GetWxGzhMaterialStatsReply {
+  int32 totalCount = 1; // 总数
+  int32 imageCount = 2; // 图片数量
+  int32 voiceCount = 3; // 语音数量
+  int32 videoCount = 4; // 视频数量
+}
+
+//请求-公众号素材表-素材同步
+message SyncWxGzhMaterialReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["appId"]
+    }
+  };
+
+  string appId = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 公众号 appId
+}
+
+//响应-公众号素材表-素材同步
+message SyncWxGzhMaterialReply {}

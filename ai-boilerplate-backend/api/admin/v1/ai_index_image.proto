@@ -1,0 +1,211 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//AI 图片
+service AiIndexImage {
+  //AI 绘画表-创建一条数据
+  rpc CreateAiIndexImageRecord(CreateAiIndexImageRecordReq) returns (CreateAiIndexImageRecordReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_index_image/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 绘画表-删除一条数据
+  rpc DeleteAiIndexImageRecord(DeleteAiIndexImageRecordReq) returns (DeleteAiIndexImageRecordReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_index_image/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 绘画表-列表数据查询
+  rpc GetAiIndexImageRecordList(GetAiIndexImageRecordListReq) returns (GetAiIndexImageRecordListReply) {
+    option (google.api.http) = {get: "/admin/v1/ai_index_image/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+//AI 绘画表信息
+message AiIndexImageRecordInfo {
+  string id = 1; // 编号
+  string adminId = 2; // 用户编号
+  string prompt = 3; // 提示词
+  string platform = 4; // 平台
+  string modelId = 5; // 模型编号
+  string model = 6; // 模型
+  int32 width = 7; // 图片宽度
+  int32 height = 8; // 图片高度
+  int32 status = 9; // 绘画状态
+  string finishTime = 10; // 完成时间
+  string errorMessage = 11; // 错误信息
+  bool publicStatus = 12; // 是否发布
+  string picURL = 13; // 图片地址
+  string options = 14; // 绘制参数
+  string taskId = 15; // 任务编号
+  string buttons = 16; // mj buttons 按钮
+  string createdAt = 17; // 创建时间
+  string updatedAt = 18; // 更新时间
+}
+
+//请求-AI 绘画表-创建一条数据
+message CreateAiIndexImageRecordReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "adminId",
+        "prompt",
+        "platform",
+        "model",
+        "width",
+        "height",
+        "status",
+        "publicStatus"
+      ]
+    }
+  };
+  string adminId = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }]; // 用户编号
+  string prompt = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 9223372036854775807
+  }]; // 提示词
+  string platform = 3 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }]; // 平台
+  string modelId = 4 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 64
+    }
+  ]; // 模型编号
+  string model = 5 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }]; // 模型
+  int32 width = 6; // 图片宽度
+  int32 height = 7; // 图片高度
+  int32 status = 8; // 绘画状态
+  string finishTime = 9 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 64
+    }
+  ]; // 完成时间
+  string errorMessage = 10 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 1024
+    }
+  ]; // 错误信息
+  bool publicStatus = 11; // 是否发布
+  string picURL = 12 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 2048
+    }
+  ]; // 图片地址
+  string options = 13 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {min_len: 1}
+  ]; // 绘制参数
+  string taskId = 14 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 255
+    }
+  ]; // 任务编号
+  string buttons = 15 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 2048
+    }
+  ]; // mj buttons 按钮
+}
+
+//响应-AI 绘画表-创建一条数据
+message CreateAiIndexImageRecordReply {
+  string id = 1; // 编号
+}
+
+//请求-AI 绘画表-删除一条数据
+message DeleteAiIndexImageRecordReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 编号
+}
+
+//响应-AI 绘画表-删除一条数据
+message DeleteAiIndexImageRecordReply {}
+
+//请求-AI 绘画表-列表数据查询
+message GetAiIndexImageRecordListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1 [(buf.validate.field).int32 = {gte: 1}]; //页码
+  int32 pageSize = 2 [(buf.validate.field).int32 = {
+    gte: 1
+    lte: 1000
+  }]; //页数
+}
+
+//响应-AI 绘画表-列表数据查询
+message GetAiIndexImageRecordListReply {
+  int32 total = 1; //总数
+  repeated AiIndexImageRecordInfo list = 2; // 列表数据
+}

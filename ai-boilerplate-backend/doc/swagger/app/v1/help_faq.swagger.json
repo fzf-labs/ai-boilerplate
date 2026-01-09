@@ -1,0 +1,188 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "app/v1/help_faq.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "HelpFaq"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/app/v1/help/faqs": {
+      "get": {
+        "summary": "帮助中心常见问题表-列表数据查询",
+        "operationId": "HelpFaq_ListHelpFaqs",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.ListHelpFaqsReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "categoryId",
+            "description": "分类ID（可选，用于筛选）",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "keyword",
+            "description": "搜索关键词（可选）",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "HelpFaq"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "app.v1.HelpFaqInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "主键ID"
+        },
+        "categoryId": {
+          "type": "string",
+          "title": "分类ID"
+        },
+        "question": {
+          "type": "string",
+          "title": "问题"
+        },
+        "answer": {
+          "type": "string",
+          "title": "答案"
+        },
+        "orderNum": {
+          "type": "integer",
+          "format": "int32",
+          "title": "排序号"
+        },
+        "viewCount": {
+          "type": "integer",
+          "format": "int32",
+          "title": "查看次数"
+        },
+        "helpfulCount": {
+          "type": "integer",
+          "format": "int32",
+          "title": "有帮助次数"
+        },
+        "unhelpfulCount": {
+          "type": "integer",
+          "format": "int32",
+          "title": "无帮助次数"
+        },
+        "isHot": {
+          "type": "boolean",
+          "title": "是否热门"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态:0-禁用,1-启用"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "title": "帮助中心常见问题表信息"
+    },
+    "app.v1.ListHelpFaqsReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/app.v1.HelpFaqInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-帮助中心常见问题表-列表数据查询"
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

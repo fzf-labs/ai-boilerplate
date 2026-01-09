@@ -1,0 +1,604 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/mail_account.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "MailAccount"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/mail_account/create": {
+      "post": {
+        "summary": "邮箱账号表-创建一条数据",
+        "operationId": "MailAccount_CreateMailAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateMailAccountReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateMailAccountReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MailAccount"
+        ]
+      }
+    },
+    "/admin/v1/mail_account/delete": {
+      "post": {
+        "summary": "邮箱账号表-删除一条数据",
+        "operationId": "MailAccount_DeleteMailAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteMailAccountReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteMailAccountReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MailAccount"
+        ]
+      }
+    },
+    "/admin/v1/mail_account/info": {
+      "get": {
+        "summary": "邮箱账号表-单条数据查询",
+        "operationId": "MailAccount_GetMailAccountInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetMailAccountInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "id",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MailAccount"
+        ]
+      }
+    },
+    "/admin/v1/mail_account/list": {
+      "get": {
+        "summary": "邮箱账号表-列表数据查询",
+        "operationId": "MailAccount_GetMailAccountList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetMailAccountListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "mail",
+            "description": "邮箱",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "username",
+            "description": "用户名",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MailAccount"
+        ]
+      }
+    },
+    "/admin/v1/mail_account/selector": {
+      "get": {
+        "summary": "邮箱账号表-选择器",
+        "operationId": "MailAccount_GetMailAccountSelector",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetMailAccountSelectorReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MailAccount"
+        ]
+      }
+    },
+    "/admin/v1/mail_account/update": {
+      "post": {
+        "summary": "邮箱账号表-更新一条数据",
+        "operationId": "MailAccount_UpdateMailAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateMailAccountReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateMailAccountReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MailAccount"
+        ]
+      }
+    },
+    "/admin/v1/mail_account/update/status": {
+      "post": {
+        "summary": "邮箱账号表-更新状态",
+        "operationId": "MailAccount_UpdateMailAccountStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateMailAccountStatusReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateMailAccountStatusReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MailAccount"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "admin.v1.CreateMailAccountReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        }
+      },
+      "title": "响应-邮箱账号表-创建一条数据"
+    },
+    "admin.v1.CreateMailAccountReq": {
+      "type": "object",
+      "properties": {
+        "mail": {
+          "type": "string",
+          "title": "邮箱"
+        },
+        "username": {
+          "type": "string",
+          "title": "用户名"
+        },
+        "password": {
+          "type": "string",
+          "title": "密码"
+        },
+        "host": {
+          "type": "string",
+          "title": "SMTP 服务器域名"
+        },
+        "port": {
+          "type": "integer",
+          "format": "int32",
+          "title": "SMTP 服务器端口"
+        },
+        "sslEnable": {
+          "type": "boolean",
+          "title": "是否开启 SSL"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "开启状态"
+        }
+      },
+      "title": "请求-邮箱账号表-创建一条数据",
+      "required": [
+        "mail",
+        "username",
+        "password",
+        "host",
+        "port"
+      ]
+    },
+    "admin.v1.DeleteMailAccountReply": {
+      "type": "object",
+      "title": "响应-邮箱账号表-删除一条数据"
+    },
+    "admin.v1.DeleteMailAccountReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        }
+      },
+      "title": "请求-邮箱账号表-删除一条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "admin.v1.GetMailAccountInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/admin.v1.MailAccountInfo"
+        }
+      },
+      "title": "响应-邮箱账号表-单条数据查询"
+    },
+    "admin.v1.GetMailAccountListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.MailAccountInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-邮箱账号表-列表数据查询"
+    },
+    "admin.v1.GetMailAccountSelectorReply": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.MailAccountSelector"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-邮箱账号表-选择器"
+    },
+    "admin.v1.MailAccountInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "mail": {
+          "type": "string",
+          "title": "邮箱"
+        },
+        "username": {
+          "type": "string",
+          "title": "用户名"
+        },
+        "password": {
+          "type": "string",
+          "title": "密码"
+        },
+        "host": {
+          "type": "string",
+          "title": "SMTP 服务器域名"
+        },
+        "port": {
+          "type": "integer",
+          "format": "int32",
+          "title": "SMTP 服务器端口"
+        },
+        "sslEnable": {
+          "type": "boolean",
+          "title": "是否开启 SSL"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "开启状态"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "邮箱账号表信息"
+    },
+    "admin.v1.MailAccountSelector": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "mail": {
+          "type": "string",
+          "title": "邮箱"
+        }
+      },
+      "title": "邮箱账号表-选择器信息"
+    },
+    "admin.v1.UpdateMailAccountReply": {
+      "type": "object",
+      "title": "响应-邮箱账号表-更新一条数据"
+    },
+    "admin.v1.UpdateMailAccountReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "mail": {
+          "type": "string",
+          "title": "邮箱"
+        },
+        "username": {
+          "type": "string",
+          "title": "用户名"
+        },
+        "password": {
+          "type": "string",
+          "title": "密码"
+        },
+        "host": {
+          "type": "string",
+          "title": "SMTP 服务器域名"
+        },
+        "port": {
+          "type": "integer",
+          "format": "int32",
+          "title": "SMTP 服务器端口"
+        },
+        "sslEnable": {
+          "type": "boolean",
+          "title": "是否开启 SSL"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "开启状态"
+        }
+      },
+      "title": "请求-邮箱账号表-更新一条数据",
+      "required": [
+        "id",
+        "mail",
+        "username",
+        "password",
+        "host",
+        "port"
+      ]
+    },
+    "admin.v1.UpdateMailAccountStatusReply": {
+      "type": "object",
+      "title": "响应-邮箱账号表-更新状态"
+    },
+    "admin.v1.UpdateMailAccountStatusReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "开启状态"
+        }
+      },
+      "title": "请求-邮箱账号表-更新状态",
+      "required": [
+        "id",
+        "status"
+      ]
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

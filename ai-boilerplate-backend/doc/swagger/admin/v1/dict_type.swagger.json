@@ -1,0 +1,518 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/dict_type.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "DictType"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/dict_type/create": {
+      "post": {
+        "summary": "字典类型表-创建一条数据",
+        "operationId": "DictType_CreateDictType",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateDictTypeReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateDictTypeReq"
+            }
+          }
+        ],
+        "tags": [
+          "DictType"
+        ]
+      }
+    },
+    "/admin/v1/dict_type/delete": {
+      "post": {
+        "summary": "字典类型表-删除一条数据",
+        "operationId": "DictType_DeleteDictType",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteDictTypeReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteDictTypeReq"
+            }
+          }
+        ],
+        "tags": [
+          "DictType"
+        ]
+      }
+    },
+    "/admin/v1/dict_type/info": {
+      "get": {
+        "summary": "字典类型表-单条数据查询",
+        "operationId": "DictType_GetDictTypeInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetDictTypeInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "id",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "DictType"
+        ]
+      }
+    },
+    "/admin/v1/dict_type/list": {
+      "get": {
+        "summary": "字典类型表-列表数据查询",
+        "operationId": "DictType_GetDictTypeList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetDictTypeListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "name",
+            "description": "字典名称",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "description": "字典类型",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "description": "状态（1正常-1停用）",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "DictType"
+        ]
+      }
+    },
+    "/admin/v1/dict_type/selector": {
+      "get": {
+        "summary": "字典类型表-选择器",
+        "operationId": "DictType_GetDictTypeSelector",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetDictTypeSelectorReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "name",
+            "description": "字典类型",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "DictType"
+        ]
+      }
+    },
+    "/admin/v1/dict_type/update": {
+      "post": {
+        "summary": "字典类型表-更新一条数据",
+        "operationId": "DictType_UpdateDictType",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateDictTypeReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateDictTypeReq"
+            }
+          }
+        ],
+        "tags": [
+          "DictType"
+        ]
+      }
+    },
+    "/admin/v1/dict_type/update/status": {
+      "post": {
+        "summary": "字典类型表-更新状态",
+        "operationId": "DictType_UpdateDictTypeStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateDictTypeStatusReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateDictTypeStatusReq"
+            }
+          }
+        ],
+        "tags": [
+          "DictType"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "admin.v1.CreateDictTypeReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        }
+      },
+      "title": "响应-字典类型表-创建一条数据"
+    },
+    "admin.v1.CreateDictTypeReq": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "字典名称"
+        },
+        "type": {
+          "type": "string",
+          "title": "字典类型"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态（1正常-1停用）"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        }
+      },
+      "title": "请求-字典类型表-创建一条数据",
+      "required": [
+        "name",
+        "type",
+        "status"
+      ]
+    },
+    "admin.v1.DeleteDictTypeReply": {
+      "type": "object",
+      "title": "响应-字典类型表-删除一条数据"
+    },
+    "admin.v1.DeleteDictTypeReq": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "id集合"
+        }
+      },
+      "title": "请求-字典类型表-删除一条数据",
+      "required": [
+        "ids"
+      ]
+    },
+    "admin.v1.DictTypeInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "name": {
+          "type": "string",
+          "title": "字典名称"
+        },
+        "type": {
+          "type": "string",
+          "title": "字典类型"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态（1正常-1停用）"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "字典类型表信息"
+    },
+    "admin.v1.DictTypeSelector": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "title": "字典类型"
+        },
+        "name": {
+          "type": "string",
+          "title": "字典名称"
+        }
+      },
+      "title": "字典类型表-选择器"
+    },
+    "admin.v1.GetDictTypeInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/admin.v1.DictTypeInfo"
+        }
+      },
+      "title": "响应-字典类型表-单条数据查询"
+    },
+    "admin.v1.GetDictTypeListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.DictTypeInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-字典类型表-列表数据查询"
+    },
+    "admin.v1.GetDictTypeSelectorReply": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.DictTypeSelector"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-字典类型表-选择器"
+    },
+    "admin.v1.UpdateDictTypeReply": {
+      "type": "object",
+      "title": "响应-字典类型表-更新一条数据"
+    },
+    "admin.v1.UpdateDictTypeReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "name": {
+          "type": "string",
+          "title": "字典名称"
+        },
+        "type": {
+          "type": "string",
+          "title": "字典类型"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态（1正常-1停用）"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        }
+      },
+      "title": "请求-字典类型表-更新一条数据",
+      "required": [
+        "id",
+        "name",
+        "type",
+        "status"
+      ]
+    },
+    "admin.v1.UpdateDictTypeStatusReply": {
+      "type": "object",
+      "title": "响应-字典类型表-更新状态"
+    },
+    "admin.v1.UpdateDictTypeStatusReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态（1正常-1停用）"
+        }
+      },
+      "title": "请求-字典类型表-更新状态",
+      "required": [
+        "id",
+        "status"
+      ]
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

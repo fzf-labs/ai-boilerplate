@@ -1,0 +1,280 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/wx_xcx_user.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "WxXcxUser"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/wx_xcx_user/delete": {
+      "post": {
+        "summary": "小程序用户表-删除一条数据",
+        "operationId": "WxXcxUser_DeleteWxXcxUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteWxXcxUserReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteWxXcxUserReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxXcxUser"
+        ]
+      }
+    },
+    "/admin/v1/wx_xcx_user/info": {
+      "get": {
+        "summary": "小程序用户表-单条数据查询",
+        "operationId": "WxXcxUser_GetWxXcxUserInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetWxXcxUserInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "编号",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxXcxUser"
+        ]
+      }
+    },
+    "/admin/v1/wx_xcx_user/list": {
+      "get": {
+        "summary": "小程序用户表-列表数据查询",
+        "operationId": "WxXcxUser_GetWxXcxUserList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetWxXcxUserListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxXcxUser"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "admin.v1.DeleteWxXcxUserReply": {
+      "type": "object",
+      "title": "响应-小程序用户表-删除一条数据"
+    },
+    "admin.v1.DeleteWxXcxUserReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        }
+      },
+      "title": "请求-小程序用户表-删除一条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "admin.v1.GetWxXcxUserInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/admin.v1.WxXcxUserInfo"
+        }
+      },
+      "title": "响应-小程序用户表-单条数据查询"
+    },
+    "admin.v1.GetWxXcxUserListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.WxXcxUserInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-小程序用户表-列表数据查询"
+    },
+    "admin.v1.WxXcxUserInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "appId": {
+          "type": "string",
+          "title": "微信小程序 appid"
+        },
+        "openid": {
+          "type": "string",
+          "title": "用户标识"
+        },
+        "unionid": {
+          "type": "string",
+          "title": "微信生态唯一标识"
+        },
+        "nickname": {
+          "type": "string",
+          "title": "昵称"
+        },
+        "avatarURL": {
+          "type": "string",
+          "title": "头像地址"
+        },
+        "language": {
+          "type": "string",
+          "title": "语言"
+        },
+        "country": {
+          "type": "string",
+          "title": "国家"
+        },
+        "province": {
+          "type": "string",
+          "title": "省份"
+        },
+        "city": {
+          "type": "string",
+          "title": "城市"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "小程序用户表信息"
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

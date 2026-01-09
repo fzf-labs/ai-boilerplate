@@ -1,0 +1,387 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/sys_api.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "SysAPI"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/sys_api/create": {
+      "post": {
+        "summary": "系统-接口-创建一条数据",
+        "operationId": "SysAPI_CreateSysAPI",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateSysAPIReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateSysAPIReq"
+            }
+          }
+        ],
+        "tags": [
+          "SysAPI"
+        ]
+      }
+    },
+    "/admin/v1/sys_api/delete": {
+      "post": {
+        "summary": "系统-接口-删除一条数据",
+        "operationId": "SysAPI_DeleteSysAPI",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteSysAPIReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteSysAPIReq"
+            }
+          }
+        ],
+        "tags": [
+          "SysAPI"
+        ]
+      }
+    },
+    "/admin/v1/sys_api/info": {
+      "get": {
+        "summary": "系统-接口-单条数据查询",
+        "operationId": "SysAPI_GetSysAPIInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetSysAPIInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "编号",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SysAPI"
+        ]
+      }
+    },
+    "/admin/v1/sys_api/list": {
+      "post": {
+        "summary": "系统-接口-列表数据查询",
+        "operationId": "SysAPI_GetSysAPIList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetSysAPIListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetSysAPIListReq"
+            }
+          }
+        ],
+        "tags": [
+          "SysAPI"
+        ]
+      }
+    },
+    "/admin/v1/sys_api/update": {
+      "post": {
+        "summary": "系统-接口-更新一条数据",
+        "operationId": "SysAPI_UpdateSysAPI",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateSysAPIReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateSysAPIReq"
+            }
+          }
+        ],
+        "tags": [
+          "SysAPI"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "admin.v1.CreateSysAPIReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        }
+      },
+      "title": "响应-系统-接口-创建一条数据"
+    },
+    "admin.v1.CreateSysAPIReq": {
+      "type": "object",
+      "properties": {
+        "permissionId": {
+          "type": "string",
+          "title": "权限Id"
+        },
+        "method": {
+          "type": "string",
+          "title": "方法"
+        },
+        "path": {
+          "type": "string",
+          "title": "路径"
+        },
+        "desc": {
+          "type": "string",
+          "title": "描述"
+        }
+      },
+      "title": "请求-系统-接口-创建一条数据",
+      "required": [
+        "permissionId",
+        "method",
+        "path",
+        "desc"
+      ]
+    },
+    "admin.v1.DeleteSysAPIReply": {
+      "type": "object",
+      "title": "响应-系统-接口-删除一条数据"
+    },
+    "admin.v1.DeleteSysAPIReq": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "编号集合"
+        }
+      },
+      "title": "请求-系统-接口-删除一条数据",
+      "required": [
+        "ids"
+      ]
+    },
+    "admin.v1.GetSysAPIInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/admin.v1.SysAPIInfo"
+        }
+      },
+      "title": "响应-系统-接口-单条数据查询"
+    },
+    "admin.v1.GetSysAPIListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.SysAPIInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-系统-接口-列表数据查询"
+    },
+    "admin.v1.GetSysAPIListReq": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int32",
+          "title": "页码"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32",
+          "title": "页数"
+        }
+      },
+      "title": "请求-系统-接口-列表数据查询"
+    },
+    "admin.v1.SysAPIInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "permissionId": {
+          "type": "string",
+          "title": "权限Id"
+        },
+        "method": {
+          "type": "string",
+          "title": "方法"
+        },
+        "path": {
+          "type": "string",
+          "title": "路径"
+        },
+        "desc": {
+          "type": "string",
+          "title": "描述"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "系统-接口信息"
+    },
+    "admin.v1.UpdateSysAPIReply": {
+      "type": "object",
+      "title": "响应-系统-接口-更新一条数据"
+    },
+    "admin.v1.UpdateSysAPIReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "permissionId": {
+          "type": "string",
+          "title": "权限Id"
+        },
+        "method": {
+          "type": "string",
+          "title": "方法"
+        },
+        "path": {
+          "type": "string",
+          "title": "路径"
+        },
+        "desc": {
+          "type": "string",
+          "title": "描述"
+        }
+      },
+      "title": "请求-系统-接口-更新一条数据",
+      "required": [
+        "id",
+        "permissionId",
+        "method",
+        "path",
+        "desc"
+      ]
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

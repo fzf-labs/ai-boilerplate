@@ -1,0 +1,455 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/sensitive_word.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "SensitiveWord"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/sensitive_word/create": {
+      "post": {
+        "summary": "敏感词-创建一条数据",
+        "operationId": "SensitiveWord_CreateSensitiveWord",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateSensitiveWordReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateSensitiveWordReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SensitiveWord"
+        ]
+      }
+    },
+    "/admin/v1/sensitive_word/delete": {
+      "post": {
+        "summary": "敏感词-删除一条数据",
+        "operationId": "SensitiveWord_DeleteSensitiveWord",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteSensitiveWordReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteSensitiveWordReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SensitiveWord"
+        ]
+      }
+    },
+    "/admin/v1/sensitive_word/info": {
+      "get": {
+        "summary": "敏感词-单条数据查询",
+        "operationId": "SensitiveWord_GetSensitiveWordInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetSensitiveWordInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "id",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SensitiveWord"
+        ]
+      }
+    },
+    "/admin/v1/sensitive_word/labs/selector": {
+      "get": {
+        "summary": "敏感词-标签选择器",
+        "operationId": "SensitiveWord_GetSensitiveWordLabsSelector",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetSensitiveWordLabsSelectorReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SensitiveWord"
+        ]
+      }
+    },
+    "/admin/v1/sensitive_word/list": {
+      "get": {
+        "summary": "敏感词-列表数据查询",
+        "operationId": "SensitiveWord_GetSensitiveWordList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetSensitiveWordListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "word",
+            "description": "敏感词",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "lab",
+            "description": "标签",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SensitiveWord"
+        ]
+      }
+    },
+    "/admin/v1/sensitive_word/update": {
+      "post": {
+        "summary": "敏感词-更新一条数据",
+        "operationId": "SensitiveWord_UpdateSensitiveWord",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateSensitiveWordReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateSensitiveWordReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SensitiveWord"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "admin.v1.CreateSensitiveWordReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        }
+      },
+      "title": "响应-敏感词-创建一条数据"
+    },
+    "admin.v1.CreateSensitiveWordReq": {
+      "type": "object",
+      "properties": {
+        "word": {
+          "type": "string",
+          "title": "敏感词"
+        },
+        "lab": {
+          "type": "string",
+          "title": "标签"
+        }
+      },
+      "title": "请求-敏感词-创建一条数据",
+      "required": [
+        "word"
+      ]
+    },
+    "admin.v1.DeleteSensitiveWordReply": {
+      "type": "object",
+      "title": "响应-敏感词-删除一条数据"
+    },
+    "admin.v1.DeleteSensitiveWordReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        }
+      },
+      "title": "请求-敏感词-删除一条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "admin.v1.GetSensitiveWordInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/admin.v1.SensitiveWordInfo"
+        }
+      },
+      "title": "响应-敏感词-单条数据查询"
+    },
+    "admin.v1.GetSensitiveWordLabsSelectorReply": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.SensitiveWordLabsSelector"
+          },
+          "title": "标签"
+        }
+      },
+      "title": "响应-敏感词-标签选择器"
+    },
+    "admin.v1.GetSensitiveWordListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.SensitiveWordInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-敏感词-列表数据查询"
+    },
+    "admin.v1.SensitiveWordInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "word": {
+          "type": "string",
+          "title": "敏感词"
+        },
+        "lab": {
+          "type": "string",
+          "title": "标签"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "敏感词信息"
+    },
+    "admin.v1.SensitiveWordLabsSelector": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "title": "标签键"
+        },
+        "value": {
+          "type": "string",
+          "title": "标签值"
+        }
+      },
+      "title": "敏感词标签选择器"
+    },
+    "admin.v1.UpdateSensitiveWordReply": {
+      "type": "object",
+      "title": "响应-敏感词-更新一条数据"
+    },
+    "admin.v1.UpdateSensitiveWordReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "word": {
+          "type": "string",
+          "title": "敏感词"
+        },
+        "lab": {
+          "type": "string",
+          "title": "标签"
+        }
+      },
+      "title": "请求-敏感词-更新一条数据",
+      "required": [
+        "id",
+        "word"
+      ]
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

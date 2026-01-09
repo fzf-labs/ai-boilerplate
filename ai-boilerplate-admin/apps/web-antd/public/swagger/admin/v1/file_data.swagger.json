@@ -1,0 +1,467 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/file_data.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "FileDatum"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/file_data/delete": {
+      "post": {
+        "summary": "文件表-删除多条数据",
+        "operationId": "FileDatum_DeleteFileDatum",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteFileDatumReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1DeleteFileDatumReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "FileDatum"
+        ]
+      }
+    },
+    "/admin/v1/file_data/info": {
+      "get": {
+        "summary": "文件表-单条数据查询",
+        "operationId": "FileDatum_GetFileDatumInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetFileDatumInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "文件编号",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "FileDatum"
+        ]
+      }
+    },
+    "/admin/v1/file_data/list": {
+      "get": {
+        "summary": "文件表-列表数据查询",
+        "operationId": "FileDatum_GetFileDatumList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetFileDatumListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "configId",
+            "description": "配置编号",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "description": "文件名",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "path",
+            "description": "文件路径",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "description": "状态（-1失败,1未知,2成功）",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "FileDatum"
+        ]
+      }
+    },
+    "/admin/v1/file_data/upload/oss_default_policy": {
+      "get": {
+        "summary": "客户端上传-默认上传到 OSS 的方式和凭证获取",
+        "operationId": "FileDatum_UploadFileOSSDefaultPolicy",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UploadFileOSSDefaultPolicyReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "name",
+            "description": "文件名",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "path",
+            "description": "文件路径",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "size",
+            "description": "文件大小",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "FileDatum"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1AliyunPolicy": {
+      "type": "object",
+      "properties": {
+        "policy": {
+          "type": "string"
+        },
+        "securityToken": {
+          "type": "string"
+        },
+        "signatureVersion": {
+          "type": "string"
+        },
+        "credential": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        },
+        "signature": {
+          "type": "string"
+        },
+        "host": {
+          "type": "string"
+        },
+        "dir": {
+          "type": "string"
+        },
+        "callback": {
+          "type": "string"
+        }
+      },
+      "title": "阿里云配置"
+    },
+    "v1DeleteFileDatumReply": {
+      "type": "object",
+      "title": "响应-文件表-删除多条数据"
+    },
+    "v1DeleteFileDatumReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "文件编号"
+        }
+      },
+      "title": "请求-文件表-删除多条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "v1FileDatumInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "文件编号"
+        },
+        "configId": {
+          "type": "string",
+          "title": "配置编号"
+        },
+        "name": {
+          "type": "string",
+          "title": "文件名"
+        },
+        "path": {
+          "type": "string",
+          "title": "文件路径"
+        },
+        "URL": {
+          "type": "string",
+          "title": "文件 URL"
+        },
+        "ext": {
+          "type": "string",
+          "title": "文件类型"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int32",
+          "title": "文件大小"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态（-1失败,1未知,2成功）"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "文件表信息"
+    },
+    "v1GetFileDatumInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/v1FileDatumInfo"
+        }
+      },
+      "title": "响应-文件表-单条数据查询"
+    },
+    "v1GetFileDatumListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1FileDatumInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-文件表-列表数据查询"
+    },
+    "v1QiniuPolicy": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "title": "凭证"
+        }
+      },
+      "title": "七牛云配置"
+    },
+    "v1TencentPolicy": {
+      "type": "object",
+      "properties": {
+        "tmpSecretId": {
+          "type": "string",
+          "title": "临时密钥ID"
+        },
+        "tmpSecretKey": {
+          "type": "string",
+          "title": "临时密钥Key"
+        },
+        "sessionToken": {
+          "type": "string",
+          "title": "临时 token"
+        }
+      },
+      "title": "腾讯云配置"
+    },
+    "v1UploadFileOSSDefaultPolicyReply": {
+      "type": "object",
+      "properties": {
+        "fileId": {
+          "type": "string",
+          "title": "文件ID"
+        },
+        "storage": {
+          "type": "string",
+          "title": "存储引擎 火山云:volcengine 腾讯云:tencent 阿里云:aliyun 七牛云:qiniu"
+        },
+        "volcengine": {
+          "$ref": "#/definitions/v1VolcenginePolicy",
+          "title": "火山云配置"
+        },
+        "tencent": {
+          "$ref": "#/definitions/v1TencentPolicy",
+          "title": "腾讯云配置"
+        },
+        "aliyun": {
+          "$ref": "#/definitions/v1AliyunPolicy",
+          "title": "阿里云配置"
+        },
+        "qiniu": {
+          "$ref": "#/definitions/v1QiniuPolicy",
+          "title": "七牛云配置"
+        }
+      },
+      "title": "响应-文件上传-默认上传到 OSS 的方式和凭证获取"
+    },
+    "v1VolcenginePolicy": {
+      "type": "object",
+      "properties": {
+        "accessKeyId": {
+          "type": "string",
+          "title": "临时 accessKeyId"
+        },
+        "secretAccessKey": {
+          "type": "string",
+          "title": "临时 secretAccessKey"
+        },
+        "sessionToken": {
+          "type": "string",
+          "title": "临时 token"
+        },
+        "endpoint": {
+          "type": "string",
+          "title": "端点"
+        },
+        "region": {
+          "type": "string",
+          "title": "区域"
+        },
+        "bucket": {
+          "type": "string",
+          "title": "桶"
+        }
+      },
+      "title": "火山云配置"
+    }
+  }
+}

@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+package admin.v1;
+
+//import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//系统-操作日志
+service SysOperateLog {
+  //系统-操作日志-创建一条数据
+  rpc CreateSysOperateLog(CreateSysOperateLogReq) returns (CreateSysOperateLogReply) {}
+  //系统-操作日志-列表数据查询
+  rpc GetSysOperateLogList(GetSysOperateLogListReq) returns (GetSysOperateLogListReply) {
+    option (google.api.http) = {get: "/admin/v1/sys_operate_log/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+//系统-日志信息
+message SysOperateLogInfo {
+  string id = 1; // 编号
+  string traceId = 2; // 链路ID
+  string adminId = 3; // 管理员ID
+  string IP = 4; // ip
+  string URI = 5; // 请求路径
+  string useragent = 6; // 浏览器标识
+  string header = 7; // header
+  string req = 8; // 请求数据
+  string resp = 9; // 响应数据
+  string createdAt = 10; // 创建时间
+  string nickname = 11; // 管理员昵称
+}
+
+//请求-系统-日志-创建一条数据
+message CreateSysOperateLogReq {
+  string tenantId = 1; // 租户ID
+  string traceId = 2; // 链路ID
+  string adminId = 3; // 管理员ID
+  string IP = 4; // ip
+  string URI = 5; // 请求路径
+  string useragent = 6; // 浏览器标识
+  string header = 7; // header
+  string req = 8; // 请求数据
+  string resp = 9; // 响应数据
+}
+
+//响应-系统-日志-创建一条数据
+message CreateSysOperateLogReply {
+  string id = 1; // 编号
+}
+
+//请求-系统-日志-列表数据查询
+message GetSysOperateLogListReq {
+  int32 page = 1; //页码
+  int32 pageSize = 2; //页数
+  string traceId = 3; // 链路ID
+  string adminId = 4; // 管理员ID
+  repeated string createdAt = 5; // 创建时间
+}
+
+//响应-系统-日志-列表数据查询
+message GetSysOperateLogListReply {
+  int32 total = 1; //总数
+  repeated SysOperateLogInfo list = 2; // 列表数据
+}

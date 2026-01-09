@@ -1,0 +1,337 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "app/v1/home.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "Home"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/app/v1/home/banner/list": {
+      "get": {
+        "summary": "获取轮播图列表",
+        "operationId": "Home_GetBannerList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.GetBannerListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Home"
+        ]
+      }
+    },
+    "/app/v1/home/content/detail": {
+      "get": {
+        "summary": "获取内容详情",
+        "operationId": "Home_GetContentDetail",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.GetContentDetailReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "内容ID",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Home"
+        ]
+      }
+    },
+    "/app/v1/home/content/list": {
+      "get": {
+        "summary": "获取内容列表",
+        "operationId": "Home_GetContentList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.GetContentListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "每页数量",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Home"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "app.v1.BannerInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64",
+          "title": "轮播图ID"
+        },
+        "imageUrl": {
+          "type": "string",
+          "title": "图片URL"
+        },
+        "linkUrl": {
+          "type": "string",
+          "title": "跳转链接"
+        },
+        "title": {
+          "type": "string",
+          "title": "标题"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "排序"
+        }
+      },
+      "title": "轮播图信息"
+    },
+    "app.v1.ContentDetail": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64",
+          "title": "内容ID"
+        },
+        "title": {
+          "type": "string",
+          "title": "标题"
+        },
+        "content": {
+          "type": "string",
+          "title": "内容"
+        },
+        "coverImage": {
+          "type": "string",
+          "title": "封面图"
+        },
+        "publishTime": {
+          "type": "string",
+          "title": "发布时间"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "标签"
+        },
+        "viewCount": {
+          "type": "string",
+          "format": "int64",
+          "title": "浏览量"
+        },
+        "likeCount": {
+          "type": "string",
+          "format": "int64",
+          "title": "点赞数"
+        }
+      },
+      "title": "内容详情"
+    },
+    "app.v1.ContentInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64",
+          "title": "内容ID"
+        },
+        "title": {
+          "type": "string",
+          "title": "标题"
+        },
+        "summary": {
+          "type": "string",
+          "title": "摘要"
+        },
+        "coverImage": {
+          "type": "string",
+          "title": "封面图"
+        },
+        "publishTime": {
+          "type": "string",
+          "title": "发布时间"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "标签"
+        },
+        "isRecommend": {
+          "type": "boolean",
+          "title": "是否推荐"
+        },
+        "isHot": {
+          "type": "boolean",
+          "title": "是否热门"
+        }
+      },
+      "title": "内容信息"
+    },
+    "app.v1.GetBannerListReply": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/app.v1.BannerInfo"
+          },
+          "title": "轮播图列表"
+        }
+      },
+      "title": "响应-获取轮播图列表"
+    },
+    "app.v1.GetContentDetailReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/app.v1.ContentDetail",
+          "title": "内容详情"
+        }
+      },
+      "title": "响应-获取内容详情"
+    },
+    "app.v1.GetContentListReply": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/app.v1.ContentInfo"
+          },
+          "title": "内容列表"
+        },
+        "total": {
+          "type": "string",
+          "format": "int64",
+          "title": "总数"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32",
+          "title": "当前页"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32",
+          "title": "每页数量"
+        }
+      },
+      "title": "响应-获取内容列表"
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

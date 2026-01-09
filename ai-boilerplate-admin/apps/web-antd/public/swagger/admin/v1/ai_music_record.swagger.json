@@ -1,0 +1,659 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/ai_music_record.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "AiMusicRecord"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/ai_music_record/create": {
+      "post": {
+        "summary": "AI 音乐表-创建一条数据",
+        "operationId": "AiMusicRecord_CreateAiMusicRecord",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateAiMusicRecordReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateAiMusicRecordReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiMusicRecord"
+        ]
+      }
+    },
+    "/admin/v1/ai_music_record/delete": {
+      "post": {
+        "summary": "AI 音乐表-删除多条数据",
+        "operationId": "AiMusicRecord_DeleteAiMusicRecord",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteAiMusicRecordReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1DeleteAiMusicRecordReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiMusicRecord"
+        ]
+      }
+    },
+    "/admin/v1/ai_music_record/info": {
+      "get": {
+        "summary": "AI 音乐表-单条数据查询",
+        "operationId": "AiMusicRecord_GetAiMusicRecordInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetAiMusicRecordInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "编号",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiMusicRecord"
+        ]
+      }
+    },
+    "/admin/v1/ai_music_record/list": {
+      "get": {
+        "summary": "AI 音乐表-列表数据查询",
+        "operationId": "AiMusicRecord_GetAiMusicRecordList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetAiMusicRecordListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiMusicRecord"
+        ]
+      }
+    },
+    "/admin/v1/ai_music_record/update": {
+      "post": {
+        "summary": "AI 音乐表-更新一条数据",
+        "operationId": "AiMusicRecord_UpdateAiMusicRecord",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateAiMusicRecordReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateAiMusicRecordReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiMusicRecord"
+        ]
+      }
+    },
+    "/admin/v1/ai_music_record/update/status": {
+      "post": {
+        "summary": "AI 音乐表-更新状态",
+        "operationId": "AiMusicRecord_UpdateAiMusicRecordStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateAiMusicRecordStatusReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateAiMusicRecordStatusReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiMusicRecord"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1AiMusicRecordInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "adminId": {
+          "type": "string",
+          "title": "用户编号"
+        },
+        "title": {
+          "type": "string",
+          "title": "音乐名称"
+        },
+        "lyric": {
+          "type": "string",
+          "title": "歌词"
+        },
+        "imageURL": {
+          "type": "string",
+          "title": "图片地址"
+        },
+        "audioURL": {
+          "type": "string",
+          "title": "音频地址"
+        },
+        "videoURL": {
+          "type": "string",
+          "title": "视频地址"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "音乐状态"
+        },
+        "description": {
+          "type": "string",
+          "title": "描述词"
+        },
+        "prompt": {
+          "type": "string",
+          "title": "提示词"
+        },
+        "platform": {
+          "type": "string",
+          "title": "模型平台"
+        },
+        "modelId": {
+          "type": "string",
+          "title": "模型编号"
+        },
+        "model": {
+          "type": "string",
+          "title": "模型"
+        },
+        "generateMode": {
+          "type": "integer",
+          "format": "int32",
+          "title": "生成模式"
+        },
+        "tags": {
+          "type": "string",
+          "title": "音乐风格标签"
+        },
+        "duration": {
+          "type": "number",
+          "format": "double",
+          "title": "音乐时长"
+        },
+        "publicStatus": {
+          "type": "boolean",
+          "title": "是否发布"
+        },
+        "taskId": {
+          "type": "string",
+          "title": "任务编号"
+        },
+        "errorMessage": {
+          "type": "string",
+          "title": "错误信息"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "AI 音乐表信息"
+    },
+    "v1CreateAiMusicRecordReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        }
+      },
+      "title": "响应-AI 音乐表-创建一条数据"
+    },
+    "v1CreateAiMusicRecordReq": {
+      "type": "object",
+      "properties": {
+        "adminId": {
+          "type": "string",
+          "title": "用户编号"
+        },
+        "title": {
+          "type": "string",
+          "title": "音乐名称"
+        },
+        "lyric": {
+          "type": "string",
+          "title": "歌词"
+        },
+        "imageURL": {
+          "type": "string",
+          "title": "图片地址"
+        },
+        "audioURL": {
+          "type": "string",
+          "title": "音频地址"
+        },
+        "videoURL": {
+          "type": "string",
+          "title": "视频地址"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "音乐状态"
+        },
+        "description": {
+          "type": "string",
+          "title": "描述词"
+        },
+        "prompt": {
+          "type": "string",
+          "title": "提示词"
+        },
+        "platform": {
+          "type": "string",
+          "title": "模型平台"
+        },
+        "modelId": {
+          "type": "string",
+          "title": "模型编号"
+        },
+        "model": {
+          "type": "string",
+          "title": "模型"
+        },
+        "generateMode": {
+          "type": "integer",
+          "format": "int32",
+          "title": "生成模式"
+        },
+        "tags": {
+          "type": "string",
+          "title": "音乐风格标签"
+        },
+        "duration": {
+          "type": "number",
+          "format": "double",
+          "title": "音乐时长"
+        },
+        "publicStatus": {
+          "type": "boolean",
+          "title": "是否发布"
+        },
+        "taskId": {
+          "type": "string",
+          "title": "任务编号"
+        },
+        "errorMessage": {
+          "type": "string",
+          "title": "错误信息"
+        }
+      },
+      "title": "请求-AI 音乐表-创建一条数据",
+      "required": [
+        "adminId",
+        "title",
+        "status",
+        "platform",
+        "modelId",
+        "model",
+        "generateMode",
+        "publicStatus"
+      ]
+    },
+    "v1DeleteAiMusicRecordReply": {
+      "type": "object",
+      "title": "响应-AI 音乐表-删除多条数据"
+    },
+    "v1DeleteAiMusicRecordReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        }
+      },
+      "title": "请求-AI 音乐表-删除多条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "v1GetAiMusicRecordInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/v1AiMusicRecordInfo"
+        }
+      },
+      "title": "响应-AI 音乐表-单条数据查询"
+    },
+    "v1GetAiMusicRecordListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1AiMusicRecordInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-AI 音乐表-列表数据查询"
+    },
+    "v1UpdateAiMusicRecordReply": {
+      "type": "object",
+      "title": "响应-AI 音乐表-更新一条数据"
+    },
+    "v1UpdateAiMusicRecordReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "adminId": {
+          "type": "string",
+          "title": "用户编号"
+        },
+        "title": {
+          "type": "string",
+          "title": "音乐名称"
+        },
+        "lyric": {
+          "type": "string",
+          "title": "歌词"
+        },
+        "imageURL": {
+          "type": "string",
+          "title": "图片地址"
+        },
+        "audioURL": {
+          "type": "string",
+          "title": "音频地址"
+        },
+        "videoURL": {
+          "type": "string",
+          "title": "视频地址"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "音乐状态"
+        },
+        "description": {
+          "type": "string",
+          "title": "描述词"
+        },
+        "prompt": {
+          "type": "string",
+          "title": "提示词"
+        },
+        "platform": {
+          "type": "string",
+          "title": "模型平台"
+        },
+        "modelId": {
+          "type": "string",
+          "title": "模型编号"
+        },
+        "model": {
+          "type": "string",
+          "title": "模型"
+        },
+        "generateMode": {
+          "type": "integer",
+          "format": "int32",
+          "title": "生成模式"
+        },
+        "tags": {
+          "type": "string",
+          "title": "音乐风格标签"
+        },
+        "duration": {
+          "type": "number",
+          "format": "double",
+          "title": "音乐时长"
+        },
+        "publicStatus": {
+          "type": "boolean",
+          "title": "是否发布"
+        },
+        "taskId": {
+          "type": "string",
+          "title": "任务编号"
+        },
+        "errorMessage": {
+          "type": "string",
+          "title": "错误信息"
+        }
+      },
+      "title": "请求-AI 音乐表-更新一条数据",
+      "required": [
+        "id",
+        "adminId",
+        "title",
+        "status",
+        "platform",
+        "modelId",
+        "model",
+        "generateMode",
+        "publicStatus"
+      ]
+    },
+    "v1UpdateAiMusicRecordStatusReply": {
+      "type": "object",
+      "title": "响应-AI 音乐表-更新状态"
+    },
+    "v1UpdateAiMusicRecordStatusReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "音乐状态"
+        }
+      },
+      "title": "请求-AI 音乐表-更新状态",
+      "required": [
+        "id",
+        "status"
+      ]
+    }
+  }
+}

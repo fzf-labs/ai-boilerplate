@@ -1,0 +1,281 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//公众号标签表
+service WxGzhTag {
+  //公众号标签表-创建一条数据
+  rpc CreateWxGzhTag(CreateWxGzhTagReq) returns (CreateWxGzhTagReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/wx_gzh_tag/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //公众号标签表-更新一条数据
+  rpc UpdateWxGzhTag(UpdateWxGzhTagReq) returns (UpdateWxGzhTagReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/wx_gzh_tag/update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //公众号标签表-同步标签
+  rpc SyncWxGzhTag(SyncWxGzhTagReq) returns (SyncWxGzhTagReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/wx_gzh_tag/sync"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //公众号标签表-删除一条数据
+  rpc DeleteWxGzhTag(DeleteWxGzhTagReq) returns (DeleteWxGzhTagReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/wx_gzh_tag/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //公众号标签表-单条数据查询
+  rpc GetWxGzhTagInfo(GetWxGzhTagInfoReq) returns (GetWxGzhTagInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/wx_gzh_tag/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //公众号标签表-列表数据查询
+  rpc GetWxGzhTagList(GetWxGzhTagListReq) returns (GetWxGzhTagListReply) {
+    option (google.api.http) = {get: "/admin/v1/wx_gzh_tag/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //公众号标签表-选择器
+  rpc GetWxGzhTagSelector(GetWxGzhTagSelectorReq) returns (GetWxGzhTagSelectorReply) {
+    option (google.api.http) = {get: "/admin/v1/wx_gzh_tag/selector"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+//公众号标签表信息
+message WxGzhTagInfo {
+  string id = 1; // 主键
+  string appId = 2; // 公众号 appId
+  int32 tagId = 3; // 公众号标签 id
+  string name = 4; // 标签名称
+  int32 count = 5; // 粉丝数量
+  string createdAt = 6; // 创建时间
+  string updatedAt = 7; // 更新时间
+}
+
+//请求-公众号标签表-创建一条数据
+message CreateWxGzhTagReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["appId"]
+    }
+  };
+  string appId = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 公众号 appId
+  string name = 3 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 32
+    }
+  ]; // 标签名称
+}
+
+//响应-公众号标签表-创建一条数据
+message CreateWxGzhTagReply {
+  string id = 1; // 主键
+}
+
+//请求-公众号标签表-更新一条数据
+message UpdateWxGzhTagReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "id",
+        "appId"
+      ]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 主键
+  string name = 4 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 32
+    }
+  ]; // 标签名称
+}
+
+//响应-公众号标签表-更新一条数据
+message UpdateWxGzhTagReply {}
+
+//请求-公众号标签表-同步标签
+message SyncWxGzhTagReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["appId"]
+    }
+  };
+  string appId = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 公众号 appId
+}
+
+//响应-公众号标签表-同步标签
+message SyncWxGzhTagReply {}
+
+//请求-公众号标签表-删除一条数据
+message DeleteWxGzhTagReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 主键
+}
+
+//响应-公众号标签表-删除一条数据
+message DeleteWxGzhTagReply {}
+
+//请求-公众号标签表-单条数据查询
+message GetWxGzhTagInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 主键
+}
+
+//响应-公众号标签表-单条数据查询
+message GetWxGzhTagInfoReply {
+  WxGzhTagInfo info = 1;
+}
+
+//请求-公众号标签表-列表数据查询
+message GetWxGzhTagListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize",
+        "appId"
+      ]
+    }
+  };
+  int32 page = 1; //页码
+  int32 pageSize = 2; //页数
+  string appId = 3; //公众号appId
+}
+
+//响应-公众号标签表-列表数据查询
+message GetWxGzhTagListReply {
+  int32 total = 1; //总数
+  repeated WxGzhTagInfo list = 2; // 列表数据
+}
+
+message WxGzhTagSelector {
+  string id = 1; // 主键
+  int32 tagId = 2; // 公众号标签 id
+  string name = 3; // 标签名称
+}
+
+//请求-公众号标签表-选择器
+message GetWxGzhTagSelectorReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["appId"]
+    }
+  };
+  string appId = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 公众号 appId
+}
+
+//响应-公众号标签表-选择器
+message GetWxGzhTagSelectorReply {
+  repeated WxGzhTagSelector list = 1; // 列表数据
+}

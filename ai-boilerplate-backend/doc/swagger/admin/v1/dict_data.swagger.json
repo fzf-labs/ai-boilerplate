@@ -1,0 +1,537 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/dict_data.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "DictDatum"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/dict_data/create": {
+      "post": {
+        "summary": "字典数据表-创建一条数据",
+        "operationId": "DictDatum_CreateDictDatum",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateDictDatumReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateDictDatumReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "DictDatum"
+        ]
+      }
+    },
+    "/admin/v1/dict_data/delete": {
+      "post": {
+        "summary": "字典数据表-删除一条数据",
+        "operationId": "DictDatum_DeleteDictDatum",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteDictDatumReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteDictDatumReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "DictDatum"
+        ]
+      }
+    },
+    "/admin/v1/dict_data/info": {
+      "get": {
+        "summary": "字典数据表-单条数据查询",
+        "operationId": "DictDatum_GetDictDatumInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetDictDatumInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "id",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "DictDatum"
+        ]
+      }
+    },
+    "/admin/v1/dict_data/list": {
+      "get": {
+        "summary": "字典数据表-列表数据查询",
+        "operationId": "DictDatum_GetDictDatumList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetDictDatumListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "type",
+            "description": "字典类型",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "DictDatum"
+        ]
+      }
+    },
+    "/admin/v1/dict_data/update": {
+      "post": {
+        "summary": "字典数据表-更新一条数据",
+        "operationId": "DictDatum_UpdateDictDatum",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateDictDatumReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateDictDatumReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "DictDatum"
+        ]
+      }
+    },
+    "/admin/v1/dict_data/update/status": {
+      "post": {
+        "summary": "字典数据表-更新状态",
+        "operationId": "DictDatum_UpdateDictDatumStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateDictDatumStatusReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateDictDatumStatusReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "DictDatum"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "admin.v1.CreateDictDatumReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        }
+      },
+      "title": "响应-字典数据表-创建一条数据"
+    },
+    "admin.v1.CreateDictDatumReq": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "title": "字典类型"
+        },
+        "label": {
+          "type": "string",
+          "title": "字典标签"
+        },
+        "key": {
+          "type": "string",
+          "title": "字典键"
+        },
+        "value": {
+          "type": "string",
+          "title": "字典值"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "CSSColor": {
+          "type": "string",
+          "title": "css 颜色"
+        },
+        "CSSClass": {
+          "type": "string",
+          "title": "css 样式"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态（0正常 1停用）"
+        }
+      },
+      "title": "请求-字典数据表-创建一条数据",
+      "required": [
+        "type",
+        "label",
+        "key",
+        "value",
+        "status"
+      ]
+    },
+    "admin.v1.DeleteDictDatumReply": {
+      "type": "object",
+      "title": "响应-字典数据表-删除一条数据"
+    },
+    "admin.v1.DeleteDictDatumReq": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "id集合"
+        }
+      },
+      "title": "请求-字典数据表-删除一条数据",
+      "required": [
+        "ids"
+      ]
+    },
+    "admin.v1.DictDatumInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "type": {
+          "type": "string",
+          "title": "字典类型"
+        },
+        "label": {
+          "type": "string",
+          "title": "字典标签"
+        },
+        "key": {
+          "type": "string",
+          "title": "字典键"
+        },
+        "value": {
+          "type": "string",
+          "title": "字典值"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "CSSColor": {
+          "type": "string",
+          "title": "css 颜色"
+        },
+        "CSSClass": {
+          "type": "string",
+          "title": "css 样式"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态（0正常 1停用）"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "字典数据表信息"
+    },
+    "admin.v1.GetDictDatumInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/admin.v1.DictDatumInfo"
+        }
+      },
+      "title": "响应-字典数据表-单条数据查询"
+    },
+    "admin.v1.GetDictDatumListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.DictDatumInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-字典数据表-列表数据查询"
+    },
+    "admin.v1.UpdateDictDatumReply": {
+      "type": "object",
+      "title": "响应-字典数据表-更新一条数据"
+    },
+    "admin.v1.UpdateDictDatumReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "type": {
+          "type": "string",
+          "title": "字典类型"
+        },
+        "label": {
+          "type": "string",
+          "title": "字典标签"
+        },
+        "key": {
+          "type": "string",
+          "title": "字典键"
+        },
+        "value": {
+          "type": "string",
+          "title": "字典值"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "CSSColor": {
+          "type": "string",
+          "title": "css 颜色"
+        },
+        "CSSClass": {
+          "type": "string",
+          "title": "css 样式"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态（0正常 1停用）"
+        }
+      },
+      "title": "请求-字典数据表-更新一条数据",
+      "required": [
+        "id",
+        "type",
+        "label",
+        "key",
+        "value",
+        "status"
+      ]
+    },
+    "admin.v1.UpdateDictDatumStatusReply": {
+      "type": "object",
+      "title": "响应-字典数据表-更新状态"
+    },
+    "admin.v1.UpdateDictDatumStatusReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态（0正常 1停用）"
+        }
+      },
+      "title": "请求-字典数据表-更新状态",
+      "required": [
+        "id",
+        "status"
+      ]
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

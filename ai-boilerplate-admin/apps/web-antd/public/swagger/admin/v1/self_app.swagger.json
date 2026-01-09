@@ -1,0 +1,522 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/self_app.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "SelfApp"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/self_app/create": {
+      "post": {
+        "summary": "自应用信息表-创建一条数据",
+        "operationId": "SelfApp_CreateSelfApp",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateSelfAppReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateSelfAppReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SelfApp"
+        ]
+      }
+    },
+    "/admin/v1/self_app/delete": {
+      "post": {
+        "summary": "自应用信息表-删除多条数据",
+        "operationId": "SelfApp_DeleteSelfApp",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteSelfAppReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1DeleteSelfAppReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SelfApp"
+        ]
+      }
+    },
+    "/admin/v1/self_app/info": {
+      "get": {
+        "summary": "自应用信息表-单条数据查询",
+        "operationId": "SelfApp_GetSelfAppInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetSelfAppInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "ID",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SelfApp"
+        ]
+      }
+    },
+    "/admin/v1/self_app/list": {
+      "get": {
+        "summary": "自应用信息表-列表数据查询",
+        "operationId": "SelfApp_GetSelfAppList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetSelfAppListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "packageName",
+            "description": "包名",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "description": "应用名称",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "platform",
+            "description": "平台类型(1Android 2iOS)",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "status",
+            "description": "状态(-1禁用 1启用)",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SelfApp"
+        ]
+      }
+    },
+    "/admin/v1/self_app/update": {
+      "post": {
+        "summary": "自应用信息表-更新一条数据",
+        "operationId": "SelfApp_UpdateSelfApp",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateSelfAppReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateSelfAppReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SelfApp"
+        ]
+      }
+    },
+    "/admin/v1/self_app/update/status": {
+      "post": {
+        "summary": "自应用信息表-更新状态",
+        "operationId": "SelfApp_UpdateSelfAppStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateSelfAppStatusReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateSelfAppStatusReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SelfApp"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1CreateSelfAppReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "ID"
+        }
+      },
+      "title": "响应-自应用信息表-创建一条数据"
+    },
+    "v1CreateSelfAppReq": {
+      "type": "object",
+      "properties": {
+        "packageName": {
+          "type": "string",
+          "title": "包名"
+        },
+        "name": {
+          "type": "string",
+          "title": "应用名称"
+        },
+        "platform": {
+          "type": "integer",
+          "format": "int32",
+          "title": "平台类型(1Android 2iOS)"
+        },
+        "description": {
+          "type": "string",
+          "title": "应用描述"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用 1启用)"
+        }
+      },
+      "title": "请求-自应用信息表-创建一条数据",
+      "required": [
+        "packageName",
+        "name",
+        "platform",
+        "status"
+      ]
+    },
+    "v1DeleteSelfAppReply": {
+      "type": "object",
+      "title": "响应-自应用信息表-删除多条数据"
+    },
+    "v1DeleteSelfAppReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "ID"
+        }
+      },
+      "title": "请求-自应用信息表-删除多条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "v1GetSelfAppInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/v1SelfAppInfo"
+        }
+      },
+      "title": "响应-自应用信息表-单条数据查询"
+    },
+    "v1GetSelfAppListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1SelfAppInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-自应用信息表-列表数据查询"
+    },
+    "v1SelfAppInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "ID"
+        },
+        "packageName": {
+          "type": "string",
+          "title": "包名"
+        },
+        "name": {
+          "type": "string",
+          "title": "应用名称"
+        },
+        "platform": {
+          "type": "integer",
+          "format": "int32",
+          "title": "平台类型(1Android 2iOS)"
+        },
+        "description": {
+          "type": "string",
+          "title": "应用描述"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用 1启用)"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "自应用信息表信息"
+    },
+    "v1UpdateSelfAppReply": {
+      "type": "object",
+      "title": "响应-自应用信息表-更新一条数据"
+    },
+    "v1UpdateSelfAppReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "ID"
+        },
+        "packageName": {
+          "type": "string",
+          "title": "包名"
+        },
+        "name": {
+          "type": "string",
+          "title": "应用名称"
+        },
+        "platform": {
+          "type": "integer",
+          "format": "int32",
+          "title": "平台类型(1Android 2iOS)"
+        },
+        "description": {
+          "type": "string",
+          "title": "应用描述"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用 1启用)"
+        }
+      },
+      "title": "请求-自应用信息表-更新一条数据",
+      "required": [
+        "id",
+        "packageName",
+        "name",
+        "platform",
+        "status"
+      ]
+    },
+    "v1UpdateSelfAppStatusReply": {
+      "type": "object",
+      "title": "响应-自应用信息表-更新状态"
+    },
+    "v1UpdateSelfAppStatusReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "ID"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用 1启用)"
+        }
+      },
+      "title": "请求-自应用信息表-更新状态",
+      "required": [
+        "id",
+        "status"
+      ]
+    }
+  }
+}

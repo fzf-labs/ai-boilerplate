@@ -1,0 +1,659 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/wx_gzh_message.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "WxGzhMessage"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/wx_gzh_message/create": {
+      "post": {
+        "summary": "公众号消息表 -创建一条数据",
+        "operationId": "WxGzhMessage_CreateWxGzhMessage",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateWxGzhMessageReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateWxGzhMessageReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxGzhMessage"
+        ]
+      }
+    },
+    "/admin/v1/wx_gzh_message/delete": {
+      "post": {
+        "summary": "公众号消息表 -删除多条数据",
+        "operationId": "WxGzhMessage_DeleteWxGzhMessage",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteWxGzhMessageReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1DeleteWxGzhMessageReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxGzhMessage"
+        ]
+      }
+    },
+    "/admin/v1/wx_gzh_message/info": {
+      "get": {
+        "summary": "公众号消息表 -单条数据查询",
+        "operationId": "WxGzhMessage_GetWxGzhMessageInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetWxGzhMessageInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "主键",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxGzhMessage"
+        ]
+      }
+    },
+    "/admin/v1/wx_gzh_message/list": {
+      "get": {
+        "summary": "公众号消息表 -列表数据查询",
+        "operationId": "WxGzhMessage_GetWxGzhMessageList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetWxGzhMessageListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxGzhMessage"
+        ]
+      }
+    },
+    "/admin/v1/wx_gzh_message/update": {
+      "post": {
+        "summary": "公众号消息表 -更新一条数据",
+        "operationId": "WxGzhMessage_UpdateWxGzhMessage",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateWxGzhMessageReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateWxGzhMessageReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxGzhMessage"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1CreateWxGzhMessageReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "主键"
+        }
+      },
+      "title": "响应-公众号消息表 -创建一条数据"
+    },
+    "v1CreateWxGzhMessageReq": {
+      "type": "object",
+      "properties": {
+        "appId": {
+          "type": "string",
+          "title": "公众号 appId"
+        },
+        "msgId": {
+          "type": "string",
+          "title": "微信公众号的消息编号"
+        },
+        "userId": {
+          "type": "string",
+          "title": "公众号粉丝的编号"
+        },
+        "openid": {
+          "type": "string",
+          "title": "公众号粉丝标志"
+        },
+        "messageType": {
+          "type": "string",
+          "title": "消息类型"
+        },
+        "sendFrom": {
+          "type": "integer",
+          "format": "int32",
+          "title": "消息来源"
+        },
+        "content": {
+          "type": "string",
+          "title": "消息内容"
+        },
+        "mediaId": {
+          "type": "string",
+          "title": "媒体文件 id"
+        },
+        "mediaURL": {
+          "type": "string",
+          "title": "媒体文件 URL"
+        },
+        "recognition": {
+          "type": "string",
+          "title": "语音识别后文本"
+        },
+        "format": {
+          "type": "string",
+          "title": "语音格式"
+        },
+        "title": {
+          "type": "string",
+          "title": "标题"
+        },
+        "description": {
+          "type": "string",
+          "title": "描述"
+        },
+        "thumbMediaId": {
+          "type": "string",
+          "title": "缩略图的媒体 id"
+        },
+        "thumbMediaURL": {
+          "type": "string",
+          "title": "缩略图的媒体 URL"
+        },
+        "URL": {
+          "type": "string",
+          "title": "点击图文消息跳转链接"
+        },
+        "locationX": {
+          "type": "number",
+          "format": "double",
+          "title": "地理位置维度"
+        },
+        "locationY": {
+          "type": "number",
+          "format": "double",
+          "title": "地理位置经度"
+        },
+        "scale": {
+          "type": "number",
+          "format": "double",
+          "title": "地图缩放大小"
+        },
+        "label": {
+          "type": "string",
+          "title": "详细地址"
+        },
+        "articles": {
+          "type": "string",
+          "title": "图文消息数组"
+        },
+        "musicURL": {
+          "type": "string",
+          "title": "音乐链接"
+        },
+        "hqMusicURL": {
+          "type": "string",
+          "title": "高质量音乐链接"
+        },
+        "event": {
+          "type": "string",
+          "title": "事件类型"
+        },
+        "eventKey": {
+          "type": "string",
+          "title": "事件 Key"
+        }
+      },
+      "title": "请求-公众号消息表 -创建一条数据"
+    },
+    "v1DeleteWxGzhMessageReply": {
+      "type": "object",
+      "title": "响应-公众号消息表 -删除多条数据"
+    },
+    "v1DeleteWxGzhMessageReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "主键"
+        }
+      },
+      "title": "请求-公众号消息表 -删除多条数据"
+    },
+    "v1GetWxGzhMessageInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/v1WxGzhMessageInfo"
+        }
+      },
+      "title": "响应-公众号消息表 -单条数据查询"
+    },
+    "v1GetWxGzhMessageListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1WxGzhMessageInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-公众号消息表 -列表数据查询"
+    },
+    "v1UpdateWxGzhMessageReply": {
+      "type": "object",
+      "title": "响应-公众号消息表 -更新一条数据"
+    },
+    "v1UpdateWxGzhMessageReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "主键"
+        },
+        "appId": {
+          "type": "string",
+          "title": "公众号 appId"
+        },
+        "msgId": {
+          "type": "string",
+          "title": "微信公众号的消息编号"
+        },
+        "userId": {
+          "type": "string",
+          "title": "公众号粉丝的编号"
+        },
+        "openid": {
+          "type": "string",
+          "title": "公众号粉丝标志"
+        },
+        "messageType": {
+          "type": "string",
+          "title": "消息类型"
+        },
+        "sendFrom": {
+          "type": "integer",
+          "format": "int32",
+          "title": "消息来源"
+        },
+        "content": {
+          "type": "string",
+          "title": "消息内容"
+        },
+        "mediaId": {
+          "type": "string",
+          "title": "媒体文件 id"
+        },
+        "mediaURL": {
+          "type": "string",
+          "title": "媒体文件 URL"
+        },
+        "recognition": {
+          "type": "string",
+          "title": "语音识别后文本"
+        },
+        "format": {
+          "type": "string",
+          "title": "语音格式"
+        },
+        "title": {
+          "type": "string",
+          "title": "标题"
+        },
+        "description": {
+          "type": "string",
+          "title": "描述"
+        },
+        "thumbMediaId": {
+          "type": "string",
+          "title": "缩略图的媒体 id"
+        },
+        "thumbMediaURL": {
+          "type": "string",
+          "title": "缩略图的媒体 URL"
+        },
+        "URL": {
+          "type": "string",
+          "title": "点击图文消息跳转链接"
+        },
+        "locationX": {
+          "type": "number",
+          "format": "double",
+          "title": "地理位置维度"
+        },
+        "locationY": {
+          "type": "number",
+          "format": "double",
+          "title": "地理位置经度"
+        },
+        "scale": {
+          "type": "number",
+          "format": "double",
+          "title": "地图缩放大小"
+        },
+        "label": {
+          "type": "string",
+          "title": "详细地址"
+        },
+        "articles": {
+          "type": "string",
+          "title": "图文消息数组"
+        },
+        "musicURL": {
+          "type": "string",
+          "title": "音乐链接"
+        },
+        "hqMusicURL": {
+          "type": "string",
+          "title": "高质量音乐链接"
+        },
+        "event": {
+          "type": "string",
+          "title": "事件类型"
+        },
+        "eventKey": {
+          "type": "string",
+          "title": "事件 Key"
+        }
+      },
+      "title": "请求-公众号消息表 -更新一条数据"
+    },
+    "v1WxGzhMessageInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "主键"
+        },
+        "appId": {
+          "type": "string",
+          "title": "公众号 appId"
+        },
+        "msgId": {
+          "type": "string",
+          "title": "微信公众号的消息编号"
+        },
+        "userId": {
+          "type": "string",
+          "title": "公众号粉丝的编号"
+        },
+        "openid": {
+          "type": "string",
+          "title": "公众号粉丝标志"
+        },
+        "messageType": {
+          "type": "string",
+          "title": "消息类型"
+        },
+        "sendFrom": {
+          "type": "integer",
+          "format": "int32",
+          "title": "消息来源"
+        },
+        "content": {
+          "type": "string",
+          "title": "消息内容"
+        },
+        "mediaId": {
+          "type": "string",
+          "title": "媒体文件 id"
+        },
+        "mediaURL": {
+          "type": "string",
+          "title": "媒体文件 URL"
+        },
+        "recognition": {
+          "type": "string",
+          "title": "语音识别后文本"
+        },
+        "format": {
+          "type": "string",
+          "title": "语音格式"
+        },
+        "title": {
+          "type": "string",
+          "title": "标题"
+        },
+        "description": {
+          "type": "string",
+          "title": "描述"
+        },
+        "thumbMediaId": {
+          "type": "string",
+          "title": "缩略图的媒体 id"
+        },
+        "thumbMediaURL": {
+          "type": "string",
+          "title": "缩略图的媒体 URL"
+        },
+        "URL": {
+          "type": "string",
+          "title": "点击图文消息跳转链接"
+        },
+        "locationX": {
+          "type": "number",
+          "format": "double",
+          "title": "地理位置维度"
+        },
+        "locationY": {
+          "type": "number",
+          "format": "double",
+          "title": "地理位置经度"
+        },
+        "scale": {
+          "type": "number",
+          "format": "double",
+          "title": "地图缩放大小"
+        },
+        "label": {
+          "type": "string",
+          "title": "详细地址"
+        },
+        "articles": {
+          "type": "string",
+          "title": "图文消息数组"
+        },
+        "musicURL": {
+          "type": "string",
+          "title": "音乐链接"
+        },
+        "hqMusicURL": {
+          "type": "string",
+          "title": "高质量音乐链接"
+        },
+        "event": {
+          "type": "string",
+          "title": "事件类型"
+        },
+        "eventKey": {
+          "type": "string",
+          "title": "事件 Key"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "公众号消息表 信息"
+    }
+  }
+}

@@ -1,0 +1,522 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/wx_gzh_tag.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "WxGzhTag"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/wx_gzh_tag/create": {
+      "post": {
+        "summary": "公众号标签表-创建一条数据",
+        "operationId": "WxGzhTag_CreateWxGzhTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateWxGzhTagReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateWxGzhTagReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxGzhTag"
+        ]
+      }
+    },
+    "/admin/v1/wx_gzh_tag/delete": {
+      "post": {
+        "summary": "公众号标签表-删除多条数据",
+        "operationId": "WxGzhTag_DeleteWxGzhTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteWxGzhTagReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1DeleteWxGzhTagReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxGzhTag"
+        ]
+      }
+    },
+    "/admin/v1/wx_gzh_tag/info": {
+      "get": {
+        "summary": "公众号标签表-单条数据查询",
+        "operationId": "WxGzhTag_GetWxGzhTagInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetWxGzhTagInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "主键",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxGzhTag"
+        ]
+      }
+    },
+    "/admin/v1/wx_gzh_tag/list": {
+      "get": {
+        "summary": "公众号标签表-列表数据查询",
+        "operationId": "WxGzhTag_GetWxGzhTagList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetWxGzhTagListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "appId",
+            "description": "公众号appId",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxGzhTag"
+        ]
+      }
+    },
+    "/admin/v1/wx_gzh_tag/selector": {
+      "get": {
+        "summary": "公众号标签表-选择器",
+        "operationId": "WxGzhTag_GetWxGzhTagSelector",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetWxGzhTagSelectorReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "appId",
+            "description": "公众号 appId",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxGzhTag"
+        ]
+      }
+    },
+    "/admin/v1/wx_gzh_tag/sync": {
+      "post": {
+        "summary": "公众号标签表-同步标签",
+        "operationId": "WxGzhTag_SyncWxGzhTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1SyncWxGzhTagReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1SyncWxGzhTagReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxGzhTag"
+        ]
+      }
+    },
+    "/admin/v1/wx_gzh_tag/update": {
+      "post": {
+        "summary": "公众号标签表-更新一条数据",
+        "operationId": "WxGzhTag_UpdateWxGzhTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateWxGzhTagReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateWxGzhTagReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxGzhTag"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1CreateWxGzhTagReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "主键"
+        }
+      },
+      "title": "响应-公众号标签表-创建一条数据"
+    },
+    "v1CreateWxGzhTagReq": {
+      "type": "object",
+      "properties": {
+        "appId": {
+          "type": "string",
+          "title": "公众号 appId"
+        },
+        "name": {
+          "type": "string",
+          "title": "标签名称"
+        }
+      },
+      "title": "请求-公众号标签表-创建一条数据",
+      "required": [
+        "appId"
+      ]
+    },
+    "v1DeleteWxGzhTagReply": {
+      "type": "object",
+      "title": "响应-公众号标签表-删除多条数据"
+    },
+    "v1DeleteWxGzhTagReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "主键"
+        }
+      },
+      "title": "请求-公众号标签表-删除多条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "v1GetWxGzhTagInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/v1WxGzhTagInfo"
+        }
+      },
+      "title": "响应-公众号标签表-单条数据查询"
+    },
+    "v1GetWxGzhTagListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1WxGzhTagInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-公众号标签表-列表数据查询"
+    },
+    "v1GetWxGzhTagSelectorReply": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1WxGzhTagSelector"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-公众号标签表-选择器"
+    },
+    "v1SyncWxGzhTagReply": {
+      "type": "object",
+      "title": "响应-公众号标签表-同步标签"
+    },
+    "v1SyncWxGzhTagReq": {
+      "type": "object",
+      "properties": {
+        "appId": {
+          "type": "string",
+          "title": "公众号 appId"
+        }
+      },
+      "title": "请求-公众号标签表-同步标签",
+      "required": [
+        "appId"
+      ]
+    },
+    "v1UpdateWxGzhTagReply": {
+      "type": "object",
+      "title": "响应-公众号标签表-更新一条数据"
+    },
+    "v1UpdateWxGzhTagReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "主键"
+        },
+        "name": {
+          "type": "string",
+          "title": "标签名称"
+        }
+      },
+      "title": "请求-公众号标签表-更新一条数据",
+      "required": [
+        "id",
+        "appId"
+      ]
+    },
+    "v1WxGzhTagInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "主键"
+        },
+        "appId": {
+          "type": "string",
+          "title": "公众号 appId"
+        },
+        "tagId": {
+          "type": "integer",
+          "format": "int32",
+          "title": "公众号标签 id"
+        },
+        "name": {
+          "type": "string",
+          "title": "标签名称"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32",
+          "title": "粉丝数量"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "公众号标签表信息"
+    },
+    "v1WxGzhTagSelector": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "主键"
+        },
+        "tagId": {
+          "type": "integer",
+          "format": "int32",
+          "title": "公众号标签 id"
+        },
+        "name": {
+          "type": "string",
+          "title": "标签名称"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,539 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/wx_gzh_account.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "WxGzhAccount"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/wx_gzh_account/create": {
+      "post": {
+        "summary": "公众号账号表-创建一条数据",
+        "operationId": "WxGzhAccount_CreateWxGzhAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateWxGzhAccountReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateWxGzhAccountReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxGzhAccount"
+        ]
+      }
+    },
+    "/admin/v1/wx_gzh_account/delete": {
+      "post": {
+        "summary": "公众号账号表-删除一条数据",
+        "operationId": "WxGzhAccount_DeleteWxGzhAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteWxGzhAccountReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteWxGzhAccountReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxGzhAccount"
+        ]
+      }
+    },
+    "/admin/v1/wx_gzh_account/info": {
+      "get": {
+        "summary": "公众号账号表-单条数据查询",
+        "operationId": "WxGzhAccount_GetWxGzhAccountInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetWxGzhAccountInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "编号",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxGzhAccount"
+        ]
+      }
+    },
+    "/admin/v1/wx_gzh_account/list": {
+      "get": {
+        "summary": "公众号账号表-列表数据查询",
+        "operationId": "WxGzhAccount_GetWxGzhAccountList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetWxGzhAccountListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "account",
+            "description": "公众号账号",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "appId",
+            "description": "公众号appid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxGzhAccount"
+        ]
+      }
+    },
+    "/admin/v1/wx_gzh_account/selector": {
+      "get": {
+        "summary": "公众号账号表-公众号选择器",
+        "operationId": "WxGzhAccount_GetWxGzhAccountSelector",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetWxGzhAccountSelectorReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "tags": [
+          "WxGzhAccount"
+        ]
+      }
+    },
+    "/admin/v1/wx_gzh_account/update": {
+      "post": {
+        "summary": "公众号账号表-更新一条数据",
+        "operationId": "WxGzhAccount_UpdateWxGzhAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateWxGzhAccountReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateWxGzhAccountReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxGzhAccount"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "admin.v1.CreateWxGzhAccountReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        }
+      },
+      "title": "响应-公众号账号表-创建一条数据"
+    },
+    "admin.v1.CreateWxGzhAccountReq": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "公众号名称"
+        },
+        "account": {
+          "type": "string",
+          "title": "公众号账号"
+        },
+        "appId": {
+          "type": "string",
+          "title": "公众号appid"
+        },
+        "appSecret": {
+          "type": "string",
+          "title": "公众号密钥"
+        },
+        "URL": {
+          "type": "string",
+          "title": "公众号url"
+        },
+        "token": {
+          "type": "string",
+          "title": "公众号"
+        },
+        "encodingAesKey": {
+          "type": "string",
+          "title": "加密密钥"
+        },
+        "qrCodeURL": {
+          "type": "string",
+          "title": "二维码图片URL"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        }
+      },
+      "title": "请求-公众号账号表-创建一条数据",
+      "required": [
+        "name",
+        "account",
+        "appId",
+        "appSecret"
+      ]
+    },
+    "admin.v1.DeleteWxGzhAccountReply": {
+      "type": "object",
+      "title": "响应-公众号账号表-删除一条数据"
+    },
+    "admin.v1.DeleteWxGzhAccountReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        }
+      },
+      "title": "请求-公众号账号表-删除一条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "admin.v1.GetWxGzhAccountInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/admin.v1.WxGzhAccountInfo"
+        }
+      },
+      "title": "响应-公众号账号表-单条数据查询"
+    },
+    "admin.v1.GetWxGzhAccountListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.WxGzhAccountInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-公众号账号表-列表数据查询"
+    },
+    "admin.v1.GetWxGzhAccountSelectorReply": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.WxGzhAccountSelector"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-公众号账号表-公众号选择器"
+    },
+    "admin.v1.UpdateWxGzhAccountReply": {
+      "type": "object",
+      "title": "响应-公众号账号表-更新一条数据"
+    },
+    "admin.v1.UpdateWxGzhAccountReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "name": {
+          "type": "string",
+          "title": "公众号名称"
+        },
+        "account": {
+          "type": "string",
+          "title": "公众号账号"
+        },
+        "appId": {
+          "type": "string",
+          "title": "公众号appid"
+        },
+        "appSecret": {
+          "type": "string",
+          "title": "公众号url"
+        },
+        "URL": {
+          "type": "string",
+          "title": "公众号密钥"
+        },
+        "token": {
+          "type": "string",
+          "title": "公众号token"
+        },
+        "encodingAesKey": {
+          "type": "string",
+          "title": "加密密钥"
+        },
+        "qrCodeURL": {
+          "type": "string",
+          "title": "二维码图片URL"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        }
+      },
+      "title": "请求-公众号账号表-更新一条数据",
+      "required": [
+        "id",
+        "name",
+        "account",
+        "appId",
+        "appSecret"
+      ]
+    },
+    "admin.v1.WxGzhAccountInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "name": {
+          "type": "string",
+          "title": "公众号名称"
+        },
+        "account": {
+          "type": "string",
+          "title": "公众号账号"
+        },
+        "appId": {
+          "type": "string",
+          "title": "公众号appid"
+        },
+        "appSecret": {
+          "type": "string",
+          "title": "公众号密钥"
+        },
+        "URL": {
+          "type": "string",
+          "title": "公众号url"
+        },
+        "token": {
+          "type": "string",
+          "title": "公众号token"
+        },
+        "encodingAesKey": {
+          "type": "string",
+          "title": "加密密钥"
+        },
+        "qrCodeURL": {
+          "type": "string",
+          "title": "二维码图片URL"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "公众号账号表信息"
+    },
+    "admin.v1.WxGzhAccountSelector": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "name": {
+          "type": "string",
+          "title": "公众号名称"
+        },
+        "appId": {
+          "type": "string",
+          "title": "公众号appid"
+        }
+      }
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

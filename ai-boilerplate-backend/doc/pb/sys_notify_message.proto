@@ -1,0 +1,200 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//系统-通知消息
+service SysNotifyMessage {
+  //系统-通知消息-创建一条数据
+  rpc CreateSysNotifyMessage(CreateSysNotifyMessageReq) returns (CreateSysNotifyMessageReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sys_notify_message/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //系统-通知消息-更新一条数据
+  rpc UpdateSysNotifyMessage(UpdateSysNotifyMessageReq) returns (UpdateSysNotifyMessageReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sys_notify_message/update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //系统-通知消息-删除一条数据
+  rpc DeleteSysNotifyMessage(DeleteSysNotifyMessageReq) returns (DeleteSysNotifyMessageReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sys_notify_message/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //系统-通知消息-单条数据查询
+  rpc GetSysNotifyMessageInfo(GetSysNotifyMessageInfoReq) returns (GetSysNotifyMessageInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/sys_notify_message/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //系统-通知消息-列表数据查询
+  rpc GetSysNotifyMessageList(GetSysNotifyMessageListReq) returns (GetSysNotifyMessageListReply) {
+    option (google.api.http) = {get: "/admin/v1/sys_notify_message/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+//系统-通知消息信息
+message SysNotifyMessageInfo {
+  string id = 1; // id
+	string tenantId = 2; // 租户id
+	string _type = 3; // 消息类型
+	string subject = 4; // 主题
+	string content = 5; // 内容
+	string sender = 6; // 发送人
+	string receiver = 7; // 接收人
+	string sendTime = 8; // 发送时间
+	string readTime = 9; // 阅读时间
+	string extend = 10; // 扩展
+}
+
+//请求-系统-通知消息-创建一条数据
+message CreateSysNotifyMessageReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["tenantId","_type","subject","content","sender","receiver","sendTime"]
+    }
+  };
+  string tenantId = 1 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 租户id
+	string _type = 2 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 消息类型
+	string subject = 3 [(buf.validate.field).string={min_len: 1, max_len: 200}]; // 主题
+	string content = 4 [(buf.validate.field).string={min_len: 1, max_len: 200}]; // 内容
+	string sender = 5 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 发送人
+	string receiver = 6 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 接收人
+	string sendTime = 7 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 发送时间
+	string readTime = 8 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 阅读时间
+	string extend = 9 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // 扩展
+}
+
+//响应-系统-通知消息-创建一条数据
+message CreateSysNotifyMessageReply {
+  	string id = 1; // id
+}
+
+//请求-系统-通知消息-更新一条数据
+message UpdateSysNotifyMessageReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","tenantId","_type","subject","content","sender","receiver","sendTime"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+	string tenantId = 2 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 租户id
+	string _type = 3 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 消息类型
+	string subject = 4 [(buf.validate.field).string={min_len: 1, max_len: 200}]; // 主题
+	string content = 5 [(buf.validate.field).string={min_len: 1, max_len: 200}]; // 内容
+	string sender = 6 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 发送人
+	string receiver = 7 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 接收人
+	string sendTime = 8 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 发送时间
+	string readTime = 9 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 阅读时间
+	string extend = 10 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // 扩展
+}
+
+//响应-系统-通知消息-更新一条数据
+message UpdateSysNotifyMessageReply {}
+
+//请求-系统-通知消息-删除一条数据
+message DeleteSysNotifyMessageReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+}
+
+//响应-系统-通知消息-删除一条数据
+message DeleteSysNotifyMessageReply {}
+
+//请求-系统-通知消息-单条数据查询
+message GetSysNotifyMessageInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+}
+
+//响应-系统-通知消息-单条数据查询
+message GetSysNotifyMessageInfoReply {
+  SysNotifyMessageInfo info = 1;
+}
+
+//请求-系统-通知消息-列表数据查询
+message GetSysNotifyMessageListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1[(buf.validate.field).int32={gte: 1}]; //页码
+  int32 pageSize = 2[(buf.validate.field).int32={gte: 1, lte: 1000}]; //页数
+}
+
+//响应-系统-通知消息-列表数据查询
+message GetSysNotifyMessageListReply {
+  int32 total = 1; //总数
+  repeated SysNotifyMessageInfo list = 2; // 列表数据
+}
+

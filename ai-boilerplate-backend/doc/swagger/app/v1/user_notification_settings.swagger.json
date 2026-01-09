@@ -1,0 +1,201 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "app/v1/user_notification_settings.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "UserNotificationSetting"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/app/v1/notification/settings": {
+      "get": {
+        "summary": "获取用户通知设置",
+        "operationId": "UserNotificationSetting_GetNotificationSettings",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.GetNotificationSettingsReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UserNotificationSetting"
+        ]
+      },
+      "put": {
+        "summary": "更新用户通知设置",
+        "operationId": "UserNotificationSetting_UpdateNotificationSettings",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.UpdateNotificationSettingsReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/app.v1.UpdateNotificationSettingsReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UserNotificationSetting"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "app.v1.GetNotificationSettingsReply": {
+      "type": "object",
+      "properties": {
+        "settings": {
+          "$ref": "#/definitions/app.v1.NotificationSettingsInfo"
+        }
+      },
+      "title": "响应-获取用户通知设置"
+    },
+    "app.v1.NotificationSettingsInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "ID"
+        },
+        "userId": {
+          "type": "string",
+          "title": "用户ID"
+        },
+        "systemNotification": {
+          "type": "boolean",
+          "title": "系统通知"
+        },
+        "activityNotification": {
+          "type": "boolean",
+          "title": "活动通知"
+        },
+        "orderNotification": {
+          "type": "boolean",
+          "title": "订单通知"
+        },
+        "dndStartTime": {
+          "type": "string",
+          "title": "勿扰开始时间"
+        },
+        "dndEndTime": {
+          "type": "string",
+          "title": "勿扰结束时间"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "用户通知设置信息"
+    },
+    "app.v1.UpdateNotificationSettingsReply": {
+      "type": "object",
+      "title": "响应-更新用户通知设置"
+    },
+    "app.v1.UpdateNotificationSettingsReq": {
+      "type": "object",
+      "properties": {
+        "systemNotification": {
+          "type": "boolean",
+          "title": "系统通知"
+        },
+        "activityNotification": {
+          "type": "boolean",
+          "title": "活动通知"
+        },
+        "orderNotification": {
+          "type": "boolean",
+          "title": "订单通知"
+        },
+        "dndStartTime": {
+          "type": "string",
+          "title": "勿扰开始时间（格式：HH:mm）"
+        },
+        "dndEndTime": {
+          "type": "string",
+          "title": "勿扰结束时间（格式：HH:mm）"
+        }
+      },
+      "title": "请求-更新用户通知设置"
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,304 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//AI 写作表
+service AiWriteRecord {
+  //AI 写作表-创建一条数据
+  rpc CreateAiWriteRecord(CreateAiWriteRecordReq) returns (CreateAiWriteRecordReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_write_record/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 写作表-更新一条数据
+  rpc UpdateAiWriteRecord(UpdateAiWriteRecordReq) returns (UpdateAiWriteRecordReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_write_record/update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 写作表-删除一条数据
+  rpc DeleteAiWriteRecord(DeleteAiWriteRecordReq) returns (DeleteAiWriteRecordReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_write_record/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 写作表-单条数据查询
+  rpc GetAiWriteRecordInfo(GetAiWriteRecordInfoReq) returns (GetAiWriteRecordInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/ai_write_record/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 写作表-列表数据查询
+  rpc GetAiWriteRecordList(GetAiWriteRecordListReq) returns (GetAiWriteRecordListReply) {
+    option (google.api.http) = {get: "/admin/v1/ai_write_record/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+//AI 写作表信息
+message AiWriteRecordInfo {
+  string id = 1; // 编号
+  string adminId = 2; // 用户编号
+  int32 type = 3; // 写作类型
+  string platform = 4; // 平台
+  string modelId = 5; // 模型编号
+  string model = 6; // 模型
+  string prompt = 7; // 生成内容提示
+  string generatedContent = 8; // 生成的内容
+  string originalContent = 9; // 原文
+  int32 length = 10; // 长度提示词
+  int32 format = 11; // 格式提示词
+  int32 tone = 12; // 语气提示词
+  int32 language = 13; // 语言提示词
+  string errorMessage = 14; // 错误信息
+  string createdAt = 15; // 创建时间
+  string updatedAt = 16; // 更新时间
+}
+
+//请求-AI 写作表-创建一条数据
+message CreateAiWriteRecordReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "adminId",
+        "platform",
+        "modelId",
+        "model",
+        "prompt"
+      ]
+    }
+  };
+  string adminId = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }]; // 用户编号
+  int32 type = 2 [(buf.validate.field).ignore = IGNORE_IF_UNPOPULATED]; // 写作类型
+  string platform = 3 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 255
+  }]; // 平台
+  string modelId = 4 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }]; // 模型编号
+  string model = 5 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 255
+  }]; // 模型
+  string prompt = 6 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 9223372036854775807
+  }]; // 生成内容提示
+  string generatedContent = 7 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 9223372036854775807
+    }
+  ]; // 生成的内容
+  string originalContent = 8 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 9223372036854775807
+    }
+  ]; // 原文
+  int32 length = 9 [(buf.validate.field).ignore = IGNORE_IF_UNPOPULATED]; // 长度提示词
+  int32 format = 10 [(buf.validate.field).ignore = IGNORE_IF_UNPOPULATED]; // 格式提示词
+  int32 tone = 11 [(buf.validate.field).ignore = IGNORE_IF_UNPOPULATED]; // 语气提示词
+  int32 language = 12 [(buf.validate.field).ignore = IGNORE_IF_UNPOPULATED]; // 语言提示词
+  string errorMessage = 13 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 255
+    }
+  ]; // 错误信息
+}
+
+//响应-AI 写作表-创建一条数据
+message CreateAiWriteRecordReply {
+  string id = 1; // 编号
+}
+
+//请求-AI 写作表-更新一条数据
+message UpdateAiWriteRecordReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "id",
+        "adminId",
+        "platform",
+        "modelId",
+        "model",
+        "prompt"
+      ]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 编号
+  string adminId = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }]; // 用户编号
+  int32 type = 3 [(buf.validate.field).ignore = IGNORE_IF_UNPOPULATED]; // 写作类型
+  string platform = 4 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 255
+  }]; // 平台
+  string modelId = 5 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }]; // 模型编号
+  string model = 6 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 255
+  }]; // 模型
+  string prompt = 7 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 9223372036854775807
+  }]; // 生成内容提示
+  string generatedContent = 8 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 9223372036854775807
+    }
+  ]; // 生成的内容
+  string originalContent = 9 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 9223372036854775807
+    }
+  ]; // 原文
+  int32 length = 10 [(buf.validate.field).ignore = IGNORE_IF_UNPOPULATED]; // 长度提示词
+  int32 format = 11 [(buf.validate.field).ignore = IGNORE_IF_UNPOPULATED]; // 格式提示词
+  int32 tone = 12 [(buf.validate.field).ignore = IGNORE_IF_UNPOPULATED]; // 语气提示词
+  int32 language = 13 [(buf.validate.field).ignore = IGNORE_IF_UNPOPULATED]; // 语言提示词
+  string errorMessage = 14 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 255
+    }
+  ]; // 错误信息
+}
+
+//响应-AI 写作表-更新一条数据
+message UpdateAiWriteRecordReply {}
+
+//请求-AI 写作表-删除一条数据
+message DeleteAiWriteRecordReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 编号
+}
+
+//响应-AI 写作表-删除一条数据
+message DeleteAiWriteRecordReply {}
+
+//请求-AI 写作表-单条数据查询
+message GetAiWriteRecordInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 编号
+}
+
+//响应-AI 写作表-单条数据查询
+message GetAiWriteRecordInfoReply {
+  AiWriteRecordInfo info = 1;
+}
+
+//请求-AI 写作表-列表数据查询
+message GetAiWriteRecordListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1 [(buf.validate.field).int32 = {gte: 1}]; //页码
+  int32 pageSize = 2 [(buf.validate.field).int32 = {
+    gte: 1
+    lte: 1000
+  }]; //页数
+}
+
+//响应-AI 写作表-列表数据查询
+message GetAiWriteRecordListReply {
+  int32 total = 1; //总数
+  repeated AiWriteRecordInfo list = 2; // 列表数据
+}

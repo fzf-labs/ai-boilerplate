@@ -1,0 +1,25 @@
+# Docker 配置文件示例
+# 使用方法：
+#   1. 复制此文件为 .docker-config 或 .docker-config.local
+#   2. 修改配置值
+#   3. 确保 .docker-config 已添加到 .gitignore
+
+# ==================== Docker 配置 ====================
+
+# Docker Context 配置
+DOCKER_CONTEXT_PREFIX="guard"
+
+# Docker 镜像仓库配置
+DOCKER_REGISTRY="registry.cn-shenzhen.aliyuncs.com"
+DOCKER_NAMESPACE="your-namespace"
+DOCKER_IMAGE_NAME="your-app-name"
+
+# Docker 镜像仓库认证信息（敏感信息，请勿提交）
+DOCKER_USERNAME="your-username"
+DOCKER_PASSWORD="your-password"
+
+# Dockerfile 配置
+# Dockerfile 所在目录的路径（相对于项目根目录）
+# 默认值: "./" 表示项目根目录
+DOCKERFILE_PATH="./"
+

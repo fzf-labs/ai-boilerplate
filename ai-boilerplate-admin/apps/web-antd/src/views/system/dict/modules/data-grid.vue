@@ -1,0 +1,139 @@
+<script lang="ts" setup>
+import type {
+  OnActionClickParams,
+  VxeTableGridOptions,
+} from '#/adapter/vxe-table';
+
+import { watch } from 'vue';
+
+import { useVbenModal } from '@vben/common-ui';
+import { Plus } from '@vben/icons';
+
+import { Button, message } from 'ant-design-vue';
+
+import { useVbenVxeGrid } from '#/adapter/vxe-table';
+import { deleteDictDatum, getDictDatumList } from '#/api/v1/dict-data';
+import { $t } from '#/locales';
+
+import { useDataGridColumns, useDataGridFormSchema } from '../data';
+import DataForm from './data-form.vue';
+
+const props = defineProps({
+  dictType: {
+    type: String,
+    default: undefined,
+  },
+});
+
+const [DataFormModal, dataFormModalApi] = useVbenModal({
+  connectedComponent: DataForm,
+  destroyOnClose: true,
+});
+
+/** 刷新表格 */
+function onRefresh() {
+  gridApi.query();
+}
+
+/** 创建字典数据 */
+function onCreate() {
+  dataFormModalApi.setData({ dictType: props.dictType }).open();
+}
+
+/** 编辑字典数据 */
+function onEdit(row: any) {
+  dataFormModalApi.setData(row).open();
+}
+
+/** 删除字典数据 */
+async function onDelete(row: any) {
+  const hideLoading = message.loading({
+    content: $t('common.processing'),
+    duration: 0,
+    key: 'process_message',
+  });
+  try {
+    await deleteDictDatum({ body: { id: row.id } });
+    message.success({
+      content: $t('common.operationSuccess'),
+      key: 'process_message',
+    });
+    onRefresh();
+  } finally {
+    hideLoading();
+  }
+}
+
+/** 表格操作按钮回调 */
+function onActionClick({ code, row }: OnActionClickParams) {
+  switch (code) {
+    case 'delete': {
+      onDelete(row);
+      break;
+    }
+    case 'edit': {
+      onEdit(row);
+      break;
+    }
+  }
+}
+
+const [Grid, gridApi] = useVbenVxeGrid({
+  formOptions: {
+    schema: useDataGridFormSchema(),
+  },
+  gridOptions: {
+    columns: useDataGridColumns(onActionClick),
+    height: 'auto',
+    keepSource: true,
+    proxyConfig: {
+      ajax: {
+        query: async ({ page }, formValues) => {
+          return await getDictDatumList({
+            page: page.currentPage,
+            pageSize: page.pageSize,
+            type: props.dictType,
+            ...formValues,
+          });
+        },
+      },
+    },
+    rowConfig: {
+      keyField: 'id',
+    },
+    toolbarConfig: {
+      refresh: { code: 'query' },
+      search: true,
+    },
+  } as VxeTableGridOptions<DictDataInfo>,
+});
+
+/** 监听 dictType 变化，重新查询 */
+watch(
+  () => props.dictType,
+  () => {
+    if (props.dictType) {
+      onRefresh();
+    }
+  },
+);
+</script>
+
+<template>
+  <div class="flex h-full flex-col">
+    <DataFormModal @success="onRefresh" />
+
+    <Grid table-title="字典数据列表">
+      <template #toolbar-tools>
+        <Button
+          type="primary"
+          @click="onCreate"
+          v-access:code="['system:dict:create']"
+        >
+          <Plus class="size-5" />
+          {{ $t('ui.actionTitle.create', ['字典数据']) }}
+        </Button>
+      </template>
+    </Grid>
+  </div>
+</template>

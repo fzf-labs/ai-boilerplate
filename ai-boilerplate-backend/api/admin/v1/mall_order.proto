@@ -1,0 +1,110 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//订单信息表
+service MallOrder {
+  //订单信息表-单条数据查询
+  rpc GetMallOrderInfo(GetMallOrderInfoReq) returns (GetMallOrderInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/mall_order/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //订单信息表-列表数据查询
+  rpc GetMallOrderList(GetMallOrderListReq) returns (GetMallOrderListReply) {
+    option (google.api.http) = {get: "/admin/v1/mall_order/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+//订单信息表信息
+message MallOrderInfo {
+  string id = 1; // id
+  string userId = 2; // 用户ID
+  string productType = 3; // 商品类型(membership:会员,service:服务,goods:商品)
+  string productId = 4; // 商品ID
+  double originalAmount = 5; // 原价
+  double discountAmount = 6; // 优惠金额
+  double actualAmount = 7; // 实付金额
+  double refundAmount = 8; // 退款金额
+  string currency = 9; // 币种
+  string paymentMethod = 10; // 支付方式(微信,支付宝)
+  int32 paymentStatus = 11; // 支付状态(0待支付,1已支付,2支付失败,3已退款)
+  string paymentTime = 12; // 支付时间
+  string deliveryTime = 13; // 确认时间
+  string expiredTime = 14; // 订单过期时间
+  string remark = 15; // 备注
+  string status = 16; // 状态(待付款pendingPayment,待发货pendingDelivery,待收货pendingReceipt,已完成completed,已取消canceled,已退款refunded)
+  string createdAt = 17; // 创建时间
+  string updatedAt = 18; // 更新时间
+}
+
+//请求-订单信息表-单条数据查询
+message GetMallOrderInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // id
+}
+
+//响应-订单信息表-单条数据查询
+message GetMallOrderInfoReply {
+  MallOrderInfo info = 1;
+}
+
+//请求-订单信息表-列表数据查询
+message GetMallOrderListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1 [(buf.validate.field).int32 = {gte: 1}]; //页码
+  int32 pageSize = 2 [(buf.validate.field).int32 = {
+    gte: 1
+    lte: 1000
+  }]; //页数
+  string userId = 3; // 用户ID
+  string orderId = 4; // 订单ID
+  string productType = 5; // 商品类型(membership:会员,service:服务,goods:商品)
+  string productId = 6; // 商品ID
+}
+
+//响应-订单信息表-列表数据查询
+message GetMallOrderListReply {
+  int32 total = 1; //总数
+  repeated MallOrderInfo list = 2; // 列表数据
+}

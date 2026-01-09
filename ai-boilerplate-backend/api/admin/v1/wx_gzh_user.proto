@@ -1,0 +1,144 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//公众号粉丝表
+service WxGzhUser {
+  //公众号粉丝表-删除一条数据
+  rpc DeleteWxGzhUser(DeleteWxGzhUserReq) returns (DeleteWxGzhUserReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/wx_gzh_user/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //公众号粉丝表-单条数据查询
+  rpc GetWxGzhUserInfo(GetWxGzhUserInfoReq) returns (GetWxGzhUserInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/wx_gzh_user/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //公众号粉丝表-列表数据查询
+  rpc GetWxGzhUserList(GetWxGzhUserListReq) returns (GetWxGzhUserListReply) {
+    option (google.api.http) = {get: "/admin/v1/wx_gzh_user/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+//公众号粉丝表信息
+message WxGzhUserInfo {
+  string id = 1; // 编号
+  string appId = 2; // 微信公众号 appid
+  string openid = 3; // 用户标识
+  string unionid = 4; // 微信生态唯一标识
+  int32 subscribeStatus = 5; // 关注状态
+  string nickname = 6; // 昵称
+  string avatarUrl = 7; // 头像地址
+  string language = 8; // 语言
+  string country = 9; // 国家
+  string province = 10; // 省份
+  string city = 11; // 城市
+  string tagIds = 12; // 标签编号数组
+  string remark = 13; // 备注
+  string createdAt = 14; // 创建时间
+  string updatedAt = 15; // 更新时间
+}
+
+//请求-公众号粉丝表-删除一条数据
+message DeleteWxGzhUserReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 编号
+}
+
+//响应-公众号粉丝表-删除一条数据
+message DeleteWxGzhUserReply {}
+
+//请求-公众号粉丝表-单条数据查询
+message GetWxGzhUserInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 编号
+}
+
+//响应-公众号粉丝表-单条数据查询
+message GetWxGzhUserInfoReply {
+  WxGzhUserInfo info = 1;
+}
+
+//请求-公众号粉丝表-列表数据查询
+message GetWxGzhUserListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "appId",
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1 [(buf.validate.field).int32 = {gte: 1}]; //页码
+  int32 pageSize = 2 [(buf.validate.field).int32 = {
+    gte: 1
+    lte: 1000
+  }]; //页数
+  string appId = 3 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; //微信公众号 appid
+  string openid = 4; //用户标识
+  string nickname = 5; //昵称
+  int32 subscribeStatus = 6; //关注状态
+}
+
+//响应-公众号粉丝表-列表数据查询
+message GetWxGzhUserListReply {
+  int32 total = 1; //总数
+  repeated WxGzhUserInfo list = 2; // 列表数据
+}

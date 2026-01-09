@@ -1,0 +1,158 @@
+name: "ai-boilerplate-backend"
+env: "development"
+server:
+  http:
+    network: "tcp"
+    addr: 0.0.0.0:8000
+    timeout: 6s
+    middleware:
+      enableLogging: true
+      enableRecovery: true
+      enableTracing: true
+      enableMetadata: true
+      enableValidate: true
+      enableCircuitBreaker: false
+      enableRateLimiter: false
+      enableMetrics: false
+      limiter:
+        window: 1s
+        bucket: 100
+        cpuThreshold: 80
+      metrics:
+        histogram: true
+        counter: true
+        gauge: true
+        summary: true
+    enableCors: true
+    enablePprof: true
+    cors:
+      headers:
+        - "Content-Type"
+        - "Authorization"
+        - "Accept"
+        - "Origin"
+        - "User-Agent"
+        - "X-Real-IP"
+        - "X-Forwarded-For"
+        - "X-Requested-With"
+        - "X-Custom-Header"
+        - "X-CSRF-Token"
+      methods:
+        - "GET"
+        - "POST"
+        - "OPTIONS"
+      origins:
+        - "*"
+  grpc:
+    network: "tcp"
+    addr: 0.0.0.0:9000
+    timeout: 6s
+    middleware:
+      enableLogging: true
+      enableRecovery: true
+      enableTracing: true
+      enableMetadata: true
+      enableValidate: true
+      enableCircuitBreaker: true
+      enableRateLimiter: true
+      enableMetrics: true
+      limiter:
+        window: 1s
+        bucket: 100
+        cpuThreshold: 80
+      metrics:
+        histogram: true
+        counter: true
+        gauge: true
+        summary: true
+client:
+  http:
+    timeout: 5s
+    middleware:
+      enableLogging: true
+      enableRecovery: true
+      enableTracing: true
+  grpc:
+    timeout: 5s
+    middleware:
+      enableLogging: true
+      enableRecovery: true
+      enableTracing: true
+data:
+  gorm:
+    driver: "postgres"
+    dataSourceName: host=0.0.0.0 port=5432 user=postgres password=your_db_password_here dbname=ai_boilerplate sslmode=disable TimeZone=Asia/Shanghai
+    maxIdleConn: 10
+    maxOpenConn: 60
+    connMaxLifeTime: 60s
+    showLog: true
+    tracing: true
+  redis:
+    network: "tcp"
+    addr: 0.0.0.0:6379
+    username: ""
+    password: "your_redis_password_here"
+    db: 1
+    dialTimeout: 1s
+    readTimeout: 0.4s
+    writeTimeout: 0.6s
+    tracing: true
+    metrics: true
+logger:
+  type: "zerolog" # std, zerolog, zap
+  zap:
+    filename: "logs/kratos.log"
+    level: "debug"
+    maxSize: 100
+    maxAge: 10
+    maxBackups: 10
+trace:
+  batcher: "otlphttp"
+  endpoint: "0.0.0.0:55681"
+  insecure: true
+  sampler: "1.0"
+  env: "local"
+registry:
+  type: "etcd"
+  consul:
+    scheme: "http"
+    address: "0.0.0.0:8500"
+    healthCheck: true
+  etcd:
+    endpoints:
+      - 0.0.0.0:2379
+  nacos:
+    address: 0.0.0.0
+    port: 8848
+    namespaceId: "public"
+    logLevel: "info"
+    cacheDir: ./
+    logDir: ./
+    updateThreadNum: 1
+    timeout: 3s
+    beatInterval: 1s
+    notLoadCacheAtStart: true
+    updateCacheWhenEmpty: true
+business:
+  wx:
+    defaultGzhAppId: "your_wechat_gzh_appid_here"
+    defaultXcxAppId: "your_wechat_xcx_appid_here"
+  jwt:
+    admin:
+      accessSecret: "your_jwt_admin_secret_here_min_32_chars"
+      refreshAfter: 86400
+      accessExpire: 604800
+      issuer: "admin"
+    kid:
+      accessSecret: "your_jwt_kid_secret_here_min_32_chars"
+      refreshAfter: 86400
+      accessExpire: 604800
+      issuer: "kid"
+    parent:
+      accessSecret: "your_jwt_parent_secret_here_min_32_chars"
+      refreshAfter: 86400
+      accessExpire: 604800
+      issuer: "parent"
+  baiduPush:
+    apiKey: "your_baidu_push_api_key_here"
+    secretKey: "your_baidu_push_secret_key_here"

@@ -1,0 +1,164 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "admin/v1/sys_admin.proto";
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+// Auth
+service SysAuth {
+  //Auth-登录
+  rpc SysAuthLogin(SysAuthLoginReq) returns (SysAuthLoginReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sys_auth/login"
+      body: "*"
+    };
+  }
+  //Auth-退出
+  rpc SysAuthLogout(SysAuthLogoutReq) returns (SysAuthLogoutReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sys_auth/logout"
+      body: "*"
+    };
+  }
+  //Auth-检查token
+  rpc SysAuthCheckToken(SysAuthCheckTokenReq) returns (SysAuthCheckTokenReply) {}
+  //Auth-查询用户信息
+  rpc SysAuthAdminInfo(SysAuthAdminInfoReq) returns (SysAuthAdminInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/sys_auth/admin_info"};
+  }
+  //Auth-更新用户信息
+  rpc SysAuthUpdateAdminInfo(SysAuthUpdateAdminInfoReq) returns (SysAuthUpdateAdminInfoReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sys_auth/update/admin_info"
+      body: "*"
+    };
+  }
+  //Auth-更新密码
+  rpc SysAuthUpdateAdminPassword(SysAuthUpdateAdminPasswordReq) returns (SysAuthUpdateAdminPasswordReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sys_auth/update/admin_password"
+      body: "*"
+    };
+  }
+  //Auth-获取菜单
+  rpc SysAuthMenu(SysAuthMenuReq) returns (SysAuthMenuReply) {
+    option (google.api.http) = {get: "/admin/v1/sys_auth/menu"};
+  }
+  //Auth-获取权限
+  rpc SysAuthPermission(SysAuthPermissionReq) returns (SysAuthPermissionReply) {
+    option (google.api.http) = {get: "/admin/v1/sys_auth/permission"};
+  }
+}
+
+// 菜单
+message SysMenuItem {
+  string id = 1; // id
+  string pid = 2; // 上级菜单
+  string name = 3; // 菜单名称
+  string type = 4; // 菜单类型(dir,menu,button)
+  string path = 5; // 路由路径
+  string permission = 6; // 权限标识
+  string icon = 7; // 图标
+  string component = 8; // 组件路径
+  string componentName = 9; // 组件名
+  int32 sort = 10; // 权重(排序)
+  int32 status = 11; // 0=禁用 1=开启
+  repeated SysMenuItem children = 12; // 子级菜单
+}
+
+//请求-登录
+message SysAuthLoginReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "username",
+        "password"
+      ]
+    }
+  };
+
+  string username = 1 [(buf.validate.field).string = {min_len: 1}]; //账号
+  string password = 2 [(buf.validate.field).string = {min_len: 1}]; //密码
+}
+
+//响应-登录
+message SysAuthLoginReply {
+  string token = 1; //token
+  int64 expiredAt = 2; //过期时间
+  int64 refreshAt = 3; //刷新时间
+}
+
+//请求-退出
+message SysAuthLogoutReq {}
+
+//响应-退出
+message SysAuthLogoutReply {}
+
+//请求-检查token
+message SysAuthCheckTokenReq {
+  string token = 1; //token
+}
+
+//响应-检查token
+message SysAuthCheckTokenReply {
+  string adminId = 1; //管理员ID
+  string nickname = 2; //昵称
+  string tenantId = 3; //租户ID
+}
+
+//请求-查询用户信息
+message SysAuthAdminInfoReq {}
+
+//响应-查询用户信息
+message SysAuthAdminInfoReply {
+  SysAdminInfo info = 1; // 用户信息
+}
+
+//请求-更新用户信息
+message SysAuthUpdateAdminInfoReq {
+  string nickname = 1; // 昵称
+  string avatar = 2; // 头像
+  int32 sex = 3; // 0=保密 1=女 2=男
+}
+
+//响应-更新用户信息
+message SysAuthUpdateAdminInfoReply {}
+
+//请求-更新密码
+message SysAuthUpdateAdminPasswordReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "oldPassword",
+        "newPassword"
+      ]
+    }
+  };
+
+  string oldPassword = 1 [(buf.validate.field).string = {min_len: 1}]; // 旧密码
+  string newPassword = 2 [(buf.validate.field).string = {min_len: 1}]; // 新密码
+}
+
+//响应-更新密码
+message SysAuthUpdateAdminPasswordReply {}
+
+//请求-获取菜单
+message SysAuthMenuReq {}
+
+//响应-获取菜单
+message SysAuthMenuReply {
+  repeated SysMenuItem menu = 1; // 菜单
+}
+
+//请求-获取权限
+message SysAuthPermissionReq {}
+
+//响应-获取权限
+message SysAuthPermissionReply {
+  repeated string permission = 1; // 权限
+}

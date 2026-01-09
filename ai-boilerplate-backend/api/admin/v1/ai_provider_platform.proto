@@ -1,0 +1,323 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//AI 配置平台表
+service AiProviderPlatform {
+  //AI 配置平台表-创建一条数据
+  rpc CreateAiProviderPlatform(CreateAiProviderPlatformReq) returns (CreateAiProviderPlatformReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_provider_platform/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 配置平台表-更新一条数据
+  rpc UpdateAiProviderPlatform(UpdateAiProviderPlatformReq) returns (UpdateAiProviderPlatformReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_provider_platform/update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 配置平台表-更新状态
+  rpc UpdateAiProviderPlatformStatus(UpdateAiProviderPlatformStatusReq) returns (UpdateAiProviderPlatformStatusReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_provider_platform/update/status"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 配置平台表-删除一条数据
+  rpc DeleteAiProviderPlatform(DeleteAiProviderPlatformReq) returns (DeleteAiProviderPlatformReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_provider_platform/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 配置平台表-单条数据查询
+  rpc GetAiProviderPlatformInfo(GetAiProviderPlatformInfoReq) returns (GetAiProviderPlatformInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/ai_provider_platform/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 配置平台表-列表数据查询
+  rpc GetAiProviderPlatformList(GetAiProviderPlatformListReq) returns (GetAiProviderPlatformListReply) {
+    option (google.api.http) = {get: "/admin/v1/ai_provider_platform/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 配置平台表-获取平台选择器
+  rpc GetAiProviderPlatformSelector(GetAiProviderPlatformSelectorReq) returns (GetAiProviderPlatformSelectorReply) {
+    option (google.api.http) = {get: "/admin/v1/ai_provider_platform/selector"};
+  }
+}
+
+//AI 配置平台表信息
+message AiProviderPlatformInfo {
+  string id = 1; // 编号
+  string platform = 2; // 平台
+  string name = 3; // 名称
+  string APIURL = 4; // API 地址
+  string APIKey = 5; // API KEY
+  string docURL = 6; // 文档地址
+  int32 sort = 7; // 排序
+  int32 status = 8; // 状态
+  string createdAt = 9; // 创建时间
+  string updatedAt = 10; // 更新时间
+}
+
+//请求-AI 配置平台表-创建一条数据
+message CreateAiProviderPlatformReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "platform",
+        "name",
+        "status"
+      ]
+    }
+  };
+  string platform = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 255
+  }]; // 平台
+  string name = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 255
+  }]; // 名称
+  string APIURL = 3 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 500
+    }
+  ]; // API 地址
+  string APIKey = 4 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 500
+    }
+  ]; // API KEY
+  string docURL = 5 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 500
+    }
+  ]; // 文档地址
+  int32 sort = 6 [(buf.validate.field).ignore = IGNORE_IF_UNPOPULATED]; // 排序
+  int32 status = 7; // 状态
+}
+
+//响应-AI 配置平台表-创建一条数据
+message CreateAiProviderPlatformReply {
+  string id = 1; // 编号
+}
+
+//请求-AI 配置平台表-更新一条数据
+message UpdateAiProviderPlatformReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "id",
+        "platform",
+        "name",
+        "status"
+      ]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 编号
+  string platform = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 255
+  }]; // 平台
+  string name = 3 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 255
+  }]; // 名称
+  string APIURL = 4 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 500
+    }
+  ]; // API 地址
+  string APIKey = 5 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 500
+    }
+  ]; // API KEY
+  string docURL = 6 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 500
+    }
+  ]; // 文档地址
+  int32 sort = 7 [(buf.validate.field).ignore = IGNORE_IF_UNPOPULATED]; // 排序
+  int32 status = 8; // 状态
+}
+
+//响应-AI 配置平台表-更新一条数据
+message UpdateAiProviderPlatformReply {}
+
+//请求-AI 配置平台表-更新状态
+message UpdateAiProviderPlatformStatusReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "id",
+        "status"
+      ]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 编号
+  int32 status = 2; // 状态
+}
+
+//响应-AI 配置平台表-更新状态
+message UpdateAiProviderPlatformStatusReply {}
+
+//请求-AI 配置平台表-删除一条数据
+message DeleteAiProviderPlatformReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 编号
+}
+
+//响应-AI 配置平台表-删除一条数据
+message DeleteAiProviderPlatformReply {}
+
+//请求-AI 配置平台表-单条数据查询
+message GetAiProviderPlatformInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 编号
+}
+
+//响应-AI 配置平台表-单条数据查询
+message GetAiProviderPlatformInfoReply {
+  AiProviderPlatformInfo info = 1;
+}
+
+//请求-AI 配置平台表-列表数据查询
+message GetAiProviderPlatformListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1 [(buf.validate.field).int32 = {gte: 1}]; //页码
+  int32 pageSize = 2 [(buf.validate.field).int32 = {
+    gte: 1
+    lte: 1000
+  }]; //页数
+  string platform = 3;
+  int32 status = 4;
+}
+
+//响应-AI 配置平台表-列表数据查询
+message GetAiProviderPlatformListReply {
+  int32 total = 1; //总数
+  repeated AiProviderPlatformInfo list = 2; // 列表数据
+}
+
+//AI 配置平台表-平台选择器
+message AiProviderPlatformSelectorItem {
+  string label = 1; // 标签
+  string value = 2; // 值
+}
+
+//请求-AI 配置平台表-获取平台选择器
+message GetAiProviderPlatformSelectorReq {}
+
+//响应-AI 配置平台表-获取平台选择器
+message GetAiProviderPlatformSelectorReply {
+  repeated AiProviderPlatformSelectorItem list = 1; // 列表数据
+}

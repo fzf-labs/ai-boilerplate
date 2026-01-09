@@ -1,0 +1,184 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//用户绑定设备表
+service UserBindDevice {
+  //用户绑定设备表-创建一条数据
+  rpc CreateUserBindDevice(CreateUserBindDeviceReq) returns (CreateUserBindDeviceReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/user_bind_device/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //用户绑定设备表-更新一条数据
+  rpc UpdateUserBindDevice(UpdateUserBindDeviceReq) returns (UpdateUserBindDeviceReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/user_bind_device/update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //用户绑定设备表-删除一条数据
+  rpc DeleteUserBindDevice(DeleteUserBindDeviceReq) returns (DeleteUserBindDeviceReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/user_bind_device/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //用户绑定设备表-单条数据查询
+  rpc GetUserBindDeviceInfo(GetUserBindDeviceInfoReq) returns (GetUserBindDeviceInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/user_bind_device/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //用户绑定设备表-列表数据查询
+  rpc GetUserBindDeviceList(GetUserBindDeviceListReq) returns (GetUserBindDeviceListReply) {
+    option (google.api.http) = {get: "/admin/v1/user_bind_device/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+//用户绑定设备表信息
+message UserBindDeviceInfo {
+  string id = 1; // id
+	string userId = 2; // 用户Id
+	string sn = 3; // sn
+	string identity = 4; // 身份
+	string createdAt = 5; // 创建时间
+	string updatedAt = 6; // 更新时间
+}
+
+//请求-用户绑定设备表-创建一条数据
+message CreateUserBindDeviceReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["userId","sn","identity"]
+    }
+  };
+  string userId = 1 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 用户Id
+	string sn = 2 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // sn
+	string identity = 3 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 身份
+}
+
+//响应-用户绑定设备表-创建一条数据
+message CreateUserBindDeviceReply {
+  	string id = 1; // id
+}
+
+//请求-用户绑定设备表-更新一条数据
+message UpdateUserBindDeviceReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","userId","sn","identity"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+	string userId = 2 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 用户Id
+	string sn = 3 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // sn
+	string identity = 4 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 身份
+}
+
+//响应-用户绑定设备表-更新一条数据
+message UpdateUserBindDeviceReply {}
+
+//请求-用户绑定设备表-删除一条数据
+message DeleteUserBindDeviceReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+}
+
+//响应-用户绑定设备表-删除一条数据
+message DeleteUserBindDeviceReply {}
+
+//请求-用户绑定设备表-单条数据查询
+message GetUserBindDeviceInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+}
+
+//响应-用户绑定设备表-单条数据查询
+message GetUserBindDeviceInfoReply {
+  UserBindDeviceInfo info = 1;
+}
+
+//请求-用户绑定设备表-列表数据查询
+message GetUserBindDeviceListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1[(buf.validate.field).int32={gte: 1}]; //页码
+  int32 pageSize = 2[(buf.validate.field).int32={gte: 1, lte: 1000}]; //页数
+}
+
+//响应-用户绑定设备表-列表数据查询
+message GetUserBindDeviceListReply {
+  int32 total = 1; //总数
+  repeated UserBindDeviceInfo list = 2; // 列表数据
+}
+

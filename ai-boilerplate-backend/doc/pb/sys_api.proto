@@ -1,0 +1,187 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//系统-接口
+service SysAPI {
+  //系统-接口-创建一条数据
+  rpc CreateSysAPI(CreateSysAPIReq) returns (CreateSysAPIReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sys_api/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //系统-接口-更新一条数据
+  rpc UpdateSysAPI(UpdateSysAPIReq) returns (UpdateSysAPIReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sys_api/update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //系统-接口-删除一条数据
+  rpc DeleteSysAPI(DeleteSysAPIReq) returns (DeleteSysAPIReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sys_api/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //系统-接口-单条数据查询
+  rpc GetSysAPIInfo(GetSysAPIInfoReq) returns (GetSysAPIInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/sys_api/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //系统-接口-列表数据查询
+  rpc GetSysAPIList(GetSysAPIListReq) returns (GetSysAPIListReply) {
+    option (google.api.http) = {get: "/admin/v1/sys_api/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+//系统-接口信息
+message SysAPIInfo {
+  string id = 1; // id
+	string permissionId = 2; // 权限Id
+	string method = 3; // 方法
+	string path = 4; // 路径
+	string desc = 5; // 描述
+	string createdAt = 6; // 创建时间
+	string updatedAt = 7; // 更新时间
+}
+
+//请求-系统-接口-创建一条数据
+message CreateSysAPIReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["permissionId","method","path","desc"]
+    }
+  };
+  string permissionId = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 权限Id
+	string method = 2 [(buf.validate.field).string={min_len: 1, max_len: 32}]; // 方法
+	string path = 3 [(buf.validate.field).string={min_len: 1, max_len: 255}]; // 路径
+	string desc = 4 [(buf.validate.field).string={min_len: 1, max_len: 255}]; // 描述
+}
+
+//响应-系统-接口-创建一条数据
+message CreateSysAPIReply {
+  	string id = 1; // id
+}
+
+//请求-系统-接口-更新一条数据
+message UpdateSysAPIReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","permissionId","method","path","desc"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+	string permissionId = 2 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 权限Id
+	string method = 3 [(buf.validate.field).string={min_len: 1, max_len: 32}]; // 方法
+	string path = 4 [(buf.validate.field).string={min_len: 1, max_len: 255}]; // 路径
+	string desc = 5 [(buf.validate.field).string={min_len: 1, max_len: 255}]; // 描述
+}
+
+//响应-系统-接口-更新一条数据
+message UpdateSysAPIReply {}
+
+//请求-系统-接口-删除一条数据
+message DeleteSysAPIReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+}
+
+//响应-系统-接口-删除一条数据
+message DeleteSysAPIReply {}
+
+//请求-系统-接口-单条数据查询
+message GetSysAPIInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+}
+
+//响应-系统-接口-单条数据查询
+message GetSysAPIInfoReply {
+  SysAPIInfo info = 1;
+}
+
+//请求-系统-接口-列表数据查询
+message GetSysAPIListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1[(buf.validate.field).int32={gte: 1}]; //页码
+  int32 pageSize = 2[(buf.validate.field).int32={gte: 1, lte: 1000}]; //页数
+}
+
+//响应-系统-接口-列表数据查询
+message GetSysAPIListReply {
+  int32 total = 1; //总数
+  repeated SysAPIInfo list = 2; // 列表数据
+}
+

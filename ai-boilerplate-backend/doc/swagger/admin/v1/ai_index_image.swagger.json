@@ -1,0 +1,384 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/ai_index_image.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "AiIndexImage"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/ai_index_image/create": {
+      "post": {
+        "summary": "AI 绘画表-创建一条数据",
+        "operationId": "AiIndexImage_CreateAiIndexImageRecord",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateAiIndexImageRecordReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateAiIndexImageRecordReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiIndexImage"
+        ]
+      }
+    },
+    "/admin/v1/ai_index_image/delete": {
+      "post": {
+        "summary": "AI 绘画表-删除一条数据",
+        "operationId": "AiIndexImage_DeleteAiIndexImageRecord",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteAiIndexImageRecordReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteAiIndexImageRecordReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiIndexImage"
+        ]
+      }
+    },
+    "/admin/v1/ai_index_image/list": {
+      "get": {
+        "summary": "AI 绘画表-列表数据查询",
+        "operationId": "AiIndexImage_GetAiIndexImageRecordList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetAiIndexImageRecordListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiIndexImage"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "admin.v1.AiIndexImageRecordInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "adminId": {
+          "type": "string",
+          "title": "用户编号"
+        },
+        "prompt": {
+          "type": "string",
+          "title": "提示词"
+        },
+        "platform": {
+          "type": "string",
+          "title": "平台"
+        },
+        "modelId": {
+          "type": "string",
+          "title": "模型编号"
+        },
+        "model": {
+          "type": "string",
+          "title": "模型"
+        },
+        "width": {
+          "type": "integer",
+          "format": "int32",
+          "title": "图片宽度"
+        },
+        "height": {
+          "type": "integer",
+          "format": "int32",
+          "title": "图片高度"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "绘画状态"
+        },
+        "finishTime": {
+          "type": "string",
+          "title": "完成时间"
+        },
+        "errorMessage": {
+          "type": "string",
+          "title": "错误信息"
+        },
+        "publicStatus": {
+          "type": "boolean",
+          "title": "是否发布"
+        },
+        "picURL": {
+          "type": "string",
+          "title": "图片地址"
+        },
+        "options": {
+          "type": "string",
+          "title": "绘制参数"
+        },
+        "taskId": {
+          "type": "string",
+          "title": "任务编号"
+        },
+        "buttons": {
+          "type": "string",
+          "title": "mj buttons 按钮"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "AI 绘画表信息"
+    },
+    "admin.v1.CreateAiIndexImageRecordReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        }
+      },
+      "title": "响应-AI 绘画表-创建一条数据"
+    },
+    "admin.v1.CreateAiIndexImageRecordReq": {
+      "type": "object",
+      "properties": {
+        "adminId": {
+          "type": "string",
+          "title": "用户编号"
+        },
+        "prompt": {
+          "type": "string",
+          "title": "提示词"
+        },
+        "platform": {
+          "type": "string",
+          "title": "平台"
+        },
+        "modelId": {
+          "type": "string",
+          "title": "模型编号"
+        },
+        "model": {
+          "type": "string",
+          "title": "模型"
+        },
+        "width": {
+          "type": "integer",
+          "format": "int32",
+          "title": "图片宽度"
+        },
+        "height": {
+          "type": "integer",
+          "format": "int32",
+          "title": "图片高度"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "绘画状态"
+        },
+        "finishTime": {
+          "type": "string",
+          "title": "完成时间"
+        },
+        "errorMessage": {
+          "type": "string",
+          "title": "错误信息"
+        },
+        "publicStatus": {
+          "type": "boolean",
+          "title": "是否发布"
+        },
+        "picURL": {
+          "type": "string",
+          "title": "图片地址"
+        },
+        "options": {
+          "type": "string",
+          "title": "绘制参数"
+        },
+        "taskId": {
+          "type": "string",
+          "title": "任务编号"
+        },
+        "buttons": {
+          "type": "string",
+          "title": "mj buttons 按钮"
+        }
+      },
+      "title": "请求-AI 绘画表-创建一条数据",
+      "required": [
+        "adminId",
+        "prompt",
+        "platform",
+        "model",
+        "width",
+        "height",
+        "status",
+        "publicStatus"
+      ]
+    },
+    "admin.v1.DeleteAiIndexImageRecordReply": {
+      "type": "object",
+      "title": "响应-AI 绘画表-删除一条数据"
+    },
+    "admin.v1.DeleteAiIndexImageRecordReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        }
+      },
+      "title": "请求-AI 绘画表-删除一条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "admin.v1.GetAiIndexImageRecordListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.AiIndexImageRecordInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-AI 绘画表-列表数据查询"
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

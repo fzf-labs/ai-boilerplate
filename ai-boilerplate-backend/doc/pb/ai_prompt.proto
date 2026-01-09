@@ -1,0 +1,193 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//AI 提示词
+service AiPrompt {
+  //AI 提示词-创建一条数据
+  rpc CreateAiPrompt(CreateAiPromptReq) returns (CreateAiPromptReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_prompt/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 提示词-更新一条数据
+  rpc UpdateAiPrompt(UpdateAiPromptReq) returns (UpdateAiPromptReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_prompt/update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 提示词-删除一条数据
+  rpc DeleteAiPrompt(DeleteAiPromptReq) returns (DeleteAiPromptReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_prompt/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 提示词-单条数据查询
+  rpc GetAiPromptInfo(GetAiPromptInfoReq) returns (GetAiPromptInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/ai_prompt/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 提示词-列表数据查询
+  rpc GetAiPromptList(GetAiPromptListReq) returns (GetAiPromptListReply) {
+    option (google.api.http) = {get: "/admin/v1/ai_prompt/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+//AI 提示词信息
+message AiPromptInfo {
+  string id = 1; // Id
+	string tenantId = 2; // 租户编号
+	string adminId = 3; // 用户编号
+	string name = 4; // 名称
+	string desc = 5; // 描述
+	string prompt = 6; // 提示词
+	int32 sort = 7; // 排序
+	string createdAt = 8; // 创建时间
+	string updatedAt = 9; // 更新时间
+}
+
+//请求-AI 提示词-创建一条数据
+message CreateAiPromptReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["tenantId","name","desc","prompt","sort"]
+    }
+  };
+  string tenantId = 1 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 租户编号
+	string adminId = 2 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 用户编号
+	string name = 3 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 名称
+	string desc = 4 [(buf.validate.field).string={min_len: 1, max_len: 255}]; // 描述
+	string prompt = 5 [(buf.validate.field).string={min_len: 1, max_len: 9223372036854775807}]; // 提示词
+	int32 sort = 6 ; // 排序
+}
+
+//响应-AI 提示词-创建一条数据
+message CreateAiPromptReply {
+  	string id = 1; // Id
+}
+
+//请求-AI 提示词-更新一条数据
+message UpdateAiPromptReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","tenantId","name","desc","prompt","sort"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // Id
+	string tenantId = 2 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 租户编号
+	string adminId = 3 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 用户编号
+	string name = 4 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 名称
+	string desc = 5 [(buf.validate.field).string={min_len: 1, max_len: 255}]; // 描述
+	string prompt = 6 [(buf.validate.field).string={min_len: 1, max_len: 9223372036854775807}]; // 提示词
+	int32 sort = 7 ; // 排序
+}
+
+//响应-AI 提示词-更新一条数据
+message UpdateAiPromptReply {}
+
+//请求-AI 提示词-删除一条数据
+message DeleteAiPromptReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // Id
+}
+
+//响应-AI 提示词-删除一条数据
+message DeleteAiPromptReply {}
+
+//请求-AI 提示词-单条数据查询
+message GetAiPromptInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // Id
+}
+
+//响应-AI 提示词-单条数据查询
+message GetAiPromptInfoReply {
+  AiPromptInfo info = 1;
+}
+
+//请求-AI 提示词-列表数据查询
+message GetAiPromptListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1[(buf.validate.field).int32={gte: 1}]; //页码
+  int32 pageSize = 2[(buf.validate.field).int32={gte: 1, lte: 1000}]; //页数
+}
+
+//响应-AI 提示词-列表数据查询
+message GetAiPromptListReply {
+  int32 total = 1; //总数
+  repeated AiPromptInfo list = 2; // 列表数据
+}
+

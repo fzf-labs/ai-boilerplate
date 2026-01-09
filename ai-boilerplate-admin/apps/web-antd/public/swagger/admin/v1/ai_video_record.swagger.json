@@ -1,0 +1,577 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/ai_video_record.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "AiVideoRecord"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/ai_video_record/create": {
+      "post": {
+        "summary": "AI 视频表-创建一条数据",
+        "operationId": "AiVideoRecord_CreateAiVideoRecord",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateAiVideoRecordReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateAiVideoRecordReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiVideoRecord"
+        ]
+      }
+    },
+    "/admin/v1/ai_video_record/delete": {
+      "post": {
+        "summary": "AI 视频表-删除多条数据",
+        "operationId": "AiVideoRecord_DeleteAiVideoRecord",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteAiVideoRecordReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1DeleteAiVideoRecordReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiVideoRecord"
+        ]
+      }
+    },
+    "/admin/v1/ai_video_record/info": {
+      "get": {
+        "summary": "AI 视频表-单条数据查询",
+        "operationId": "AiVideoRecord_GetAiVideoRecordInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetAiVideoRecordInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "编号",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiVideoRecord"
+        ]
+      }
+    },
+    "/admin/v1/ai_video_record/list": {
+      "get": {
+        "summary": "AI 视频表-列表数据查询",
+        "operationId": "AiVideoRecord_GetAiVideoRecordList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetAiVideoRecordListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiVideoRecord"
+        ]
+      }
+    },
+    "/admin/v1/ai_video_record/update": {
+      "post": {
+        "summary": "AI 视频表-更新一条数据",
+        "operationId": "AiVideoRecord_UpdateAiVideoRecord",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateAiVideoRecordReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateAiVideoRecordReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiVideoRecord"
+        ]
+      }
+    },
+    "/admin/v1/ai_video_record/update/status": {
+      "post": {
+        "summary": "AI 视频表-更新状态",
+        "operationId": "AiVideoRecord_UpdateAiVideoRecordStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateAiVideoRecordStatusReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateAiVideoRecordStatusReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiVideoRecord"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1AiVideoRecordInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "adminId": {
+          "type": "string",
+          "title": "用户编号"
+        },
+        "prompt": {
+          "type": "string",
+          "title": "提示词"
+        },
+        "platform": {
+          "type": "string",
+          "title": "平台"
+        },
+        "modelId": {
+          "type": "string",
+          "title": "模型编号"
+        },
+        "model": {
+          "type": "string",
+          "title": "模型"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态"
+        },
+        "finishTime": {
+          "type": "string",
+          "title": "完成时间"
+        },
+        "errorMessage": {
+          "type": "string",
+          "title": "错误信息"
+        },
+        "publicStatus": {
+          "type": "boolean",
+          "title": "是否发布"
+        },
+        "videoURL": {
+          "type": "string",
+          "title": "视频地址"
+        },
+        "options": {
+          "type": "string",
+          "title": "绘制参数"
+        },
+        "taskId": {
+          "type": "string",
+          "title": "任务编号"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "AI 视频表信息"
+    },
+    "v1CreateAiVideoRecordReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        }
+      },
+      "title": "响应-AI 视频表-创建一条数据"
+    },
+    "v1CreateAiVideoRecordReq": {
+      "type": "object",
+      "properties": {
+        "adminId": {
+          "type": "string",
+          "title": "用户编号"
+        },
+        "prompt": {
+          "type": "string",
+          "title": "提示词"
+        },
+        "platform": {
+          "type": "string",
+          "title": "平台"
+        },
+        "modelId": {
+          "type": "string",
+          "title": "模型编号"
+        },
+        "model": {
+          "type": "string",
+          "title": "模型"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态"
+        },
+        "finishTime": {
+          "type": "string",
+          "title": "完成时间"
+        },
+        "errorMessage": {
+          "type": "string",
+          "title": "错误信息"
+        },
+        "publicStatus": {
+          "type": "boolean",
+          "title": "是否发布"
+        },
+        "videoURL": {
+          "type": "string",
+          "title": "视频地址"
+        },
+        "options": {
+          "type": "string",
+          "title": "绘制参数"
+        },
+        "taskId": {
+          "type": "string",
+          "title": "任务编号"
+        }
+      },
+      "title": "请求-AI 视频表-创建一条数据",
+      "required": [
+        "adminId",
+        "prompt",
+        "platform",
+        "model",
+        "status",
+        "publicStatus"
+      ]
+    },
+    "v1DeleteAiVideoRecordReply": {
+      "type": "object",
+      "title": "响应-AI 视频表-删除多条数据"
+    },
+    "v1DeleteAiVideoRecordReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        }
+      },
+      "title": "请求-AI 视频表-删除多条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "v1GetAiVideoRecordInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/v1AiVideoRecordInfo"
+        }
+      },
+      "title": "响应-AI 视频表-单条数据查询"
+    },
+    "v1GetAiVideoRecordListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1AiVideoRecordInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-AI 视频表-列表数据查询"
+    },
+    "v1UpdateAiVideoRecordReply": {
+      "type": "object",
+      "title": "响应-AI 视频表-更新一条数据"
+    },
+    "v1UpdateAiVideoRecordReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "adminId": {
+          "type": "string",
+          "title": "用户编号"
+        },
+        "prompt": {
+          "type": "string",
+          "title": "提示词"
+        },
+        "platform": {
+          "type": "string",
+          "title": "平台"
+        },
+        "modelId": {
+          "type": "string",
+          "title": "模型编号"
+        },
+        "model": {
+          "type": "string",
+          "title": "模型"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态"
+        },
+        "finishTime": {
+          "type": "string",
+          "title": "完成时间"
+        },
+        "errorMessage": {
+          "type": "string",
+          "title": "错误信息"
+        },
+        "publicStatus": {
+          "type": "boolean",
+          "title": "是否发布"
+        },
+        "videoURL": {
+          "type": "string",
+          "title": "视频地址"
+        },
+        "options": {
+          "type": "string",
+          "title": "绘制参数"
+        },
+        "taskId": {
+          "type": "string",
+          "title": "任务编号"
+        }
+      },
+      "title": "请求-AI 视频表-更新一条数据",
+      "required": [
+        "id",
+        "adminId",
+        "prompt",
+        "platform",
+        "model",
+        "status",
+        "publicStatus"
+      ]
+    },
+    "v1UpdateAiVideoRecordStatusReply": {
+      "type": "object",
+      "title": "响应-AI 视频表-更新状态"
+    },
+    "v1UpdateAiVideoRecordStatusReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态"
+        }
+      },
+      "title": "请求-AI 视频表-更新状态",
+      "required": [
+        "id",
+        "status"
+      ]
+    }
+  }
+}

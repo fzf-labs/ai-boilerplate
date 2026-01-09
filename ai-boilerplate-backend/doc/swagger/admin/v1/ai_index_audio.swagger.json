@@ -1,0 +1,457 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/ai_index_audio.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "AiIndexAudio"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/ai_index_audio/create": {
+      "post": {
+        "summary": "AI 音乐表-创建一条数据",
+        "operationId": "AiIndexAudio_CreateAiIndexAudioRecord",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateAiIndexAudioRecordReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateAiIndexAudioRecordReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiIndexAudio"
+        ]
+      }
+    },
+    "/admin/v1/ai_index_audio/delete": {
+      "post": {
+        "summary": "AI 音乐表-删除一条数据",
+        "operationId": "AiIndexAudio_DeleteAiIndexAudioRecord",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteAiIndexAudioRecordReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteAiIndexAudioRecordReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiIndexAudio"
+        ]
+      }
+    },
+    "/admin/v1/ai_index_audio/info": {
+      "get": {
+        "summary": "AI 音乐表-单条数据查询",
+        "operationId": "AiIndexAudio_GetAiIndexAudioRecordInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetAiIndexAudioRecordInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "编号",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiIndexAudio"
+        ]
+      }
+    },
+    "/admin/v1/ai_index_audio/list": {
+      "get": {
+        "summary": "AI 音乐表-列表数据查询",
+        "operationId": "AiIndexAudio_GetAiIndexAudioRecordList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetAiIndexAudioRecordListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiIndexAudio"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "admin.v1.AiIndexAudioRecordInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "tenantId": {
+          "type": "string",
+          "title": "租户编号"
+        },
+        "adminId": {
+          "type": "string",
+          "title": "用户编号"
+        },
+        "title": {
+          "type": "string",
+          "title": "音乐名称"
+        },
+        "lyric": {
+          "type": "string",
+          "title": "歌词"
+        },
+        "imageURL": {
+          "type": "string",
+          "title": "图片地址"
+        },
+        "audioURL": {
+          "type": "string",
+          "title": "音频地址"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "音频状态"
+        },
+        "description": {
+          "type": "string",
+          "title": "描述词"
+        },
+        "prompt": {
+          "type": "string",
+          "title": "提示词"
+        },
+        "platform": {
+          "type": "string",
+          "title": "模型平台"
+        },
+        "modelId": {
+          "type": "string",
+          "title": "模型编号"
+        },
+        "model": {
+          "type": "string",
+          "title": "模型"
+        },
+        "generateMode": {
+          "type": "integer",
+          "format": "int32",
+          "title": "生成模式"
+        },
+        "tags": {
+          "type": "string",
+          "title": "风格标签"
+        },
+        "duration": {
+          "type": "number",
+          "format": "double",
+          "title": "时长"
+        },
+        "publicStatus": {
+          "type": "boolean",
+          "title": "是否发布"
+        },
+        "taskId": {
+          "type": "string",
+          "title": "任务编号"
+        },
+        "errorMessage": {
+          "type": "string",
+          "title": "错误信息"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "AI 音乐表信息"
+    },
+    "admin.v1.CreateAiIndexAudioRecordReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        }
+      },
+      "title": "响应-AI 音乐表-创建一条数据"
+    },
+    "admin.v1.CreateAiIndexAudioRecordReq": {
+      "type": "object",
+      "properties": {
+        "tenantId": {
+          "type": "string",
+          "title": "租户编号"
+        },
+        "adminId": {
+          "type": "string",
+          "title": "用户编号"
+        },
+        "title": {
+          "type": "string",
+          "title": "音乐名称"
+        },
+        "lyric": {
+          "type": "string",
+          "title": "歌词"
+        },
+        "imageURL": {
+          "type": "string",
+          "title": "图片地址"
+        },
+        "audioURL": {
+          "type": "string",
+          "title": "音频地址"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "音频状态"
+        },
+        "description": {
+          "type": "string",
+          "title": "描述词"
+        },
+        "prompt": {
+          "type": "string",
+          "title": "提示词"
+        },
+        "platform": {
+          "type": "string",
+          "title": "模型平台"
+        },
+        "modelId": {
+          "type": "string",
+          "title": "模型编号"
+        },
+        "model": {
+          "type": "string",
+          "title": "模型"
+        },
+        "generateMode": {
+          "type": "integer",
+          "format": "int32",
+          "title": "生成模式"
+        },
+        "tags": {
+          "type": "string",
+          "title": "风格标签"
+        },
+        "duration": {
+          "type": "number",
+          "format": "double",
+          "title": "时长"
+        },
+        "publicStatus": {
+          "type": "boolean",
+          "title": "是否发布"
+        },
+        "taskId": {
+          "type": "string",
+          "title": "任务编号"
+        },
+        "errorMessage": {
+          "type": "string",
+          "title": "错误信息"
+        }
+      },
+      "title": "请求-AI 音乐表-创建一条数据",
+      "required": [
+        "tenantId",
+        "adminId",
+        "title",
+        "status",
+        "platform",
+        "modelId",
+        "model",
+        "generateMode",
+        "publicStatus"
+      ]
+    },
+    "admin.v1.DeleteAiIndexAudioRecordReply": {
+      "type": "object",
+      "title": "响应-AI 音乐表-删除一条数据"
+    },
+    "admin.v1.DeleteAiIndexAudioRecordReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        }
+      },
+      "title": "请求-AI 音乐表-删除一条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "admin.v1.GetAiIndexAudioRecordInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/admin.v1.AiIndexAudioRecordInfo"
+        }
+      },
+      "title": "响应-AI 音乐表-单条数据查询"
+    },
+    "admin.v1.GetAiIndexAudioRecordListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.AiIndexAudioRecordInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-AI 音乐表-列表数据查询"
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

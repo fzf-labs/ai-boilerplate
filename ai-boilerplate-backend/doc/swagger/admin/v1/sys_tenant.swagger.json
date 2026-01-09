@@ -1,0 +1,494 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/sys_tenant.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "SysTenant"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/sys_tenant/create": {
+      "post": {
+        "summary": "系统-租户-创建一条数据",
+        "operationId": "SysTenant_CreateSysTenant",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateSysTenantReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateSysTenantReq"
+            }
+          }
+        ],
+        "tags": [
+          "SysTenant"
+        ]
+      }
+    },
+    "/admin/v1/sys_tenant/delete": {
+      "post": {
+        "summary": "系统-租户-删除一条数据",
+        "operationId": "SysTenant_DeleteSysTenant",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteSysTenantReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteSysTenantReq"
+            }
+          }
+        ],
+        "tags": [
+          "SysTenant"
+        ]
+      }
+    },
+    "/admin/v1/sys_tenant/info": {
+      "get": {
+        "summary": "系统-租户-单条数据查询",
+        "operationId": "SysTenant_GetSysTenantInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetSysTenantInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "id",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SysTenant"
+        ]
+      }
+    },
+    "/admin/v1/sys_tenant/list": {
+      "get": {
+        "summary": "系统-租户-列表数据查询",
+        "operationId": "SysTenant_GetSysTenantList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetSysTenantListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "name",
+            "description": "名称",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "description": "状态",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "createdAt",
+            "description": "创建时间",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": [
+          "SysTenant"
+        ]
+      }
+    },
+    "/admin/v1/sys_tenant/update": {
+      "post": {
+        "summary": "系统-租户-更新一条数据",
+        "operationId": "SysTenant_UpdateSysTenant",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateSysTenantReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateSysTenantReq"
+            }
+          }
+        ],
+        "tags": [
+          "SysTenant"
+        ]
+      }
+    },
+    "/admin/v1/sys_tenant/update/status": {
+      "post": {
+        "summary": "系统-租户-更新状态",
+        "operationId": "SysTenant_UpdateSysTenantStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateSysTenantStatusReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateSysTenantStatusReq"
+            }
+          }
+        ],
+        "tags": [
+          "SysTenant"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "admin.v1.CreateSysTenantReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        }
+      },
+      "title": "响应-系统-租户-创建一条数据"
+    },
+    "admin.v1.CreateSysTenantReq": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "名称"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "expireTime": {
+          "type": "string",
+          "title": "过期时间"
+        },
+        "menuIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "菜单"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态"
+        },
+        "username": {
+          "type": "string",
+          "title": "用户名"
+        },
+        "password": {
+          "type": "string",
+          "title": "密码"
+        }
+      },
+      "title": "请求-系统-租户-创建一条数据",
+      "required": [
+        "name",
+        "username",
+        "password"
+      ]
+    },
+    "admin.v1.DeleteSysTenantReply": {
+      "type": "object",
+      "title": "响应-系统-租户-删除一条数据"
+    },
+    "admin.v1.DeleteSysTenantReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        }
+      },
+      "title": "请求-系统-租户-删除一条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "admin.v1.GetSysTenantInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/admin.v1.SysTenantInfo"
+        }
+      },
+      "title": "响应-系统-租户-单条数据查询"
+    },
+    "admin.v1.GetSysTenantListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.SysTenantInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-系统-租户-列表数据查询"
+    },
+    "admin.v1.SysTenantInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "name": {
+          "type": "string",
+          "title": "名称"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "adminId": {
+          "type": "string",
+          "title": "租户管理员Id"
+        },
+        "expireTime": {
+          "type": "string",
+          "title": "过期时间"
+        },
+        "menuIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "菜单集合"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        },
+        "adminName": {
+          "type": "string",
+          "title": "租户管理员名称"
+        }
+      },
+      "title": "系统-租户信息"
+    },
+    "admin.v1.UpdateSysTenantReply": {
+      "type": "object",
+      "title": "响应-系统-租户-更新一条数据"
+    },
+    "admin.v1.UpdateSysTenantReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "name": {
+          "type": "string",
+          "title": "名称"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "expireTime": {
+          "type": "string",
+          "title": "过期时间"
+        },
+        "menuIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "菜单"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态"
+        }
+      },
+      "title": "请求-系统-租户-更新一条数据",
+      "required": [
+        "id",
+        "name"
+      ]
+    },
+    "admin.v1.UpdateSysTenantStatusReply": {
+      "type": "object",
+      "title": "响应-系统-租户-更新状态"
+    },
+    "admin.v1.UpdateSysTenantStatusReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态"
+        }
+      },
+      "title": "请求-系统-租户-更新状态",
+      "required": [
+        "id",
+        "status"
+      ]
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

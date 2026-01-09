@@ -1,0 +1,678 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/sms_template.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "SmsTemplate"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/sms_template/create": {
+      "post": {
+        "summary": "短信模板-创建一条数据",
+        "operationId": "SmsTemplate_CreateSmsTemplate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateSmsTemplateReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateSmsTemplateReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SmsTemplate"
+        ]
+      }
+    },
+    "/admin/v1/sms_template/delete": {
+      "post": {
+        "summary": "短信模板-删除一条数据",
+        "operationId": "SmsTemplate_DeleteSmsTemplate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteSmsTemplateReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteSmsTemplateReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SmsTemplate"
+        ]
+      }
+    },
+    "/admin/v1/sms_template/info": {
+      "get": {
+        "summary": "短信模板-单条数据查询",
+        "operationId": "SmsTemplate_GetSmsTemplateInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetSmsTemplateInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "id",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SmsTemplate"
+        ]
+      }
+    },
+    "/admin/v1/sms_template/list": {
+      "get": {
+        "summary": "短信模板-列表数据查询",
+        "operationId": "SmsTemplate_GetSmsTemplateList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetSmsTemplateListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SmsTemplate"
+        ]
+      }
+    },
+    "/admin/v1/sms_template/selector": {
+      "get": {
+        "summary": "短信模板-模板选择器",
+        "operationId": "SmsTemplate_GetSmsTemplateSelector",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetSmsTemplateSelectorReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SmsTemplate"
+        ]
+      }
+    },
+    "/admin/v1/sms_template/send/msg": {
+      "post": {
+        "summary": "短信模板-发送短信",
+        "operationId": "SmsTemplate_SendSmsTemplateMsg",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.SendSmsTemplateMsgReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.SendSmsTemplateMsgReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SmsTemplate"
+        ]
+      }
+    },
+    "/admin/v1/sms_template/update": {
+      "post": {
+        "summary": "短信模板-更新一条数据",
+        "operationId": "SmsTemplate_UpdateSmsTemplate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateSmsTemplateReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateSmsTemplateReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SmsTemplate"
+        ]
+      }
+    },
+    "/admin/v1/sms_template/update/status": {
+      "post": {
+        "summary": "短信模板-更新状态",
+        "operationId": "SmsTemplate_UpdateSmsTemplateStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateSmsTemplateStatusReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateSmsTemplateStatusReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SmsTemplate"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "admin.v1.CreateSmsTemplateReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        }
+      },
+      "title": "响应-短信模板-创建一条数据"
+    },
+    "admin.v1.CreateSmsTemplateReq": {
+      "type": "object",
+      "properties": {
+        "smsChannelId": {
+          "type": "string",
+          "title": "短信渠道编号"
+        },
+        "templateType": {
+          "type": "integer",
+          "format": "int32",
+          "title": "模板类型"
+        },
+        "templateCode": {
+          "type": "string",
+          "title": "模板编码"
+        },
+        "templateName": {
+          "type": "string",
+          "title": "模板名称"
+        },
+        "templateContent": {
+          "type": "string",
+          "title": "模板内容"
+        },
+        "templateParams": {
+          "type": "string",
+          "title": "模板参数"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "apiTemplateId": {
+          "type": "string",
+          "title": "短信供应商的模板编号"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用,1开启)"
+        }
+      },
+      "title": "请求-短信模板-创建一条数据",
+      "required": [
+        "smsChannelId",
+        "templateType",
+        "templateCode",
+        "templateName",
+        "templateContent",
+        "apiTemplateId",
+        "status"
+      ]
+    },
+    "admin.v1.DeleteSmsTemplateReply": {
+      "type": "object",
+      "title": "响应-短信模板-删除一条数据"
+    },
+    "admin.v1.DeleteSmsTemplateReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        }
+      },
+      "title": "请求-短信模板-删除一条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "admin.v1.GetSmsTemplateInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/admin.v1.SmsTemplateInfo"
+        }
+      },
+      "title": "响应-短信模板-单条数据查询"
+    },
+    "admin.v1.GetSmsTemplateListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.SmsTemplateInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-短信模板-列表数据查询"
+    },
+    "admin.v1.GetSmsTemplateSelectorReply": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.SmsTemplateSelector"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-短信模板-模板选择器"
+    },
+    "admin.v1.SendSmsTemplateMsgReply": {
+      "type": "object",
+      "title": "响应-短信模板-发送短信"
+    },
+    "admin.v1.SendSmsTemplateMsgReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "phone": {
+          "type": "string",
+          "title": "手机号"
+        },
+        "params": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "模板参数"
+        }
+      },
+      "title": "请求-短信模板-发送短信",
+      "required": [
+        "id",
+        "phone"
+      ]
+    },
+    "admin.v1.SmsTemplateInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "smsChannelId": {
+          "type": "string",
+          "title": "短信渠道编号"
+        },
+        "templateType": {
+          "type": "integer",
+          "format": "int32",
+          "title": "模板类型"
+        },
+        "templateCode": {
+          "type": "string",
+          "title": "模板编码"
+        },
+        "templateName": {
+          "type": "string",
+          "title": "模板名称"
+        },
+        "templateContent": {
+          "type": "string",
+          "title": "模板内容"
+        },
+        "templateParams": {
+          "type": "string",
+          "title": "模板参数"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "apiTemplateId": {
+          "type": "string",
+          "title": "短信供应商的模板编号"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用,1开启)"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        },
+        "smsChannelName": {
+          "type": "string",
+          "title": "短信渠道名称"
+        }
+      },
+      "title": "短信模板信息"
+    },
+    "admin.v1.SmsTemplateSelector": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "templateName": {
+          "type": "string",
+          "title": "模板名称"
+        }
+      }
+    },
+    "admin.v1.UpdateSmsTemplateReply": {
+      "type": "object",
+      "title": "响应-短信模板-更新一条数据"
+    },
+    "admin.v1.UpdateSmsTemplateReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "smsChannelId": {
+          "type": "string",
+          "title": "短信渠道编号"
+        },
+        "templateType": {
+          "type": "integer",
+          "format": "int32",
+          "title": "模板类型"
+        },
+        "templateCode": {
+          "type": "string",
+          "title": "模板编码"
+        },
+        "templateName": {
+          "type": "string",
+          "title": "模板名称"
+        },
+        "templateContent": {
+          "type": "string",
+          "title": "模板内容"
+        },
+        "templateParams": {
+          "type": "string",
+          "title": "模板参数"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "apiTemplateId": {
+          "type": "string",
+          "title": "短信供应商的模板编号"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用,1开启)"
+        }
+      },
+      "title": "请求-短信模板-更新一条数据",
+      "required": [
+        "id",
+        "smsChannelId",
+        "templateType",
+        "templateCode",
+        "templateName",
+        "templateContent",
+        "apiTemplateId",
+        "status"
+      ]
+    },
+    "admin.v1.UpdateSmsTemplateStatusReply": {
+      "type": "object",
+      "title": "响应-短信模板-更新状态"
+    },
+    "admin.v1.UpdateSmsTemplateStatusReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用,1开启)"
+        }
+      },
+      "title": "请求-短信模板-更新状态",
+      "required": [
+        "id",
+        "status"
+      ]
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

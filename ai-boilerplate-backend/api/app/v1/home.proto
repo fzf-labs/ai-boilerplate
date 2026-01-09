@@ -1,0 +1,130 @@
+syntax = "proto3";
+
+package app.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/app/v1;v1";
+
+// 首页服务
+service Home {
+  // 获取轮播图列表
+  rpc GetBannerList(GetBannerListReq) returns (GetBannerListReply) {
+    option (google.api.http) = {get: "/app/v1/home/banner/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+
+  // 获取内容列表
+  rpc GetContentList(GetContentListReq) returns (GetContentListReply) {
+    option (google.api.http) = {get: "/app/v1/home/content/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+
+  // 获取内容详情
+  rpc GetContentDetail(GetContentDetailReq) returns (GetContentDetailReply) {
+    option (google.api.http) = {get: "/app/v1/home/content/detail"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+// 轮播图信息
+message BannerInfo {
+  int64 id = 1; // 轮播图ID
+  string imageUrl = 2; // 图片URL
+  string linkUrl = 3; // 跳转链接
+  string title = 4; // 标题
+  int32 sort = 5; // 排序
+}
+
+// 请求-获取轮播图列表
+message GetBannerListReq {}
+
+// 响应-获取轮播图列表
+message GetBannerListReply {
+  repeated BannerInfo list = 1; // 轮播图列表
+}
+
+// 内容信息
+message ContentInfo {
+  int64 id = 1; // 内容ID
+  string title = 2; // 标题
+  string summary = 3; // 摘要
+  string coverImage = 4; // 封面图
+  string publishTime = 5; // 发布时间
+  repeated string tags = 6; // 标签
+  bool isRecommend = 7; // 是否推荐
+  bool isHot = 8; // 是否热门
+}
+
+// 请求-获取内容列表
+message GetContentListReq {
+  int32 page = 1 [(buf.validate.field).int32 = {gte: 1}]; // 页码
+  int32 pageSize = 2 [(buf.validate.field).int32 = {
+    gte: 1
+    lte: 100
+  }]; // 每页数量
+}
+
+// 响应-获取内容列表
+message GetContentListReply {
+  repeated ContentInfo list = 1; // 内容列表
+  int64 total = 2; // 总数
+  int32 page = 3; // 当前页
+  int32 pageSize = 4; // 每页数量
+}
+
+// 内容详情
+message ContentDetail {
+  int64 id = 1; // 内容ID
+  string title = 2; // 标题
+  string content = 3; // 内容
+  string coverImage = 4; // 封面图
+  string publishTime = 5; // 发布时间
+  repeated string tags = 6; // 标签
+  int64 viewCount = 7; // 浏览量
+  int64 likeCount = 8; // 点赞数
+}
+
+// 请求-获取内容详情
+message GetContentDetailReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  int64 id = 1 [(buf.validate.field).int64 = {gt: 0}]; // 内容ID
+}
+
+// 响应-获取内容详情
+message GetContentDetailReply {
+  ContentDetail info = 1; // 内容详情
+}

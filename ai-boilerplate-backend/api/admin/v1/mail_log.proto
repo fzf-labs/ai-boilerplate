@@ -1,0 +1,130 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//邮件日志表
+service MailLog {
+  //邮件日志表-删除一条数据
+  rpc DeleteMailLog(DeleteMailLogReq) returns (DeleteMailLogReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/mail_log/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //邮件日志表-单条数据查询
+  rpc GetMailLogInfo(GetMailLogInfoReq) returns (GetMailLogInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/mail_log/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //邮件日志表-列表数据查询
+  rpc GetMailLogList(GetMailLogListReq) returns (GetMailLogListReply) {
+    option (google.api.http) = {get: "/admin/v1/mail_log/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+//邮件日志表信息
+message MailLogInfo {
+  string id = 1; // id
+  string accountId = 2; // 邮箱账号编号
+  string fromMail = 3; // 发送邮箱地址
+  string toMail = 4; // 接收邮箱地址
+  string templateId = 5; // 模板编号
+  string templateCode = 6; // 模板编码
+  string templateNickname = 7; // 模版发送人名称
+  string templateTitle = 8; // 邮件标题
+  string templateContent = 9; // 邮件内容
+  string templateParams = 10; // 邮件参数
+  int32 sendStatus = 11; // 发送状态
+  string sendTime = 12; // 发送时间
+  string sendMessageId = 13; // 发送返回的消息 ID
+  string sendException = 14; // 发送异常
+  string createdAt = 15; // 创建时间
+  string updatedAt = 16; // 更新时间
+}
+
+//请求-邮件日志表-删除一条数据
+message DeleteMailLogReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // id
+}
+
+//响应-邮件日志表-删除一条数据
+message DeleteMailLogReply {}
+
+//请求-邮件日志表-单条数据查询
+message GetMailLogInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // id
+}
+
+//响应-邮件日志表-单条数据查询
+message GetMailLogInfoReply {
+  MailLogInfo info = 1;
+}
+
+//请求-邮件日志表-列表数据查询
+message GetMailLogListReq {
+  int32 page = 1; //页码
+  int32 pageSize = 2; //页数
+  string accountId = 3; // 邮箱账号编号
+  string fromMail = 4; // 发送邮箱地址
+  string toMail = 5; // 接收邮箱地址
+  string templateId = 6; // 模板编号
+}
+
+//响应-邮件日志表-列表数据查询
+message GetMailLogListReply {
+  int32 total = 1; //总数
+  repeated MailLogInfo list = 2; // 列表数据
+}

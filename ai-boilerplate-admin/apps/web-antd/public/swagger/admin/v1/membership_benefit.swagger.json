@@ -1,0 +1,609 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/membership_benefit.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "MembershipBenefit"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/membership_benefit/create": {
+      "post": {
+        "summary": "会员权益配置表-创建一条数据",
+        "operationId": "MembershipBenefit_CreateMembershipBenefit",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateMembershipBenefitReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateMembershipBenefitReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MembershipBenefit"
+        ]
+      }
+    },
+    "/admin/v1/membership_benefit/delete": {
+      "post": {
+        "summary": "会员权益配置表-删除多条数据",
+        "operationId": "MembershipBenefit_DeleteMembershipBenefit",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteMembershipBenefitReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1DeleteMembershipBenefitReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MembershipBenefit"
+        ]
+      }
+    },
+    "/admin/v1/membership_benefit/info": {
+      "get": {
+        "summary": "会员权益配置表-单条数据查询",
+        "operationId": "MembershipBenefit_GetMembershipBenefitInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetMembershipBenefitInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "id",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MembershipBenefit"
+        ]
+      }
+    },
+    "/admin/v1/membership_benefit/key/select": {
+      "get": {
+        "summary": "会员权益配置表-获取权益标识选择器",
+        "operationId": "MembershipBenefit_GetMembershipBenefitKeySelect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetMembershipBenefitKeySelectReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MembershipBenefit"
+        ]
+      }
+    },
+    "/admin/v1/membership_benefit/list": {
+      "get": {
+        "summary": "会员权益配置表-列表数据查询",
+        "operationId": "MembershipBenefit_GetMembershipBenefitList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetMembershipBenefitListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "membershipType",
+            "description": "会员类型编码(normal,vip,svip)",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "benefitKey",
+            "description": "权益标识",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "benefitName",
+            "description": "权益名称",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MembershipBenefit"
+        ]
+      }
+    },
+    "/admin/v1/membership_benefit/update": {
+      "post": {
+        "summary": "会员权益配置表-更新一条数据",
+        "operationId": "MembershipBenefit_UpdateMembershipBenefit",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateMembershipBenefitReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateMembershipBenefitReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MembershipBenefit"
+        ]
+      }
+    },
+    "/admin/v1/membership_benefit/update/status": {
+      "post": {
+        "summary": "会员权益配置表-更新状态",
+        "operationId": "MembershipBenefit_UpdateMembershipBenefitStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateMembershipBenefitStatusReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateMembershipBenefitStatusReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MembershipBenefit"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1CreateMembershipBenefitReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        }
+      },
+      "title": "响应-会员权益配置表-创建一条数据"
+    },
+    "v1CreateMembershipBenefitReq": {
+      "type": "object",
+      "properties": {
+        "membershipType": {
+          "type": "string",
+          "title": "会员类型编码(normal,vip,svip)"
+        },
+        "benefitKey": {
+          "type": "string",
+          "title": "权益标识"
+        },
+        "benefitName": {
+          "type": "string",
+          "title": "权益名称"
+        },
+        "benefitDesc": {
+          "type": "string",
+          "title": "权益描述"
+        },
+        "benefitValue": {
+          "type": "string",
+          "title": "权益值"
+        },
+        "benefitNum": {
+          "type": "string",
+          "title": "权益次数"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "排序"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用,1启用)"
+        }
+      },
+      "title": "请求-会员权益配置表-创建一条数据",
+      "required": [
+        "membershipType",
+        "benefitKey",
+        "benefitName",
+        "status"
+      ]
+    },
+    "v1DeleteMembershipBenefitReply": {
+      "type": "object",
+      "title": "响应-会员权益配置表-删除多条数据"
+    },
+    "v1DeleteMembershipBenefitReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        }
+      },
+      "title": "请求-会员权益配置表-删除多条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "v1GetMembershipBenefitInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/v1MembershipBenefitInfo"
+        }
+      },
+      "title": "响应-会员权益配置表-单条数据查询"
+    },
+    "v1GetMembershipBenefitKeySelectReply": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1MembershipBenefitKeySelect"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-会员权益配置表-获取权益标识选择器"
+    },
+    "v1GetMembershipBenefitListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1MembershipBenefitInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-会员权益配置表-列表数据查询"
+    },
+    "v1MembershipBenefitInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "membershipType": {
+          "type": "string",
+          "title": "会员类型编码(normal,vip,svip)"
+        },
+        "benefitKey": {
+          "type": "string",
+          "title": "权益标识"
+        },
+        "benefitName": {
+          "type": "string",
+          "title": "权益名称"
+        },
+        "benefitDesc": {
+          "type": "string",
+          "title": "权益描述"
+        },
+        "benefitValue": {
+          "type": "string",
+          "title": "权益值"
+        },
+        "benefitNum": {
+          "type": "string",
+          "title": "权益次数"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "排序"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用,1启用)"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "会员权益配置表信息"
+    },
+    "v1MembershipBenefitKeySelect": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "title": "权益标识"
+        },
+        "name": {
+          "type": "string",
+          "title": "权益名称"
+        }
+      },
+      "title": "会员权益配置表-权益标识选择器"
+    },
+    "v1UpdateMembershipBenefitReply": {
+      "type": "object",
+      "title": "响应-会员权益配置表-更新一条数据"
+    },
+    "v1UpdateMembershipBenefitReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "membershipType": {
+          "type": "string",
+          "title": "会员类型编码(normal,vip,svip)"
+        },
+        "benefitKey": {
+          "type": "string",
+          "title": "权益标识"
+        },
+        "benefitName": {
+          "type": "string",
+          "title": "权益名称"
+        },
+        "benefitDesc": {
+          "type": "string",
+          "title": "权益描述"
+        },
+        "benefitValue": {
+          "type": "string",
+          "title": "权益值"
+        },
+        "benefitNum": {
+          "type": "string",
+          "title": "权益次数"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "排序"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用,1启用)"
+        }
+      },
+      "title": "请求-会员权益配置表-更新一条数据",
+      "required": [
+        "id",
+        "membershipType",
+        "benefitKey",
+        "benefitName",
+        "status"
+      ]
+    },
+    "v1UpdateMembershipBenefitStatusReply": {
+      "type": "object",
+      "title": "响应-会员权益配置表-更新状态"
+    },
+    "v1UpdateMembershipBenefitStatusReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用,1启用)"
+        }
+      },
+      "title": "请求-会员权益配置表-更新状态",
+      "required": [
+        "id",
+        "status"
+      ]
+    }
+  }
+}

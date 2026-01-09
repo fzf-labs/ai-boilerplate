@@ -1,0 +1,230 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//会员权益配置表
+service MembershipBenefit {
+  //会员权益配置表-创建一条数据
+  rpc CreateMembershipBenefit(CreateMembershipBenefitReq) returns (CreateMembershipBenefitReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/membership_benefit/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //会员权益配置表-更新一条数据
+  rpc UpdateMembershipBenefit(UpdateMembershipBenefitReq) returns (UpdateMembershipBenefitReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/membership_benefit/update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //会员权益配置表-更新状态
+  rpc UpdateMembershipBenefitStatus(UpdateMembershipBenefitStatusReq) returns (UpdateMembershipBenefitStatusReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/membership_benefit/update/status"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //会员权益配置表-删除一条数据
+  rpc DeleteMembershipBenefit(DeleteMembershipBenefitReq) returns (DeleteMembershipBenefitReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/membership_benefit/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //会员权益配置表-单条数据查询
+  rpc GetMembershipBenefitInfo(GetMembershipBenefitInfoReq) returns (GetMembershipBenefitInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/membership_benefit/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //会员权益配置表-列表数据查询
+  rpc GetMembershipBenefitList(GetMembershipBenefitListReq) returns (GetMembershipBenefitListReply) {
+    option (google.api.http) = {get: "/admin/v1/membership_benefit/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+//会员权益配置表信息
+message MembershipBenefitInfo {
+  string id = 1; // id
+	string membershipType = 2; // 会员类型编码(normal,vip,svip)
+	string benefitKey = 3; // 权益标识
+	string benefitName = 4; // 权益名称
+	string benefitDesc = 5; // 权益描述
+	string benefitValue = 6; // 权益值
+	string benefitNum = 7; // 权益次数
+	int32 sort = 8; // 排序
+	int32 status = 9; // 状态(-1禁用,1启用)
+	string createdAt = 10; // 创建时间
+	string updatedAt = 11; // 更新时间
+}
+
+//请求-会员权益配置表-创建一条数据
+message CreateMembershipBenefitReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["membershipType","benefitKey","benefitName","status"]
+    }
+  };
+  string membershipType = 1 [(buf.validate.field).string={min_len: 1, max_len: 20}]; // 会员类型编码(normal,vip,svip)
+	string benefitKey = 2 [(buf.validate.field).string={min_len: 1, max_len: 100}]; // 权益标识
+	string benefitName = 3 [(buf.validate.field).string={min_len: 1, max_len: 255}]; // 权益名称
+	string benefitDesc = 4 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 500}]; // 权益描述
+	string benefitValue = 5 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 100}]; // 权益值
+	string benefitNum = 6 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 100}]; // 权益次数
+	int32 sort = 7 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED]; // 排序
+	int32 status = 8 ; // 状态(-1禁用,1启用)
+}
+
+//响应-会员权益配置表-创建一条数据
+message CreateMembershipBenefitReply {
+  	string id = 1; // id
+}
+
+//请求-会员权益配置表-更新一条数据
+message UpdateMembershipBenefitReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","membershipType","benefitKey","benefitName","status"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+	string membershipType = 2 [(buf.validate.field).string={min_len: 1, max_len: 20}]; // 会员类型编码(normal,vip,svip)
+	string benefitKey = 3 [(buf.validate.field).string={min_len: 1, max_len: 100}]; // 权益标识
+	string benefitName = 4 [(buf.validate.field).string={min_len: 1, max_len: 255}]; // 权益名称
+	string benefitDesc = 5 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 500}]; // 权益描述
+	string benefitValue = 6 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 100}]; // 权益值
+	string benefitNum = 7 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 100}]; // 权益次数
+	int32 sort = 8 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED]; // 排序
+	int32 status = 9 ; // 状态(-1禁用,1启用)
+}
+
+//响应-会员权益配置表-更新一条数据
+message UpdateMembershipBenefitReply {}
+
+//请求-会员权益配置表-更新状态
+message UpdateMembershipBenefitStatusReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","status"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+	int32 status = 2 ; // 状态(-1禁用,1启用)
+}
+
+//响应-会员权益配置表-更新状态
+message UpdateMembershipBenefitStatusReply {}
+
+//请求-会员权益配置表-删除一条数据
+message DeleteMembershipBenefitReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+}
+
+//响应-会员权益配置表-删除一条数据
+message DeleteMembershipBenefitReply {}
+
+//请求-会员权益配置表-单条数据查询
+message GetMembershipBenefitInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+}
+
+//响应-会员权益配置表-单条数据查询
+message GetMembershipBenefitInfoReply {
+  MembershipBenefitInfo info = 1;
+}
+
+//请求-会员权益配置表-列表数据查询
+message GetMembershipBenefitListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1[(buf.validate.field).int32={gte: 1}]; //页码
+  int32 pageSize = 2[(buf.validate.field).int32={gte: 1, lte: 1000}]; //页数
+}
+
+//响应-会员权益配置表-列表数据查询
+message GetMembershipBenefitListReply {
+  int32 total = 1; //总数
+  repeated MembershipBenefitInfo list = 2; // 列表数据
+}
+

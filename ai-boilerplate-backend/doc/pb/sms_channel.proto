@@ -1,0 +1,227 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//短信渠道
+service SmsChannel {
+  //短信渠道-创建一条数据
+  rpc CreateSmsChannel(CreateSmsChannelReq) returns (CreateSmsChannelReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sms_channel/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //短信渠道-更新一条数据
+  rpc UpdateSmsChannel(UpdateSmsChannelReq) returns (UpdateSmsChannelReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sms_channel/update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //短信渠道-更新状态
+  rpc UpdateSmsChannelStatus(UpdateSmsChannelStatusReq) returns (UpdateSmsChannelStatusReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sms_channel/update/status"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //短信渠道-删除一条数据
+  rpc DeleteSmsChannel(DeleteSmsChannelReq) returns (DeleteSmsChannelReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sms_channel/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //短信渠道-单条数据查询
+  rpc GetSmsChannelInfo(GetSmsChannelInfoReq) returns (GetSmsChannelInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/sms_channel/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //短信渠道-列表数据查询
+  rpc GetSmsChannelList(GetSmsChannelListReq) returns (GetSmsChannelListReply) {
+    option (google.api.http) = {get: "/admin/v1/sms_channel/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+//短信渠道信息
+message SmsChannelInfo {
+  string id = 1; // id
+	string name = 2; // 渠道名称
+	string operator = 3; // 运营商
+	string remark = 4; // 备注
+	string APIKey = 5; // 短信 API 的账号
+	string APISecret = 6; // 短信 API 的秘钥
+	string callbackURL = 7; // 短信发送回调 URL
+	int32 status = 8; // 状态(-1禁用,1开启)
+	string createdAt = 9; // 创建时间
+	string updatedAt = 10; // 更新时间
+}
+
+//请求-短信渠道-创建一条数据
+message CreateSmsChannelReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["name","operator","APIKey","status"]
+    }
+  };
+  string name = 1 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 渠道名称
+	string operator = 2 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 运营商
+	string remark = 3 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 255}]; // 备注
+	string APIKey = 4 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 短信 API 的账号
+	string APISecret = 5 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 128}]; // 短信 API 的秘钥
+	string callbackURL = 6 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 255}]; // 短信发送回调 URL
+	int32 status = 7 ; // 状态(-1禁用,1开启)
+}
+
+//响应-短信渠道-创建一条数据
+message CreateSmsChannelReply {
+  	string id = 1; // id
+}
+
+//请求-短信渠道-更新一条数据
+message UpdateSmsChannelReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","name","operator","APIKey","status"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+	string name = 2 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 渠道名称
+	string operator = 3 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 运营商
+	string remark = 4 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 255}]; // 备注
+	string APIKey = 5 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 短信 API 的账号
+	string APISecret = 6 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 128}]; // 短信 API 的秘钥
+	string callbackURL = 7 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 255}]; // 短信发送回调 URL
+	int32 status = 8 ; // 状态(-1禁用,1开启)
+}
+
+//响应-短信渠道-更新一条数据
+message UpdateSmsChannelReply {}
+
+//请求-短信渠道-更新状态
+message UpdateSmsChannelStatusReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","status"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+	int32 status = 2 ; // 状态(-1禁用,1开启)
+}
+
+//响应-短信渠道-更新状态
+message UpdateSmsChannelStatusReply {}
+
+//请求-短信渠道-删除一条数据
+message DeleteSmsChannelReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+}
+
+//响应-短信渠道-删除一条数据
+message DeleteSmsChannelReply {}
+
+//请求-短信渠道-单条数据查询
+message GetSmsChannelInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+}
+
+//响应-短信渠道-单条数据查询
+message GetSmsChannelInfoReply {
+  SmsChannelInfo info = 1;
+}
+
+//请求-短信渠道-列表数据查询
+message GetSmsChannelListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1[(buf.validate.field).int32={gte: 1}]; //页码
+  int32 pageSize = 2[(buf.validate.field).int32={gte: 1, lte: 1000}]; //页数
+}
+
+//响应-短信渠道-列表数据查询
+message GetSmsChannelListReply {
+  int32 total = 1; //总数
+  repeated SmsChannelInfo list = 2; // 列表数据
+}
+

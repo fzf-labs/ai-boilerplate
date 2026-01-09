@@ -1,0 +1,219 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//短信日志
+service SmsLog {
+  //短信日志-创建一条数据
+  rpc CreateSmsLog(CreateSmsLogReq) returns (CreateSmsLogReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sms_log/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //短信日志-更新一条数据
+  rpc UpdateSmsLog(UpdateSmsLogReq) returns (UpdateSmsLogReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sms_log/update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //短信日志-删除一条数据
+  rpc DeleteSmsLog(DeleteSmsLogReq) returns (DeleteSmsLogReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sms_log/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //短信日志-单条数据查询
+  rpc GetSmsLogInfo(GetSmsLogInfoReq) returns (GetSmsLogInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/sms_log/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //短信日志-列表数据查询
+  rpc GetSmsLogList(GetSmsLogListReq) returns (GetSmsLogListReply) {
+    option (google.api.http) = {get: "/admin/v1/sms_log/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+//短信日志信息
+message SmsLogInfo {
+  string id = 1; // 编号
+	string smsChannelId = 2; // 短信渠道编号
+	string smsTemplateId = 3; // 模板编号
+	string smsParamsContent = 4; // 短信参数内容
+	string mobile = 5; // 手机号
+	string userId = 6; // 用户id
+	string sendStatus = 7; // 发送状态
+	string sendTime = 8; // 发送时间
+	string receiveStatus = 9; // 接收状态
+	string receiveTime = 10; // 接收时间
+	string APISendCode = 11; // 短信 API 发送结果的编码
+	string APISendMsg = 12; // 短信 API 发送失败的提示
+	string APIRequestID = 13; // 短信 API 发送返回的唯一请求 ID
+	string APISerialNo = 14; // 短信 API 发送返回的序号
+	string APIReceiveCode = 15; // API 接收结果的编码
+	string APIReceiveMsg = 16; // API 接收结果的说明
+	string createdAt = 17; // 创建时间
+}
+
+//请求-短信日志-创建一条数据
+message CreateSmsLogReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["smsChannelId","smsTemplateId","smsParamsContent","mobile","sendStatus","sendTime","receiveStatus"]
+    }
+  };
+  string smsChannelId = 1 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 短信渠道编号
+	string smsTemplateId = 2 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 模板编号
+	string smsParamsContent = 3 [(buf.validate.field).string={min_len: 1, max_len: 255}]; // 短信参数内容
+	string mobile = 4 [(buf.validate.field).string={min_len: 1, max_len: 11}]; // 手机号
+	string userId = 5 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 用户id
+	string sendStatus = 6 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 发送状态
+	string sendTime = 7 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 发送时间
+	string receiveStatus = 8 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 接收状态
+	string receiveTime = 9 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 接收时间
+	string APISendCode = 10 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 短信 API 发送结果的编码
+	string APISendMsg = 11 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 255}]; // 短信 API 发送失败的提示
+	string APIRequestID = 12 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 255}]; // 短信 API 发送返回的唯一请求 ID
+	string APISerialNo = 13 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 255}]; // 短信 API 发送返回的序号
+	string APIReceiveCode = 14 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // API 接收结果的编码
+	string APIReceiveMsg = 15 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 255}]; // API 接收结果的说明
+}
+
+//响应-短信日志-创建一条数据
+message CreateSmsLogReply {
+  	string id = 1; // 编号
+}
+
+//请求-短信日志-更新一条数据
+message UpdateSmsLogReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","smsChannelId","smsTemplateId","smsParamsContent","mobile","sendStatus","sendTime","receiveStatus"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 编号
+	string smsChannelId = 2 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 短信渠道编号
+	string smsTemplateId = 3 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 模板编号
+	string smsParamsContent = 4 [(buf.validate.field).string={min_len: 1, max_len: 255}]; // 短信参数内容
+	string mobile = 5 [(buf.validate.field).string={min_len: 1, max_len: 11}]; // 手机号
+	string userId = 6 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 用户id
+	string sendStatus = 7 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 发送状态
+	string sendTime = 8 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 发送时间
+	string receiveStatus = 9 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 接收状态
+	string receiveTime = 10 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 接收时间
+	string APISendCode = 11 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 短信 API 发送结果的编码
+	string APISendMsg = 12 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 255}]; // 短信 API 发送失败的提示
+	string APIRequestID = 13 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 255}]; // 短信 API 发送返回的唯一请求 ID
+	string APISerialNo = 14 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 255}]; // 短信 API 发送返回的序号
+	string APIReceiveCode = 15 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // API 接收结果的编码
+	string APIReceiveMsg = 16 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 255}]; // API 接收结果的说明
+}
+
+//响应-短信日志-更新一条数据
+message UpdateSmsLogReply {}
+
+//请求-短信日志-删除一条数据
+message DeleteSmsLogReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 编号
+}
+
+//响应-短信日志-删除一条数据
+message DeleteSmsLogReply {}
+
+//请求-短信日志-单条数据查询
+message GetSmsLogInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 编号
+}
+
+//响应-短信日志-单条数据查询
+message GetSmsLogInfoReply {
+  SmsLogInfo info = 1;
+}
+
+//请求-短信日志-列表数据查询
+message GetSmsLogListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1[(buf.validate.field).int32={gte: 1}]; //页码
+  int32 pageSize = 2[(buf.validate.field).int32={gte: 1, lte: 1000}]; //页数
+}
+
+//响应-短信日志-列表数据查询
+message GetSmsLogListReply {
+  int32 total = 1; //总数
+  repeated SmsLogInfo list = 2; // 列表数据
+}
+

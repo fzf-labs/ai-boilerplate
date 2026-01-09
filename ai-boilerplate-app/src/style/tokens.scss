@@ -1,0 +1,81 @@
+:root,
+page {
+  /* Brand (tool app, green-first) */
+  --fg-primary: #10b981;
+  --fg-primary-600: #059669;
+  --fg-primary-100: #d1fae5;
+  --fg-primary-rgb: 16, 185, 129;
+
+  --fg-cta: #f97316;
+  --fg-success: #10b981;
+  --fg-warning: #f59e0b;
+  --fg-danger: #ef4444;
+
+  /* Surfaces */
+  --fg-bg: #f6f7fb;
+  --fg-bg-alt: #f8fafc;
+  --fg-surface: #ffffff;
+  --fg-surface-muted: #f1f5f9;
+
+  /* Text */
+  --fg-text: #0f172a;
+  --fg-text-secondary: #334155;
+  --fg-text-muted: #64748b;
+  --fg-text-weak: #94a3b8;
+
+  /* Border */
+  --fg-border: #e2e8f0;
+  --fg-border-weak: #f1f5f9;
+
+  /* Radius */
+  --fg-radius-lg: 16rpx;
+  --fg-radius-card: 20rpx;
+  --fg-radius-card-lg: 24rpx;
+  --fg-radius-pill: 999rpx;
+
+  /* Shadows (use sparingly in mini-programs) */
+  --fg-shadow-card: 0 8rpx 32rpx rgba(15, 23, 42, 0.08);
+  --fg-shadow-soft: 0 4rpx 16rpx rgba(15, 23, 42, 0.06);
+  --fg-shadow-float: 0 12rpx 30rpx rgba(15, 23, 42, 0.12);
+
+  /* Spacing */
+  --fg-page-x: 24rpx;
+  --fg-page-y: 24rpx;
+  --fg-section-gap: 24rpx;
+  --fg-row-gap: 16rpx;
+
+  /* Typography */
+  --fg-font-h1: 44rpx;
+  --fg-font-h2: 36rpx;
+  --fg-font-body: 28rpx;
+  --fg-font-sub: 24rpx;
+
+  /* Hero gradient */
+  --fg-hero-from: #059669;
+  --fg-hero-mid: #10b981;
+  --fg-hero-to: #22c55e;
+
+  /* Top background (stronger, fades to page bg) */
+  --fg-top-bg-gradient-strong:
+    radial-gradient(120% 75% at 20% 0%, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 60%),
+    linear-gradient(
+      135deg,
+      rgba(var(--fg-primary-rgb), 0.92) 0%,
+      rgba(var(--fg-primary-rgb), 0.55) 55%,
+      rgba(var(--fg-primary-rgb), 0) 100%
+    );
+
+  --fg-top-bg-gradient-hero:
+    radial-gradient(120% 75% at 20% 0%, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0) 60%),
+    linear-gradient(135deg, var(--fg-hero-from) 0%, var(--fg-hero-mid) 55%, rgba(var(--fg-primary-rgb), 0) 100%);
+
+  --fg-top-bg-gradient: var(--fg-top-bg-gradient-hero);
+
+  /* Wot Design Uni theme mapping (best-effort) */
+  --wot-color-theme: var(--fg-primary);
+  --wot-color-success: var(--fg-success);
+  --wot-color-warning: var(--fg-warning);
+  --wot-color-danger: var(--fg-danger);
+  --wot-button-primary-bg-color: var(--fg-primary);
+  --wot-button-primary-border-color: var(--fg-primary);
+}

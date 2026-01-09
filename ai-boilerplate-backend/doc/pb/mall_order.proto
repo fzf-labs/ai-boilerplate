@@ -1,0 +1,251 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//订单信息表
+service MallOrder {
+  //订单信息表-创建一条数据
+  rpc CreateMallOrder(CreateMallOrderReq) returns (CreateMallOrderReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/mall_order/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //订单信息表-更新一条数据
+  rpc UpdateMallOrder(UpdateMallOrderReq) returns (UpdateMallOrderReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/mall_order/update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //订单信息表-更新状态
+  rpc UpdateMallOrderStatus(UpdateMallOrderStatusReq) returns (UpdateMallOrderStatusReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/mall_order/update/status"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //订单信息表-删除一条数据
+  rpc DeleteMallOrder(DeleteMallOrderReq) returns (DeleteMallOrderReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/mall_order/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //订单信息表-单条数据查询
+  rpc GetMallOrderInfo(GetMallOrderInfoReq) returns (GetMallOrderInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/mall_order/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //订单信息表-列表数据查询
+  rpc GetMallOrderList(GetMallOrderListReq) returns (GetMallOrderListReply) {
+    option (google.api.http) = {get: "/admin/v1/mall_order/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+//订单信息表信息
+message MallOrderInfo {
+  string id = 1; // id
+	string userId = 2; // 用户ID
+	string productType = 3; // 商品类型(membership:会员,service:服务,goods:商品)
+	string productId = 4; // 商品ID
+	double originalAmount = 5; // 原价
+	double discountAmount = 6; // 优惠金额
+	double actualAmount = 7; // 实付金额
+	double refundAmount = 8; // 退款金额
+	string currency = 9; // 币种
+	string paymentMethod = 10; // 支付方式(微信,支付宝)
+	int32 paymentStatus = 11; // 支付状态(0待支付,1已支付,2支付失败,3已退款)
+	string paymentTime = 12; // 支付时间
+	string deliveryTime = 13; // 确认时间
+	string expiredTime = 14; // 订单过期时间
+	string remark = 15; // 备注
+	string status = 16; // 状态(待付款pendingPayment,待发货pendingDelivery,待收货pendingReceipt,已完成completed,已取消canceled,已退款refunded)
+	string createdAt = 17; // 创建时间
+	string updatedAt = 18; // 更新时间
+}
+
+//请求-订单信息表-创建一条数据
+message CreateMallOrderReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["userId","productType","productId","originalAmount","actualAmount","refundAmount","status"]
+    }
+  };
+  string userId = 1 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 用户ID
+	string productType = 2 [(buf.validate.field).string={min_len: 1, max_len: 20}]; // 商品类型(membership:会员,service:服务,goods:商品)
+	string productId = 3 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 商品ID
+	double originalAmount = 4 ; // 原价
+	double discountAmount = 5 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED]; // 优惠金额
+	double actualAmount = 6 ; // 实付金额
+	double refundAmount = 7 ; // 退款金额
+	string currency = 8 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 10}]; // 币种
+	string paymentMethod = 9 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 50}]; // 支付方式(微信,支付宝)
+	int32 paymentStatus = 10 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED]; // 支付状态(0待支付,1已支付,2支付失败,3已退款)
+	string paymentTime = 11 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 支付时间
+	string deliveryTime = 12 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 确认时间
+	string expiredTime = 13 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 订单过期时间
+	string remark = 14 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 500}]; // 备注
+	string status = 15 [(buf.validate.field).string={min_len: 1}]; // 状态(待付款pendingPayment,待发货pendingDelivery,待收货pendingReceipt,已完成completed,已取消canceled,已退款refunded)
+}
+
+//响应-订单信息表-创建一条数据
+message CreateMallOrderReply {
+  	string id = 1; // id
+}
+
+//请求-订单信息表-更新一条数据
+message UpdateMallOrderReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","userId","productType","productId","originalAmount","actualAmount","refundAmount","status"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+	string userId = 2 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 用户ID
+	string productType = 3 [(buf.validate.field).string={min_len: 1, max_len: 20}]; // 商品类型(membership:会员,service:服务,goods:商品)
+	string productId = 4 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 商品ID
+	double originalAmount = 5 ; // 原价
+	double discountAmount = 6 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED]; // 优惠金额
+	double actualAmount = 7 ; // 实付金额
+	double refundAmount = 8 ; // 退款金额
+	string currency = 9 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 10}]; // 币种
+	string paymentMethod = 10 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 50}]; // 支付方式(微信,支付宝)
+	int32 paymentStatus = 11 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED]; // 支付状态(0待支付,1已支付,2支付失败,3已退款)
+	string paymentTime = 12 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 支付时间
+	string deliveryTime = 13 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 确认时间
+	string expiredTime = 14 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 订单过期时间
+	string remark = 15 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 500}]; // 备注
+	string status = 16 [(buf.validate.field).string={min_len: 1}]; // 状态(待付款pendingPayment,待发货pendingDelivery,待收货pendingReceipt,已完成completed,已取消canceled,已退款refunded)
+}
+
+//响应-订单信息表-更新一条数据
+message UpdateMallOrderReply {}
+
+//请求-订单信息表-更新状态
+message UpdateMallOrderStatusReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","status"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+	string status = 2 [(buf.validate.field).string={min_len: 1}]; // 状态(待付款pendingPayment,待发货pendingDelivery,待收货pendingReceipt,已完成completed,已取消canceled,已退款refunded)
+}
+
+//响应-订单信息表-更新状态
+message UpdateMallOrderStatusReply {}
+
+//请求-订单信息表-删除一条数据
+message DeleteMallOrderReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+}
+
+//响应-订单信息表-删除一条数据
+message DeleteMallOrderReply {}
+
+//请求-订单信息表-单条数据查询
+message GetMallOrderInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+}
+
+//响应-订单信息表-单条数据查询
+message GetMallOrderInfoReply {
+  MallOrderInfo info = 1;
+}
+
+//请求-订单信息表-列表数据查询
+message GetMallOrderListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1[(buf.validate.field).int32={gte: 1}]; //页码
+  int32 pageSize = 2[(buf.validate.field).int32={gte: 1, lte: 1000}]; //页数
+}
+
+//响应-订单信息表-列表数据查询
+message GetMallOrderListReply {
+  int32 total = 1; //总数
+  repeated MallOrderInfo list = 2; // 列表数据
+}
+

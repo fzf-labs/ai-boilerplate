@@ -1,0 +1,457 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/wx_gzh_menu.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "WxGzhMenu"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/wx_gzh_menu/delete": {
+      "post": {
+        "summary": "公众号菜单表-删除一条数据",
+        "operationId": "WxGzhMenu_DeleteWxGzhMenu",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteWxGzhMenuReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteWxGzhMenuReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxGzhMenu"
+        ]
+      }
+    },
+    "/admin/v1/wx_gzh_menu/info": {
+      "get": {
+        "summary": "公众号菜单表-单条数据查询",
+        "operationId": "WxGzhMenu_GetWxGzhMenuInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetWxGzhMenuInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "appId",
+            "description": "主键",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxGzhMenu"
+        ]
+      }
+    },
+    "/admin/v1/wx_gzh_menu/list": {
+      "get": {
+        "summary": "公众号菜单表-列表数据查询",
+        "operationId": "WxGzhMenu_GetWxGzhMenuList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetWxGzhMenuListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxGzhMenu"
+        ]
+      }
+    },
+    "/admin/v1/wx_gzh_menu/store": {
+      "post": {
+        "summary": "公众号菜单表-创建/更新一条数据",
+        "operationId": "WxGzhMenu_StoreWxGzhMenu",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.StoreWxGzhMenuReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.StoreWxGzhMenuReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WxGzhMenu"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "admin.v1.DeleteWxGzhMenuReply": {
+      "type": "object",
+      "title": "响应-公众号菜单表-删除一条数据"
+    },
+    "admin.v1.DeleteWxGzhMenuReq": {
+      "type": "object",
+      "properties": {
+        "appId": {
+          "type": "string",
+          "title": "主键"
+        }
+      },
+      "title": "请求-公众号菜单表-删除一条数据",
+      "required": [
+        "appId"
+      ]
+    },
+    "admin.v1.GetWxGzhMenuInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/admin.v1.WxGzhMenuInfo"
+        }
+      },
+      "title": "响应-公众号菜单表-单条数据查询"
+    },
+    "admin.v1.GetWxGzhMenuListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.WxGzhMenuInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-公众号菜单表-列表数据查询"
+    },
+    "admin.v1.SelfmenuInfo": {
+      "type": "object",
+      "properties": {
+        "button": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.SelfmenuInfo.SelfButton"
+          },
+          "title": "按钮列表"
+        }
+      },
+      "title": "自定义菜单信息"
+    },
+    "admin.v1.SelfmenuInfo.ButtonItem": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "title": "按钮类型"
+        },
+        "name": {
+          "type": "string",
+          "title": "按钮名称"
+        },
+        "url": {
+          "type": "string",
+          "title": "URL（可选）"
+        },
+        "appid": {
+          "type": "string",
+          "title": "小程序appid（可选）"
+        },
+        "pagepath": {
+          "type": "string",
+          "title": "小程序页面路径（可选）"
+        },
+        "key": {
+          "type": "string",
+          "title": "按钮key（可选）"
+        },
+        "value": {
+          "type": "string",
+          "title": "按钮值（可选）"
+        },
+        "news_info": {
+          "$ref": "#/definitions/admin.v1.SelfmenuInfo.NewsInfo",
+          "title": "新闻信息（可选）"
+        }
+      },
+      "title": "按钮项"
+    },
+    "admin.v1.SelfmenuInfo.NewsInfo": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.SelfmenuInfo.NewsItem"
+          }
+        }
+      },
+      "title": "新闻信息"
+    },
+    "admin.v1.SelfmenuInfo.NewsItem": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "title": "标题"
+        },
+        "author": {
+          "type": "string",
+          "title": "作者"
+        },
+        "digest": {
+          "type": "string",
+          "title": "摘要"
+        },
+        "show_cover": {
+          "type": "integer",
+          "format": "int32",
+          "title": "是否显示封面"
+        },
+        "cover_url": {
+          "type": "string",
+          "title": "封面URL"
+        },
+        "content_url": {
+          "type": "string",
+          "title": "内容URL"
+        },
+        "source_url": {
+          "type": "string",
+          "title": "来源URL"
+        }
+      },
+      "title": "新闻条目"
+    },
+    "admin.v1.SelfmenuInfo.SelfButton": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "title": "按钮类型"
+        },
+        "name": {
+          "type": "string",
+          "title": "按钮名称"
+        },
+        "key": {
+          "type": "string",
+          "title": "按钮key"
+        },
+        "value": {
+          "type": "string",
+          "title": "按钮值（可选）"
+        },
+        "url": {
+          "type": "string",
+          "title": "URL（可选）"
+        },
+        "sub_button": {
+          "$ref": "#/definitions/admin.v1.SelfmenuInfo.SubButton",
+          "title": "子按钮（可选）"
+        }
+      },
+      "title": "自定义按钮"
+    },
+    "admin.v1.SelfmenuInfo.SubButton": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.SelfmenuInfo.ButtonItem"
+          }
+        }
+      },
+      "title": "子按钮"
+    },
+    "admin.v1.StoreWxGzhMenuReply": {
+      "type": "object",
+      "title": "响应-公众号菜单表-创建/更新一条数据"
+    },
+    "admin.v1.StoreWxGzhMenuReq": {
+      "type": "object",
+      "properties": {
+        "appId": {
+          "type": "string",
+          "title": "微信公众号 appid"
+        },
+        "selfmenuInfo": {
+          "$ref": "#/definitions/admin.v1.SelfmenuInfo",
+          "title": "菜单信息"
+        }
+      },
+      "title": "请求-公众号菜单表-创建/更新一条数据",
+      "required": [
+        "appId"
+      ]
+    },
+    "admin.v1.WxGzhMenuInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "主键"
+        },
+        "appId": {
+          "type": "string",
+          "title": "微信公众号 appid"
+        },
+        "isMenuOpen": {
+          "type": "integer",
+          "format": "int32",
+          "title": "菜单是否开启，0代表未开启，1代表开启"
+        },
+        "selfmenuInfo": {
+          "$ref": "#/definitions/admin.v1.SelfmenuInfo",
+          "title": "菜单信息"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "公众号菜单表信息"
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

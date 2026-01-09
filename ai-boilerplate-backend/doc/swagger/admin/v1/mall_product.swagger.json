@@ -1,0 +1,714 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/mall_product.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "MallProduct"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/mall_product/create": {
+      "post": {
+        "summary": "商品表-创建一条数据",
+        "operationId": "MallProduct_CreateMallProduct",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateMallProductReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateMallProductReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MallProduct"
+        ]
+      }
+    },
+    "/admin/v1/mall_product/delete": {
+      "post": {
+        "summary": "商品表-删除一条数据",
+        "operationId": "MallProduct_DeleteMallProduct",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteMallProductReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteMallProductReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MallProduct"
+        ]
+      }
+    },
+    "/admin/v1/mall_product/info": {
+      "get": {
+        "summary": "商品表-单条数据查询",
+        "operationId": "MallProduct_GetMallProductInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetMallProductInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "id",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MallProduct"
+        ]
+      }
+    },
+    "/admin/v1/mall_product/list": {
+      "get": {
+        "summary": "商品表-列表数据查询",
+        "operationId": "MallProduct_GetMallProductList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetMallProductListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "productType",
+            "description": "商品类型(membership:会员,service:服务,goods:商品)",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "productName",
+            "description": "商品名称",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MallProduct"
+        ]
+      }
+    },
+    "/admin/v1/mall_product/selector": {
+      "get": {
+        "summary": "商品表-选择器",
+        "operationId": "MallProduct_GetMallProductSelector",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetMallProductSelectorReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "searchName",
+            "description": "搜索商品名称",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MallProduct"
+        ]
+      }
+    },
+    "/admin/v1/mall_product/update": {
+      "post": {
+        "summary": "商品表-更新一条数据",
+        "operationId": "MallProduct_UpdateMallProduct",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateMallProductReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateMallProductReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MallProduct"
+        ]
+      }
+    },
+    "/admin/v1/mall_product/update/status": {
+      "post": {
+        "summary": "商品表-更新状态",
+        "operationId": "MallProduct_UpdateMallProductStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateMallProductStatusReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateMallProductStatusReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MallProduct"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "admin.v1.CreateMallProductReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        }
+      },
+      "title": "响应-商品表-创建一条数据"
+    },
+    "admin.v1.CreateMallProductReq": {
+      "type": "object",
+      "properties": {
+        "productType": {
+          "type": "string",
+          "title": "商品类型(membership:会员,service:服务,goods:商品)"
+        },
+        "productName": {
+          "type": "string",
+          "title": "商品名称"
+        },
+        "productDesc": {
+          "type": "string",
+          "title": "商品描述"
+        },
+        "productImages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "商品图片(多个用逗号分隔)"
+        },
+        "productDetail": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "商品详情(JSON格式,包含特色功能等)"
+        },
+        "productConfig": {
+          "$ref": "#/definitions/admin.v1.ProductConfig",
+          "title": "商品配置(JSON格式)"
+        },
+        "originalPrice": {
+          "type": "number",
+          "format": "double",
+          "title": "原价"
+        },
+        "currentPrice": {
+          "type": "number",
+          "format": "double",
+          "title": "现价"
+        },
+        "stockQuantity": {
+          "type": "integer",
+          "format": "int32",
+          "title": "库存数量(-1表示无限库存)"
+        },
+        "soldQuantity": {
+          "type": "integer",
+          "format": "int32",
+          "title": "已售数量"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "排序"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1下架,0待上架,1在售,2售罄)"
+        }
+      },
+      "title": "请求-商品表-创建一条数据",
+      "required": [
+        "productType",
+        "productName",
+        "originalPrice",
+        "currentPrice",
+        "status"
+      ]
+    },
+    "admin.v1.DeleteMallProductReply": {
+      "type": "object",
+      "title": "响应-商品表-删除一条数据"
+    },
+    "admin.v1.DeleteMallProductReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        }
+      },
+      "title": "请求-商品表-删除一条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "admin.v1.GetMallProductInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/admin.v1.MallProductInfo"
+        }
+      },
+      "title": "响应-商品表-单条数据查询"
+    },
+    "admin.v1.GetMallProductListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.MallProductInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-商品表-列表数据查询"
+    },
+    "admin.v1.GetMallProductSelectorReply": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.MallProductSelector"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-商品表-选择器"
+    },
+    "admin.v1.MallProductInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "productType": {
+          "type": "string",
+          "title": "商品类型(membership:会员,service:服务,goods:商品)"
+        },
+        "productName": {
+          "type": "string",
+          "title": "商品名称"
+        },
+        "productDesc": {
+          "type": "string",
+          "title": "商品描述"
+        },
+        "productImages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "商品图片(多个用逗号分隔)"
+        },
+        "productDetail": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "商品详情(JSON格式,包含特色功能等)"
+        },
+        "productConfig": {
+          "$ref": "#/definitions/admin.v1.ProductConfig",
+          "title": "商品配置(JSON格式)"
+        },
+        "originalPrice": {
+          "type": "number",
+          "format": "double",
+          "title": "原价"
+        },
+        "currentPrice": {
+          "type": "number",
+          "format": "double",
+          "title": "现价"
+        },
+        "stockQuantity": {
+          "type": "integer",
+          "format": "int32",
+          "title": "库存数量(-1表示无限库存)"
+        },
+        "soldQuantity": {
+          "type": "integer",
+          "format": "int32",
+          "title": "已售数量"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "排序"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1下架,0待上架,1在售,2售罄)"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "商品表信息"
+    },
+    "admin.v1.MallProductSelector": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "productName": {
+          "type": "string",
+          "title": "商品名称"
+        }
+      },
+      "title": "商品表选择器"
+    },
+    "admin.v1.MembershipConfig": {
+      "type": "object",
+      "properties": {
+        "membershipType": {
+          "type": "string",
+          "title": "会员类型编码(normal,vip,svip)"
+        },
+        "duration_days": {
+          "type": "integer",
+          "format": "int32",
+          "title": "时长天数"
+        }
+      },
+      "title": "会员配置"
+    },
+    "admin.v1.ProductConfig": {
+      "type": "object",
+      "properties": {
+        "membership": {
+          "$ref": "#/definitions/admin.v1.MembershipConfig",
+          "title": "会员配置"
+        }
+      },
+      "title": "商品配置"
+    },
+    "admin.v1.UpdateMallProductReply": {
+      "type": "object",
+      "title": "响应-商品表-更新一条数据"
+    },
+    "admin.v1.UpdateMallProductReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "productType": {
+          "type": "string",
+          "title": "商品类型(membership:会员,service:服务,goods:商品)"
+        },
+        "productName": {
+          "type": "string",
+          "title": "商品名称"
+        },
+        "productDesc": {
+          "type": "string",
+          "title": "商品描述"
+        },
+        "productImages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "商品图片(多个用逗号分隔)"
+        },
+        "productDetail": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "商品详情(JSON格式,包含特色功能等)"
+        },
+        "productConfig": {
+          "$ref": "#/definitions/admin.v1.ProductConfig",
+          "title": "商品配置(JSON格式)"
+        },
+        "originalPrice": {
+          "type": "number",
+          "format": "double",
+          "title": "原价"
+        },
+        "currentPrice": {
+          "type": "number",
+          "format": "double",
+          "title": "现价"
+        },
+        "stockQuantity": {
+          "type": "integer",
+          "format": "int32",
+          "title": "库存数量(-1表示无限库存)"
+        },
+        "soldQuantity": {
+          "type": "integer",
+          "format": "int32",
+          "title": "已售数量"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "排序"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1下架,0待上架,1在售,2售罄)"
+        }
+      },
+      "title": "请求-商品表-更新一条数据",
+      "required": [
+        "id",
+        "productType",
+        "productName",
+        "originalPrice",
+        "currentPrice",
+        "status"
+      ]
+    },
+    "admin.v1.UpdateMallProductStatusReply": {
+      "type": "object",
+      "title": "响应-商品表-更新状态"
+    },
+    "admin.v1.UpdateMallProductStatusReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1下架,0待上架,1在售,2售罄)"
+        }
+      },
+      "title": "请求-商品表-更新状态",
+      "required": [
+        "id",
+        "status"
+      ]
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

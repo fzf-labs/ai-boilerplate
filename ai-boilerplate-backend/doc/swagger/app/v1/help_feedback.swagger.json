@@ -1,0 +1,126 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "app/v1/help_feedback.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "HelpFeedback"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/app/v1/help/feedback": {
+      "post": {
+        "summary": "用户反馈表-提交反馈",
+        "operationId": "HelpFeedback_SubmitFeedback",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.SubmitFeedbackReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/app.v1.SubmitFeedbackReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "HelpFeedback"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "app.v1.SubmitFeedbackReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "反馈ID"
+        }
+      },
+      "title": "响应-用户反馈表-提交反馈"
+    },
+    "app.v1.SubmitFeedbackReq": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "type": "string",
+          "title": "问题分类"
+        },
+        "description": {
+          "type": "string",
+          "title": "问题描述"
+        },
+        "images": {
+          "type": "string",
+          "title": "图片列表（JSON数组）"
+        },
+        "contact": {
+          "type": "string",
+          "title": "联系方式"
+        }
+      },
+      "title": "请求-用户反馈表-提交反馈",
+      "required": [
+        "category",
+        "description"
+      ]
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,725 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/file_config.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "FileConfig"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/file_config/create": {
+      "post": {
+        "summary": "文件配置表-创建一条数据",
+        "operationId": "FileConfig_CreateFileConfig",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateFileConfigReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateFileConfigReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "FileConfig"
+        ]
+      }
+    },
+    "/admin/v1/file_config/delete": {
+      "post": {
+        "summary": "文件配置表-删除一条数据",
+        "operationId": "FileConfig_DeleteFileConfig",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteFileConfigReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteFileConfigReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "FileConfig"
+        ]
+      }
+    },
+    "/admin/v1/file_config/info": {
+      "get": {
+        "summary": "文件配置表-单条数据查询",
+        "operationId": "FileConfig_GetFileConfigInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetFileConfigInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "编号",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "FileConfig"
+        ]
+      }
+    },
+    "/admin/v1/file_config/list": {
+      "get": {
+        "summary": "文件配置表-列表数据查询",
+        "operationId": "FileConfig_GetFileConfigList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetFileConfigListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "name",
+            "description": "配置名",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "storage",
+            "description": "存储器",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "FileConfig"
+        ]
+      }
+    },
+    "/admin/v1/file_config/select": {
+      "get": {
+        "summary": "文件配置表-获取所有选择器",
+        "operationId": "FileConfig_GetFileConfigSelect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetFileConfigSelectReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "FileConfig"
+        ]
+      }
+    },
+    "/admin/v1/file_config/set_master": {
+      "post": {
+        "summary": "文件配置表-设置主配置",
+        "operationId": "FileConfig_SetFileConfigMaster",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.SetFileConfigMasterReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.SetFileConfigMasterReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "FileConfig"
+        ]
+      }
+    },
+    "/admin/v1/file_config/storage/select": {
+      "get": {
+        "summary": "文件配置表-获取存储器选择器",
+        "operationId": "FileConfig_GetFileConfigStorageSelect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetFileConfigStorageSelectReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "tags": [
+          "FileConfig"
+        ]
+      }
+    },
+    "/admin/v1/file_config/update": {
+      "post": {
+        "summary": "文件配置表-更新一条数据",
+        "operationId": "FileConfig_UpdateFileConfig",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateFileConfigReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateFileConfigReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "FileConfig"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "admin.v1.AliyunConfig": {
+      "type": "object",
+      "properties": {
+        "accessKey": {
+          "type": "string",
+          "title": "访问密钥"
+        },
+        "secretKey": {
+          "type": "string",
+          "title": "密钥"
+        },
+        "bucket": {
+          "type": "string",
+          "title": "桶"
+        },
+        "endpoint": {
+          "type": "string",
+          "title": "端点"
+        },
+        "host": {
+          "type": "string",
+          "title": "主机"
+        },
+        "prefix": {
+          "type": "string",
+          "title": "前缀"
+        },
+        "salt": {
+          "type": "string",
+          "title": "盐"
+        }
+      },
+      "title": "阿里云配置"
+    },
+    "admin.v1.CreateFileConfigReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        }
+      },
+      "title": "响应-文件配置表-创建一条数据"
+    },
+    "admin.v1.CreateFileConfigReq": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "配置名"
+        },
+        "storage": {
+          "type": "string",
+          "title": "存储器"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "config": {
+          "$ref": "#/definitions/admin.v1.StorageConfig",
+          "title": "存储配置"
+        }
+      },
+      "title": "请求-文件配置表-创建一条数据",
+      "required": [
+        "name",
+        "storage"
+      ]
+    },
+    "admin.v1.DeleteFileConfigReply": {
+      "type": "object",
+      "title": "响应-文件配置表-删除一条数据"
+    },
+    "admin.v1.DeleteFileConfigReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        }
+      },
+      "title": "请求-文件配置表-删除一条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "admin.v1.FileConfigInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "name": {
+          "type": "string",
+          "title": "配置名"
+        },
+        "storage": {
+          "type": "string",
+          "title": "存储器"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "master": {
+          "type": "boolean",
+          "title": "是否为主配置"
+        },
+        "config": {
+          "$ref": "#/definitions/admin.v1.StorageConfig",
+          "title": "存储配置"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "文件配置表信息"
+    },
+    "admin.v1.FileConfigSelect": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "name": {
+          "type": "string",
+          "title": "配置名"
+        }
+      },
+      "title": "文件配置表-选择器"
+    },
+    "admin.v1.FileConfigStorage": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "title": "标签"
+        },
+        "value": {
+          "type": "string",
+          "title": "存储器"
+        }
+      },
+      "title": "文件配置表-存储器"
+    },
+    "admin.v1.GetFileConfigInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/admin.v1.FileConfigInfo"
+        }
+      },
+      "title": "响应-文件配置表-单条数据查询"
+    },
+    "admin.v1.GetFileConfigListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.FileConfigInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-文件配置表-列表数据查询"
+    },
+    "admin.v1.GetFileConfigSelectReply": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.FileConfigSelect"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-文件配置表-获取所有选择器"
+    },
+    "admin.v1.GetFileConfigStorageSelectReply": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.FileConfigStorage"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-文件配置表-获取所有存储器"
+    },
+    "admin.v1.QiniuConfig": {
+      "type": "object",
+      "properties": {
+        "accessKey": {
+          "type": "string",
+          "title": "访问密钥"
+        },
+        "secretKey": {
+          "type": "string",
+          "title": "密钥"
+        },
+        "bucket": {
+          "type": "string",
+          "title": "桶"
+        },
+        "action": {
+          "type": "string"
+        }
+      },
+      "title": "七牛云配置"
+    },
+    "admin.v1.SetFileConfigMasterReply": {
+      "type": "object",
+      "title": "响应-文件配置表-设置主配置"
+    },
+    "admin.v1.SetFileConfigMasterReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        }
+      },
+      "title": "请求-文件配置表-设置主配置",
+      "required": [
+        "id"
+      ]
+    },
+    "admin.v1.StorageConfig": {
+      "type": "object",
+      "properties": {
+        "volcengine": {
+          "$ref": "#/definitions/admin.v1.VolcengineConfig"
+        },
+        "aliyun": {
+          "$ref": "#/definitions/admin.v1.AliyunConfig"
+        },
+        "tencent": {
+          "$ref": "#/definitions/admin.v1.TencentConfig"
+        },
+        "qiniu": {
+          "$ref": "#/definitions/admin.v1.QiniuConfig"
+        }
+      }
+    },
+    "admin.v1.TencentConfig": {
+      "type": "object",
+      "properties": {
+        "accessKey": {
+          "type": "string",
+          "title": "访问密钥"
+        },
+        "secretKey": {
+          "type": "string",
+          "title": "密钥"
+        },
+        "endpoint": {
+          "type": "string",
+          "title": "端点"
+        },
+        "region": {
+          "type": "string",
+          "title": "区域"
+        },
+        "bucket": {
+          "type": "string",
+          "title": "桶"
+        }
+      },
+      "title": "腾讯云配置"
+    },
+    "admin.v1.UpdateFileConfigReply": {
+      "type": "object",
+      "title": "响应-文件配置表-更新一条数据"
+    },
+    "admin.v1.UpdateFileConfigReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "name": {
+          "type": "string",
+          "title": "配置名"
+        },
+        "storage": {
+          "type": "string",
+          "title": "存储器"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "config": {
+          "$ref": "#/definitions/admin.v1.StorageConfig",
+          "title": "存储配置"
+        }
+      },
+      "title": "请求-文件配置表-更新一条数据",
+      "required": [
+        "id",
+        "name",
+        "storage"
+      ]
+    },
+    "admin.v1.VolcengineConfig": {
+      "type": "object",
+      "properties": {
+        "accessKey": {
+          "type": "string",
+          "title": "访问密钥"
+        },
+        "secretKey": {
+          "type": "string",
+          "title": "密钥"
+        },
+        "endpoint": {
+          "type": "string",
+          "title": "端点"
+        },
+        "region": {
+          "type": "string",
+          "title": "区域"
+        },
+        "bucket": {
+          "type": "string",
+          "title": "桶"
+        },
+        "accountID": {
+          "type": "string",
+          "title": "账号ID"
+        },
+        "roleName": {
+          "type": "string",
+          "title": "角色名称"
+        }
+      },
+      "title": "火山云配置"
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

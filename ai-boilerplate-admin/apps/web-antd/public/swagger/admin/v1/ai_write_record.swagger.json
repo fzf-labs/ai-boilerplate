@@ -1,0 +1,536 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/ai_write_record.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "AiWriteRecord"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/ai_write_record/create": {
+      "post": {
+        "summary": "AI 写作表-创建一条数据",
+        "operationId": "AiWriteRecord_CreateAiWriteRecord",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateAiWriteRecordReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateAiWriteRecordReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiWriteRecord"
+        ]
+      }
+    },
+    "/admin/v1/ai_write_record/delete": {
+      "post": {
+        "summary": "AI 写作表-删除多条数据",
+        "operationId": "AiWriteRecord_DeleteAiWriteRecord",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteAiWriteRecordReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1DeleteAiWriteRecordReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiWriteRecord"
+        ]
+      }
+    },
+    "/admin/v1/ai_write_record/info": {
+      "get": {
+        "summary": "AI 写作表-单条数据查询",
+        "operationId": "AiWriteRecord_GetAiWriteRecordInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetAiWriteRecordInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "编号",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiWriteRecord"
+        ]
+      }
+    },
+    "/admin/v1/ai_write_record/list": {
+      "get": {
+        "summary": "AI 写作表-列表数据查询",
+        "operationId": "AiWriteRecord_GetAiWriteRecordList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetAiWriteRecordListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiWriteRecord"
+        ]
+      }
+    },
+    "/admin/v1/ai_write_record/update": {
+      "post": {
+        "summary": "AI 写作表-更新一条数据",
+        "operationId": "AiWriteRecord_UpdateAiWriteRecord",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateAiWriteRecordReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateAiWriteRecordReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiWriteRecord"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1AiWriteRecordInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "adminId": {
+          "type": "string",
+          "title": "用户编号"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int32",
+          "title": "写作类型"
+        },
+        "platform": {
+          "type": "string",
+          "title": "平台"
+        },
+        "modelId": {
+          "type": "string",
+          "title": "模型编号"
+        },
+        "model": {
+          "type": "string",
+          "title": "模型"
+        },
+        "prompt": {
+          "type": "string",
+          "title": "生成内容提示"
+        },
+        "generatedContent": {
+          "type": "string",
+          "title": "生成的内容"
+        },
+        "originalContent": {
+          "type": "string",
+          "title": "原文"
+        },
+        "length": {
+          "type": "integer",
+          "format": "int32",
+          "title": "长度提示词"
+        },
+        "format": {
+          "type": "integer",
+          "format": "int32",
+          "title": "格式提示词"
+        },
+        "tone": {
+          "type": "integer",
+          "format": "int32",
+          "title": "语气提示词"
+        },
+        "language": {
+          "type": "integer",
+          "format": "int32",
+          "title": "语言提示词"
+        },
+        "errorMessage": {
+          "type": "string",
+          "title": "错误信息"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "AI 写作表信息"
+    },
+    "v1CreateAiWriteRecordReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        }
+      },
+      "title": "响应-AI 写作表-创建一条数据"
+    },
+    "v1CreateAiWriteRecordReq": {
+      "type": "object",
+      "properties": {
+        "adminId": {
+          "type": "string",
+          "title": "用户编号"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int32",
+          "title": "写作类型"
+        },
+        "platform": {
+          "type": "string",
+          "title": "平台"
+        },
+        "modelId": {
+          "type": "string",
+          "title": "模型编号"
+        },
+        "model": {
+          "type": "string",
+          "title": "模型"
+        },
+        "prompt": {
+          "type": "string",
+          "title": "生成内容提示"
+        },
+        "generatedContent": {
+          "type": "string",
+          "title": "生成的内容"
+        },
+        "originalContent": {
+          "type": "string",
+          "title": "原文"
+        },
+        "length": {
+          "type": "integer",
+          "format": "int32",
+          "title": "长度提示词"
+        },
+        "format": {
+          "type": "integer",
+          "format": "int32",
+          "title": "格式提示词"
+        },
+        "tone": {
+          "type": "integer",
+          "format": "int32",
+          "title": "语气提示词"
+        },
+        "language": {
+          "type": "integer",
+          "format": "int32",
+          "title": "语言提示词"
+        },
+        "errorMessage": {
+          "type": "string",
+          "title": "错误信息"
+        }
+      },
+      "title": "请求-AI 写作表-创建一条数据",
+      "required": [
+        "adminId",
+        "platform",
+        "modelId",
+        "model",
+        "prompt"
+      ]
+    },
+    "v1DeleteAiWriteRecordReply": {
+      "type": "object",
+      "title": "响应-AI 写作表-删除多条数据"
+    },
+    "v1DeleteAiWriteRecordReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        }
+      },
+      "title": "请求-AI 写作表-删除多条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "v1GetAiWriteRecordInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/v1AiWriteRecordInfo"
+        }
+      },
+      "title": "响应-AI 写作表-单条数据查询"
+    },
+    "v1GetAiWriteRecordListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1AiWriteRecordInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-AI 写作表-列表数据查询"
+    },
+    "v1UpdateAiWriteRecordReply": {
+      "type": "object",
+      "title": "响应-AI 写作表-更新一条数据"
+    },
+    "v1UpdateAiWriteRecordReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        },
+        "adminId": {
+          "type": "string",
+          "title": "用户编号"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int32",
+          "title": "写作类型"
+        },
+        "platform": {
+          "type": "string",
+          "title": "平台"
+        },
+        "modelId": {
+          "type": "string",
+          "title": "模型编号"
+        },
+        "model": {
+          "type": "string",
+          "title": "模型"
+        },
+        "prompt": {
+          "type": "string",
+          "title": "生成内容提示"
+        },
+        "generatedContent": {
+          "type": "string",
+          "title": "生成的内容"
+        },
+        "originalContent": {
+          "type": "string",
+          "title": "原文"
+        },
+        "length": {
+          "type": "integer",
+          "format": "int32",
+          "title": "长度提示词"
+        },
+        "format": {
+          "type": "integer",
+          "format": "int32",
+          "title": "格式提示词"
+        },
+        "tone": {
+          "type": "integer",
+          "format": "int32",
+          "title": "语气提示词"
+        },
+        "language": {
+          "type": "integer",
+          "format": "int32",
+          "title": "语言提示词"
+        },
+        "errorMessage": {
+          "type": "string",
+          "title": "错误信息"
+        }
+      },
+      "title": "请求-AI 写作表-更新一条数据",
+      "required": [
+        "id",
+        "adminId",
+        "platform",
+        "modelId",
+        "model",
+        "prompt"
+      ]
+    }
+  }
+}

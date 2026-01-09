@@ -1,0 +1,197 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//文件表
+service FileDatum {
+  //文件表-删除一条数据
+  rpc DeleteFileDatum(DeleteFileDatumReq) returns (DeleteFileDatumReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/file_data/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //文件表-单条数据查询
+  rpc GetFileDatumInfo(GetFileDatumInfoReq) returns (GetFileDatumInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/file_data/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //文件表-列表数据查询
+  rpc GetFileDatumList(GetFileDatumListReq) returns (GetFileDatumListReply) {
+    option (google.api.http) = {get: "/admin/v1/file_data/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //客户端上传-默认上传到 OSS 的方式和凭证获取
+  rpc UploadFileOSSDefaultPolicy(UploadFileOSSDefaultPolicyReq) returns (UploadFileOSSDefaultPolicyReply) {
+    option (google.api.http) = {get: "/admin/v1/file_data/upload/oss_default_policy"};
+  }
+}
+
+//文件表信息
+message FileDatumInfo {
+  string id = 1; // 文件编号
+  string configId = 2; // 配置编号
+  string name = 3; // 文件名
+  string path = 4; // 文件路径
+  string URL = 5; // 文件 URL
+  string ext = 6; // 文件类型
+  int32 size = 7; // 文件大小
+  int32 status = 8; // 状态（-1失败,1未知,2成功）
+  string createdAt = 9; // 创建时间
+  string updatedAt = 10; // 更新时间
+}
+
+//请求-文件表-删除一条数据
+message DeleteFileDatumReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 文件编号
+}
+
+//响应-文件表-删除一条数据
+message DeleteFileDatumReply {}
+
+//请求-文件表-单条数据查询
+message GetFileDatumInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 文件编号
+}
+
+//响应-文件表-单条数据查询
+message GetFileDatumInfoReply {
+  FileDatumInfo info = 1;
+}
+
+//请求-文件表-列表数据查询
+message GetFileDatumListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1 [(buf.validate.field).int32 = {gte: 1}]; //页码
+  int32 pageSize = 2 [(buf.validate.field).int32 = {
+    gte: 1
+    lte: 1000
+  }]; //页数
+  string configId = 3; // 配置编号
+  string name = 4; // 文件名
+  string path = 5; // 文件路径
+  int32 status = 6; // 状态（-1失败,1未知,2成功）
+}
+
+//响应-文件表-列表数据查询
+message GetFileDatumListReply {
+  int32 total = 1; //总数
+  repeated FileDatumInfo list = 2; // 列表数据
+}
+
+// 火山云配置
+message VolcenginePolicy {
+  string accessKeyId = 1; //临时 accessKeyId
+  string secretAccessKey = 2; //临时 secretAccessKey
+  string sessionToken = 3; //临时 token
+  string endpoint = 4; // 端点
+  string region = 5; // 区域
+  string bucket = 6; // 桶
+}
+
+// 腾讯云配置
+message TencentPolicy {
+  string tmpSecretId = 1; // 临时密钥ID
+  string tmpSecretKey = 2; // 临时密钥Key
+  string sessionToken = 3; // 临时 token
+}
+
+// 阿里云配置
+message AliyunPolicy {
+  string policy = 1;
+  string securityToken = 2;
+  string signatureVersion = 3;
+  string credential = 4;
+  string date = 5;
+  string signature = 6;
+  string host = 7;
+  string dir = 8;
+  string callback = 9;
+}
+
+// 七牛云配置
+message QiniuPolicy {
+  string token = 1; // 凭证
+}
+
+//请求-文件上传-默认上传到 OSS 的方式和凭证获取
+message UploadFileOSSDefaultPolicyReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "name",
+        "path"
+      ]
+    }
+  };
+  string name = 1 [(buf.validate.field).string = {min_len: 1}]; // 文件名
+  string path = 2 [(buf.validate.field).string = {min_len: 1}]; // 文件路径
+  int32 size = 3; // 文件大小
+}
+
+//响应-文件上传-默认上传到 OSS 的方式和凭证获取
+message UploadFileOSSDefaultPolicyReply {
+  string fileId = 1; // 文件ID
+  string storage = 2; // 存储引擎 火山云:volcengine 腾讯云:tencent 阿里云:aliyun 七牛云:qiniu
+  VolcenginePolicy volcengine = 3; // 火山云配置
+  TencentPolicy tencent = 4; // 腾讯云配置
+  AliyunPolicy aliyun = 5; // 阿里云配置
+  QiniuPolicy qiniu = 6; // 七牛云配置
+}

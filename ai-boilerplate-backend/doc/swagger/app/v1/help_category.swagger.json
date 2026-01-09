@@ -1,0 +1,132 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "app/v1/help_category.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "HelpCategory"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/app/v1/help/categories": {
+      "get": {
+        "summary": "帮助分类表-列表数据查询",
+        "operationId": "HelpCategory_ListHelpCategories",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.ListHelpCategoriesReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "HelpCategory"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "app.v1.HelpCategoryInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "name": {
+          "type": "string",
+          "title": "分类名称"
+        },
+        "icon": {
+          "type": "string",
+          "title": "图标"
+        },
+        "order": {
+          "type": "integer",
+          "format": "int32",
+          "title": "排序"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(1启用 0禁用)"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "帮助分类表信息"
+    },
+    "app.v1.ListHelpCategoriesReply": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/app.v1.HelpCategoryInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-帮助分类表-列表数据查询"
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

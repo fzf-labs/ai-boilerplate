@@ -1,0 +1,480 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/sys_notify_message.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "SysNotifyMessage"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/sys_notify_message/info": {
+      "get": {
+        "summary": "系统-通知消息-单条数据查询",
+        "operationId": "SysNotifyMessage_GetSysNotifyMessageInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetSysNotifyMessageInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SysNotifyMessage"
+        ]
+      }
+    },
+    "/admin/v1/sys_notify_message/list": {
+      "get": {
+        "summary": "系统-通知消息-列表数据查询",
+        "operationId": "SysNotifyMessage_GetSysNotifyMessageList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetSysNotifyMessageListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "receiver",
+            "description": "接收人",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sendTime",
+            "description": "发送时间",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "readStatus",
+            "description": "阅读状态    1: 已读 -1: 未读",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "SysNotifyMessage"
+        ]
+      }
+    },
+    "/admin/v1/sys_notify_message/my/list": {
+      "get": {
+        "summary": "系统-通知消息-我的-列表",
+        "operationId": "SysNotifyMessage_GetSysNotifyMessageMyList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetSysNotifyMessageMyListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "sender",
+            "description": "发送人",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sendTime",
+            "description": "发送时间",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "readStatus",
+            "description": "阅读状态    1: 已读 -1: 未读",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "SysNotifyMessage"
+        ]
+      }
+    },
+    "/admin/v1/sys_notify_message/my/unread_count": {
+      "get": {
+        "summary": "系统-通知消息-我的-未读数量",
+        "operationId": "SysNotifyMessage_GetSysNotifyMessageMyUnreadCount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetSysNotifyMessageMyUnreadCountReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "SysNotifyMessage"
+        ]
+      }
+    },
+    "/admin/v1/sys_notify_message/my/unread_list": {
+      "get": {
+        "summary": "系统-通知消息-我的-未读列表",
+        "operationId": "SysNotifyMessage_GetSysNotifyMessageMyUnreadList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetSysNotifyMessageMyUnreadListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "SysNotifyMessage"
+        ]
+      }
+    },
+    "/admin/v1/sys_notify_message/my/update_all_read": {
+      "post": {
+        "summary": "系统-通知消息-我的-全部已读",
+        "operationId": "SysNotifyMessage_UpdateSysNotifyMessageAllRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateSysNotifyMessageAllReadReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateSysNotifyMessageAllReadReq"
+            }
+          }
+        ],
+        "tags": [
+          "SysNotifyMessage"
+        ]
+      }
+    },
+    "/admin/v1/sys_notify_message/my/update_read": {
+      "post": {
+        "summary": "系统-通知消息-我的-指定消息已读",
+        "operationId": "SysNotifyMessage_UpdateSysNotifyMessageRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateSysNotifyMessageReadReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateSysNotifyMessageReadReq"
+            }
+          }
+        ],
+        "tags": [
+          "SysNotifyMessage"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1GetSysNotifyMessageInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/v1SysNotifyMessageInfo"
+        }
+      },
+      "title": "响应-系统-通知消息-单条数据查询"
+    },
+    "v1GetSysNotifyMessageListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1SysNotifyMessageInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-系统-通知消息-列表数据查询"
+    },
+    "v1GetSysNotifyMessageMyListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1SysNotifyMessageInfo"
+          },
+          "title": "列表数据"
+        }
+      }
+    },
+    "v1GetSysNotifyMessageMyUnreadCountReply": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int32",
+          "title": "未读数量"
+        }
+      }
+    },
+    "v1GetSysNotifyMessageMyUnreadListReply": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1SysNotifyMessageInfo"
+          },
+          "title": "列表数据"
+        }
+      }
+    },
+    "v1SysNotifyMessageInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "tenantId": {
+          "type": "string",
+          "title": "租户id"
+        },
+        "type": {
+          "type": "string",
+          "title": "消息类型"
+        },
+        "subject": {
+          "type": "string",
+          "title": "主题"
+        },
+        "content": {
+          "type": "string",
+          "title": "内容"
+        },
+        "sender": {
+          "type": "string",
+          "title": "发送人"
+        },
+        "receiver": {
+          "type": "string",
+          "title": "接收人"
+        },
+        "sendTime": {
+          "type": "string",
+          "title": "发送时间"
+        },
+        "readTime": {
+          "type": "string",
+          "title": "阅读时间"
+        },
+        "extend": {
+          "type": "string",
+          "title": "扩展"
+        },
+        "senderName": {
+          "type": "string",
+          "title": "发送人名称"
+        },
+        "senderAvatar": {
+          "type": "string",
+          "title": "发送人头像"
+        },
+        "receiverName": {
+          "type": "string",
+          "title": "接收人名称"
+        },
+        "receiverAvatar": {
+          "type": "string",
+          "title": "接收人头像"
+        }
+      },
+      "title": "系统-通知消息信息"
+    },
+    "v1UpdateSysNotifyMessageAllReadReply": {
+      "type": "object"
+    },
+    "v1UpdateSysNotifyMessageAllReadReq": {
+      "type": "object"
+    },
+    "v1UpdateSysNotifyMessageReadReply": {
+      "type": "object"
+    },
+    "v1UpdateSysNotifyMessageReadReq": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "id列表"
+        }
+      }
+    }
+  }
+}

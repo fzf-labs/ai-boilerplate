@@ -1,0 +1,674 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/sms_channel.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "SmsChannel"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/sms_channel/create": {
+      "post": {
+        "summary": "短信渠道-创建一条数据",
+        "operationId": "SmsChannel_CreateSmsChannel",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateSmsChannelReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateSmsChannelReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SmsChannel"
+        ]
+      }
+    },
+    "/admin/v1/sms_channel/delete": {
+      "post": {
+        "summary": "短信渠道-删除一条数据",
+        "operationId": "SmsChannel_DeleteSmsChannel",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteSmsChannelReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteSmsChannelReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SmsChannel"
+        ]
+      }
+    },
+    "/admin/v1/sms_channel/info": {
+      "get": {
+        "summary": "短信渠道-单条数据查询",
+        "operationId": "SmsChannel_GetSmsChannelInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetSmsChannelInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "id",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SmsChannel"
+        ]
+      }
+    },
+    "/admin/v1/sms_channel/list": {
+      "get": {
+        "summary": "短信渠道-列表数据查询",
+        "operationId": "SmsChannel_GetSmsChannelList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetSmsChannelListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "name",
+            "description": "渠道名称",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "operator",
+            "description": "运营商编码",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "description": "状态(-1禁用,1开启)",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "createdAt",
+            "description": "创建时间",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SmsChannel"
+        ]
+      }
+    },
+    "/admin/v1/sms_channel/operator": {
+      "get": {
+        "summary": "短信渠道-运营商",
+        "operationId": "SmsChannel_GetSmsChannelOperator",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetSmsChannelOperatorReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SmsChannel"
+        ]
+      }
+    },
+    "/admin/v1/sms_channel/selector": {
+      "get": {
+        "summary": "短信渠道-选择器",
+        "operationId": "SmsChannel_GetSmsChannelSelector",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetSmsChannelSelectorReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SmsChannel"
+        ]
+      }
+    },
+    "/admin/v1/sms_channel/update": {
+      "post": {
+        "summary": "短信渠道-更新一条数据",
+        "operationId": "SmsChannel_UpdateSmsChannel",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateSmsChannelReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateSmsChannelReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SmsChannel"
+        ]
+      }
+    },
+    "/admin/v1/sms_channel/update/status": {
+      "post": {
+        "summary": "短信渠道-更新状态",
+        "operationId": "SmsChannel_UpdateSmsChannelStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateSmsChannelStatusReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateSmsChannelStatusReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SmsChannel"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "admin.v1.CreateSmsChannelReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        }
+      },
+      "title": "响应-短信渠道-创建一条数据"
+    },
+    "admin.v1.CreateSmsChannelReq": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "渠道名称"
+        },
+        "operator": {
+          "type": "string",
+          "title": "运营商"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "APIKey": {
+          "type": "string",
+          "title": "短信 API 的账号"
+        },
+        "APISecret": {
+          "type": "string",
+          "title": "短信 API 的秘钥"
+        },
+        "callbackURL": {
+          "type": "string",
+          "title": "短信发送回调 URL"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用,1开启)"
+        }
+      },
+      "title": "请求-短信渠道-创建一条数据",
+      "required": [
+        "name",
+        "operator",
+        "APIKey"
+      ]
+    },
+    "admin.v1.DeleteSmsChannelReply": {
+      "type": "object",
+      "title": "响应-短信渠道-删除一条数据"
+    },
+    "admin.v1.DeleteSmsChannelReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        }
+      },
+      "title": "请求-短信渠道-删除一条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "admin.v1.GetSmsChannelInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/admin.v1.SmsChannelInfo"
+        }
+      },
+      "title": "响应-短信渠道-单条数据查询"
+    },
+    "admin.v1.GetSmsChannelListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.SmsChannelInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-短信渠道-列表数据查询"
+    },
+    "admin.v1.GetSmsChannelOperatorReply": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.SmsChannelOperator"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-短信渠道-运营商"
+    },
+    "admin.v1.GetSmsChannelSelectorReply": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.SmsChannelSelector"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-短信渠道-选择器"
+    },
+    "admin.v1.SmsChannelInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "name": {
+          "type": "string",
+          "title": "渠道名称"
+        },
+        "operator": {
+          "type": "string",
+          "title": "运营商"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "APIKey": {
+          "type": "string",
+          "title": "短信 API 的账号"
+        },
+        "APISecret": {
+          "type": "string",
+          "title": "短信 API 的秘钥"
+        },
+        "callbackURL": {
+          "type": "string",
+          "title": "短信发送回调 URL"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用,1开启)"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        },
+        "operatorName": {
+          "type": "string",
+          "title": "运营商名称"
+        }
+      },
+      "title": "短信渠道信息"
+    },
+    "admin.v1.SmsChannelOperator": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "运营商名称"
+        },
+        "operator": {
+          "type": "string",
+          "title": "运营商编码"
+        }
+      }
+    },
+    "admin.v1.SmsChannelSelector": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "name": {
+          "type": "string",
+          "title": "渠道名称"
+        },
+        "operator": {
+          "type": "string",
+          "title": "运营商编码"
+        },
+        "operatorName": {
+          "type": "string",
+          "title": "运营商名称"
+        }
+      }
+    },
+    "admin.v1.UpdateSmsChannelReply": {
+      "type": "object",
+      "title": "响应-短信渠道-更新一条数据"
+    },
+    "admin.v1.UpdateSmsChannelReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "name": {
+          "type": "string",
+          "title": "渠道名称"
+        },
+        "operator": {
+          "type": "string",
+          "title": "运营商"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "APIKey": {
+          "type": "string",
+          "title": "短信 API 的账号"
+        },
+        "APISecret": {
+          "type": "string",
+          "title": "短信 API 的秘钥"
+        },
+        "callbackURL": {
+          "type": "string",
+          "title": "短信发送回调 URL"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用,1开启)"
+        }
+      },
+      "title": "请求-短信渠道-更新一条数据",
+      "required": [
+        "id",
+        "name",
+        "operator",
+        "APIKey"
+      ]
+    },
+    "admin.v1.UpdateSmsChannelStatusReply": {
+      "type": "object",
+      "title": "响应-短信渠道-更新状态"
+    },
+    "admin.v1.UpdateSmsChannelStatusReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用,1开启)"
+        }
+      },
+      "title": "请求-短信渠道-更新状态",
+      "required": [
+        "id",
+        "status"
+      ]
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

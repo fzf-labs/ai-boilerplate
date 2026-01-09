@@ -1,0 +1,245 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//AI 视频表
+service AiVideoRecord {
+  //AI 视频表-创建一条数据
+  rpc CreateAiVideoRecord(CreateAiVideoRecordReq) returns (CreateAiVideoRecordReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_video_record/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 视频表-更新一条数据
+  rpc UpdateAiVideoRecord(UpdateAiVideoRecordReq) returns (UpdateAiVideoRecordReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_video_record/update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 视频表-更新状态
+  rpc UpdateAiVideoRecordStatus(UpdateAiVideoRecordStatusReq) returns (UpdateAiVideoRecordStatusReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_video_record/update/status"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 视频表-删除一条数据
+  rpc DeleteAiVideoRecord(DeleteAiVideoRecordReq) returns (DeleteAiVideoRecordReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/ai_video_record/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 视频表-单条数据查询
+  rpc GetAiVideoRecordInfo(GetAiVideoRecordInfoReq) returns (GetAiVideoRecordInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/ai_video_record/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //AI 视频表-列表数据查询
+  rpc GetAiVideoRecordList(GetAiVideoRecordListReq) returns (GetAiVideoRecordListReply) {
+    option (google.api.http) = {get: "/admin/v1/ai_video_record/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+//AI 视频表信息
+message AiVideoRecordInfo {
+  string id = 1; // 编号
+	string tenantId = 2; // 租户编号
+	string adminId = 3; // 用户编号
+	string prompt = 4; // 提示词
+	string platform = 5; // 平台
+	string modelId = 6; // 模型编号
+	string model = 7; // 模型
+	int32 status = 8; // 状态
+	string finishTime = 9; // 完成时间
+	string errorMessage = 10; // 错误信息
+	bool publicStatus = 11; // 是否发布
+	string videoURL = 12; // 视频地址
+	string options = 13; // 绘制参数
+	string taskId = 14; // 任务编号
+	string createdAt = 15; // 创建时间
+	string updatedAt = 16; // 更新时间
+}
+
+//请求-AI 视频表-创建一条数据
+message CreateAiVideoRecordReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["tenantId","adminId","prompt","platform","model","status","publicStatus"]
+    }
+  };
+  string tenantId = 1 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 租户编号
+	string adminId = 2 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 用户编号
+	string prompt = 3 [(buf.validate.field).string={min_len: 1, max_len: 9223372036854775807}]; // 提示词
+	string platform = 4 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 平台
+	string modelId = 5 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 模型编号
+	string model = 6 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 模型
+	int32 status = 7 ; // 状态
+	string finishTime = 8 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 完成时间
+	string errorMessage = 9 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 1024}]; // 错误信息
+	bool publicStatus = 10 ; // 是否发布
+	string videoURL = 11 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 512}]; // 视频地址
+	string options = 12 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // 绘制参数
+	string taskId = 13 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 255}]; // 任务编号
+}
+
+//响应-AI 视频表-创建一条数据
+message CreateAiVideoRecordReply {
+  	string id = 1; // 编号
+}
+
+//请求-AI 视频表-更新一条数据
+message UpdateAiVideoRecordReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","tenantId","adminId","prompt","platform","model","status","publicStatus"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 编号
+	string tenantId = 2 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 租户编号
+	string adminId = 3 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 用户编号
+	string prompt = 4 [(buf.validate.field).string={min_len: 1, max_len: 9223372036854775807}]; // 提示词
+	string platform = 5 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 平台
+	string modelId = 6 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 模型编号
+	string model = 7 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 模型
+	int32 status = 8 ; // 状态
+	string finishTime = 9 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 64}]; // 完成时间
+	string errorMessage = 10 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 1024}]; // 错误信息
+	bool publicStatus = 11 ; // 是否发布
+	string videoURL = 12 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 512}]; // 视频地址
+	string options = 13 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // 绘制参数
+	string taskId = 14 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 255}]; // 任务编号
+}
+
+//响应-AI 视频表-更新一条数据
+message UpdateAiVideoRecordReply {}
+
+//请求-AI 视频表-更新状态
+message UpdateAiVideoRecordStatusReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","status"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 编号
+	int32 status = 2 ; // 状态
+}
+
+//响应-AI 视频表-更新状态
+message UpdateAiVideoRecordStatusReply {}
+
+//请求-AI 视频表-删除一条数据
+message DeleteAiVideoRecordReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 编号
+}
+
+//响应-AI 视频表-删除一条数据
+message DeleteAiVideoRecordReply {}
+
+//请求-AI 视频表-单条数据查询
+message GetAiVideoRecordInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 编号
+}
+
+//响应-AI 视频表-单条数据查询
+message GetAiVideoRecordInfoReply {
+  AiVideoRecordInfo info = 1;
+}
+
+//请求-AI 视频表-列表数据查询
+message GetAiVideoRecordListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1[(buf.validate.field).int32={gte: 1}]; //页码
+  int32 pageSize = 2[(buf.validate.field).int32={gte: 1, lte: 1000}]; //页数
+}
+
+//响应-AI 视频表-列表数据查询
+message GetAiVideoRecordListReply {
+  int32 total = 1; //总数
+  repeated AiVideoRecordInfo list = 2; // 列表数据
+}
+

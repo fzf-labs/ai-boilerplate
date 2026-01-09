@@ -1,0 +1,674 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/self_app_release.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "SelfAppRelease"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/self_app_release/create": {
+      "post": {
+        "summary": "自应用版本发布表-创建一条数据",
+        "operationId": "SelfAppRelease_CreateSelfAppRelease",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateSelfAppReleaseReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateSelfAppReleaseReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SelfAppRelease"
+        ]
+      }
+    },
+    "/admin/v1/self_app_release/delete": {
+      "post": {
+        "summary": "自应用版本发布表-删除多条数据",
+        "operationId": "SelfAppRelease_DeleteSelfAppRelease",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteSelfAppReleaseReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1DeleteSelfAppReleaseReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SelfAppRelease"
+        ]
+      }
+    },
+    "/admin/v1/self_app_release/info": {
+      "get": {
+        "summary": "自应用版本发布表-单条数据查询",
+        "operationId": "SelfAppRelease_GetSelfAppReleaseInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetSelfAppReleaseInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "ID",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SelfAppRelease"
+        ]
+      }
+    },
+    "/admin/v1/self_app_release/list": {
+      "get": {
+        "summary": "自应用版本发布表-列表数据查询",
+        "operationId": "SelfAppRelease_GetSelfAppReleaseList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetSelfAppReleaseListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "packageName",
+            "description": "包名",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "channel",
+            "description": "发布渠道",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "buildNum",
+            "description": "build值",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SelfAppRelease"
+        ]
+      }
+    },
+    "/admin/v1/self_app_release/update": {
+      "post": {
+        "summary": "自应用版本发布表-更新一条数据",
+        "operationId": "SelfAppRelease_UpdateSelfAppRelease",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateSelfAppReleaseReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateSelfAppReleaseReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SelfAppRelease"
+        ]
+      }
+    },
+    "/admin/v1/self_app_release/update/status": {
+      "post": {
+        "summary": "自应用版本发布表-更新状态",
+        "operationId": "SelfAppRelease_UpdateSelfAppReleaseStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateSelfAppReleaseStatusReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateSelfAppReleaseStatusReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SelfAppRelease"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1CreateSelfAppReleaseReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "ID"
+        }
+      },
+      "title": "响应-自应用版本发布表-创建一条数据"
+    },
+    "v1CreateSelfAppReleaseReq": {
+      "type": "object",
+      "properties": {
+        "channel": {
+          "type": "string",
+          "title": "发布渠道"
+        },
+        "packageName": {
+          "type": "string",
+          "title": "包名"
+        },
+        "buildNum": {
+          "type": "integer",
+          "format": "int32",
+          "title": "build值"
+        },
+        "version": {
+          "type": "string",
+          "title": "版本号"
+        },
+        "updateType": {
+          "type": "integer",
+          "format": "int32",
+          "title": "更新类型(1强制 2提示 3静默)"
+        },
+        "title": {
+          "type": "string",
+          "title": "更新标题"
+        },
+        "changelog": {
+          "type": "string",
+          "title": "更新日志"
+        },
+        "packageURL": {
+          "type": "string",
+          "title": "安装包地址"
+        },
+        "packageSize": {
+          "type": "number",
+          "format": "double",
+          "title": "安装包大小"
+        },
+        "packageMd5": {
+          "type": "string",
+          "title": "安装包MD5"
+        },
+        "minOsVersion": {
+          "type": "string",
+          "title": "最低系统版本"
+        },
+        "grayStrategy": {
+          "type": "integer",
+          "format": "int32",
+          "title": "灰度策略(1全量 2按比例 3自定义)"
+        },
+        "grayPercentage": {
+          "type": "number",
+          "format": "double",
+          "title": "灰度比例"
+        },
+        "graySns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "灰度设备"
+        },
+        "publishTime": {
+          "type": "string",
+          "title": "发布时间"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用 1启用)"
+        }
+      },
+      "title": "请求-自应用版本发布表-创建一条数据",
+      "required": [
+        "channel",
+        "packageName",
+        "buildNum",
+        "updateType",
+        "title",
+        "packageURL",
+        "grayStrategy",
+        "status"
+      ]
+    },
+    "v1DeleteSelfAppReleaseReply": {
+      "type": "object",
+      "title": "响应-自应用版本发布表-删除多条数据"
+    },
+    "v1DeleteSelfAppReleaseReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "ID"
+        }
+      },
+      "title": "请求-自应用版本发布表-删除多条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "v1GetSelfAppReleaseInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/v1SelfAppReleaseInfo"
+        }
+      },
+      "title": "响应-自应用版本发布表-单条数据查询"
+    },
+    "v1GetSelfAppReleaseListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1SelfAppReleaseInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-自应用版本发布表-列表数据查询"
+    },
+    "v1SelfAppReleaseInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "ID"
+        },
+        "channel": {
+          "type": "string",
+          "title": "发布渠道"
+        },
+        "packageName": {
+          "type": "string",
+          "title": "包名"
+        },
+        "buildNum": {
+          "type": "integer",
+          "format": "int32",
+          "title": "build值"
+        },
+        "version": {
+          "type": "string",
+          "title": "版本号"
+        },
+        "updateType": {
+          "type": "integer",
+          "format": "int32",
+          "title": "更新类型(1强制 2提示 3静默)"
+        },
+        "title": {
+          "type": "string",
+          "title": "更新标题"
+        },
+        "changelog": {
+          "type": "string",
+          "title": "更新日志"
+        },
+        "packageURL": {
+          "type": "string",
+          "title": "安装包地址"
+        },
+        "packageSize": {
+          "type": "number",
+          "format": "double",
+          "title": "安装包大小"
+        },
+        "packageMd5": {
+          "type": "string",
+          "title": "安装包MD5"
+        },
+        "minOsVersion": {
+          "type": "string",
+          "title": "最低系统版本"
+        },
+        "grayStrategy": {
+          "type": "integer",
+          "format": "int32",
+          "title": "灰度策略(1全量 2按比例 3自定义)"
+        },
+        "grayPercentage": {
+          "type": "number",
+          "format": "double",
+          "title": "灰度比例"
+        },
+        "graySns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "灰度设备"
+        },
+        "publishTime": {
+          "type": "string",
+          "title": "发布时间"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用 1启用)"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "自应用版本发布表信息"
+    },
+    "v1UpdateSelfAppReleaseReply": {
+      "type": "object",
+      "title": "响应-自应用版本发布表-更新一条数据"
+    },
+    "v1UpdateSelfAppReleaseReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "ID"
+        },
+        "channel": {
+          "type": "string",
+          "title": "发布渠道"
+        },
+        "packageName": {
+          "type": "string",
+          "title": "包名"
+        },
+        "buildNum": {
+          "type": "integer",
+          "format": "int32",
+          "title": "build值"
+        },
+        "version": {
+          "type": "string",
+          "title": "版本号"
+        },
+        "updateType": {
+          "type": "integer",
+          "format": "int32",
+          "title": "更新类型(1强制 2提示 3静默)"
+        },
+        "title": {
+          "type": "string",
+          "title": "更新标题"
+        },
+        "changelog": {
+          "type": "string",
+          "title": "更新日志"
+        },
+        "packageURL": {
+          "type": "string",
+          "title": "安装包地址"
+        },
+        "packageSize": {
+          "type": "number",
+          "format": "double",
+          "title": "安装包大小"
+        },
+        "packageMd5": {
+          "type": "string",
+          "title": "安装包MD5"
+        },
+        "minOsVersion": {
+          "type": "string",
+          "title": "最低系统版本"
+        },
+        "grayStrategy": {
+          "type": "integer",
+          "format": "int32",
+          "title": "灰度策略(1全量 2按比例 3自定义)"
+        },
+        "grayPercentage": {
+          "type": "number",
+          "format": "double",
+          "title": "灰度比例"
+        },
+        "graySns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "灰度设备"
+        },
+        "publishTime": {
+          "type": "string",
+          "title": "发布时间"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用 1启用)"
+        }
+      },
+      "title": "请求-自应用版本发布表-更新一条数据",
+      "required": [
+        "id",
+        "channel",
+        "packageName",
+        "buildNum",
+        "updateType",
+        "title",
+        "packageURL",
+        "grayStrategy",
+        "status"
+      ]
+    },
+    "v1UpdateSelfAppReleaseStatusReply": {
+      "type": "object",
+      "title": "响应-自应用版本发布表-更新状态"
+    },
+    "v1UpdateSelfAppReleaseStatusReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "ID"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用 1启用)"
+        }
+      },
+      "title": "请求-自应用版本发布表-更新状态",
+      "required": [
+        "id",
+        "status"
+      ]
+    }
+  }
+}

@@ -1,0 +1,74 @@
+networks:
+  ai-boilerplate:
+    driver: bridge
+
+volumes:
+  ai-boilerplate-volume-postgresql:
+    external: true
+  ai-boilerplate-volume-redis:
+    external: true
+
+services:
+  ai-boilerplate-postgresql:
+    image: postgres:14.5
+    container_name: ai-boilerplate-postgresql                                                        # 容器名为'postgresql'
+    # 重启策略
+    restart: always               # 指定容器退出后的重启策略为始终重启，但是不考虑在Docker守护进程启动时就已经停止了的容器
+    # 设置环境变量,相当于docker run命令中的-e
+    environment:
+      TZ: Asia/Shanghai
+      LANG: en_US.UTF-8
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: your_postgres_password_here
+      ALLOW_IP_RANGE: 0.0.0.0/0 # 允许所有ip访问
+    # 数据卷挂载路径设置,使用外部存储卷
+    volumes:
+      - "ai-boilerplate-volume-postgresql:/var/lib/postgresql/data"
+    # 映射端口
+    ports:
+      - "5432:5432"
+    networks:
+      - ai-boilerplate
+  ai-boilerplate-redis:
+    container_name: ai-boilerplate-redis
+    image: 'redis:6.2.13-alpine'
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+    command: [ "redis-server", "--appendonly", "yes", "--requirepass","your_redis_password_here" ]
+    volumes:
+      - "ai-boilerplate-volume-redis:/data:rw"
+    ports:
+      - "6379:6379"
+    networks:
+      - ai-boilerplate
+  ai-boilerplate-asynq-manage:
+    image: 'hibiken/asynqmon:latest'
+    container_name: ai-boilerplate-asynq-manage
+    restart: always
+    platform: linux/x86_64
+    ports:
+      - "8070:8080"
+    command:
+      - "--redis-addr=localhost:6379"
+      - "--redis-password=your_redis_password_here"
+    networks:
+      - ai-boilerplate
+  ai-boilerplate-backend:
+    image: your_docker_registry_here/your_namespace_here/ai-boilerplate-backend:your_tag_here
+    container_name: ai-boilerplate-backend
+    restart: always
+    ports:
+      - "8000:8000"
+      - "9000:9000"
+    networks:
+      - ai-boilerplate
+  ai-boilerplate-frontend:
+    image: your_docker_registry_here/your_namespace_here/ai-boilerplate-frontend:your_tag_here
+    container_name: ai-boilerplate-admin
+    restart: always
+    ports:
+      - "8090:8080"
+    networks:
+      - ai-boilerplate

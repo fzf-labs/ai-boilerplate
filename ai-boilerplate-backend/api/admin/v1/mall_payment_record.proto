@@ -1,0 +1,100 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//支付记录表
+service MallPaymentRecord {
+  //支付记录表-单条数据查询
+  rpc GetMallPaymentRecordSuccessByOrderId(GetMallPaymentRecordSuccessByOrderIdReq) returns (GetMallPaymentRecordSuccessByOrderIdReply) {
+    option (google.api.http) = {get: "/admin/v1/mall_payment_record/success/order_id"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //支付记录表-列表数据查询
+  rpc GetMallPaymentRecordListByOrderId(GetMallPaymentRecordListByOrderIdReq) returns (GetMallPaymentRecordListByOrderIdReply) {
+    option (google.api.http) = {get: "/admin/v1/mall_payment_record/success/list/order_id"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+//支付记录表信息
+message MallPaymentRecordInfo {
+  string id = 1; // id
+  string orderId = 2; // 订单ID
+  string transactionId = 3; // 交易流水号
+  string paymentChannel = 4; // 支付渠道(wechat,alipay)
+  string paymentMethod = 5; // 支付方式(mini_program,h5,native,jsapi)
+  double amount = 6; // 支付金额
+  string currency = 7; // 币种
+  int32 paymentStatus = 8; // 支付状态(0待支付,1支付成功,2支付失败,3已退款)
+  string thirdPartyOrderNo = 9; // 第三方订单号
+  string thirdPartyTransactionId = 10; // 第三方交易号
+  string callbackData = 11; // 回调数据
+  string callbackTime = 12; // 回调时间
+  string errorCode = 13; // 错误代码
+  string errorMessage = 14; // 错误信息
+  int32 status = 15; // 状态(-1无效,1正常)
+  string createdAt = 16; // 创建时间
+  string updatedAt = 17; // 更新时间
+}
+
+//请求-支付记录表-单条数据查询
+message GetMallPaymentRecordSuccessByOrderIdReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["orderId"]
+    }
+  };
+  string orderId = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // id
+}
+
+//响应-支付记录表-单条数据查询
+message GetMallPaymentRecordSuccessByOrderIdReply {
+  MallPaymentRecordInfo info = 1;
+}
+
+//请求-支付记录表-列表数据查询
+message GetMallPaymentRecordListByOrderIdReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["orderId"]
+    }
+  };
+  string orderId = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 订单ID
+}
+
+//响应-支付记录表-列表数据查询
+message GetMallPaymentRecordListByOrderIdReply {
+  repeated MallPaymentRecordInfo list = 1; // 列表数据
+}

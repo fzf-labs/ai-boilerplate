@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package app.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/app/v1;v1";
+
+//帮助中心常见问题表
+service HelpFaq {
+  //帮助中心常见问题表-列表数据查询
+  rpc ListHelpFaqs(ListHelpFaqsReq) returns (ListHelpFaqsReply) {
+    option (google.api.http) = {get: "/app/v1/help/faqs"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+//帮助中心常见问题表信息
+message HelpFaqInfo {
+  string id = 1; // 主键ID
+  string categoryId = 2; // 分类ID
+  string question = 3; // 问题
+  string answer = 4; // 答案
+  int32 orderNum = 5; // 排序号
+  int32 viewCount = 6; // 查看次数
+  int32 helpfulCount = 7; // 有帮助次数
+  int32 unhelpfulCount = 8; // 无帮助次数
+  bool isHot = 9; // 是否热门
+  int32 status = 10; // 状态:0-禁用,1-启用
+  string createdAt = 11; //
+  string updatedAt = 12; //
+}
+
+//请求-帮助中心常见问题表-列表数据查询
+message ListHelpFaqsReq {
+  string categoryId = 1 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 128
+    }
+  ]; // 分类ID（可选，用于筛选）
+  string keyword = 2 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 100
+    }
+  ]; // 搜索关键词（可选）
+  int32 page = 3 [(buf.validate.field).int32 = {gte: 1}]; //页码
+  int32 pageSize = 4 [(buf.validate.field).int32 = {
+    gte: 1
+    lte: 1000
+  }]; //页数
+}
+
+//响应-帮助中心常见问题表-列表数据查询
+message ListHelpFaqsReply {
+  int32 total = 1; //总数
+  repeated HelpFaqInfo list = 2; // 列表数据
+}

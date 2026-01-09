@@ -1,0 +1,245 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//系统-角色
+service SysRole {
+  //系统-角色-创建一条数据
+  rpc CreateSysRole(CreateSysRoleReq) returns (CreateSysRoleReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sys_role/create"
+      body: "*"
+    };
+  }
+  //系统-角色-更新一条数据
+  rpc UpdateSysRole(UpdateSysRoleReq) returns (UpdateSysRoleReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sys_role/update"
+      body: "*"
+    };
+  }
+  //系统-角色-更新状态
+  rpc UpdateSysRoleStatus(UpdateSysRoleStatusReq) returns (UpdateSysRoleStatusReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sys_role/update/status"
+      body: "*"
+    };
+  }
+  //系统-角色-删除一条数据
+  rpc DeleteSysRole(DeleteSysRoleReq) returns (DeleteSysRoleReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sys_role/delete"
+      body: "*"
+    };
+  }
+  //系统-角色-单条数据查询
+  rpc GetSysRoleInfo(GetSysRoleInfoReq) returns (GetSysRoleInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/sys_role/info"};
+  }
+  //系统-角色-列表数据查询
+  rpc GetSysRoleList(GetSysRoleListReq) returns (GetSysRoleListReply) {
+    option (google.api.http) = {get: "/admin/v1/sys_role/list"};
+  }
+  //系统-角色-选择器
+  rpc GetSysRoleSelector(GetSysRoleSelectorReq) returns (GetSysRoleSelectorReply) {
+    option (google.api.http) = {get: "/admin/v1/sys_role/selector"};
+  }
+}
+
+//系统-角色信息
+message SysRoleInfo {
+  string id = 1; // 编号
+  string tenantId = 2; // 租户id
+  string name = 3; // 名称
+  string remark = 4; // 备注
+  string dataScope = 5; // 数据范围
+  repeated string menuIds = 6; // 菜单id集合
+  int32 sort = 7; // 排序值
+  int32 status = 8; // 状态 -1=禁用 1=开启
+  string createdAt = 9; // 创建时间
+  string updatedAt = 10; // 更新时间
+}
+
+//请求-系统-角色-创建一条数据
+message CreateSysRoleReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "name",
+        "dataScope",
+        "sort"
+      ]
+    }
+  };
+
+  string name = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 50
+  }]; // 名称
+  string remark = 2 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 200
+    }
+  ]; // 备注
+  string dataScope = 3 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }]; // 数据范围
+  repeated string menuIds = 4 [(buf.validate.field).repeated = {min_items: 0}]; // 菜单id集合
+  int32 sort = 5 [(buf.validate.field).int32 = {
+    gt: 0
+    lte: 64
+  }]; // 排序值
+  int32 status = 6 [(buf.validate.field).int32 = {
+    in: [
+      -1,
+      1
+    ]
+  }]; // 状态 -1=禁用 1=开启
+}
+
+//响应-系统-角色-创建一条数据
+message CreateSysRoleReply {
+  string id = 1; // 编号
+}
+
+//请求-系统-角色-更新一条数据
+message UpdateSysRoleReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "id",
+        "name",
+        "dataScope",
+        "sort"
+      ]
+    }
+  };
+
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 编号
+  string name = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 50
+  }]; // 名称
+  string remark = 3 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 200
+    }
+  ]; // 备注
+  string dataScope = 4 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }]; // 数据范围
+  repeated string menuIds = 5 [(buf.validate.field).repeated = {min_items: 0}]; // 菜单id集合
+  int32 sort = 6 [(buf.validate.field).int32 = {
+    gt: 0
+    lte: 64
+  }]; // 排序值
+  int32 status = 7 [(buf.validate.field).int32 = {
+    in: [
+      -1,
+      1
+    ]
+  }]; // 状态 -1=禁用 1=开启
+}
+
+//响应-系统-角色-更新一条数据
+message UpdateSysRoleReply {}
+
+//请求-系统-角色-更新状态
+message UpdateSysRoleStatusReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 编号
+  int32 status = 2 [(buf.validate.field).int32 = {
+    in: [
+      -1,
+      1
+    ]
+  }]; // 状态 -1=禁用 1=开启
+}
+
+//响应-系统-角色-更新状态
+message UpdateSysRoleStatusReply {}
+
+//请求-系统-角色-删除一条数据
+message DeleteSysRoleReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 编号集合
+}
+
+//响应-系统-角色-删除一条数据
+message DeleteSysRoleReply {}
+
+//请求-系统-角色-单条数据查询
+message GetSysRoleInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 编号
+}
+
+//响应-系统-角色-单条数据查询
+message GetSysRoleInfoReply {
+  SysRoleInfo info = 1;
+}
+
+//请求-系统-角色-列表数据查询
+message GetSysRoleListReq {
+  int32 page = 1; //页码
+  int32 pageSize = 2; //页数
+  string name = 3; // 名称
+  int32 status = 4; // 状态 -1=禁用 1=开启
+  repeated string createdAt = 5; // 创建时间
+}
+
+//响应-系统-角色-列表数据查询
+message GetSysRoleListReply {
+  int32 total = 1; //总数
+  repeated SysRoleInfo list = 2; // 列表数据
+}
+
+message GetSysRoleSelectorItem {
+  string id = 1; // 编号
+  string name = 2; // 名称
+}
+
+message GetSysRoleSelectorReq {}
+
+message GetSysRoleSelectorReply {
+  repeated GetSysRoleSelectorItem list = 1; // 列表数据
+}

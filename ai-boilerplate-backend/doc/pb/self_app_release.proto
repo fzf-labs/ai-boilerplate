@@ -1,0 +1,251 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//自应用版本发布表
+service SelfAppRelease {
+  //自应用版本发布表-创建一条数据
+  rpc CreateSelfAppRelease(CreateSelfAppReleaseReq) returns (CreateSelfAppReleaseReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/self_app_release/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //自应用版本发布表-更新一条数据
+  rpc UpdateSelfAppRelease(UpdateSelfAppReleaseReq) returns (UpdateSelfAppReleaseReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/self_app_release/update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //自应用版本发布表-更新状态
+  rpc UpdateSelfAppReleaseStatus(UpdateSelfAppReleaseStatusReq) returns (UpdateSelfAppReleaseStatusReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/self_app_release/update/status"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //自应用版本发布表-删除一条数据
+  rpc DeleteSelfAppRelease(DeleteSelfAppReleaseReq) returns (DeleteSelfAppReleaseReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/self_app_release/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //自应用版本发布表-单条数据查询
+  rpc GetSelfAppReleaseInfo(GetSelfAppReleaseInfoReq) returns (GetSelfAppReleaseInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/self_app_release/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //自应用版本发布表-列表数据查询
+  rpc GetSelfAppReleaseList(GetSelfAppReleaseListReq) returns (GetSelfAppReleaseListReply) {
+    option (google.api.http) = {get: "/admin/v1/self_app_release/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+//自应用版本发布表信息
+message SelfAppReleaseInfo {
+  string id = 1; // ID
+	string channel = 2; // 发布渠道
+	string packageName = 3; // 包名
+	int32 buildNum = 4; // build值
+	string version = 5; // 版本号
+	int32 updateType = 6; // 更新类型(1强制 2提示 3静默)
+	string title = 7; // 更新标题
+	string changelog = 8; // 更新日志
+	string packageURL = 9; // 安装包地址
+	double packageSize = 10; // 安装包大小
+	string packageMd5 = 11; // 安装包MD5
+	string minOsVersion = 12; // 最低系统版本
+	string publishTime = 13; // 发布时间
+	int32 grayStrategy = 14; // 灰度策略(1全量 2自定义设备)
+	string graySns = 15; // 灰度设备
+	int32 status = 16; // 状态(-1禁用 1启用)
+	string createdAt = 17; // 创建时间
+	string updatedAt = 18; // 更新时间
+}
+
+//请求-自应用版本发布表-创建一条数据
+message CreateSelfAppReleaseReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["channel","packageName","buildNum","updateType","title","packageURL","publishTime","grayStrategy","status"]
+    }
+  };
+  string channel = 1 [(buf.validate.field).string={min_len: 1, max_len: 32}]; // 发布渠道
+	string packageName = 2 [(buf.validate.field).string={min_len: 1, max_len: 255}]; // 包名
+	int32 buildNum = 3 ; // build值
+	string version = 4 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 32}]; // 版本号
+	int32 updateType = 5 ; // 更新类型(1强制 2提示 3静默)
+	string title = 6 [(buf.validate.field).string={min_len: 1, max_len: 255}]; // 更新标题
+	string changelog = 7 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 9223372036854775807}]; // 更新日志
+	string packageURL = 8 [(buf.validate.field).string={min_len: 1, max_len: 500}]; // 安装包地址
+	double packageSize = 9 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED]; // 安装包大小
+	string packageMd5 = 10 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 32}]; // 安装包MD5
+	string minOsVersion = 11 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 32}]; // 最低系统版本
+	string publishTime = 12 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 发布时间
+	int32 grayStrategy = 13 ; // 灰度策略(1全量 2自定义设备)
+	string graySns = 14 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // 灰度设备
+	int32 status = 15 ; // 状态(-1禁用 1启用)
+}
+
+//响应-自应用版本发布表-创建一条数据
+message CreateSelfAppReleaseReply {
+  	string id = 1; // ID
+}
+
+//请求-自应用版本发布表-更新一条数据
+message UpdateSelfAppReleaseReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","channel","packageName","buildNum","updateType","title","packageURL","publishTime","grayStrategy","status"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // ID
+	string channel = 2 [(buf.validate.field).string={min_len: 1, max_len: 32}]; // 发布渠道
+	string packageName = 3 [(buf.validate.field).string={min_len: 1, max_len: 255}]; // 包名
+	int32 buildNum = 4 ; // build值
+	string version = 5 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 32}]; // 版本号
+	int32 updateType = 6 ; // 更新类型(1强制 2提示 3静默)
+	string title = 7 [(buf.validate.field).string={min_len: 1, max_len: 255}]; // 更新标题
+	string changelog = 8 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 9223372036854775807}]; // 更新日志
+	string packageURL = 9 [(buf.validate.field).string={min_len: 1, max_len: 500}]; // 安装包地址
+	double packageSize = 10 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED]; // 安装包大小
+	string packageMd5 = 11 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 32}]; // 安装包MD5
+	string minOsVersion = 12 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 32}]; // 最低系统版本
+	string publishTime = 13 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 发布时间
+	int32 grayStrategy = 14 ; // 灰度策略(1全量 2自定义设备)
+	string graySns = 15 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // 灰度设备
+	int32 status = 16 ; // 状态(-1禁用 1启用)
+}
+
+//响应-自应用版本发布表-更新一条数据
+message UpdateSelfAppReleaseReply {}
+
+//请求-自应用版本发布表-更新状态
+message UpdateSelfAppReleaseStatusReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","status"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // ID
+	int32 status = 2 ; // 状态(-1禁用 1启用)
+}
+
+//响应-自应用版本发布表-更新状态
+message UpdateSelfAppReleaseStatusReply {}
+
+//请求-自应用版本发布表-删除一条数据
+message DeleteSelfAppReleaseReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // ID
+}
+
+//响应-自应用版本发布表-删除一条数据
+message DeleteSelfAppReleaseReply {}
+
+//请求-自应用版本发布表-单条数据查询
+message GetSelfAppReleaseInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // ID
+}
+
+//响应-自应用版本发布表-单条数据查询
+message GetSelfAppReleaseInfoReply {
+  SelfAppReleaseInfo info = 1;
+}
+
+//请求-自应用版本发布表-列表数据查询
+message GetSelfAppReleaseListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1[(buf.validate.field).int32={gte: 1}]; //页码
+  int32 pageSize = 2[(buf.validate.field).int32={gte: 1, lte: 1000}]; //页数
+}
+
+//响应-自应用版本发布表-列表数据查询
+message GetSelfAppReleaseListReply {
+  int32 total = 1; //总数
+  repeated SelfAppReleaseInfo list = 2; // 列表数据
+}
+

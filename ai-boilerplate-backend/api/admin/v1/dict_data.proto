@@ -1,0 +1,321 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//字典数据表
+service DictDatum {
+  //字典数据表-创建一条数据
+  rpc CreateDictDatum(CreateDictDatumReq) returns (CreateDictDatumReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/dict_data/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //字典数据表-更新一条数据
+  rpc UpdateDictDatum(UpdateDictDatumReq) returns (UpdateDictDatumReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/dict_data/update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //字典数据表-更新状态
+  rpc UpdateDictDatumStatus(UpdateDictDatumStatusReq) returns (UpdateDictDatumStatusReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/dict_data/update/status"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //字典数据表-删除一条数据
+  rpc DeleteDictDatum(DeleteDictDatumReq) returns (DeleteDictDatumReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/dict_data/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //字典数据表-单条数据查询
+  rpc GetDictDatumInfo(GetDictDatumInfoReq) returns (GetDictDatumInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/dict_data/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //字典数据表-列表数据查询
+  rpc GetDictDatumList(GetDictDatumListReq) returns (GetDictDatumListReply) {
+    option (google.api.http) = {get: "/admin/v1/dict_data/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+//字典数据表信息
+message DictDatumInfo {
+  string id = 1; // id
+  string type = 2; // 字典类型
+  string label = 3; // 字典标签
+  string key = 4; // 字典键
+  string value = 5; // 字典值
+  string remark = 6; // 备注
+  string CSSColor = 7; // css 颜色
+  string CSSClass = 8; // css 样式
+  int32 status = 9; // 状态（0正常 1停用）
+  string createdAt = 10; // 创建时间
+  string updatedAt = 11; // 更新时间
+}
+
+//请求-字典数据表-创建一条数据
+message CreateDictDatumReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "type",
+        "label",
+        "key",
+        "value",
+        "status"
+      ]
+    }
+  };
+
+  string type = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 100
+  }]; // 字典类型
+  string label = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 100
+  }]; // 字典标签
+  string key = 3 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 100
+  }]; // 字典键
+  string value = 4 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 100
+  }]; // 字典值
+  string remark = 5 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 500
+    }
+  ]; // 备注
+  string CSSColor = 6 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 100
+    }
+  ]; // css 颜色
+  string CSSClass = 7 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 100
+    }
+  ]; // css 样式
+  int32 status = 8 [(buf.validate.field).int32 = {
+    gt: 0
+    lte: 16
+  }]; // 状态（0正常 1停用）
+}
+
+//响应-字典数据表-创建一条数据
+message CreateDictDatumReply {
+  string id = 1; // id
+}
+
+//请求-字典数据表-更新一条数据
+message UpdateDictDatumReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "id",
+        "type",
+        "label",
+        "key",
+        "value",
+        "status"
+      ]
+    }
+  };
+
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // id
+  string type = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 100
+  }]; // 字典类型
+  string label = 3 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 100
+  }]; // 字典标签
+  string key = 4 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 100
+  }]; // 字典键
+  string value = 5 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 100
+  }]; // 字典值
+  string remark = 6 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 500
+    }
+  ]; // 备注
+  string CSSColor = 7 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 100
+    }
+  ]; // css 颜色
+  string CSSClass = 8 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 100
+    }
+  ]; // css 样式
+  int32 status = 9 [(buf.validate.field).int32 = {
+    gt: 0
+    lte: 16
+  }]; // 状态（0正常 1停用）
+}
+
+//响应-字典数据表-更新一条数据
+message UpdateDictDatumReply {}
+
+//请求-字典数据表-更新状态
+message UpdateDictDatumStatusReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "id",
+        "status"
+      ]
+    }
+  };
+
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // id
+  int32 status = 2 [(buf.validate.field).int32 = {
+    gt: 0
+    lte: 16
+  }]; // 状态（0正常 1停用）
+}
+
+//响应-字典数据表-更新状态
+message UpdateDictDatumStatusReply {}
+
+//请求-字典数据表-删除一条数据
+message DeleteDictDatumReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["ids"]
+    }
+  };
+
+  repeated string ids = 1 [(buf.validate.field).repeated = {min_items: 1}]; // id集合
+}
+
+//响应-字典数据表-删除一条数据
+message DeleteDictDatumReply {}
+
+//请求-字典数据表-单条数据查询
+message GetDictDatumInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // id
+}
+
+//响应-字典数据表-单条数据查询
+message GetDictDatumInfoReply {
+  DictDatumInfo info = 1;
+}
+
+//请求-字典数据表-列表数据查询
+message GetDictDatumListReq {
+  int32 page = 1; //页码
+  int32 pageSize = 2; //页数
+  string type = 3; // 字典类型
+}
+
+//响应-字典数据表-列表数据查询
+message GetDictDatumListReply {
+  int32 total = 1; //总数
+  repeated DictDatumInfo list = 2; // 列表数据
+}

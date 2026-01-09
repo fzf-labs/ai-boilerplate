@@ -1,0 +1,91 @@
+syntax = "proto3";
+
+package app.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/app/v1;v1";
+
+//用户通知设置表
+service UserNotificationSetting {
+  //获取用户通知设置
+  rpc GetNotificationSettings(GetNotificationSettingsReq) returns (GetNotificationSettingsReply) {
+    option (google.api.http) = {get: "/app/v1/notification/settings"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //更新用户通知设置
+  rpc UpdateNotificationSettings(UpdateNotificationSettingsReq) returns (UpdateNotificationSettingsReply) {
+    option (google.api.http) = {
+      put: "/app/v1/notification/settings"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+//用户通知设置信息
+message NotificationSettingsInfo {
+  string id = 1; // ID
+  string userId = 2; // 用户ID
+  bool systemNotification = 3; // 系统通知
+  bool activityNotification = 4; // 活动通知
+  bool orderNotification = 5; // 订单通知
+  string dndStartTime = 6; // 勿扰开始时间
+  string dndEndTime = 7; // 勿扰结束时间
+  string createdAt = 8; // 创建时间
+  string updatedAt = 9; // 更新时间
+}
+
+//请求-获取用户通知设置
+message GetNotificationSettingsReq {}
+
+//响应-获取用户通知设置
+message GetNotificationSettingsReply {
+  NotificationSettingsInfo settings = 1;
+}
+
+//请求-更新用户通知设置
+message UpdateNotificationSettingsReq {
+  bool systemNotification = 1; // 系统通知
+  bool activityNotification = 2; // 活动通知
+  bool orderNotification = 3; // 订单通知
+  string dndStartTime = 4 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 10
+    }
+  ]; // 勿扰开始时间（格式：HH:mm）
+  string dndEndTime = 5 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 10
+    }
+  ]; // 勿扰结束时间（格式：HH:mm）
+}
+
+//响应-更新用户通知设置
+message UpdateNotificationSettingsReply {}

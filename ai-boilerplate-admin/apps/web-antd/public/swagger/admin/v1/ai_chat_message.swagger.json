@@ -1,0 +1,489 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/ai_chat_message.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "AiChatMessage"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/ai_chat_message/create": {
+      "post": {
+        "summary": "AI 聊天消息表-创建一条数据",
+        "operationId": "AiChatMessage_CreateAiChatMessage",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateAiChatMessageReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateAiChatMessageReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiChatMessage"
+        ]
+      }
+    },
+    "/admin/v1/ai_chat_message/delete": {
+      "post": {
+        "summary": "AI 聊天消息表-删除多条数据",
+        "operationId": "AiChatMessage_DeleteAiChatMessage",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteAiChatMessageReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1DeleteAiChatMessageReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiChatMessage"
+        ]
+      }
+    },
+    "/admin/v1/ai_chat_message/info": {
+      "get": {
+        "summary": "AI 聊天消息表-单条数据查询",
+        "operationId": "AiChatMessage_GetAiChatMessageInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetAiChatMessageInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "消息编号",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiChatMessage"
+        ]
+      }
+    },
+    "/admin/v1/ai_chat_message/list": {
+      "get": {
+        "summary": "AI 聊天消息表-列表数据查询",
+        "operationId": "AiChatMessage_GetAiChatMessageList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetAiChatMessageListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiChatMessage"
+        ]
+      }
+    },
+    "/admin/v1/ai_chat_message/update": {
+      "post": {
+        "summary": "AI 聊天消息表-更新一条数据",
+        "operationId": "AiChatMessage_UpdateAiChatMessage",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateAiChatMessageReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateAiChatMessageReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiChatMessage"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1AiChatMessageInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "消息编号"
+        },
+        "conversationId": {
+          "type": "string",
+          "title": "对话编号"
+        },
+        "replyId": {
+          "type": "string",
+          "title": "回复编号"
+        },
+        "adminId": {
+          "type": "string",
+          "title": "用户编号"
+        },
+        "roleId": {
+          "type": "string",
+          "title": "角色编号"
+        },
+        "type": {
+          "type": "string",
+          "title": "消息类型"
+        },
+        "model": {
+          "type": "string",
+          "title": "模型标识"
+        },
+        "modelId": {
+          "type": "string",
+          "title": "模型编号"
+        },
+        "content": {
+          "type": "string",
+          "title": "消息内容"
+        },
+        "useContext": {
+          "type": "boolean",
+          "title": "是否携带上下文"
+        },
+        "segmentIds": {
+          "type": "string",
+          "title": "段落编号数组"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "AI 聊天消息表信息"
+    },
+    "v1CreateAiChatMessageReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "消息编号"
+        }
+      },
+      "title": "响应-AI 聊天消息表-创建一条数据"
+    },
+    "v1CreateAiChatMessageReq": {
+      "type": "object",
+      "properties": {
+        "conversationId": {
+          "type": "string",
+          "title": "对话编号"
+        },
+        "replyId": {
+          "type": "string",
+          "title": "回复编号"
+        },
+        "adminId": {
+          "type": "string",
+          "title": "用户编号"
+        },
+        "roleId": {
+          "type": "string",
+          "title": "角色编号"
+        },
+        "type": {
+          "type": "string",
+          "title": "消息类型"
+        },
+        "model": {
+          "type": "string",
+          "title": "模型标识"
+        },
+        "modelId": {
+          "type": "string",
+          "title": "模型编号"
+        },
+        "content": {
+          "type": "string",
+          "title": "消息内容"
+        },
+        "useContext": {
+          "type": "boolean",
+          "title": "是否携带上下文"
+        },
+        "segmentIds": {
+          "type": "string",
+          "title": "段落编号数组"
+        }
+      },
+      "title": "请求-AI 聊天消息表-创建一条数据",
+      "required": [
+        "conversationId",
+        "adminId",
+        "_type",
+        "model",
+        "modelId",
+        "content",
+        "useContext"
+      ]
+    },
+    "v1DeleteAiChatMessageReply": {
+      "type": "object",
+      "title": "响应-AI 聊天消息表-删除多条数据"
+    },
+    "v1DeleteAiChatMessageReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "消息编号"
+        }
+      },
+      "title": "请求-AI 聊天消息表-删除多条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "v1GetAiChatMessageInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/v1AiChatMessageInfo"
+        }
+      },
+      "title": "响应-AI 聊天消息表-单条数据查询"
+    },
+    "v1GetAiChatMessageListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1AiChatMessageInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-AI 聊天消息表-列表数据查询"
+    },
+    "v1UpdateAiChatMessageReply": {
+      "type": "object",
+      "title": "响应-AI 聊天消息表-更新一条数据"
+    },
+    "v1UpdateAiChatMessageReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "消息编号"
+        },
+        "conversationId": {
+          "type": "string",
+          "title": "对话编号"
+        },
+        "replyId": {
+          "type": "string",
+          "title": "回复编号"
+        },
+        "adminId": {
+          "type": "string",
+          "title": "用户编号"
+        },
+        "roleId": {
+          "type": "string",
+          "title": "角色编号"
+        },
+        "type": {
+          "type": "string",
+          "title": "消息类型"
+        },
+        "model": {
+          "type": "string",
+          "title": "模型标识"
+        },
+        "modelId": {
+          "type": "string",
+          "title": "模型编号"
+        },
+        "content": {
+          "type": "string",
+          "title": "消息内容"
+        },
+        "useContext": {
+          "type": "boolean",
+          "title": "是否携带上下文"
+        },
+        "segmentIds": {
+          "type": "string",
+          "title": "段落编号数组"
+        }
+      },
+      "title": "请求-AI 聊天消息表-更新一条数据",
+      "required": [
+        "id",
+        "conversationId",
+        "adminId",
+        "_type",
+        "model",
+        "modelId",
+        "content",
+        "useContext"
+      ]
+    }
+  }
+}

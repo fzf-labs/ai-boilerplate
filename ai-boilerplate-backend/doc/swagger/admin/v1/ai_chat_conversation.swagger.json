@@ -1,0 +1,358 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/ai_chat_conversation.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "AiChatConversation"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/ai_chat_conversation/delete": {
+      "post": {
+        "summary": "AI 聊天对话表-删除一条数据",
+        "operationId": "AiChatConversation_DeleteAiChatConversation",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteAiChatConversationReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteAiChatConversationReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiChatConversation"
+        ]
+      }
+    },
+    "/admin/v1/ai_chat_conversation/info": {
+      "get": {
+        "summary": "AI 聊天对话表-单条数据查询",
+        "operationId": "AiChatConversation_GetAiChatConversationInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetAiChatConversationInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "对话编号",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiChatConversation"
+        ]
+      }
+    },
+    "/admin/v1/ai_chat_conversation/list": {
+      "get": {
+        "summary": "AI 聊天对话表-列表数据查询",
+        "operationId": "AiChatConversation_GetAiChatConversationList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetAiChatConversationListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiChatConversation"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "admin.v1.AiChatConversationInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "对话编号"
+        },
+        "tenantId": {
+          "type": "string",
+          "title": "租户编号"
+        },
+        "adminId": {
+          "type": "string",
+          "title": "用户编号"
+        },
+        "title": {
+          "type": "string",
+          "title": "对话标题"
+        },
+        "pinned": {
+          "type": "boolean",
+          "title": "是否置顶"
+        },
+        "pinnedTime": {
+          "type": "string",
+          "title": "置顶时间"
+        },
+        "promptSetting": {
+          "$ref": "#/definitions/admin.v1.AiChatConversationInfo.PromptSetting",
+          "title": "提示词设置"
+        },
+        "modelSetting": {
+          "$ref": "#/definitions/admin.v1.AiChatConversationInfo.ModelSetting",
+          "title": "模型设置"
+        },
+        "knowledgeSetting": {
+          "$ref": "#/definitions/admin.v1.AiChatConversationInfo.KnowledgeSetting",
+          "title": "知识库设置"
+        },
+        "mcpSetting": {
+          "$ref": "#/definitions/admin.v1.AiChatConversationInfo.McpSetting",
+          "title": "mcp设置"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "AI 聊天对话表信息"
+    },
+    "admin.v1.AiChatConversationInfo.KnowledgeSetting": {
+      "type": "object",
+      "properties": {
+        "knowledgeIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "知识库编号"
+        }
+      }
+    },
+    "admin.v1.AiChatConversationInfo.McpSetting": {
+      "type": "object",
+      "properties": {
+        "mcpIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "mcp编号"
+        }
+      }
+    },
+    "admin.v1.AiChatConversationInfo.ModelSetting": {
+      "type": "object",
+      "properties": {
+        "platform": {
+          "type": "string",
+          "title": "平台"
+        },
+        "platformId": {
+          "type": "string",
+          "title": "编号"
+        },
+        "modelType": {
+          "type": "string",
+          "title": "模型类型"
+        },
+        "modelId": {
+          "type": "string",
+          "title": "模型id"
+        },
+        "temperature": {
+          "type": "number",
+          "format": "double",
+          "title": "采样温度。控制了生成文本时对每个候选词的概率分布进行平滑的程度。当取值为 0 时模型仅考虑对数概率最大的一个 token。"
+        },
+        "top_p": {
+          "type": "number",
+          "format": "double",
+          "title": "核采样概率阈值。模型会考虑概率质量在 top_p 内的 token 结果。当取值为 0 时模型仅考虑对数概率最大的一个 token。"
+        },
+        "max_tokens": {
+          "type": "integer",
+          "format": "int32",
+          "title": "模型回答最大长度（单位 token）。"
+        },
+        "max_contexts": {
+          "type": "integer",
+          "format": "int32",
+          "title": "控制模型输出的最大长度（包括模型回答和模型思维链内容长度，单位 token）。"
+        }
+      }
+    },
+    "admin.v1.AiChatConversationInfo.PromptSetting": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "名称"
+        },
+        "desc": {
+          "type": "string",
+          "title": "描述"
+        },
+        "prompt": {
+          "type": "string",
+          "title": "提示词"
+        }
+      }
+    },
+    "admin.v1.DeleteAiChatConversationReply": {
+      "type": "object",
+      "title": "响应-AI 聊天对话表-删除一条数据"
+    },
+    "admin.v1.DeleteAiChatConversationReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "对话编号"
+        }
+      },
+      "title": "请求-AI 聊天对话表-删除一条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "admin.v1.GetAiChatConversationInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/admin.v1.AiChatConversationInfo"
+        }
+      },
+      "title": "响应-AI 聊天对话表-单条数据查询"
+    },
+    "admin.v1.GetAiChatConversationListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.AiChatConversationInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-AI 聊天对话表-列表数据查询"
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

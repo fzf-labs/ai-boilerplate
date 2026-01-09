@@ -1,0 +1,211 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//公众号素材表
+service WxGzhMaterial {
+  //公众号素材表-创建一条数据
+  rpc CreateWxGzhMaterial(CreateWxGzhMaterialReq) returns (CreateWxGzhMaterialReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/wx_gzh_material/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //公众号素材表-更新一条数据
+  rpc UpdateWxGzhMaterial(UpdateWxGzhMaterialReq) returns (UpdateWxGzhMaterialReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/wx_gzh_material/update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //公众号素材表-删除一条数据
+  rpc DeleteWxGzhMaterial(DeleteWxGzhMaterialReq) returns (DeleteWxGzhMaterialReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/wx_gzh_material/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //公众号素材表-单条数据查询
+  rpc GetWxGzhMaterialInfo(GetWxGzhMaterialInfoReq) returns (GetWxGzhMaterialInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/wx_gzh_material/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //公众号素材表-列表数据查询
+  rpc GetWxGzhMaterialList(GetWxGzhMaterialListReq) returns (GetWxGzhMaterialListReply) {
+    option (google.api.http) = {get: "/admin/v1/wx_gzh_material/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+//公众号素材表信息
+message WxGzhMaterialInfo {
+  string id = 1; // 主键
+	string appId = 2; // 公众号 appId
+	string _type = 3; // 微信-素材的类型，图片（image）、视频（video）、语音 （voice）
+	string mediaId = 4; // 微信-消息ID
+	string tags = 5; // 微信-标签
+	string updateTime = 6; // 微信-更新日期
+	string name = 7; // 微信-图片、语音、视频素材的名字
+	string URL = 8; // 微信-图片、语音、视频素材URL(图片,视频是微信的地址,音频是服务端的地址)
+	string coverURL = 9; // 微信-视频封面 URL
+	string description = 10; // 微信-视频描述
+	string newcat = 11; // 微信-视频分类
+	string newsubcat = 12; // 微信-视频子分类
+	string vid = 13; // 微信-视频 ID
+	string createdAt = 14; // 创建时间
+	string updatedAt = 15; // 更新时间
+}
+
+//请求-公众号素材表-创建一条数据
+message CreateWxGzhMaterialReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["appId","_type","mediaId","updateTime"]
+    }
+  };
+  string appId = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 公众号 appId
+	string _type = 2 [(buf.validate.field).string={min_len: 1, max_len: 32}]; // 微信-素材的类型，图片（image）、视频（video）、语音 （voice）
+	string mediaId = 3 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 微信-消息ID
+	string tags = 4 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // 微信-标签
+	string updateTime = 5 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 微信-更新日期
+	string name = 6 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 255}]; // 微信-图片、语音、视频素材的名字
+	string URL = 7 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 1000}]; // 微信-图片、语音、视频素材URL(图片,视频是微信的地址,音频是服务端的地址)
+	string coverURL = 8 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 1000}]; // 微信-视频封面 URL
+	string description = 9 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 1000}]; // 微信-视频描述
+	string newcat = 10 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 1000}]; // 微信-视频分类
+	string newsubcat = 11 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 1000}]; // 微信-视频子分类
+	string vid = 12 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 255}]; // 微信-视频 ID
+}
+
+//响应-公众号素材表-创建一条数据
+message CreateWxGzhMaterialReply {
+  	string id = 1; // 主键
+}
+
+//请求-公众号素材表-更新一条数据
+message UpdateWxGzhMaterialReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","appId","_type","mediaId","updateTime"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 主键
+	string appId = 2 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 公众号 appId
+	string _type = 3 [(buf.validate.field).string={min_len: 1, max_len: 32}]; // 微信-素材的类型，图片（image）、视频（video）、语音 （voice）
+	string mediaId = 4 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 微信-消息ID
+	string tags = 5 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1}]; // 微信-标签
+	string updateTime = 6 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 微信-更新日期
+	string name = 7 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 255}]; // 微信-图片、语音、视频素材的名字
+	string URL = 8 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 1000}]; // 微信-图片、语音、视频素材URL(图片,视频是微信的地址,音频是服务端的地址)
+	string coverURL = 9 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 1000}]; // 微信-视频封面 URL
+	string description = 10 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 1000}]; // 微信-视频描述
+	string newcat = 11 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 1000}]; // 微信-视频分类
+	string newsubcat = 12 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 1000}]; // 微信-视频子分类
+	string vid = 13 [(buf.validate.field).ignore=IGNORE_IF_UNPOPULATED,(buf.validate.field).string={min_len: 1, max_len: 255}]; // 微信-视频 ID
+}
+
+//响应-公众号素材表-更新一条数据
+message UpdateWxGzhMaterialReply {}
+
+//请求-公众号素材表-删除一条数据
+message DeleteWxGzhMaterialReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 主键
+}
+
+//响应-公众号素材表-删除一条数据
+message DeleteWxGzhMaterialReply {}
+
+//请求-公众号素材表-单条数据查询
+message GetWxGzhMaterialInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // 主键
+}
+
+//响应-公众号素材表-单条数据查询
+message GetWxGzhMaterialInfoReply {
+  WxGzhMaterialInfo info = 1;
+}
+
+//请求-公众号素材表-列表数据查询
+message GetWxGzhMaterialListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1[(buf.validate.field).int32={gte: 1}]; //页码
+  int32 pageSize = 2[(buf.validate.field).int32={gte: 1, lte: 1000}]; //页数
+}
+
+//响应-公众号素材表-列表数据查询
+message GetWxGzhMaterialListReply {
+  int32 total = 1; //总数
+  repeated WxGzhMaterialInfo list = 2; // 列表数据
+}
+

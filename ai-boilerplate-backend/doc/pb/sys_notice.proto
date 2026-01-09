@@ -1,0 +1,221 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//系统-公告
+service SysNotice {
+  //系统-公告-创建一条数据
+  rpc CreateSysNotice(CreateSysNoticeReq) returns (CreateSysNoticeReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sys_notice/create"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //系统-公告-更新一条数据
+  rpc UpdateSysNotice(UpdateSysNoticeReq) returns (UpdateSysNoticeReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sys_notice/update"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //系统-公告-更新状态
+  rpc UpdateSysNoticeStatus(UpdateSysNoticeStatusReq) returns (UpdateSysNoticeStatusReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sys_notice/update/status"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //系统-公告-删除一条数据
+  rpc DeleteSysNotice(DeleteSysNoticeReq) returns (DeleteSysNoticeReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sys_notice/delete"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //系统-公告-单条数据查询
+  rpc GetSysNoticeInfo(GetSysNoticeInfoReq) returns (GetSysNoticeInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/sys_notice/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //系统-公告-列表数据查询
+  rpc GetSysNoticeList(GetSysNoticeListReq) returns (GetSysNoticeListReply) {
+    option (google.api.http) = {get: "/admin/v1/sys_notice/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+//系统-公告信息
+message SysNoticeInfo {
+  string id = 1; // id
+	string tenantId = 2; // 租户id
+	string _type = 3; // 类型
+	string title = 4; // 标题
+	string content = 5; // 内容
+	int32 status = 6; // 状态(-1禁用,1开启)
+	string createdAt = 7; // 创建时间
+	string updatedAt = 8; // 更新时间
+}
+
+//请求-系统-公告-创建一条数据
+message CreateSysNoticeReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["tenantId","_type","title","content","status"]
+    }
+  };
+  string tenantId = 1 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 租户id
+	string _type = 2 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 类型
+	string title = 3 [(buf.validate.field).string={min_len: 1, max_len: 200}]; // 标题
+	string content = 4 [(buf.validate.field).string={min_len: 1, max_len: 200}]; // 内容
+	int32 status = 5 ; // 状态(-1禁用,1开启)
+}
+
+//响应-系统-公告-创建一条数据
+message CreateSysNoticeReply {
+  	string id = 1; // id
+}
+
+//请求-系统-公告-更新一条数据
+message UpdateSysNoticeReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","tenantId","_type","title","content","status"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+	string tenantId = 2 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 租户id
+	string _type = 3 [(buf.validate.field).string={min_len: 1, max_len: 64}]; // 类型
+	string title = 4 [(buf.validate.field).string={min_len: 1, max_len: 200}]; // 标题
+	string content = 5 [(buf.validate.field).string={min_len: 1, max_len: 200}]; // 内容
+	int32 status = 6 ; // 状态(-1禁用,1开启)
+}
+
+//响应-系统-公告-更新一条数据
+message UpdateSysNoticeReply {}
+
+//请求-系统-公告-更新状态
+message UpdateSysNoticeStatusReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id","status"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+	int32 status = 2 ; // 状态(-1禁用,1开启)
+}
+
+//响应-系统-公告-更新状态
+message UpdateSysNoticeStatusReply {}
+
+//请求-系统-公告-删除一条数据
+message DeleteSysNoticeReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+}
+
+//响应-系统-公告-删除一条数据
+message DeleteSysNoticeReply {}
+
+//请求-系统-公告-单条数据查询
+message GetSysNoticeInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string={min_len: 1, max_len: 128}]; // id
+}
+
+//响应-系统-公告-单条数据查询
+message GetSysNoticeInfoReply {
+  SysNoticeInfo info = 1;
+}
+
+//请求-系统-公告-列表数据查询
+message GetSysNoticeListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1[(buf.validate.field).int32={gte: 1}]; //页码
+  int32 pageSize = 2[(buf.validate.field).int32={gte: 1, lte: 1000}]; //页数
+}
+
+//响应-系统-公告-列表数据查询
+message GetSysNoticeListReply {
+  int32 total = 1; //总数
+  repeated SysNoticeInfo list = 2; // 列表数据
+}
+
