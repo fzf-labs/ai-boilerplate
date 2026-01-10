@@ -60,6 +60,7 @@ var ProviderSet = wire.NewSet(
 	NewAdminV1WxGzhTagService,
 	NewAdminV1WxGzhUserService,
 	NewAdminV1WxXcxUserService,
+	NewAppV1AppVersionService,
 	NewAppV1HelpCategoryService,
 	NewAppV1HelpFaqService,
 	NewAppV1HelpFeedbackService,

@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package app.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/app/v1;v1";
+
+// App版本服务
+service AppVersion {
+  // 检测版本更新
+  rpc CheckUpdate(CheckUpdateReq) returns (CheckUpdateReply) {
+    option (google.api.http) = {get: "/app/v1/version/check"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+// 请求-检测版本更新
+message CheckUpdateReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "packageName",
+        "channel",
+        "buildNum"
+      ]
+    }
+  };
+  string packageName = 1 [(buf.validate.field).string = {min_len: 1}]; // 包名
+  string channel = 2 [(buf.validate.field).string = {min_len: 1}]; // 渠道(ios/android)
+  int32 buildNum = 3 [(buf.validate.field).int32 = {gte: 0}]; // 当前build号
+}
+
+// 响应-检测版本更新
+message CheckUpdateReply {
+  bool hasUpdate = 1; // 是否有更新
+  AppVersionInfo info = 2; // 版本信息(无更新时为空)
+}
+
+// App版本信息
+message AppVersionInfo {
+  string version = 1; // 版本号
+  int32 buildNum = 2; // build号
+  string title = 3; // 更新标题
+  string changelog = 4; // 更新日志
+  string packageUrl = 5; // 下载地址
+  int32 updateType = 6; // 更新类型(1强制 2提示 3静默)
+}

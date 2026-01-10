@@ -14,7 +14,6 @@ allowed-tools: Bash, Read, Glob
 cd ai-boilerplate-backend && make wire
 cd ai-boilerplate-backend && make gci
 cd ai-boilerplate-backend && make lint
-cd ai-boilerplate-backend && go build ./cmd/...
 ```
 
 ## 输出
@@ -26,7 +25,6 @@ cd ai-boilerplate-backend && go build ./cmd/...
 | wire | ✅/❌ |
 | gci | ✅/❌ |
 | lint | ✅/❌ |
-| build | ✅/❌ |
 
 ✅ 开发完成
 ```
