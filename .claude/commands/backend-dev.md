@@ -1,182 +1,166 @@
-# /backend-dev - 后端开发完整工作流
-
-## 描述
-后端开发的端到端工作流程，根据不同场景自动选择合适的技能组合，完成从需求到交付的全流程开发。基于 Go + Kratos 框架，支持 gRPC 和 HTTP 协议。
-
-## 使用方式
-```
-/backend-dev <需求描述>
-```
-
-## 执行约束（必须遵守）
-
-1. **先决策后动手**：开始任何改动前，必须明确选择流程（A/B/C/或 Bug 修复），并说明选择理由。
-2. **不允许跳步**：除非用户明确要求“跳过某步骤”，否则必须按流程顺序执行；跳步时必须说明风险与补救措施。
-3. **逐步可追溯**：每一步必须输出（1）调用的 skill（2）给 skill 的输入（3）产物清单（4）完成标准（如何判断该步完成）。
-4. **失败即停**：任一步命令/生成失败，立即切换到 `bug-detective` 排查并修复；修复后回到失败步骤重试，禁止“继续往下做”。
-5. **数据库变更双确认**：涉及 `CREATE/ALTER/DROP` 或数据迁移时，必须提供可回滚方案，并在执行前二次确认。
-6. **交付门槛**：至少满足以下两项（优先全部满足）：代码生成/编译通过、lint 通过、契约测试通过（或明确说明替代的手动/集成测试路径）。
-
-## 输出格式（必须）
-
-每次执行 `/backend-dev`，回复必须包含以下结构：
-
-1. **需求解析**：目标是什么（新功能/改字段/修 Bug/性能优化），涉及哪些表与 API（admin/app）。
-2. **流程选择**：A/B/C/或 Bug 修复流程 + 理由。
-3. **执行清单**：使用 `- [ ]` 复选框列出将按顺序完成的步骤（不得缺项）。
-4. **执行记录**：每完成一步，更新对应复选框为 `- [x]`，并附上关键输出/变更点。
-5. **交付物**：列出新增/修改的关键接口与数据结构（如涉及 DB 变更，附 SQL/迁移要点）。
-
-## 核心工作流程
-
-### 流程 A：标准后端功能开发
-
-**适用场景**：为数据库表生成完整后端代码
-
-**步骤 1：数据库设计**（如表未创建）
-- 调用 `backend-database` 技能
-- 设计表结构、字段、索引
-- 生成并执行 SQL
-
-**步骤 2：代码生成与开发**
-- 调用 `backend-codeing` 技能并要求其按项目既定流程完成端到端交付：
-  - 生成/更新 ORM、Proto、API、Service/Biz/Data 分层代码
-  - 补齐必要的业务逻辑、参数校验、权限/审计等约束
-  - 完成依赖注入、格式化与 lint
-  - 输出：改动点清单 + 关键接口/消息定义 + 本次生成/修改的模块范围
-
-**步骤 3：测试验证**
-- 优先：调用 `api-schema-test` 技能进行自动化测试
-- 备选：启动服务手动/集成测试（必须记录测试用例与结果）
-
 ---
-
-### 流程 B：复杂业务功能开发
-
-**适用场景**：自定义业务逻辑、跨表操作、复杂计算
-
-**步骤 1：需求澄清**
-- 想法不清晰：调用 `interview` 技能探索方案
-- 需要技术选型：调用 `tech-decision` 技能对比方案
-- 想法明确：直接进入下一步
-
-**步骤 2：数据库设计**
-- 调用 `backend-database` 技能
-- 设计或修改表结构、添加字段、创建索引
-
-**步骤 3：基础代码生成**（如需要）
-- 调用 `backend-codeing` 技能
-- 为新表或修改的表生成基础代码（流程同 A 的“步骤 2”，但由 skill 内部执行）
-
-**步骤 4：实现业务逻辑**
-- 调用 `backend-codeing` 技能实现业务逻辑与接口（跨表/事务/异步等由 skill 自行落地）
-
-**步骤 5：测试验证**
-- 单元测试（推荐）
-- 调用 `api-schema-test` 技能
-- 或启动服务集成测试
-
+description: backend-dev
+allowed-tools: Task,AskUserQuestion
 ---
+```mermaid
+flowchart TD
+    start_node_default([开始])
+    end_node_default([结束])
+    skill_1768061082357[[Skill: backend-audit]]
+    skill_1768061100034[[Skill: backend-database]]
+    skill_1768061131459[[Skill: backend-gorm]]
+    skill_1768061149184[[Skill: backend-proto-gen]]
+    skill_1768061165253[[Skill: backend-proto-edit]]
+    skill_1768061199804[[Skill: backend-api-gen]]
+    skill_1768061221224[[Skill: backend-codeing]]
+    skill_1768061245253[[Skill: backend-quality]]
+    skill_1768061271559[[Skill: interview]]
 
-### 流程 C：API 优化与重构
-
-**适用场景**：优化现有接口性能、重构代码
-
-**步骤 1：问题识别**
-- 分析性能瓶颈（N+1 查询、慢查询）
-- 识别代码质量问题
-- 评估业务逻辑变更影响
-
-**步骤 2：方案设计**
-- 需要对比方案时：调用 `tech-decision` 技能
-- 评估缓存、索引、架构调整等方案
-
-**步骤 3：实施优化**
-- 调用 `backend-codeing` 技能实施优化与重构（性能/缓存/索引/结构调整由 skill 自行落地）
-
-**步骤 4：验证效果**
-- 性能测试（压测）
-- 回归测试
-- 调用 `api-schema-test` 技能验证功能
-
----
-
-### 流程 D：Bug 修复 / 异常排查
-
-**适用场景**：报错、接口异常、数据不一致、线上问题复现与修复
-
-**步骤 1：信息收集**
-- 调用 `bug-detective` 技能
-- 明确：报错日志、请求参数、期望/实际结果、影响范围、复现步骤、最近变更（可选调用 `git-workflow`）
-
-**步骤 2：定位与修复**
-- 最小化复现（优先本地/测试环境）
-- 补充/修复单元测试或契约测试
-- 修复后回归：重点路径 + 相关联路径
-
-**步骤 3：验证与交付**
-- 调用 `backend-codeing` 完成修复并自检（编译/lint）
-- 必要时调用 `api-schema-test` 做回归验证
-- 输出根因、修复点、风险与回滚方案
-
----
-
-## 典型场景示例
-
-### 场景 1：新增标准后端功能
-```
-用户输入：/backend-dev 为 sys_dept 表生成后端代码
-
-执行流程：
-1. 检查表是否存在（调用 backend-database）
-2. 调用 backend-codeing 按流程 A 完成代码生成与开发
-3. 运行测试验证（api-schema-test）
+    start_node_default --> skill_1768061271559
+    skill_1768061271559 --> skill_1768061082357
+    skill_1768061082357 --> skill_1768061100034
+    skill_1768061100034 --> skill_1768061131459
+    skill_1768061131459 --> skill_1768061149184
+    skill_1768061149184 --> skill_1768061165253
+    skill_1768061165253 --> skill_1768061199804
+    skill_1768061199804 --> skill_1768061221224
+    skill_1768061221224 --> skill_1768061245253
+    skill_1768061245253 --> end_node_default
 ```
 
-### 场景 2：实现复杂业务功能
-```
-用户输入：/backend-dev 实现订单支付功能，支持支付宝和微信支付
+## 工作流执行指南
 
-执行流程：
-1. 调用 interview 探索设计方案
-2. 调用 tech-decision 选择支付 SDK
-3. 调用 backend-database 设计数据库表（支付记录、回调日志）
-4. 调用 backend-codeing 按流程 A 的步骤 2 生成基础代码
-5. 实现 Service + Biz + Data 层业务逻辑
-6. 配置异步任务处理
-7. 运行测试验证（api-schema-test）
-```
+按照上方的Mermaid流程图执行工作流。每种节点类型的执行方法如下所述。
 
-### 场景 3：数据库字段修改
-```
-用户输入：/backend-dev user 表需要添加 phone 字段
+### 各节点类型的执行方法
 
-执行流程：
-1. 调用 backend-database 生成 ALTER TABLE
-2. 执行 SQL
-3. 调用 backend-codeing 同步更新代码与接口定义
-4. 运行测试验证（api-schema-test）
-```
+- **矩形节点**：使用Task工具执行子代理
+- **菱形节点（AskUserQuestion:...）**：使用AskUserQuestion工具提示用户并根据其响应进行分支
+- **菱形节点（Branch/Switch:...）**：根据先前处理的结果自动分支（参见详细信息部分）
+- **矩形节点（Prompt节点）**：执行下面详细信息部分中描述的提示
 
-### 场景 4：性能优化
-```
-用户输入：/backend-dev 订单列表查询很慢，需要优化
+## Skill Nodes
 
-执行流程：
-1. 分析当前代码，识别性能问题
-2. 调用 tech-decision 对比优化方案
-3. 调用 backend-codeing 实施优化与重构
-4. 调用 api-schema-test 验证效果
-```
+#### skill_1768061082357(backend-audit)
 
----
+**Description**: 后端开发前置审计技能。用于验证开发前置条件、审计现有工件状态、确定开发起点。触发场景：(1) 开始后端开发任务前 (2) 检查表/API 工件是否存在 (3) 确定从哪个步骤开始开发
 
-## 相关技能
+**Scope**: project
 
-- `backend-database` - 数据库表设计
-- `backend-codeing` - 后端代码开发
-- `interview` - 技术方案探索
-- `tech-decision` - 技术选型决策
-- `api-schema-test` - API 契约测试
-- `bug-detective` - 问题调试
-- `git-workflow` - Git 工作流
+**Validation Status**: valid
+
+**Allowed Tools**: Read, Glob, Grep, mcp__dbhub__search_objects
+
+**Skill Path**: `.claude/skills/backend-audit/SKILL.md`
+
+This node executes a Claude Code Skill. The Skill definition is stored in the SKILL.md file at the path shown above.
+
+#### skill_1768061100034(backend-database)
+
+**Description**: PostgreSQL 数据库表设计技能。触发场景：(1) 创建新表 (2) 修改现有表 (3) 设计表关系 (4) 查询表结构
+
+**Scope**: project
+
+**Validation Status**: valid
+
+**Allowed Tools**: Read, Write, Glob, mcp__dbhub__execute_sql, mcp__dbhub__search_objects
+
+**Skill Path**: `.claude/skills/backend-database/SKILL.md`
+
+This node executes a Claude Code Skill. The Skill definition is stored in the SKILL.md file at the path shown above.
+
+#### skill_1768061131459(backend-gorm)
+
+**Description**: 后端 GORM 代码生成技能。用于验证数据库表存在性并生成 GORM 模型、DAO、Repo 代码。触发场景：(1) 新建表后生成 GORM 代码 (2) 表结构变更后重新生成 (3) 检查 GORM 工件状态
+
+**Scope**: project
+
+**Validation Status**: valid
+
+**Allowed Tools**: Bash, Read, Glob
+
+**Skill Path**: `.claude/skills/backend-gorm/SKILL.md`
+
+This node executes a Claude Code Skill. The Skill definition is stored in the SKILL.md file at the path shown above.
+
+#### skill_1768061149184(backend-proto-gen)
+
+**Description**: 后端 Protobuf 定义生成技能。用于从 SQL 表结构自动生成 Proto 文件。触发场景：(1) 新表需要生成 API 定义 (2) 表结构变更后重新生成 Proto
+
+**Scope**: project
+
+**Validation Status**: valid
+
+**Allowed Tools**: Bash, Read, Glob
+
+**Skill Path**: `.claude/skills/backend-proto-gen/SKILL.md`
+
+This node executes a Claude Code Skill. The Skill definition is stored in the SKILL.md file at the path shown above.
+
+#### skill_1768061165253(backend-proto-edit)
+
+**Description**: 后端 Protobuf API 编辑技能。用于修改生成的 Proto 文件，添加过滤器、验证规则或业务 RPC。触发场景：(1) 需要添加列表过滤条件 (2) 调整验证规则 (3) 添加/删除 RPC 方法
+
+**Scope**: project
+
+**Validation Status**: valid
+
+**Allowed Tools**: Read, Edit, Glob
+
+**Skill Path**: `.claude/skills/backend-proto-edit/SKILL.md`
+
+This node executes a Claude Code Skill. The Skill definition is stored in the SKILL.md file at the path shown above.
+
+#### skill_1768061199804(backend-api-gen)
+
+**Description**: 后端 API 代码生成技能。用于从 Proto 文件生成 Go 代码（pb.go、grpc.pb.go、http.pb.go 等）。触发场景：(1) Proto 文件修改后 (2) 需要重新生成 API 代码
+
+**Scope**: project
+
+**Validation Status**: valid
+
+**Allowed Tools**: Bash, Read, Glob
+
+**Skill Path**: `.claude/skills/backend-api-gen/SKILL.md`
+
+This node executes a Claude Code Skill. The Skill definition is stored in the SKILL.md file at the path shown above.
+
+#### skill_1768061221224(backend-codeing)
+
+**Description**: Backend development skill for this repo. Use when implementing backend features, generating CRUD code, or writing service/data business logic (including after table schema changes).
+
+**Scope**: project
+
+**Validation Status**: valid
+
+**Allowed Tools**: Read, Edit, Glob, Grep
+
+**Skill Path**: `.claude/skills/backend-codeing/SKILL.md`
+
+This node executes a Claude Code Skill. The Skill definition is stored in the SKILL.md file at the path shown above.
+
+#### skill_1768061245253(backend-quality)
+
+**Description**: 后端代码质量检查技能。用于执行依赖注入、代码格式化、Lint 检查和验证。触发场景：(1) 业务逻辑实现后 (2) 代码提交前的质量检查
+
+**Scope**: project
+
+**Validation Status**: valid
+
+**Allowed Tools**: Bash, Read, Glob
+
+**Skill Path**: `.claude/skills/backend-quality/SKILL.md`
+
+This node executes a Claude Code Skill. The Skill definition is stored in the SKILL.md file at the path shown above.
+
+#### skill_1768061271559(interview)
+
+**Description**: This skill conducts discovery conversations to understand user intent and agree on approach before taking action. It should be used when the user explicitly calls /interview, asks for recommendations, needs exploration, wants to clarify, or when the request could be misunderstood. Prevents building the wrong thing by uncovering WHY behind WHAT.
+
+**Scope**: project
+
+**Validation Status**: valid
+
+**Skill Path**: `.claude/skills/interview/SKILL.md`
+
+This node executes a Claude Code Skill. The Skill definition is stored in the SKILL.md file at the path shown above.

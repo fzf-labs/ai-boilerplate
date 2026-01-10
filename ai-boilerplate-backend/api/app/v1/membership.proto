@@ -1,0 +1,163 @@
+syntax = "proto3";
+
+package app.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/app/v1;v1";
+
+// 会员服务
+service Membership {
+  // 获取用户会员基础信息
+  rpc GetUserMembershipInfo(GetUserMembershipInfoReq) returns (GetUserMembershipInfoReply) {
+    option (google.api.http) = {get: "/app/v1/membership/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "获取用户会员基础信息"
+      description: "获取当前登录用户的会员等级、状态、到期时间等基础信息"
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+
+  // 获取会员权益列表
+  rpc GetMembershipBenefits(GetMembershipBenefitsReq) returns (GetMembershipBenefitsReply) {
+    option (google.api.http) = {get: "/app/v1/membership/benefits"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "获取会员权益列表"
+      description: "获取指定会员等级的权益列表,如果不传会员类型则返回当前用户会员等级的权益"
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+// 请求-获取用户会员基础信息
+message GetUserMembershipInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {description: "获取用户会员基础信息请求"}
+  };
+}
+
+// 响应-获取用户会员基础信息
+message GetUserMembershipInfoReply {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {description: "用户会员基础信息"}
+  };
+
+  string membership_type = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "会员类型编码(normal,vip,svip)"
+    example: "\"vip\""
+  }];
+
+  string membership_name = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "会员类型名称"
+    example: "\"VIP会员\""
+  }];
+
+  string membership_description = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "会员类型描述"
+    example: "\"VIP用户，享受增值功能\""
+  }];
+
+  int32 status = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "会员状态(-1禁用,1正常)"
+    example: "1"
+  }];
+
+  string expired_at = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "到期时间(普通会员为空,表示永不过期)"
+    example: "\"2025-12-31T23:59:59Z\""
+  }];
+
+  bool is_expired = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "是否已过期"
+    example: "false"
+  }];
+
+  int32 auto_renew = 7 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "是否自动续费(0否,1是)"
+    example: "1"
+  }];
+
+  int32 auto_renew_days = 8 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "自动续费天数"
+    example: "30"
+  }];
+
+  string created_at = 9 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "开通时间"
+    example: "\"2025-01-01T00:00:00Z\""
+  }];
+}
+
+// 请求-获取会员权益列表
+message GetMembershipBenefitsReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {description: "获取会员权益列表请求"}
+  };
+
+  string membership_type = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "会员类型编码(可选,不传则返回当前用户会员等级的权益)"
+    example: "\"vip\""
+  }];
+}
+
+// 响应-获取会员权益列表
+message GetMembershipBenefitsReply {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {description: "会员权益列表"}
+  };
+
+  repeated MembershipBenefit benefits = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {description: "权益列表"}];
+}
+
+// 会员权益信息
+message MembershipBenefit {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {description: "会员权益信息"}
+  };
+
+  string benefit_key = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "权益标识"
+    example: "\"location\""
+  }];
+
+  string benefit_name = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "权益名称"
+    example: "\"定位查看\""
+  }];
+
+  string benefit_desc = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "权益描述"
+    example: "\"可以查看对方的实时位置\""
+  }];
+
+  string benefit_value = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "权益值"
+    example: "\"1\""
+  }];
+
+  string benefit_num = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "权益次数"
+    example: "\"5\""
+  }];
+
+  int32 sort = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "排序"
+    example: "1"
+  }];
+}

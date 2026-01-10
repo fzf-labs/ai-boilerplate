@@ -73,6 +73,7 @@ func NewHTTPServer(
 	// App
 	appV1HomeService *service.AppV1HomeService,
 	appV1UserService *service.AppV1UserService,
+	appV1MembershipService *service.AppV1MembershipService,
 	appV1HelpFeedbackService *service.AppV1HelpFeedbackService,
 	appV1HelpFaqService *service.AppV1HelpFaqService,
 	appV1HelpCategoryService *service.AppV1HelpCategoryService,
@@ -140,6 +141,7 @@ func NewHTTPServer(
 	// App v1 服务注册
 	appv1.RegisterHomeHTTPServer(srv, appV1HomeService)
 	appv1.RegisterUserHTTPServer(srv, appV1UserService)
+	appv1.RegisterMembershipHTTPServer(srv, appV1MembershipService)
 	appv1.RegisterHelpFeedbackHTTPServer(srv, appV1HelpFeedbackService)
 	appv1.RegisterHelpFaqHTTPServer(srv, appV1HelpFaqService)
 	appv1.RegisterHelpCategoryHTTPServer(srv, appV1HelpCategoryService)

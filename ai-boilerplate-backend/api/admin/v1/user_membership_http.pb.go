@@ -43,7 +43,7 @@ func RegisterUserMembershipHTTPServer(s *http.Server, srv UserMembershipHTTPServ
 	r.POST("/admin/v1/user_membership/update", _UserMembership_UpdateUserMembership0_HTTP_Handler(srv))
 	r.POST("/admin/v1/user_membership/update/status", _UserMembership_UpdateUserMembershipStatus0_HTTP_Handler(srv))
 	r.POST("/admin/v1/user_membership/delete", _UserMembership_DeleteUserMembership0_HTTP_Handler(srv))
-	r.GET("/admin/v1/user_membership/info", _UserMembership_GetUserMembershipInfo0_HTTP_Handler(srv))
+	r.GET("/admin/v1/user_membership/info", _UserMembership_GetUserMembershipInfo1_HTTP_Handler(srv))
 	r.GET("/admin/v1/user_membership/list", _UserMembership_GetUserMembershipList0_HTTP_Handler(srv))
 	r.GET("/admin/v1/user_membership/info/by_user_id", _UserMembership_GetUserMembershipInfoByUserId0_HTTP_Handler(srv))
 }
@@ -124,7 +124,7 @@ func _UserMembership_DeleteUserMembership0_HTTP_Handler(srv UserMembershipHTTPSe
 	}
 }
 
-func _UserMembership_GetUserMembershipInfo0_HTTP_Handler(srv UserMembershipHTTPServer) func(ctx http.Context) error {
+func _UserMembership_GetUserMembershipInfo1_HTTP_Handler(srv UserMembershipHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in GetUserMembershipInfoReq
 		if err := ctx.BindQuery(&in); err != nil {

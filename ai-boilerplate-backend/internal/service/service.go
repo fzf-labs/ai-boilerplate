@@ -64,6 +64,7 @@ var ProviderSet = wire.NewSet(
 	NewAppV1HelpFaqService,
 	NewAppV1HelpFeedbackService,
 	NewAppV1HomeService,
+	NewAppV1MembershipService,
 	NewAppV1UserNotificationSettingService,
 	NewAppV1UserService,
 )
