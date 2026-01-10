@@ -59,20 +59,50 @@ Usage notes:
 </skill>
 
 <skill>
+<name>backend-api-gen</name>
+<description>后端 API 代码生成技能。用于从 Proto 文件生成 Go 代码（pb.go、grpc.pb.go、http.pb.go 等）。触发场景：(1) Proto 文件修改后 (2) 需要重新生成 API 代码</description>
+<location>project</location>
+</skill>
+
+<skill>
+<name>backend-audit</name>
+<description>后端开发前置审计技能。用于验证开发前置条件、审计现有工件状态、确定开发起点。触发场景：(1) 开始后端开发任务前 (2) 检查表/API 工件是否存在 (3) 确定从哪个步骤开始开发</description>
+<location>project</location>
+</skill>
+
+<skill>
 <name>backend-codeing</name>
-<description>后端代码开发技能。当用户需要开发后端功能、生成 CRUD 代码、编写业务逻辑时使用此技能。触发场景包括：(1) 为新表生成完整后端代码 (2) 开发新的 API 接口 (3) 编写业务逻辑代码 (4) 表字段改动后更新代码 (5) 完整的后端功能开发流程</description>
+<description>Backend development skill for this repo. Use when implementing backend features, generating CRUD code, or writing service/data business logic (including after table schema changes).</description>
 <location>project</location>
 </skill>
 
 <skill>
 <name>backend-database</name>
-<description>PostgreSQL 数据库表设计技能。当用户需要设计新的数据库表、添加字段、创建索引、或询问表结构相关问题时使用此技能。触发场景包括：(1) 创建新表结构 (2) 修改现有表 (3) 设计表关联关系 (4) 创建索引策略 (5) 字段类型选择 (6) 命名规范咨询</description>
+<description>PostgreSQL 数据库表设计技能。触发场景：(1) 创建新表 (2) 修改现有表 (3) 设计表关系 (4) 查询表结构</description>
 <location>project</location>
 </skill>
 
 <skill>
-<name>bug-detective</name>
-<description>Systematic bug detection and troubleshooting for Kratos Admin project. Use when users encounter bugs, errors, or issues requiring debugging in Go/Kratos backend, Vue frontend, PostgreSQL database, or Redis cache. Triggers on keywords like bug, debug, error, exception, issue, troubleshooting, not working, failure, or when users report unexpected behavior. Provides structured debugging workflows for HTTP/gRPC services, database queries, caching, permissions, and common Kratos framework errors.</description>
+<name>backend-gorm</name>
+<description>后端 GORM 代码生成技能。用于验证数据库表存在性并生成 GORM 模型、DAO、Repo 代码。触发场景：(1) 新建表后生成 GORM 代码 (2) 表结构变更后重新生成 (3) 检查 GORM 工件状态</description>
+<location>project</location>
+</skill>
+
+<skill>
+<name>backend-proto-edit</name>
+<description>后端 Protobuf API 编辑技能。用于修改生成的 Proto 文件，添加过滤器、验证规则或业务 RPC。触发场景：(1) 需要添加列表过滤条件 (2) 调整验证规则 (3) 添加/删除 RPC 方法</description>
+<location>project</location>
+</skill>
+
+<skill>
+<name>backend-proto-gen</name>
+<description>后端 Protobuf 定义生成技能。用于从 SQL 表结构自动生成 Proto 文件。触发场景：(1) 新表需要生成 API 定义 (2) 表结构变更后重新生成 Proto</description>
+<location>project</location>
+</skill>
+
+<skill>
+<name>backend-quality</name>
+<description>后端代码质量检查技能。用于执行依赖注入、代码格式化、Lint 检查和验证。触发场景：(1) 业务逻辑实现后 (2) 代码提交前的质量检查</description>
 <location>project</location>
 </skill>
 
@@ -84,31 +114,7 @@ Usage notes:
 
 <skill>
 <name>interview</name>
-<description>|</description>
-<location>project</location>
-</skill>
-
-<skill>
-<name>prd-to-testcase</name>
-<description>Generate standardized test cases from PRD documents with comprehensive coverage of functional, boundary value, and UI/UX test scenarios. Use when users need to create test cases from product requirements, convert PRD to test documentation, or generate comprehensive test coverage for new features. Triggers when users ask to generate test cases, create test plans from PRD, or need testing documentation from requirements.</description>
-<location>project</location>
-</skill>
-
-<skill>
-<name>product-requirements</name>
-<description>Interactive Product Owner skill for requirements gathering, analysis, and PRD generation. Triggers when users request product requirements, feature specification, PRD creation, or need help understanding and documenting project requirements. Uses quality scoring and iterative dialogue to ensure comprehensive requirements before generating professional PRD documents.</description>
-<location>project</location>
-</skill>
-
-<skill>
-<name>prompt-optimizer</name>
-<description>Prompt engineering expert that helps users craft optimized prompts using 57 proven frameworks. Use when users want to optimize prompts, improve AI instructions, create better prompts for specific tasks, or need help selecting the best prompt framework for their use case.</description>
-<location>project</location>
-</skill>
-
-<skill>
-<name>prototype-design</name>
-<description>Prototype design tool for generating high-fidelity UI/UX prototypes from PRD documents. Trigger when users need to create interactive prototypes based on product requirements, validate UI/UX designs, or quickly generate prototype pages for requirement confirmation. Supports both mobile and PC applications with multiple design systems (WeChat Work, iOS Native, Material Design, Ant Design Mobile).</description>
+<description>This skill conducts discovery conversations to understand user intent and agree on approach before taking action. It should be used when the user explicitly calls /interview, asks for recommendations, needs exploration, wants to clarify, or when the request could be misunderstood. Prevents building the wrong thing by uncovering WHY behind WHAT.</description>
 <location>project</location>
 </skill>
 
@@ -127,12 +133,6 @@ Usage notes:
 <skill>
 <name>ui-ux-pro-max</name>
 <description>"UI/UX design intelligence. 50 styles, 21 palettes, 50 font pairings, 20 charts, 8 stacks (React, Next.js, Vue, Svelte, SwiftUI, React Native, Flutter, Tailwind). Actions: plan, build, create, design, implement, review, fix, improve, optimize, enhance, refactor, check UI/UX code. Projects: website, landing page, dashboard, admin panel, e-commerce, SaaS, portfolio, blog, mobile app, .html, .tsx, .vue, .svelte. Elements: button, modal, navbar, sidebar, card, table, form, chart. Styles: glassmorphism, claymorphism, minimalism, brutalism, neumorphism, bento grid, dark mode, responsive, skeuomorphism, flat design. Topics: color palette, accessibility, animation, layout, typography, font pairing, spacing, hover, shadow, gradient."</description>
-<location>project</location>
-</skill>
-
-<skill>
-<name>webapp-testing</name>
-<description>Toolkit for interacting with and testing local web applications using Playwright. Supports verifying frontend functionality, debugging UI behavior, capturing browser screenshots, and viewing browser logs.</description>
 <location>project</location>
 </skill>
 
