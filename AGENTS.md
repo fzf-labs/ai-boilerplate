@@ -96,7 +96,7 @@ Usage notes:
 
 <skill>
 <name>backend-proto-gen</name>
-<description>后端 Protobuf 定义生成技能。用于从 SQL 表结构自动生成 Proto 文件。触发场景：(1) 新表需要生成 API 定义 (2) 表结构变更后重新生成 Proto</description>
+<description>后端 Protobuf API 定义生成技能（必选步骤）。基于 sqltopb 从数据库表自动生成 Proto 文件，禁止手动创建。触发场景：(1) 新建表后生成 API (2) 开发后端 CRUD 功能 (3) 需要 Proto/protobuf 文件 (4) 创建 gRPC/HTTP 接口定义 (5) 后端开发流程中的 Step 3</description>
 <location>project</location>
 </skill>
 
