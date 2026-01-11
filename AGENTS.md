@@ -41,6 +41,12 @@ Usage notes:
 <available_skills>
 
 <skill>
+<name>admin-api-gen</name>
+<description>"Admin API 代码生成技能。从后端 Swagger 文件生成 TypeScript API 客户端代码。触发场景：(1) 后端 API 更新后需要同步 (2) 新增 API 接口后生成客户端代码 (3) 需要刷新/重新生成 API 类型定义"</description>
+<location>project</location>
+</skill>
+
+<skill>
 <name>admin-codeing</name>
 <description>Admin 管理后台开发技能。当用户需要开发前端页面、对接后端接口、实现 CRUD 功能时使用此技能。触发场景包括：(1) 新增管理页面 (2) 表单和表格开发 (3) API 接口对接 (4) 权限控制实现 (5) 组件封装 (6) 完整的前端功能开发流程</description>
 <location>project</location>

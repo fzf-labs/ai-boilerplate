@@ -68,6 +68,12 @@ export const navigateToInterceptor = {
       path = `${baseDir}/${path}`
     }
 
+    // 处理根路径 '/'，重定向到首页
+    if (path === '/') {
+      FG_LOG_ENABLE && console.log('根路径重定向到首页:', HOME_PAGE)
+      return true // 允许继续，uni-app 会自动导航到首页
+    }
+
     // 系统内部页面直接放行（不检查路由存在性，不进行登录拦截）
     if (isSystemInternalPath(path)) {
       FG_LOG_ENABLE && console.log('系统内部页面，直接放行:', path)

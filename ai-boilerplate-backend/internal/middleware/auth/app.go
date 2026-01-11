@@ -18,6 +18,9 @@ var AppPrefixPathToWhiteList = map[string][]string{
 	"/app.": {
 		pb.OperationUserLogin,
 		pb.OperationUserSendVerifyCode,
+		pb.OperationHomeGetBannerList,
+		pb.OperationHomeGetContentList,
+		pb.OperationHomeGetContentDetail,
 	},
 }
 

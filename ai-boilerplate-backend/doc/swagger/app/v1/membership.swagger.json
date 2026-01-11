@@ -19,7 +19,6 @@
     "/app/v1/membership/benefits": {
       "get": {
         "summary": "获取会员权益列表",
-        "description": "获取指定会员等级的权益列表,如果不传会员类型则返回当前用户会员等级的权益",
         "operationId": "Membership_GetMembershipBenefits",
         "responses": {
           "200": {
@@ -37,7 +36,7 @@
         },
         "parameters": [
           {
-            "name": "membership_type",
+            "name": "membershipType",
             "description": "会员类型编码(可选,不传则返回当前用户会员等级的权益)",
             "in": "query",
             "required": false,
@@ -59,7 +58,6 @@
     "/app/v1/membership/info": {
       "get": {
         "summary": "获取用户会员基础信息",
-        "description": "获取当前登录用户的会员等级、状态、到期时间等基础信息",
         "operationId": "Membership_GetUserMembershipInfo",
         "responses": {
           "200": {
@@ -100,103 +98,85 @@
             "type": "object",
             "$ref": "#/definitions/app.v1.MembershipBenefit"
           },
-          "description": "权益列表"
+          "title": "权益列表"
         }
       },
-      "description": "会员权益列表",
       "title": "响应-获取会员权益列表"
     },
     "app.v1.GetUserMembershipInfoReply": {
       "type": "object",
       "properties": {
-        "membership_type": {
+        "membershipType": {
           "type": "string",
-          "example": "vip",
-          "description": "会员类型编码(normal,vip,svip)"
+          "title": "会员类型编码(normal,vip,svip)"
         },
-        "membership_name": {
+        "membershipName": {
           "type": "string",
-          "example": "VIP会员",
-          "description": "会员类型名称"
+          "title": "会员类型名称"
         },
-        "membership_description": {
+        "membershipDescription": {
           "type": "string",
-          "example": "VIP用户，享受增值功能",
-          "description": "会员类型描述"
+          "title": "会员类型描述"
         },
         "status": {
           "type": "integer",
           "format": "int32",
-          "example": 1,
-          "description": "会员状态(-1禁用,1正常)"
+          "title": "会员状态(-1禁用,1正常)"
         },
-        "expired_at": {
+        "expiredAt": {
           "type": "string",
-          "example": "2025-12-31T23:59:59Z",
-          "description": "到期时间(普通会员为空,表示永不过期)"
+          "title": "到期时间(普通会员为空,表示永不过期)"
         },
-        "is_expired": {
+        "isExpired": {
           "type": "boolean",
-          "example": false,
-          "description": "是否已过期"
+          "title": "是否已过期"
         },
-        "auto_renew": {
+        "autoRenew": {
           "type": "integer",
           "format": "int32",
-          "example": 1,
-          "description": "是否自动续费(0否,1是)"
+          "title": "是否自动续费(0否,1是)"
         },
-        "auto_renew_days": {
+        "autoRenewDays": {
           "type": "integer",
           "format": "int32",
-          "example": 30,
-          "description": "自动续费天数"
+          "title": "自动续费天数"
         },
-        "created_at": {
+        "createdAt": {
           "type": "string",
-          "example": "2025-01-01T00:00:00Z",
-          "description": "开通时间"
+          "title": "开通时间"
         }
       },
-      "description": "用户会员基础信息",
       "title": "响应-获取用户会员基础信息"
     },
     "app.v1.MembershipBenefit": {
       "type": "object",
       "properties": {
-        "benefit_key": {
+        "benefitKey": {
           "type": "string",
-          "example": "location",
-          "description": "权益标识"
+          "title": "权益标识"
         },
-        "benefit_name": {
+        "benefitName": {
           "type": "string",
-          "example": "定位查看",
-          "description": "权益名称"
+          "title": "权益名称"
         },
-        "benefit_desc": {
+        "benefitDesc": {
           "type": "string",
-          "example": "可以查看对方的实时位置",
-          "description": "权益描述"
+          "title": "权益描述"
         },
-        "benefit_value": {
+        "benefitValue": {
           "type": "string",
-          "example": "1",
-          "description": "权益值"
+          "title": "权益值"
         },
-        "benefit_num": {
+        "benefitNum": {
           "type": "string",
-          "example": "5",
-          "description": "权益次数"
+          "title": "权益次数"
         },
         "sort": {
           "type": "integer",
           "format": "int32",
-          "example": 1,
-          "description": "排序"
+          "title": "排序"
         }
       },
-      "description": "会员权益信息",
       "title": "会员权益信息"
     },
     "google.protobuf.Any": {

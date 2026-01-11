@@ -149,6 +149,7 @@ pbtocode:
 .PHONY: apidoc
 # 同步接口文档
 apidoc:
+	@rm -rf ./doc/swagger/*
 	@api-import swagger apifox -t "$(APIFOX_PROJECT_ID)" -p "$(APIFOX_PROJECT_TOKEN)" -i ./doc/swagger
 
 .PHONY: pbdoc
