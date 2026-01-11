@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node .claude/hooks/stop.js"
+            "command": "node /Users/fuzhifei/code/go/src/github.com/fzf-labs/ai-boilerplate/.claude/hooks/stop.js"
           }
         ]
       }
@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node .claude/hooks/skill-forced-eval.js"
+            "command": "node /Users/fuzhifei/code/go/src/github.com/fzf-labs/ai-boilerplate/.claude/hooks/skill-forced-eval.js"
           }
         ]
       }

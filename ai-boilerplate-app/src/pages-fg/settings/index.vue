@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { checkUpdate } from '@/api/v1/self-app-release'
+
 interface ICacheInfo {
   sizeKB: number
   sizeText: string
@@ -6,10 +8,15 @@ interface ICacheInfo {
 
 interface IAppVersion {
   currentVersion: string
+  currentBuildNum: number
   latestVersion?: string
   hasUpdate: boolean
+  updateType?: number // 1强制 2提示 3静默
+  updateTitle?: string
   updateDesc?: string
   downloadUrl?: string
+  packageSize?: number
+  minOsVersion?: string
 }
 
 definePage({
@@ -44,14 +51,6 @@ const languageActions = computed(() => {
   })
 })
 
-const clearCacheActions = [
-  {
-    name: '清除缓存（可能导致退出登录）',
-    subname: '不可撤销',
-    color: 'var(--fg-danger)',
-  },
-]
-
 // 菜单列表
 const menuList = [
   {
@@ -71,6 +70,10 @@ const menuList = [
     value: '0 MB',
   },
 ]
+
+// 协议 URL 配置（为空则跳转 404）
+const PRIVACY_URL = ''
+const TERMS_URL = ''
 
 const legalList = [
   {
@@ -119,17 +122,46 @@ function formatSize(kb: number): string {
   return `${gb.toFixed(2)} GB`
 }
 
-async function getCurrentVersion(): Promise<string> {
+function formatPackageSize(bytes: number): string {
+  if (!Number.isFinite(bytes) || bytes <= 0)
+    return '0 B'
+  if (bytes < 1024)
+    return `${bytes.toFixed(0)} B`
+  const kb = bytes / 1024
+  if (kb < 1024)
+    return `${kb.toFixed(2)} KB`
+  const mb = kb / 1024
+  if (mb < 1024)
+    return `${mb.toFixed(2)} MB`
+  const gb = mb / 1024
+  return `${gb.toFixed(2)} GB`
+}
+
+interface AppInfo {
+  version: string
+  buildNum: number
+  packageName: string
+}
+
+async function getAppInfo(): Promise<AppInfo> {
   // #ifdef APP-PLUS
   return await new Promise((resolve) => {
     plus.runtime.getProperty(plus.runtime.appid, (info) => {
-      resolve(info?.version || '1.0.0')
+      resolve({
+        version: info?.version || '1.0.0',
+        buildNum: Number.parseInt(info?.versionCode || '100', 10),
+        packageName: info?.appid || '__UNI__D1E5001',
+      })
     })
   })
   // #endif
 
   // #ifndef APP-PLUS
-  return '1.0.0'
+  return {
+    version: '1.0.0',
+    buildNum: 100,
+    packageName: '__UNI__D1E5001',
+  }
   // #endif
 }
 
@@ -160,11 +192,35 @@ async function fetchCacheInfo() {
  */
 async function fetchVersionInfo() {
   try {
-    const currentVersion = await getCurrentVersion()
+    const appInfo = await getAppInfo()
+
+    // 调用后端 API 检测更新
+    const response = await checkUpdate({
+      body: {
+        packageName: appInfo.packageName,
+        channel: 'default',
+        buildNum: appInfo.buildNum,
+      },
+    })
+
     const res: IAppVersion = {
-      currentVersion,
-      hasUpdate: false,
+      currentVersion: appInfo.version,
+      currentBuildNum: appInfo.buildNum,
+      hasUpdate: response.hasUpdate || false,
     }
+
+    // 如果有更新，填充更新信息
+    if (response.hasUpdate && response.updateInfo) {
+      const info = response.updateInfo
+      res.latestVersion = info.version
+      res.updateType = info.updateType
+      res.updateTitle = info.title
+      res.updateDesc = info.changelog
+      res.downloadUrl = info.packageURL
+      res.packageSize = info.packageSize
+      res.minOsVersion = info.minOsVersion
+    }
+
     versionInfo.value = res
     const versionItem = aboutList.find(item => item.action === 'checkVersion')
     if (versionItem) {
@@ -173,7 +229,29 @@ async function fetchVersionInfo() {
   }
   catch (error) {
     console.error('检查版本失败:', error)
+    // 失败时使用本地版本信息
+    const appInfo = await getAppInfo()
+    versionInfo.value = {
+      currentVersion: appInfo.version,
+      currentBuildNum: appInfo.buildNum,
+      hasUpdate: false,
+    }
   }
+}
+
+/**
+ * 跳转到 webview 页面，无 URL 则跳转 404
+ */
+function navigateToWebview(url: string, title: string) {
+  if (!url) {
+    uni.navigateTo({ url: '/pages-fg/404/index' })
+    return
+  }
+  const encodedUrl = encodeURIComponent(url)
+  const encodedTitle = encodeURIComponent(title)
+  uni.navigateTo({
+    url: `/pages-fg/webview/index?url=${encodedUrl}&title=${encodedTitle}`,
+  })
 }
 
 /**
@@ -188,14 +266,10 @@ function handleMenuClick(action: string) {
       clearCacheSheetVisible.value = true
       break
     case 'privacy':
-      uni.navigateTo({
-        url: '/pages-fg/webview/index?url=https://example.com/privacy',
-      })
+      navigateToWebview(PRIVACY_URL, '隐私协议')
       break
     case 'terms':
-      uni.navigateTo({
-        url: '/pages-fg/webview/index?url=https://example.com/terms',
-      })
+      navigateToWebview(TERMS_URL, '用户协议')
       break
     case 'about':
       aboutSheetVisible.value = true
@@ -242,19 +316,48 @@ async function handleClearCache() {
  */
 async function handleCheckVersion() {
   try {
-    const res = versionInfo.value || { currentVersion: await getCurrentVersion(), hasUpdate: false }
-    if (res.hasUpdate) {
+    uni.showLoading({ title: '检查中...' })
+
+    const appInfo = await getAppInfo()
+
+    // 调用后端 API 检测更新
+    const response = await checkUpdate({
+      body: {
+        packageName: appInfo.packageName,
+        channel: 'default',
+        buildNum: appInfo.buildNum,
+      },
+    })
+
+    uni.hideLoading()
+
+    if (response.hasUpdate && response.updateInfo) {
+      const info = response.updateInfo
+      versionInfo.value = {
+        currentVersion: appInfo.version,
+        currentBuildNum: appInfo.buildNum,
+        hasUpdate: true,
+        latestVersion: info.version,
+        updateType: info.updateType,
+        updateTitle: info.title,
+        updateDesc: info.changelog,
+        downloadUrl: info.packageURL,
+        packageSize: info.packageSize,
+        minOsVersion: info.minOsVersion,
+      }
       updateSheetVisible.value = true
     }
     else {
       uni.showToast({
-        title: `已是最新版本(v${res.currentVersion})`,
+        title: `已是最新版本(v${appInfo.version})`,
         icon: 'success',
       })
     }
   }
   catch (error) {
+    uni.hideLoading()
     console.error('检查版本失败:', error)
+    uni.showToast({ title: '检查失败，请稍后重试', icon: 'none' })
   }
 }
 
@@ -373,11 +476,20 @@ onLoad(() => {
     <bottom-sheet
       v-model="clearCacheSheetVisible"
       title="清除缓存"
-      :actions="clearCacheActions"
+      confirm-text="确认清除"
       cancel-text="取消"
-      :show-confirm="false"
-      @select="handleClearCache"
-    />
+      confirm-variant="danger"
+      @confirm="handleClearCache"
+    >
+      <view class="about-content">
+        <view class="about-line">
+          当前缓存：{{ cacheInfo?.sizeText || '0 KB' }}
+        </view>
+        <view class="about-line about-desc">
+          清除缓存可能导致退出登录，此操作不可撤销
+        </view>
+      </view>
+    </bottom-sheet>
 
     <bottom-sheet
       v-model="aboutSheetVisible"
@@ -400,7 +512,7 @@ onLoad(() => {
 
     <bottom-sheet
       v-model="updateSheetVisible"
-      title="发现新版本"
+      :title="versionInfo?.updateTitle || '发现新版本'"
       confirm-text="立即更新"
       cancel-text="取消"
       :confirm-disabled="!versionInfo?.downloadUrl"
@@ -412,6 +524,9 @@ onLoad(() => {
         </view>
         <view class="about-line">
           当前版本：v{{ versionInfo?.currentVersion || '-' }}
+        </view>
+        <view v-if="versionInfo?.packageSize" class="about-line">
+          安装包大小：{{ formatPackageSize(versionInfo.packageSize) }}
         </view>
         <view v-if="versionInfo?.updateDesc" class="about-line about-desc">
           {{ versionInfo.updateDesc }}

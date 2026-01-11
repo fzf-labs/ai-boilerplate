@@ -5,22 +5,28 @@
  */
 
 const skills = [
-  { name: 'backend-database', keywords: ['数据库', 'SQL', '建表', 'PostgreSQL', 'MySQL', '表结构', '字段', '索引', 'DDL', 'schema', '数据库设计', 'migration'] },
-  { name: 'backend-codeing', keywords: ['CRUD', '增删改查', '后端开发', '后端代码', 'Service', 'GORM', 'Protobuf', '代码生成', '业务模块', 'API接口', '后端功能', '业务逻辑', 'pbtocode', 'sqltopb'] },
-  { name: 'api-schema-test', keywords: ['API测试', 'Swagger', '接口测试', '契约测试', 'Schema验证', 'schemathesis', '回归测试', 'OpenAPI'] },
+  // 后端开发技能
+  { name: 'backend-audit', keywords: ['后端开发', '开发流程', '审计', '工件检查', '开发起点', '后端任务'] },
+  { name: 'backend-database', keywords: ['数据库', 'SQL', '建表', 'PostgreSQL', '表结构', '字段', '索引', 'DDL', 'schema', '数据库设计', 'migration'] },
+  { name: 'backend-gorm', keywords: ['GORM', 'Model', 'DAO', 'Repo', 'ORM', '数据访问层', 'gorm生成'] },
+  { name: 'backend-proto-gen', keywords: ['Proto', 'Protobuf', 'sqltopb', 'gRPC', 'HTTP接口', 'API定义', 'proto生成'] },
+  { name: 'backend-proto-edit', keywords: ['Proto编辑', '过滤条件', '验证规则', 'RPC方法', 'buf.validate', 'proto修改'] },
+  { name: 'backend-api-gen', keywords: ['API生成', 'pbtocode', 'pb.go', 'http.pb.go', 'Service桩', 'make api'] },
+  { name: 'backend-codeing', keywords: ['CRUD', '增删改查', '后端代码', 'Service', '业务模块', 'API接口', '后端功能', '业务逻辑'] },
+  { name: 'backend-quality', keywords: ['代码质量', 'wire', 'gci', 'lint', '依赖注入', '格式化', '质量检查'] },
+  { name: 'backend-api-schema-test', keywords: ['API测试', 'Swagger', '接口测试', '契约测试', 'Schema验证', 'schemathesis', '回归测试', 'OpenAPI'] },
+
+  // 前端开发技能
   { name: 'admin-codeing', keywords: ['管理后台', '前端页面', '表单', '表格', 'Vue', 'Ant Design', '组件', '路由', 'CRUD页面', '权限控制'] },
   { name: 'app-codeing', keywords: ['移动端', 'App', 'UniApp', '小程序', 'H5', '移动应用', '手机端', 'uni-app', 'wot-design', 'z-paging', '移动开发', '跨端'] },
+  { name: 'app-api-gen', keywords: ['App API', 'TypeScript API', 'API客户端', 'openapi-ts-request', 'API同步', 'API类型'] },
+
+  // 通用技能
   { name: 'ui-ux-pro-max', keywords: ['UI设计', 'UX设计', '界面', '样式', '布局', '组件设计', '响应式', '动画', '交互', 'Tailwind', '配色', '字体'] },
-  { name: 'product-requirements', keywords: ['产品需求', 'PRD', '需求文档', '功能规格', '用户故事', '验收标准', '需求分析', '产品设计'] },
   { name: 'interview', keywords: ['头脑风暴', '想法', '设计方案', '创意', '探索', '需求分析', '方案讨论', '功能设计', '澄清', '确认'] },
-  { name: 'prd-to-testcase', keywords: ['测试用例', '测试计划', 'PRD转测试', '测试文档', '测试场景', '边界测试', 'UI测试'] },
-  { name: 'prototype-design', keywords: ['原型', '原型设计', 'HTML原型', 'CSS', '界面设计', '交互设计', '移动端', 'PC端', '高保真原型'] },
   { name: 'tech-decision', keywords: ['技术选型', '技术对比', '架构决策', '选择框架', '选择库', '技术方案', '推荐', '评估', '技术评审'] },
-  { name: 'webapp-testing', keywords: ['Web测试', '自动化测试', 'Playwright', '浏览器测试', 'E2E测试', '前端测试', 'UI自动化'] },
   { name: 'skill-creator', keywords: ['创建技能', 'Skill', '技能开发', '扩展能力', '自定义技能', '技能编写'] },
-  { name: 'prompt-optimizer', keywords: ['Prompt优化', '提示词工程', '提示词优化', 'AI指令', '提示词框架', 'Prompt框架'] },
-  { name: 'git-workflow', keywords: ['Git', '版本控制', '分支', '提交', 'commit', 'PR', 'merge', 'rebase', '代码管理', 'pull request'] },
-  { name: 'bug-detective', keywords: ['Bug', '问题', '错误', '排查', '调试', 'debug', '故障', '异常', 'panic', '日志', '报错', '不工作'] }
+  { name: 'git-workflow', keywords: ['Git', '版本控制', '分支', '提交', 'commit', 'PR', 'merge', 'rebase', '代码管理', 'pull request'] }
 ];
 
 async function readStdin() {
