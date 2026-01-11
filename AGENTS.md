@@ -47,8 +47,8 @@ Usage notes:
 </skill>
 
 <skill>
-<name>api-schema-test</name>
-<description>API Schema 契约测试技能。基于 schemathesis 进行 API 自动化测试。触发场景包括：(1) 测试单个 API 接口 (2) 批量测试所有 API (3) 测试特定 HTTP 方法 (4) 验证 API 契约合规性 (5) 集成测试和回归测试</description>
+<name>app-api-gen</name>
+<description>"App API 代码生成技能。从后端 Swagger 文件生成 TypeScript API 客户端代码。触发场景：(1) 后端 API 更新后需要同步 (2) 新增 API 接口后生成客户端代码 (3) 需要刷新/重新生成 API 类型定义"</description>
 <location>project</location>
 </skill>
 
@@ -61,6 +61,12 @@ Usage notes:
 <skill>
 <name>backend-api-gen</name>
 <description>后端 API 代码生成技能。用于从 Proto 文件生成 Go 代码（pb.go、grpc.pb.go、http.pb.go 等）。触发场景：(1) Proto 文件修改后 (2) 需要重新生成 API 代码</description>
+<location>project</location>
+</skill>
+
+<skill>
+<name>backend-api-schema-test</name>
+<description>API Schema 契约测试技能。基于 schemathesis 进行 API 自动化测试。触发场景包括：(1) 测试单个 API 接口 (2) 批量测试所有 API (3) 测试特定 HTTP 方法 (4) 验证 API 契约合规性 (5) 集成测试和回归测试</description>
 <location>project</location>
 </skill>
 

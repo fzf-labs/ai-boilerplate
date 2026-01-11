@@ -1,9 +1,9 @@
 ---
-name: api-schema-test
+name: backend-api-schema-test
 description: API Schema 契约测试技能。基于 schemathesis 进行 API 自动化测试。触发场景包括：(1) 测试单个 API 接口 (2) 批量测试所有 API (3) 测试特定 HTTP 方法 (4) 验证 API 契约合规性 (5) 集成测试和回归测试
 ---
 
-# API Schema 契约测试技能
+# Backend API Schema 契约测试技能
 
 本技能提供 API Schema 契约测试工作流程，基于 schemathesis 自动化测试工具，验证 API 实现与 Swagger 文档的一致性。
 
