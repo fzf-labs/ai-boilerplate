@@ -1,0 +1,174 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "app/v1/self_app_release.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "SelfAppRelease"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/app/v1/app_release/check_update": {
+      "post": {
+        "summary": "检测App版本更新",
+        "operationId": "SelfAppRelease_CheckUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.CheckUpdateReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/app.v1.CheckUpdateReq"
+            }
+          }
+        ],
+        "tags": [
+          "SelfAppRelease"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "app.v1.CheckUpdateReply": {
+      "type": "object",
+      "properties": {
+        "hasUpdate": {
+          "type": "boolean",
+          "title": "是否有更新"
+        },
+        "updateInfo": {
+          "$ref": "#/definitions/app.v1.UpdateInfo",
+          "title": "更新信息(无更新时为空)"
+        }
+      },
+      "title": "响应-检测App版本更新"
+    },
+    "app.v1.CheckUpdateReq": {
+      "type": "object",
+      "properties": {
+        "packageName": {
+          "type": "string",
+          "title": "包名"
+        },
+        "channel": {
+          "type": "string",
+          "title": "渠道"
+        },
+        "buildNum": {
+          "type": "integer",
+          "format": "int32",
+          "title": "当前build值"
+        },
+        "deviceSn": {
+          "type": "string",
+          "title": "设备序列号(用于灰度判断)"
+        },
+        "osVersion": {
+          "type": "string",
+          "title": "系统版本"
+        }
+      },
+      "title": "请求-检测App版本更新",
+      "required": [
+        "packageName",
+        "channel",
+        "buildNum"
+      ]
+    },
+    "app.v1.UpdateInfo": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "title": "新版本号"
+        },
+        "buildNum": {
+          "type": "integer",
+          "format": "int32",
+          "title": "新build值"
+        },
+        "updateType": {
+          "type": "integer",
+          "format": "int32",
+          "title": "更新类型(1强制 2提示 3静默)"
+        },
+        "title": {
+          "type": "string",
+          "title": "更新标题"
+        },
+        "changelog": {
+          "type": "string",
+          "title": "更新日志"
+        },
+        "packageURL": {
+          "type": "string",
+          "title": "安装包地址"
+        },
+        "packageSize": {
+          "type": "number",
+          "format": "double",
+          "title": "安装包大小(字节)"
+        },
+        "packageMd5": {
+          "type": "string",
+          "title": "安装包MD5"
+        },
+        "minOsVersion": {
+          "type": "string",
+          "title": "最低系统版本要求"
+        }
+      },
+      "title": "更新信息"
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

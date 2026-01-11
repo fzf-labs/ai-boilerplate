@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package app.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/app/v1;v1";
+
+//App版本检测服务
+service SelfAppRelease {
+  //检测App版本更新
+  rpc CheckUpdate(CheckUpdateReq) returns (CheckUpdateReply) {
+    option (google.api.http) = {
+      post: "/app/v1/app_release/check_update"
+      body: "*"
+    };
+  }
+}
+
+//请求-检测App版本更新
+message CheckUpdateReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "packageName",
+        "channel",
+        "buildNum"
+      ]
+    }
+  };
+  string packageName = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 255
+  }]; // 包名
+  string channel = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 32
+  }]; // 渠道
+  int32 buildNum = 3; // 当前build值
+  string deviceSn = 4 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 128
+    }
+  ]; // 设备序列号(用于灰度判断)
+  string osVersion = 5 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 32
+    }
+  ]; // 系统版本
+}
+
+//响应-检测App版本更新
+message CheckUpdateReply {
+  bool hasUpdate = 1; // 是否有更新
+  UpdateInfo updateInfo = 2; // 更新信息(无更新时为空)
+}
+
+//更新信息
+message UpdateInfo {
+  string version = 1; // 新版本号
+  int32 buildNum = 2; // 新build值
+  int32 updateType = 3; // 更新类型(1强制 2提示 3静默)
+  string title = 4; // 更新标题
+  string changelog = 5; // 更新日志
+  string packageURL = 6; // 安装包地址
+  double packageSize = 7; // 安装包大小(字节)
+  string packageMd5 = 8; // 安装包MD5
+  string minOsVersion = 9; // 最低系统版本要求
+}
