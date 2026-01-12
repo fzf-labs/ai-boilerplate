@@ -19,14 +19,19 @@ const CONFIG = {
 // 技能定义
 // priority: 优先级(越高越优先), group: 互斥分组, keywords: [关键词, 权重]
 const skills = [
-  // 后端开发技能 (group: backend-*)
+  // ============ 后端开发技能 ============
   {
     name: 'backend-audit',
     priority: 10,
     group: 'backend-init',
     keywords: [
-      ['后端开发', 2], ['开发流程', 2], ['审计', 3], ['工件检查', 3],
-      ['开发起点', 3], ['后端任务', 1], ['从哪开始', 2]
+      // 核心触发词
+      ['审计', 3], ['工件检查', 3], ['开发起点', 3], ['从哪开始', 3],
+      ['前置条件', 3], ['开发前', 2], ['检查状态', 2],
+      // 流程相关
+      ['后端开发', 2], ['开发流程', 2], ['后端任务', 1],
+      // 英文支持
+      ['audit', 3], ['backend dev', 2]
     ]
   },
   {
@@ -34,9 +39,14 @@ const skills = [
     priority: 9,
     group: 'backend-db',
     keywords: [
-      ['数据库', 2], ['SQL', 2], ['建表', 3], ['PostgreSQL', 2],
-      ['表结构', 3], ['字段', 1], ['索引', 2], ['DDL', 3],
-      ['schema', 2], ['数据库设计', 3], ['migration', 2]
+      // 核心触发词
+      ['建表', 3], ['创建表', 3], ['新建表', 3], ['表设计', 3],
+      ['数据库设计', 3], ['表结构', 3], ['修改表', 3],
+      // 技术词
+      ['PostgreSQL', 2], ['SQL', 2], ['DDL', 3], ['migration', 2],
+      ['字段', 1], ['索引', 2], ['schema', 2],
+      // 通用
+      ['数据库', 2], ['database', 2]
     ]
   },
   {
@@ -44,8 +54,13 @@ const skills = [
     priority: 8,
     group: 'backend-orm',
     keywords: [
-      ['GORM', 3], ['Model', 1], ['DAO', 3], ['Repo', 2],
-      ['ORM', 2], ['数据访问层', 3], ['gorm生成', 3]
+      // 核心触发词
+      ['GORM', 3], ['gorm生成', 3], ['make gorm', 3],
+      ['DAO', 3], ['Repo', 2], ['数据访问层', 3],
+      // 技术词
+      ['ORM', 2], ['Model', 1], ['gen.go', 3],
+      // 英文支持
+      ['gorm code', 3]
     ]
   },
   {
@@ -53,8 +68,14 @@ const skills = [
     priority: 8,
     group: 'backend-proto',
     keywords: [
-      ['Proto', 2], ['Protobuf', 3], ['sqltopb', 3], ['gRPC', 2],
-      ['HTTP接口', 1], ['API定义', 2], ['proto生成', 3]
+      // 核心触发词 - 必须用 sqltopb
+      ['sqltopb', 3], ['proto生成', 3], ['make sqltopb', 3],
+      ['生成Proto', 3], ['创建Proto', 3],
+      // 技术词
+      ['Proto', 2], ['Protobuf', 3], ['protobuf', 3],
+      ['gRPC', 2], ['grpc', 2], ['API定义', 2],
+      // 接口定义
+      ['接口定义', 2], ['.proto', 3]
     ]
   },
   {
@@ -62,8 +83,13 @@ const skills = [
     priority: 7,
     group: 'backend-proto',
     keywords: [
-      ['Proto编辑', 3], ['过滤条件', 2], ['验证规则', 2],
-      ['RPC方法', 2], ['buf.validate', 3], ['proto修改', 3]
+      // 核心触发词
+      ['Proto编辑', 3], ['proto修改', 3], ['修改Proto', 3],
+      ['编辑Proto', 3],
+      // 具体场景
+      ['过滤条件', 2], ['验证规则', 2], ['RPC方法', 2],
+      ['buf.validate', 3], ['添加RPC', 3], ['删除RPC', 3],
+      ['ListReq', 2]
     ]
   },
   {
@@ -71,8 +97,12 @@ const skills = [
     priority: 7,
     group: 'backend-api',
     keywords: [
-      ['API生成', 3], ['pbtocode', 3], ['pb.go', 3],
-      ['http.pb.go', 3], ['Service桩', 2], ['make api', 3]
+      // 核心触发词
+      ['make api', 3], ['pbtocode', 3], ['API代码生成', 3],
+      // 生成文件
+      ['pb.go', 3], ['http.pb.go', 3], ['grpc.pb.go', 3],
+      // 场景
+      ['Service桩', 2], ['生成Go代码', 2]
     ]
   },
   {
@@ -80,8 +110,14 @@ const skills = [
     priority: 6,
     group: 'backend-code',
     keywords: [
-      ['CRUD', 2], ['增删改查', 2], ['后端代码', 2], ['Service', 1],
-      ['业务模块', 2], ['API接口', 1], ['后端功能', 2], ['业务逻辑', 2]
+      // 核心触发词
+      ['后端功能', 3], ['业务逻辑', 3], ['后端代码', 2],
+      ['CRUD', 2], ['增删改查', 2],
+      // 具体场景
+      ['Service实现', 3], ['业务模块', 2], ['后端实现', 3],
+      // 英文支持
+      ['backend feature', 3], ['backend implement', 3],
+      ['service logic', 2], ['data layer', 2]
     ]
   },
   {
@@ -89,8 +125,13 @@ const skills = [
     priority: 5,
     group: 'backend-quality',
     keywords: [
-      ['代码质量', 2], ['wire', 2], ['gci', 2], ['lint', 2],
-      ['依赖注入', 2], ['格式化', 1], ['质量检查', 3]
+      // 核心触发词
+      ['代码质量', 3], ['质量检查', 3], ['make wire', 3],
+      ['make lint', 3], ['make gci', 3],
+      // 技术词
+      ['wire', 2], ['gci', 2], ['lint', 2], ['依赖注入', 2],
+      // 场景
+      ['格式化', 1], ['代码检查', 2]
     ]
   },
   {
@@ -98,20 +139,34 @@ const skills = [
     priority: 5,
     group: 'backend-test',
     keywords: [
-      ['API测试', 3], ['Swagger', 2], ['接口测试', 3], ['契约测试', 3],
-      ['Schema验证', 3], ['schemathesis', 3], ['回归测试', 2], ['OpenAPI', 2]
+      // 核心触发词
+      ['契约测试', 3], ['Schema测试', 3], ['schemathesis', 3],
+      ['API测试', 3], ['接口测试', 3],
+      // 技术词
+      ['Swagger测试', 3], ['OpenAPI测试', 3],
+      ['Schema验证', 3], ['回归测试', 2],
+      // 英文支持
+      ['schema test', 3], ['api test', 2]
     ]
   },
 
-  // 前端开发技能
+  // ============ 前端开发技能 ============
   {
     name: 'admin-codeing',
     priority: 6,
     group: 'frontend-admin',
     keywords: [
-      ['管理后台', 3], ['前端页面', 2], ['表单', 1], ['表格', 1],
-      ['Vue', 1], ['Ant Design', 2], ['组件', 1], ['路由', 1],
-      ['CRUD页面', 3], ['权限控制', 2], ['admin', 2]
+      // 核心触发词
+      ['管理后台', 3], ['后台页面', 3], ['Admin页面', 3],
+      ['CRUD页面', 3], ['管理页面', 3],
+      // 技术栈
+      ['Ant Design Vue', 3], ['Vxe-Table', 3],
+      ['Vue3', 2], ['Vue', 1],
+      // 具体场景
+      ['表单开发', 2], ['表格开发', 2], ['权限控制', 2],
+      ['前端页面', 2], ['组件封装', 2],
+      // 英文支持
+      ['admin panel', 3], ['admin page', 3]
     ]
   },
   {
@@ -119,7 +174,12 @@ const skills = [
     priority: 7,
     group: 'frontend-admin-api',
     keywords: [
-      ['Admin API', 3], ['管理后台API', 3], ['后台接口同步', 3]
+      // 核心触发词
+      ['Admin API', 3], ['管理后台API', 3], ['后台接口同步', 3],
+      ['pnpm api:gen', 3], ['admin api:gen', 3],
+      // 场景
+      ['后台API同步', 3], ['管理端API', 3],
+      ['Swagger同步', 2], ['接口类型生成', 2]
     ]
   },
   {
@@ -127,9 +187,15 @@ const skills = [
     priority: 6,
     group: 'frontend-app',
     keywords: [
-      ['移动端', 3], ['App', 2], ['UniApp', 3], ['小程序', 3],
-      ['H5', 2], ['移动应用', 3], ['手机端', 2], ['uni-app', 3],
-      ['wot-design', 3], ['z-paging', 3], ['移动开发', 3], ['跨端', 2]
+      // 核心触发词
+      ['uni-app', 3], ['UniApp', 3], ['移动端', 3],
+      ['小程序', 3], ['移动应用', 3], ['App开发', 3],
+      // 技术栈
+      ['wot-design-uni', 3], ['wot-design', 3], ['z-paging', 3],
+      // 具体场景
+      ['H5', 2], ['手机端', 2], ['跨端', 2], ['移动开发', 3],
+      // 英文支持
+      ['mobile app', 3], ['mobile page', 3]
     ]
   },
   {
@@ -137,20 +203,31 @@ const skills = [
     priority: 7,
     group: 'frontend-app-api',
     keywords: [
-      ['App API', 3], ['TypeScript API', 2], ['API客户端', 2],
-      ['openapi-ts-request', 3], ['API同步', 2], ['API类型', 2]
+      // 核心触发词
+      ['App API', 3], ['移动端API', 3], ['app api:gen', 3],
+      ['openapi-ts-request', 3],
+      // 场景
+      ['TypeScript API', 2], ['API客户端', 2],
+      ['API同步', 2], ['API类型', 2], ['接口同步', 2]
     ]
   },
 
-  // 通用技能
+  // ============ 通用技能 ============
   {
     name: 'ui-ux-pro-max',
     priority: 4,
     group: 'design',
     keywords: [
-      ['UI设计', 3], ['UX设计', 3], ['界面', 1], ['样式', 1],
-      ['布局', 1], ['组件设计', 2], ['响应式', 2], ['动画', 2],
-      ['交互', 1], ['Tailwind', 2], ['配色', 2], ['字体', 1]
+      // 核心触发词
+      ['UI设计', 3], ['UX设计', 3], ['界面设计', 3],
+      // 设计风格
+      ['glassmorphism', 3], ['neumorphism', 3], ['minimalism', 2],
+      ['bento grid', 3], ['dark mode', 2],
+      // 具体元素
+      ['配色', 2], ['字体搭配', 2], ['动画', 2], ['响应式', 2],
+      ['布局', 1], ['样式', 1], ['Tailwind', 2],
+      // 英文支持
+      ['design', 2], ['color palette', 3]
     ]
   },
   {
@@ -158,9 +235,13 @@ const skills = [
     priority: 3,
     group: 'planning',
     keywords: [
-      ['头脑风暴', 3], ['想法', 1], ['设计方案', 2], ['创意', 2],
-      ['探索', 1], ['需求分析', 3], ['方案讨论', 3], ['功能设计', 2],
-      ['澄清', 2], ['确认', 1]
+      // 核心触发词
+      ['需求分析', 3], ['需求澄清', 3], ['方案讨论', 3],
+      ['头脑风暴', 3], ['功能设计', 2],
+      // 场景
+      ['探索', 1], ['想法', 1], ['创意', 2], ['澄清', 2],
+      // 英文支持
+      ['discovery', 3], ['clarify', 2], ['brainstorm', 3]
     ]
   },
   {
@@ -168,8 +249,14 @@ const skills = [
     priority: 4,
     group: 'planning',
     keywords: [
-      ['技术选型', 3], ['技术对比', 3], ['架构决策', 3], ['选择框架', 3],
-      ['选择库', 2], ['技术方案', 2], ['推荐', 1], ['评估', 1], ['技术评审', 3]
+      // 核心触发词
+      ['技术选型', 3], ['技术对比', 3], ['架构决策', 3],
+      ['选择框架', 3], ['选择库', 2],
+      // 场景
+      ['技术方案', 2], ['技术评审', 3], ['评估', 1],
+      ['推荐', 1], ['对比', 2],
+      // 英文支持
+      ['tech decision', 3], ['compare', 2]
     ]
   },
   {
@@ -177,8 +264,15 @@ const skills = [
     priority: 5,
     group: 'meta',
     keywords: [
-      ['创建技能', 3], ['Skill', 2], ['技能开发', 3],
-      ['扩展能力', 2], ['自定义技能', 3], ['技能编写', 3]
+      // 核心触发词
+      ['创建技能', 3], ['技能开发', 3], ['技能编写', 3],
+      ['自定义技能', 3], ['新建技能', 3],
+      // 技术词
+      ['SKILL.md', 3], ['Skill', 2],
+      // 场景
+      ['扩展能力', 2], ['技能更新', 3], ['更新技能', 3],
+      // 英文支持
+      ['create skill', 3], ['skill creator', 3]
     ]
   },
   {
@@ -186,9 +280,14 @@ const skills = [
     priority: 4,
     group: 'vcs',
     keywords: [
-      ['Git', 2], ['版本控制', 2], ['分支', 1], ['提交', 1],
-      ['commit', 2], ['PR', 2], ['merge', 2], ['rebase', 2],
-      ['代码管理', 2], ['pull request', 3]
+      // 核心触发词
+      ['Git', 2], ['版本控制', 2], ['git操作', 3],
+      // 具体操作
+      ['分支', 1], ['提交', 1], ['合并', 1],
+      ['commit', 2], ['merge', 2], ['rebase', 2],
+      ['PR', 2], ['pull request', 3],
+      // 场景
+      ['代码管理', 2], ['冲突解决', 3], ['conflict', 2]
     ]
   }
 ];
