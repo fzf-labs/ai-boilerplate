@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { HelpCategoryInfo } from '@/api/v1/help-category/types'
 import type { HelpFaqInfo } from '@/api/v1/help-faq/types'
+import { useToast } from 'wot-design-uni'
 import { listHelpCategories } from '@/api/v1/help-category/helpCategory'
 import { listHelpFaqs } from '@/api/v1/help-faq/helpFaq'
 
@@ -9,6 +10,8 @@ definePage({
     navigationBarTitleText: '帮助中心',
   },
 })
+
+const toast = useToast()
 
 // 帮助分类列表
 const categories = ref<HelpCategoryInfo[]>([])
@@ -30,10 +33,7 @@ async function fetchCategories() {
   }
   catch (error) {
     console.error('获取帮助分类失败:', error)
-    uni.showToast({
-      title: '加载失败',
-      icon: 'none',
-    })
+    toast.error('加载失败')
   }
   finally {
     loading.value = false
@@ -64,10 +64,7 @@ async function fetchHotFaqs() {
  */
 function goToCategoryDetail(categoryId?: string) {
   if (!categoryId) {
-    uni.showToast({
-      title: '分类不存在',
-      icon: 'none',
-    })
+    toast.warning('分类不存在')
     return
   }
   uni.navigateTo({
@@ -96,10 +93,7 @@ function goToFeedback() {
  */
 function handleSearch() {
   if (!searchKeyword.value.trim()) {
-    uni.showToast({
-      title: '请输入搜索关键词',
-      icon: 'none',
-    })
+    toast.warning('请输入搜索关键词')
     return
   }
   uni.navigateTo({
@@ -117,7 +111,11 @@ onLoad(() => {
   <view class="help-page">
     <view class="top-bg" />
     <view class="content">
+      <!-- 优化后的头部卡片 -->
       <view class="header-card">
+        <view class="header-icon">
+          <wd-icon name="help-circle" size="56rpx" color="var(--wot-color-primary)" />
+        </view>
         <view class="header-title">
           帮助中心
         </view>
@@ -134,10 +132,14 @@ onLoad(() => {
         </view>
       </view>
 
+      <!-- 优化后的帮助分类卡片 -->
       <wd-card type="rectangle" custom-class="card">
         <template #title>
           <view class="card-title">
-            <text class="card-title-text">帮助分类</text>
+            <view class="card-title-left">
+              <wd-icon name="apps" size="32rpx" color="var(--wot-color-primary)" />
+              <text class="card-title-text">帮助分类</text>
+            </view>
           </view>
         </template>
 
@@ -167,11 +169,15 @@ onLoad(() => {
         </wd-skeleton>
       </wd-card>
 
+      <!-- 优化后的热门问题卡片 -->
       <wd-card type="rectangle" custom-class="card card-gap">
         <template #title>
           <view class="card-title">
-            <text class="card-title-text">热门问题</text>
-            <wd-tag type="primary" plain>
+            <view class="card-title-left">
+              <wd-icon name="fire" size="32rpx" color="#ff6b6b" />
+              <text class="card-title-text">热门问题</text>
+            </view>
+            <wd-tag type="danger" plain size="small">
               HOT
             </wd-tag>
           </view>
@@ -197,6 +203,7 @@ onLoad(() => {
         </wd-button>
       </view>
     </view>
+    <wd-toast />
   </view>
 </template>
 
@@ -223,32 +230,47 @@ onLoad(() => {
 }
 
 .header-card {
-  padding: 22rpx 18rpx 18rpx;
+  padding: 32rpx 24rpx 24rpx;
   background: var(--fg-surface);
-  border-radius: 28rpx;
+  border-radius: 32rpx;
   border: 1px solid var(--fg-border);
   box-shadow: var(--fg-shadow-card);
-  margin-bottom: 18rpx;
+  margin-bottom: 24rpx;
+  text-align: center;
+}
+
+.header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96rpx;
+  height: 96rpx;
+  margin: 0 auto 20rpx;
+  background: linear-gradient(135deg, rgba(var(--wot-color-primary-rgb, 0, 122, 255), 0.1) 0%, rgba(var(--wot-color-primary-rgb, 0, 122, 255), 0.05) 100%);
+  border-radius: 50%;
+  border: 2px solid rgba(var(--wot-color-primary-rgb, 0, 122, 255), 0.2);
 }
 
 .header-title {
-  font-size: 40rpx;
+  font-size: 44rpx;
   font-weight: 800;
   color: var(--fg-text);
+  margin-bottom: 12rpx;
 }
 
 .header-subtitle {
-  margin-top: 10rpx;
   font-size: 26rpx;
   color: var(--fg-text-muted);
+  line-height: 1.6;
 }
 
 .header-search {
-  margin-top: 16rpx;
+  margin-top: 24rpx;
   background: var(--fg-bg-alt);
-  border-radius: 20rpx;
-  padding: 10rpx 10rpx;
+  border-radius: 24rpx;
+  padding: 12rpx;
   border: 1px solid var(--fg-border-weak);
+  transition: all 0.3s ease;
 }
 
 .wd-card.card.is-rectangle {
@@ -275,30 +297,41 @@ onLoad(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14rpx;
-  padding: 18rpx 0;
+  gap: 16rpx;
+  padding: 24rpx 12rpx;
+  transition: all 0.3s ease;
 }
 
 .category-icon {
-  width: 88rpx;
-  height: 88rpx;
-  border-radius: 22rpx;
-  background: rgba(var(--fg-primary-rgb), 0.1);
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 24rpx;
+  background: linear-gradient(135deg, rgba(var(--fg-primary-rgb), 0.12) 0%, rgba(var(--fg-primary-rgb), 0.06) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 4rpx 12rpx rgba(var(--fg-primary-rgb), 0.08);
+  transition: all 0.3s ease;
 }
 
 .category-name {
   font-size: 26rpx;
   color: var(--fg-text-secondary);
   font-weight: 600;
+  text-align: center;
+  line-height: 1.4;
 }
 
 .card-title {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.card-title-left {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
 }
 
 .card-title-text {

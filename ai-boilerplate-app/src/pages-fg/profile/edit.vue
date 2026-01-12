@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { UpdateUserInfoReq, UserInfo } from '@/api/v1/user/types'
+import { useToast } from 'wot-design-uni'
 import { getUserInfo, updateUserInfo } from '@/api/v1/user/user'
 
 definePage({
@@ -8,6 +9,7 @@ definePage({
   },
 })
 
+const toast = useToast()
 const loading = ref(false)
 const saving = ref(false)
 
@@ -93,7 +95,7 @@ async function fetchUserProfile() {
     const res = await getUserInfo({ options: {} })
     const info = res.info || null
     if (!info) {
-      uni.showToast({ title: '获取用户信息失败', icon: 'none' })
+      toast.error('获取用户信息失败')
       return
     }
     const req = toReq(info)
@@ -134,7 +136,7 @@ async function saveProfile() {
 
   try {
     if (formData.value.nickname && (formData.value.nickname.length < 2 || formData.value.nickname.length > 20)) {
-      uni.showToast({ title: '昵称长度为2-20个字符', icon: 'none' })
+      toast.warning('昵称长度为2-20个字符')
       return
     }
 
@@ -142,11 +144,11 @@ async function saveProfile() {
     uni.showLoading({ title: '保存中' })
     await updateUserInfo({ body: formData.value })
     originData.value = { ...formData.value }
-    uni.showToast({ title: '已保存', icon: 'success' })
+    toast.success('已保存')
   }
   catch (error) {
     console.error('保存失败:', error)
-    uni.showToast({ title: '保存失败', icon: 'none' })
+    toast.error('保存失败')
   }
   finally {
     saving.value = false
@@ -176,7 +178,7 @@ async function confirmEditor() {
   if (editorField.value === 'nickname') {
     const v = editorValue.value.trim()
     if (v && (v.length < 2 || v.length > 20)) {
-      uni.showToast({ title: '昵称长度为2-20个字符', icon: 'none' })
+      toast.warning('昵称长度为2-20个字符')
       return
     }
     formData.value.nickname = v
@@ -284,6 +286,7 @@ onLoad(() => {
       :show-confirm="false"
       @select="handleGenderSelect"
     />
+    <wd-toast />
   </view>
 </template>
 

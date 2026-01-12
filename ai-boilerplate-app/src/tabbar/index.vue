@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // i-carbon-code
 import type { CustomTabBarItem } from './types'
+import { useToast } from 'wot-design-uni'
 import { customTabbarEnable, needHideNativeTabbar, tabbarCacheEnable } from './config'
 import { tabbarList, tabbarStore } from './store'
 
@@ -11,14 +12,13 @@ defineOptions({
 })
 // #endif
 
+const toast = useToast()
+
 /**
  * 中间的鼓包tabbarItem的点击事件
  */
 function handleClickBulge() {
-  uni.showToast({
-    title: '点击了中间的鼓包tabbarItem',
-    icon: 'none',
-  })
+  toast.info('点击了中间的鼓包tabbarItem')
 }
 
 function handleClick(index: number) {
@@ -136,6 +136,7 @@ function getImageByIndex(index: number, item: CustomTabBarItem) {
 
       <view class="pb-safe" />
     </view>
+    <wd-toast />
   </view>
 </template>
 

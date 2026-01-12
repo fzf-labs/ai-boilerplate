@@ -1,10 +1,13 @@
 <script lang="ts" setup>
+import { useToast } from 'wot-design-uni'
+
 definePage({
   style: {
     navigationBarTitleText: '',
   },
 })
 
+const toast = useToast()
 const url = ref('')
 const title = ref('')
 const loading = ref(true)
@@ -36,10 +39,7 @@ function handleLoad() {
 
 function handleError() {
   loading.value = false
-  uni.showToast({
-    title: '页面加载失败',
-    icon: 'none',
-  })
+  toast.error('页面加载失败')
 }
 </script>
 
@@ -52,6 +52,7 @@ function handleError() {
       @load="handleLoad"
       @error="handleError"
     />
+    <wd-toast />
   </view>
 </template>
 

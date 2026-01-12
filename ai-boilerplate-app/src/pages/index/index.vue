@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { BannerInfo, ContentInfo } from '@/api/v1/home/types'
+import { useToast } from 'wot-design-uni'
 import { getBannerList, getContentList } from '@/api/v1/home/home'
 
 defineOptions({
@@ -13,6 +14,7 @@ definePage({
   },
 })
 
+const toast = useToast()
 const pagingRef = ref<any>(null)
 
 // 轮播图数据
@@ -54,10 +56,7 @@ async function queryContentList(pageNo: number, pageSize: number) {
   }
   catch (error) {
     console.error('获取内容列表失败:', error)
-    uni.showToast({
-      title: '加载失败',
-      icon: 'none',
-    })
+    toast.error('加载失败')
     pagingRef.value?.complete(false)
   }
 }
@@ -77,10 +76,7 @@ function handleBannerClick(item: BannerInfo) {
  */
 function handleContentClick(item: ContentInfo) {
   if (!item.id) {
-    uni.showToast({
-      title: '内容不存在',
-      icon: 'none',
-    })
+    toast.warning('内容不存在')
     return
   }
 
@@ -181,6 +177,7 @@ function formatTime(time?: string) {
         </view>
       </template>
     </z-paging>
+    <wd-toast />
   </view>
 </template>
 

@@ -1,15 +1,18 @@
 <script lang="ts" setup>
 import type { BindPhoneReq, ChangePasswordReq, DeleteAccountReq } from '@/api/v1/user/types'
+import { useMessage, useToast } from 'wot-design-uni'
 import { bindPhone, changePassword, deleteAccount, sendVerifyCode } from '@/api/v1/user/user'
 import { useTokenStore } from '@/store/token'
 
 definePage({
   style: {
-    navigationBarTitleText: '账号安全',
+    navigationBarTitleText: '账号管理',
   },
 })
 
 const tokenStore = useTokenStore()
+const toast = useToast()
+const message = useMessage()
 const submitting = ref(false)
 
 // 菜单列表
@@ -112,6 +115,28 @@ function handleMenuClick(action: string) {
   }
 }
 
+/**
+ * 退出登录
+ */
+async function handleLogout() {
+  try {
+    await message.confirm({
+      title: '提示',
+      msg: '确定要退出登录吗？',
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+    })
+    tokenStore.logout()
+    toast.success('退出登录成功')
+    setTimeout(() => {
+      uni.switchTab({ url: '/pages/me/me' })
+    }, 1200)
+  }
+  catch {
+    // 用户取消
+  }
+}
+
 async function submitChangePassword() {
   if (submitting.value)
     return
@@ -120,27 +145,27 @@ async function submitChangePassword() {
   const newPwd = changePasswordForm.newPassword.trim()
   const confirmPwd = changePasswordForm.confirmPassword.trim()
   if (!oldPwd || !newPwd || !confirmPwd) {
-    uni.showToast({ title: '请填写完整', icon: 'none' })
+    toast.warning('请填写完整')
     return
   }
   if (newPwd.length < 6 || newPwd.length > 20) {
-    uni.showToast({ title: '密码长度为6-20位', icon: 'none' })
+    toast.warning('密码长度为6-20位')
     return
   }
   if (newPwd !== confirmPwd) {
-    uni.showToast({ title: '两次密码不一致', icon: 'none' })
+    toast.warning('两次密码不一致')
     return
   }
 
   submitting.value = true
   try {
     await changePassword({ body: { ...changePasswordForm } })
-    uni.showToast({ title: '修改成功', icon: 'success' })
+    toast.success('修改成功')
     changePasswordSheetVisible.value = false
   }
   catch (error) {
     console.error('修改密码失败:', error)
-    uni.showToast({ title: '修改失败', icon: 'none' })
+    toast.error('修改失败')
   }
   finally {
     submitting.value = false
@@ -154,19 +179,19 @@ async function sendCode() {
   const phone = bindPhoneForm.phone.trim()
   const phoneReg = /^1[3-9]\d{9}$/
   if (!phoneReg.test(phone)) {
-    uni.showToast({ title: '手机号格式不正确', icon: 'none' })
+    toast.warning('手机号格式不正确')
     return
   }
 
   submitting.value = true
   try {
     await sendVerifyCode({ body: { phone } })
-    uni.showToast({ title: '验证码已发送', icon: 'success' })
+    toast.success('验证码已发送')
     startCodeCountdown()
   }
   catch (error) {
     console.error('发送验证码失败:', error)
-    uni.showToast({ title: '发送失败', icon: 'none' })
+    toast.error('发送失败')
   }
   finally {
     submitting.value = false
@@ -181,24 +206,24 @@ async function submitBindPhone() {
   const code = bindPhoneForm.code.trim()
   const phoneReg = /^1[3-9]\d{9}$/
   if (!phoneReg.test(phone)) {
-    uni.showToast({ title: '手机号格式不正确', icon: 'none' })
+    toast.warning('手机号格式不正确')
     return
   }
   if (!code) {
-    uni.showToast({ title: '请输入验证码', icon: 'none' })
+    toast.warning('请输入验证码')
     return
   }
 
   submitting.value = true
   try {
     await bindPhone({ body: { phone, code } })
-    uni.showToast({ title: '绑定成功', icon: 'success' })
+    toast.success('绑定成功')
     bindPhoneSheetVisible.value = false
     stopCodeCountdown()
   }
   catch (error) {
     console.error('绑定手机号失败:', error)
-    uni.showToast({ title: '绑定失败', icon: 'none' })
+    toast.error('绑定失败')
   }
   finally {
     submitting.value = false
@@ -211,14 +236,14 @@ async function submitDeleteAccount() {
 
   const password = deleteAccountForm.password.trim()
   if (!password) {
-    uni.showToast({ title: '请输入密码确认', icon: 'none' })
+    toast.warning('请输入密码确认')
     return
   }
 
   submitting.value = true
   try {
     await deleteAccount({ body: { password } })
-    uni.showToast({ title: '注销成功', icon: 'success' })
+    toast.success('注销成功')
     deleteAccountSheetVisible.value = false
     setTimeout(() => {
       tokenStore.logout()
@@ -227,7 +252,7 @@ async function submitDeleteAccount() {
   }
   catch (error) {
     console.error('注销账号失败:', error)
-    uni.showToast({ title: '注销失败', icon: 'none' })
+    toast.error('注销失败')
   }
   finally {
     submitting.value = false
@@ -247,11 +272,11 @@ onUnload(() => {
         <view class="sheet-header">
           <view class="header-left">
             <view class="header-icon">
-              <wd-icon name="shield" size="44rpx" color="#fff" />
+              <wd-icon name="user" size="44rpx" color="#fff" />
             </view>
             <view class="header-text">
-              <text class="header-title">账号安全</text>
-              <text class="header-subtitle">保护你的账号与隐私信息</text>
+              <text class="header-title">账号管理</text>
+              <text class="header-subtitle">管理你的账号与安全设置</text>
             </view>
           </view>
           <wd-tag type="success" plain>
@@ -281,6 +306,12 @@ onUnload(() => {
           type="warning"
           :scrollable="false"
         />
+      </view>
+
+      <view class="logout">
+        <wd-button :block="true" :round="true" size="large" type="error" @click="handleLogout">
+          退出登录
+        </wd-button>
       </view>
     </view>
 
@@ -385,6 +416,9 @@ onUnload(() => {
         />
       </view>
     </bottom-sheet>
+
+    <wd-message-box />
+    <wd-toast />
   </view>
 </template>
 
@@ -488,6 +522,16 @@ onUnload(() => {
 
 .tips {
   margin-top: 18rpx;
+}
+
+.logout {
+  margin-top: 32rpx;
+
+  :deep(.wd-button) {
+    border-radius: 16rpx;
+    font-weight: 600;
+    box-shadow: 0 6rpx 18rpx rgba(239, 68, 68, 0.18);
+  }
 }
 
 .sheet-form {

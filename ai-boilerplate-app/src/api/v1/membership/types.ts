@@ -7,7 +7,7 @@ export type Any = {
 
 export type GetMembershipBenefitsParams = {
   /** 会员类型编码(可选,不传则返回当前用户会员等级的权益) */
-  membership_type?: string;
+  membershipType?: string;
 };
 
 export type GetMembershipBenefitsReply = {
@@ -28,23 +28,23 @@ export type GetMembershipBenefitsResponses = {
 
 export type GetUserMembershipInfoReply = {
   /** 会员类型编码(normal,vip,svip) */
-  membership_type?: string;
+  membershipType?: string;
   /** 会员类型名称 */
-  membership_name?: string;
+  membershipName?: string;
   /** 会员类型描述 */
-  membership_description?: string;
+  membershipDescription?: string;
   /** 会员状态(-1禁用,1正常) */
   status?: number;
   /** 到期时间(普通会员为空,表示永不过期) */
-  expired_at?: string;
+  expiredAt?: string;
   /** 是否已过期 */
-  is_expired?: boolean;
+  isExpired?: boolean;
   /** 是否自动续费(0否,1是) */
-  auto_renew?: number;
+  autoRenew?: number;
   /** 自动续费天数 */
-  auto_renew_days?: number;
+  autoRenewDays?: number;
   /** 开通时间 */
-  created_at?: string;
+  createdAt?: string;
 };
 
 export type GetUserMembershipInfoResponses = {
@@ -60,15 +60,15 @@ export type GetUserMembershipInfoResponses = {
 
 export type MembershipBenefit = {
   /** 权益标识 */
-  benefit_key?: string;
+  benefitKey?: string;
   /** 权益名称 */
-  benefit_name?: string;
+  benefitName?: string;
   /** 权益描述 */
-  benefit_desc?: string;
+  benefitDesc?: string;
   /** 权益值 */
-  benefit_value?: string;
+  benefitValue?: string;
   /** 权益次数 */
-  benefit_num?: string;
+  benefitNum?: string;
   /** 排序 */
   sort?: number;
 };

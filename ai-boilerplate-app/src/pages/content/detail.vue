@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { ContentDetail } from '@/api/v1/home/types'
+import { useToast } from 'wot-design-uni'
 import { getContentDetail } from '@/api/v1/home/home'
 
 definePage({
@@ -8,6 +9,7 @@ definePage({
   },
 })
 
+const toast = useToast()
 const content = ref<ContentDetail | null>(null)
 const loading = ref(false)
 
@@ -22,10 +24,7 @@ async function fetchContentDetail(id: number) {
   }
   catch (error) {
     console.error('获取内容详情失败:', error)
-    uni.showToast({
-      title: '加载失败',
-      icon: 'none',
-    })
+    toast.error('加载失败')
   }
   finally {
     loading.value = false
@@ -36,10 +35,7 @@ onLoad((options) => {
   const idStr = (options as Record<string, string | undefined>).id
   const id = Number(idStr)
   if (!idStr || Number.isNaN(id)) {
-    uni.showToast({
-      title: '参数错误',
-      icon: 'none',
-    })
+    toast.error('参数错误')
     setTimeout(() => uni.navigateBack(), 1200)
     return
   }
@@ -73,6 +69,7 @@ onLoad((options) => {
       </view>
       <rich-text v-if="content.content" :nodes="content.content" />
     </view>
+    <wd-toast />
   </view>
 </template>
 

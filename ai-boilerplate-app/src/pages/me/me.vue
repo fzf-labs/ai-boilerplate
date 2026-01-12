@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import type { UserInfo } from '@/api/v1/user/types'
+import type { GetUserMembershipInfoReply } from '@/api/v1/membership/types'
+import { useToast } from 'wot-design-uni'
 import { getUserInfo } from '@/api/v1/user/user'
+import { getUserMembershipInfo } from '@/api/v1/membership/membership'
 import { LOGIN_PAGE } from '@/router/config'
 import { useTokenStore } from '@/store/token'
 
@@ -11,9 +14,13 @@ definePage({
 })
 
 const tokenStore = useTokenStore()
+const toast = useToast()
 
 // 用户详细信息
 const userProfile = ref<UserInfo | null>(null)
+
+// 会员信息
+const membershipInfo = ref<GetUserMembershipInfoReply | null>(null)
 
 const displayName = computed(() => userProfile.value?.nickname || userProfile.value?.phone || '用户')
 const displayAvatar = computed(() => userProfile.value?.avatar || '/static/images/default-avatar.png')
@@ -29,9 +36,9 @@ const menuList = [
     needLogin: true,
   },
   {
-    title: '账号安全',
-    icon: 'lock-on',
-    label: '密码/手机号/注销',
+    title: '账号管理',
+    icon: 'user',
+    label: '密码/手机号/退出登录',
     path: '/pages-fg/security/index',
     needLogin: true,
   },
@@ -68,6 +75,22 @@ async function fetchUserProfile() {
 }
 
 /**
+ * 获取用户会员信息
+ */
+async function fetchMembershipInfo() {
+  if (!tokenStore.hasLogin)
+    return
+
+  try {
+    const res = await getUserMembershipInfo({ options: {} })
+    membershipInfo.value = res
+  }
+  catch (error) {
+    console.error('获取会员信息失败:', error)
+  }
+}
+
+/**
  * 登录
  */
 async function handleLogin() {
@@ -82,34 +105,11 @@ async function handleLogin() {
 }
 
 /**
- * 退出登录
- */
-function handleLogout() {
-  uni.showModal({
-    title: '提示',
-    content: '确定要退出登录吗？',
-    success: (res) => {
-      if (res.confirm) {
-        tokenStore.logout()
-        userProfile.value = null
-        uni.showToast({
-          title: '退出登录成功',
-          icon: 'success',
-        })
-      }
-    },
-  })
-}
-
-/**
  * 菜单点击
  */
 function handleMenuClick(item: typeof menuList[0]) {
   if (item.needLogin && !tokenStore.hasLogin) {
-    uni.showToast({
-      title: '请先登录',
-      icon: 'none',
-    })
+    toast.warning('请先登录')
     setTimeout(() => {
       handleLogin()
     }, 1500)
@@ -122,14 +122,25 @@ function handleMenuClick(item: typeof menuList[0]) {
 }
 
 /**
+ * 查看会员详情
+ */
+function handleViewMembershipDetail() {
+  uni.navigateTo({
+    url: '/pages-fg/membership/detail',
+  })
+}
+
+/**
  * 页面展示时刷新用户信息（登录后返回会触发）
  */
 onShow(() => {
   if (tokenStore.hasLogin) {
     fetchUserProfile()
+    fetchMembershipInfo()
   }
   else {
     userProfile.value = null
+    membershipInfo.value = null
   }
 })
 </script>
@@ -157,15 +168,39 @@ onShow(() => {
     </view>
 
     <view class="panel">
-      <wd-card type="rectangle" custom-class="quick-card">
-        <wd-grid :column="4" :border="false">
-          <wd-grid-item v-for="item in menuList" :key="item.title" @click="handleMenuClick(item)">
-            <view class="quick-item">
-              <wd-icon :name="item.icon" size="44rpx" />
-              <text class="quick-text">{{ item.title }}</text>
+      <!-- 会员信息卡片 - Liquid Glass 风格 -->
+      <wd-card v-if="tokenStore.hasLogin && membershipInfo" type="rectangle" custom-class="membership-card" @click="handleViewMembershipDetail">
+        <!-- 背景装饰层 -->
+        <view class="membership-bg-decoration">
+          <view class="decoration-circle circle-1" />
+          <view class="decoration-circle circle-2" />
+          <view class="decoration-circle circle-3" />
+        </view>
+
+        <view class="membership-content">
+          <!-- 顶部徽章区域 -->
+          <view class="membership-header">
+            <view class="membership-title-row">
+              <view class="membership-icon-wrapper">
+                <view class="membership-icon">
+                  <text class="icon-text">{{ membershipInfo.membershipType === 'svip' ? '👑' : membershipInfo.membershipType === 'vip' ? '💎' : '⭐' }}</text>
+                </view>
+              </view>
+              <view class="membership-title-content">
+                <view class="title-main">
+                  <text class="membership-name">{{ membershipInfo.membershipName || '普通会员' }}</text>
+                </view>
+                <view class="title-sub">
+                  <text class="membership-type-code">{{ membershipInfo.membershipType?.toUpperCase() || 'NORMAL' }}</text>
+                </view>
+              </view>
+              <view class="membership-arrow">
+                <wd-icon name="arrow-right" size="40rpx" color="rgba(255, 255, 255, 0.6)" />
+              </view>
             </view>
-          </wd-grid-item>
-        </wd-grid>
+            <text class="membership-desc">{{ membershipInfo.membershipDescription || '享受基础服务' }}</text>
+          </view>
+        </view>
       </wd-card>
 
       <wd-card type="rectangle" custom-class="menu-card">
@@ -181,13 +216,9 @@ onShow(() => {
           />
         </wd-cell-group>
       </wd-card>
-
-      <view v-if="tokenStore.hasLogin" class="logout">
-        <wd-button :block="true" :round="true" size="large" type="error" @click="handleLogout">
-          退出登录
-        </wd-button>
-      </view>
     </view>
+
+    <wd-toast />
   </view>
 </template>
 
@@ -260,33 +291,211 @@ onShow(() => {
 }
 
 .panel {
+  position: relative;
   padding: 0 var(--fg-page-x) 40rpx;
 }
 
-.quick-item {
+/* 会员信息卡片样式 - Liquid Glass 风格 */
+.wd-card.membership-card.is-rectangle {
+  position: relative;
+  border-radius: 32rpx;
+  overflow: hidden;
+  background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+  border: none;
+  box-shadow: 0 20rpx 60rpx rgba(16, 185, 129, 0.3), 0 8rpx 16rpx rgba(5, 150, 105, 0.2);
+  margin-bottom: 18rpx;
+  transition: all 0.3s ease-out;
+  cursor: pointer;
+}
+
+.wd-card.membership-card.is-rectangle:active {
+  transform: scale(0.98);
+  box-shadow: 0 12rpx 40rpx rgba(16, 185, 129, 0.25), 0 4rpx 12rpx rgba(5, 150, 105, 0.15);
+}
+
+.wd-card.membership-card.is-rectangle::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+  pointer-events: none;
+}
+
+:deep(.membership-card .wd-card__content) {
+  position: relative;
+  padding: 40rpx 32rpx;
+  z-index: 1;
+}
+
+.membership-content {
+  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 14rpx;
-  padding: 10rpx 0;
-  color: var(--fg-text);
+  gap: 32rpx;
+  z-index: 2;
 }
 
-.quick-text {
-  font-size: 24rpx;
-  color: var(--fg-text-secondary);
-}
-
-.wd-card.quick-card.is-rectangle {
-  border-radius: 28rpx;
+/* 背景装饰层 */
+.membership-bg-decoration {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   overflow: hidden;
-  background: var(--fg-surface);
-  border: 1px solid var(--fg-border);
-  box-shadow: var(--fg-shadow-card);
+  z-index: 0;
 }
 
-:deep(.quick-card .wd-card__content) {
-  padding: 22rpx 8rpx;
+.decoration-circle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(40rpx);
+}
+
+.circle-1 {
+  width: 200rpx;
+  height: 200rpx;
+  top: -80rpx;
+  right: -60rpx;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.circle-2 {
+  width: 150rpx;
+  height: 150rpx;
+  bottom: -40rpx;
+  left: -40rpx;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.circle-3 {
+  width: 100rpx;
+  height: 100rpx;
+  top: 50%;
+  right: 20rpx;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.membership-header {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.membership-title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 20rpx;
+}
+
+/* 箭头图标 */
+.membership-arrow {
+  flex-shrink: 0;
+  margin-top: 8rpx;
+  transition: transform 0.3s ease;
+}
+
+.wd-card.membership-card.is-rectangle:active .membership-arrow {
+  transform: translateX(8rpx);
+}
+
+/* 会员图标 */
+.membership-icon-wrapper {
+  flex-shrink: 0;
+  margin-top: 4rpx;
+}
+
+.membership-icon {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(20rpx);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.icon-text {
+  font-size: 44rpx;
+}
+
+/* 会员标题内容 */
+.membership-title-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+  min-width: 0;
+}
+
+.title-main {
+  display: flex;
+  align-items: center;
+}
+
+.membership-name {
+  font-size: 40rpx;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.2;
+  letter-spacing: 0.5rpx;
+  text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.15);
+}
+
+/* 副标题行 */
+.title-sub {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  flex-wrap: wrap;
+}
+
+.membership-type-code {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 2rpx;
+  text-transform: uppercase;
+}
+
+.separator {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 300;
+}
+
+.status-inline {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.status-inline.active {
+  color: #34d399;
+}
+
+.status-inline.expired {
+  color: #f87171;
+}
+
+.status-inline.disabled {
+  color: #9ca3af;
+}
+
+.membership-desc {
+  font-size: 28rpx;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+  padding-left: 108rpx;
+  font-weight: 400;
+  letter-spacing: 0.3rpx;
 }
 
 .wd-card.menu-card.is-rectangle {
@@ -323,15 +532,5 @@ onShow(() => {
 
 :deep(.wd-cell__icon) {
   color: var(--fg-primary);
-}
-
-.logout {
-  margin-top: 22rpx;
-
-  :deep(.wd-button) {
-    border-radius: 16rpx;
-    font-weight: 600;
-    box-shadow: 0 6rpx 18rpx rgba(239, 68, 68, 0.18);
-  }
 }
 </style>

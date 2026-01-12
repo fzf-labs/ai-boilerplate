@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { FormInstance, FormRules } from 'wot-design-uni/components/wd-form/types'
 import { computed, reactive, ref } from 'vue'
+import { useToast } from 'wot-design-uni'
 import { REGISTER_PAGE } from '@/router/config'
 import { useTokenStore } from '@/store/token'
 
@@ -11,6 +12,7 @@ definePage({
 })
 
 const tokenStore = useTokenStore()
+const toast = useToast()
 
 const form = reactive({
   username: '',
@@ -19,6 +21,13 @@ const form = reactive({
 const formRef = ref<FormInstance | null>(null)
 const loading = ref(false)
 const rememberAccount = ref(true)
+const agreeTerms = ref(false)
+
+// 协议链接配置
+const AGREEMENT_URLS = {
+  userAgreement: 'https://example.com/user-agreement',
+  privacyPolicy: 'https://example.com/privacy-policy',
+}
 
 const rules: FormRules = {
   username: [{ required: true, message: '请输入账号' }],
@@ -26,7 +35,7 @@ const rules: FormRules = {
 }
 
 const canSubmit = computed(() => {
-  return !!form.username.trim() && !!form.password
+  return !!form.username.trim() && !!form.password && agreeTerms.value
 })
 
 function restoreRememberedAccount() {
@@ -54,7 +63,7 @@ function goBackOrMeTab() {
 }
 
 function handleForgotPassword() {
-  uni.showToast({ title: '请联系管理员重置密码', icon: 'none' })
+  toast.info('请联系管理员重置密码')
 }
 
 function goRegister() {
@@ -62,7 +71,14 @@ function goRegister() {
 }
 
 function handleWeixinLoginTip() {
-  uni.showToast({ title: '暂未接入微信登录', icon: 'none' })
+  toast.info('暂未接入微信登录')
+}
+
+function openAgreement(type: 'userAgreement' | 'privacyPolicy') {
+  const url = AGREEMENT_URLS[type]
+  uni.navigateTo({
+    url: `/pages-fg/webview/index?url=${encodeURIComponent(url)}`,
+  })
 }
 
 async function doLogin() {
@@ -151,6 +167,16 @@ onLoad(() => {
             </text>
           </view>
 
+          <view class="agreement-row">
+            <wd-checkbox v-model="agreeTerms" shape="square" />
+            <view class="agreement-text">
+              <text>我已阅读并同意</text>
+              <text class="link" @click.stop="openAgreement('userAgreement')">《用户协议》</text>
+              <text>和</text>
+              <text class="link" @click.stop="openAgreement('privacyPolicy')">《隐私政策》</text>
+            </view>
+          </view>
+
           <view class="actions">
             <wd-button
               type="primary"
@@ -182,6 +208,8 @@ onLoad(() => {
         </template>
       </wd-card>
     </view>
+
+    <wd-toast />
   </view>
 </template>
 
@@ -247,6 +275,20 @@ onLoad(() => {
   align-items: center;
   justify-content: space-between;
   padding: 14rpx 8rpx 0;
+}
+
+.agreement-row {
+  display: flex;
+  align-items: flex-start;
+  padding: 16rpx 8rpx 0;
+  gap: 8rpx;
+}
+
+.agreement-text {
+  flex: 1;
+  font-size: 24rpx;
+  color: var(--fg-text-muted);
+  line-height: 1.5;
 }
 
 .actions {

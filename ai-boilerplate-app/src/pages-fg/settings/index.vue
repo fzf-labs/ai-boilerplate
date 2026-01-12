@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { useToast } from 'wot-design-uni'
 import { checkUpdate } from '@/api/v1/self-app-release'
 
 interface ICacheInfo {
@@ -24,6 +25,8 @@ definePage({
     navigationBarTitleText: '通用设置',
   },
 })
+
+const toast = useToast()
 
 // 缓存信息
 const cacheInfo = ref<ICacheInfo | null>(null)
@@ -290,7 +293,7 @@ function handleLanguageSelect(payload: { index: number }) {
   if (languageItem) {
     languageItem.value = selected.label
   }
-  uni.showToast({ title: '切换成功', icon: 'success' })
+  toast.success('切换成功')
 }
 
 /**
@@ -299,15 +302,12 @@ function handleLanguageSelect(payload: { index: number }) {
 async function handleClearCache() {
   try {
     uni.clearStorageSync()
-    uni.showToast({
-      title: '清除成功',
-      icon: 'success',
-    })
+    toast.success('清除成功')
     fetchCacheInfo()
   }
   catch (error) {
     console.error('清除缓存失败:', error)
-    uni.showToast({ title: '清除失败', icon: 'none' })
+    toast.error('清除失败')
   }
 }
 
@@ -348,16 +348,13 @@ async function handleCheckVersion() {
       updateSheetVisible.value = true
     }
     else {
-      uni.showToast({
-        title: `已是最新版本(v${appInfo.version})`,
-        icon: 'success',
-      })
+      toast.success(`已是最新版本(v${appInfo.version})`)
     }
   }
   catch (error) {
     uni.hideLoading()
     console.error('检查版本失败:', error)
-    uni.showToast({ title: '检查失败，请稍后重试', icon: 'none' })
+    toast.error('检查失败，请稍后重试')
   }
 }
 
@@ -533,6 +530,8 @@ onLoad(() => {
         </view>
       </view>
     </bottom-sheet>
+
+    <wd-toast />
   </view>
 </template>
 
