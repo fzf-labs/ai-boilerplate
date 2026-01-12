@@ -60,7 +60,7 @@ Usage notes:
 
 <skill>
 <name>app-codeing</name>
-<description>"UniApp mobile application development workflow for app project. Use when users need to develop mobile app features, pages, or components. Triggers on: (1) Creating new pages (list/detail/form/tab pages) (2) Implementing business logic (3) API integration (4) Multi-platform adaptation (H5/WeChat/App) (5) Performance optimization (6) Form development (7) List with pagination (8) Complex UI interactions (9) State management with Pinia (10) Any mobile app development tasks using Vue 3 + TypeScript + UniApp stack"</description>
+<description>App development skill for uni-app mobile application. Use when developing mobile pages, integrating backend APIs, implementing features with wot-design-uni components. Triggers include: (1) Creating new pages (2) Form and list development (3) API integration (4) State management (5) Component usage (6) Complete mobile app development workflow</description>
 <location>project</location>
 </skill>
 
