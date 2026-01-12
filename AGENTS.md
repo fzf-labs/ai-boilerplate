@@ -53,6 +53,12 @@ Usage notes:
 </skill>
 
 <skill>
+<name>admin-dev-workflow</name>
+<description>Admin 管理后台前端开发完整流程编排。自动编排执行：(1) interview 需求澄清 (2) admin-api-gen 生成 API 客户端 (3) admin-codeing 实现页面功能。触发场景：开发 Admin 管理后台页面、表单表格开发、完整的前端 CRUD 功能开发</description>
+<location>project</location>
+</skill>
+
+<skill>
 <name>app-api-gen</name>
 <description>"App API 代码生成技能。从后端 Swagger 文件生成 TypeScript API 客户端代码。触发场景：(1) 后端 API 更新后需要同步 (2) 新增 API 接口后生成客户端代码 (3) 需要刷新/重新生成 API 类型定义"</description>
 <location>project</location>
@@ -60,7 +66,13 @@ Usage notes:
 
 <skill>
 <name>app-codeing</name>
-<description>App development skill for uni-app mobile application. Use when developing mobile pages, integrating backend APIs, implementing features with wot-design-uni components. Triggers include: (1) Creating new pages (2) Form and list development (3) API integration (4) State management (5) Component usage (6) Complete mobile app development workflow</description>
+<description>App development skill for uni-app mobile application. Use when developing mobile pages, integrating backend APIs, implementing features with wot-design-uni components. Triggers include：(1) Creating new pages (2) Form and list development (3) API integration (4) State management (5) Component usage (6) Complete mobile app development workflow</description>
+<location>project</location>
+</skill>
+
+<skill>
+<name>app-dev-workflow</name>
+<description>App 移动端前端开发完整流程编排。自动编排执行：(1) interview 需求澄清 (2) app-api-gen 生成 API 客户端 (3) app-codeing 实现页面功能。触发场景：开发 uni-app 移动端页面、表单列表开发、完整的移动端功能开发</description>
 <location>project</location>
 </skill>
 
@@ -91,6 +103,12 @@ Usage notes:
 <skill>
 <name>backend-database</name>
 <description>PostgreSQL 数据库表设计技能。触发场景：(1) 创建新表 (2) 修改现有表 (3) 设计表关系 (4) 查询表结构</description>
+<location>project</location>
+</skill>
+
+<skill>
+<name>backend-dev-workflow</name>
+<description>后端开发完整流程编排技能。自动编排执行 Step 0-7 的完整后端开发流程。触发场景：(1) 需要完整的后端 CRUD 开发 (2) 从零开始开发新功能 (3) 用户说"帮我开发xxx后端功能" (4) 需要自动化执行多个后端开发步骤</description>
 <location>project</location>
 </skill>
 
