@@ -5,18 +5,6 @@ import { CustomRequestOptions_ } from '@/http/types';
 
 import * as API from './types';
 
-/** 获取轮播图列表 返回值: An unexpected error response. GET /app/v1/home/banner/list */
-export function getBannerList({
-  options,
-}: {
-  options?: CustomRequestOptions_;
-}) {
-  return request<API.GetBannerListReply>('/app/v1/home/banner/list', {
-    method: 'GET',
-    ...(options || {}),
-  });
-}
-
 /** 获取内容详情 返回值: An unexpected error response. GET /app/v1/home/content/detail */
 export function getContentDetail({
   params,

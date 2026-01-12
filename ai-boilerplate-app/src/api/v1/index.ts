@@ -1,3 +1,4 @@
+export * as Banner from './banner'
 export * as ErrorReason from './error-reason'
 export * as HelpCategory from './help-category'
 export * as HelpFaq from './help-faq'

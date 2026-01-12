@@ -5,21 +5,19 @@
   "unibest-version": "4.1.1",
   "unibest-update-time": "2025-12-04",
   "packageManager": "pnpm@10.10.0",
-  "description": "unibest - 最好的 uniapp 开发模板",
-  "generate-time": "用户创建项目时生成",
+  "description": "ai-boilerplate - 开发模板",
+  "generate-time": "2026-01-12",
   "author": {
-    "name": "feige996",
-    "zhName": "菲鸽",
-    "email": "1020103647@qq.com",
-    "github": "https://github.com/feige996",
-    "gitee": "https://gitee.com/feige996"
+    "name": "ai-boilerplate",
+    "zhName": "ai-boilerplate",
+    "email": "ai-boilerplate@ai-boilerplate.com",
+    "github": "https://github.com/fzf-labs/ai-boilerplate"
   },
   "license": "MIT",
-  "homepage": "https://unibest.tech",
-  "repository": "https://github.com/feige996/unibest",
+  "homepage": "https://ai-boilerplate.com",
+  "repository": "https://github.com/fzf-labs/ai-boilerplate",
   "bugs": {
-    "url": "https://github.com/feige996/unibest/issues",
-    "url-old": "https://github.com/codercup/unibest/issues"
+    "url": "https://github.com/fzf-labs/ai-boilerplate/issues"
   },
   "engines": {
     "node": ">=20",
@@ -157,6 +155,7 @@
     "@vue/runtime-core": "^3.4.21",
     "@vue/tsconfig": "^0.1.3",
     "autoprefixer": "^10.4.20",
+    "baseline-browser-mapping": "^2.9.14",
     "cross-env": "^10.0.0",
     "eslint": "^9.31.0",
     "eslint-plugin-format": "^1.0.1",

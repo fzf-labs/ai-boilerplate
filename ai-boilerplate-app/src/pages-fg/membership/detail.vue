@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { GetUserMembershipInfoReply, MembershipBenefit } from '@/api/v1/membership/types'
 import { useToast } from 'wot-design-uni'
-import { getUserMembershipInfo, getMembershipBenefits } from '@/api/v1/membership/membership'
+import { getMembershipBenefits, getUserMembershipInfo } from '@/api/v1/membership/membership'
 import { useTokenStore } from '@/store/token'
 
 definePage({
@@ -106,7 +106,9 @@ onLoad(() => {
 
     <!-- 会员详细信息 -->
     <view class="detail-section">
-      <view class="section-title">会员信息</view>
+      <view class="section-title">
+        会员信息
+      </view>
 
       <view class="info-list">
         <view class="info-item">
@@ -155,7 +157,9 @@ onLoad(() => {
 
     <!-- 会员权益 -->
     <view v-if="membershipBenefits.length > 0" class="detail-section">
-      <view class="section-title">会员权益</view>
+      <view class="section-title">
+        会员权益
+      </view>
 
       <view class="benefits-grid">
         <view v-for="benefit in membershipBenefits" :key="benefit.benefitKey" class="benefit-card">

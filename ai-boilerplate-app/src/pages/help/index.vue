@@ -246,7 +246,11 @@ onLoad(() => {
   width: 96rpx;
   height: 96rpx;
   margin: 0 auto 20rpx;
-  background: linear-gradient(135deg, rgba(var(--wot-color-primary-rgb, 0, 122, 255), 0.1) 0%, rgba(var(--wot-color-primary-rgb, 0, 122, 255), 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--wot-color-primary-rgb, 0, 122, 255), 0.1) 0%,
+    rgba(var(--wot-color-primary-rgb, 0, 122, 255), 0.05) 100%
+  );
   border-radius: 50%;
   border: 2px solid rgba(var(--wot-color-primary-rgb, 0, 122, 255), 0.2);
 }

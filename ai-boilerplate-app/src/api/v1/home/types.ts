@@ -5,19 +5,6 @@ export type Any = {
   '@type'?: string;
 };
 
-export type BannerInfo = {
-  /** 轮播图ID */
-  id?: number;
-  /** 图片URL */
-  imageUrl?: string;
-  /** 跳转链接 */
-  linkUrl?: string;
-  /** 标题 */
-  title?: string;
-  /** 排序 */
-  sort?: number;
-};
-
 export type ContentDetail = {
   /** 内容ID */
   id?: number;
@@ -54,22 +41,6 @@ export type ContentInfo = {
   isRecommend?: boolean;
   /** 是否热门 */
   isHot?: boolean;
-};
-
-export type GetBannerListReply = {
-  /** 轮播图列表 */
-  list?: BannerInfo[];
-};
-
-export type GetBannerListResponses = {
-  /**
-   * A successful response.
-   */
-  200: GetBannerListReply;
-  /**
-   * An unexpected error response.
-   */
-  default: Status;
 };
 
 export type GetContentDetailParams = {

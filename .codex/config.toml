@@ -1,0 +1,4 @@
+# Connect to your database
+[mcp_servers.dbhub]
+command = "npx"
+args = ["@bytebase/dbhub@latest", "--transport", "stdio", "--dsn", "postgres://postgres:123456@127.0.0.1:5432/ai_boilerplate"]

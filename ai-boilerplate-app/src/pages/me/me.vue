@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import type { UserInfo } from '@/api/v1/user/types'
 import type { GetUserMembershipInfoReply } from '@/api/v1/membership/types'
+import type { UserInfo } from '@/api/v1/user/types'
 import { useToast } from 'wot-design-uni'
-import { getUserInfo } from '@/api/v1/user/user'
 import { getUserMembershipInfo } from '@/api/v1/membership/membership'
+import { getUserInfo } from '@/api/v1/user/user'
 import { LOGIN_PAGE } from '@/router/config'
 import { useTokenStore } from '@/store/token'
 
@@ -302,7 +302,9 @@ onShow(() => {
   overflow: hidden;
   background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
   border: none;
-  box-shadow: 0 20rpx 60rpx rgba(16, 185, 129, 0.3), 0 8rpx 16rpx rgba(5, 150, 105, 0.2);
+  box-shadow:
+    0 20rpx 60rpx rgba(16, 185, 129, 0.3),
+    0 8rpx 16rpx rgba(5, 150, 105, 0.2);
   margin-bottom: 18rpx;
   transition: all 0.3s ease-out;
   cursor: pointer;
@@ -310,7 +312,9 @@ onShow(() => {
 
 .wd-card.membership-card.is-rectangle:active {
   transform: scale(0.98);
-  box-shadow: 0 12rpx 40rpx rgba(16, 185, 129, 0.25), 0 4rpx 12rpx rgba(5, 150, 105, 0.15);
+  box-shadow:
+    0 12rpx 40rpx rgba(16, 185, 129, 0.25),
+    0 4rpx 12rpx rgba(5, 150, 105, 0.15);
 }
 
 .wd-card.membership-card.is-rectangle::before {

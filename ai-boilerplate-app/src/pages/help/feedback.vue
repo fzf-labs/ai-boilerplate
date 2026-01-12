@@ -282,7 +282,11 @@ onLoad(() => {
   width: 80rpx;
   height: 80rpx;
   border-radius: 50%;
-  background: linear-gradient(135deg, rgba(var(--wot-color-primary-rgb, 0, 122, 255), 0.1) 0%, rgba(var(--wot-color-primary-rgb, 0, 122, 255), 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--wot-color-primary-rgb, 0, 122, 255), 0.1) 0%,
+    rgba(var(--wot-color-primary-rgb, 0, 122, 255), 0.05) 100%
+  );
   display: flex;
   align-items: center;
   justify-content: center;
