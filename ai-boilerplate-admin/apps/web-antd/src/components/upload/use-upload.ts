@@ -1,12 +1,12 @@
 import type { Ref } from 'vue';
 
-import type { InfraFileApi } from '#/api/infra/file/data';
+import type { VolcenginePolicy } from '#/api/v1/file-data';
 
 import { computed, unref } from 'vue';
 
 import TOS from '@volcengine/tos-sdk';
 
-import { getOSSDefaultPolicy } from '#/api/infra/file/data';
+import { uploadFileOssDefaultPolicy } from '#/api/v1/file-data';
 
 import { generateSafeFileName, generateUploadPath } from './helper';
 
@@ -84,16 +84,22 @@ export function useOSSUpload(scene: string = 'upload') {
       const fileName = generateSafeFileName(file.name);
       const filePath = generateUploadPath(scene, fileName);
       // 2. 获取OSS上传策略
-      const policyInfo = await getOSSDefaultPolicy(
-        fileName,
-        filePath,
-        file.size,
-      );
+      const policyInfo = await uploadFileOssDefaultPolicy({
+        params: {
+          name: fileName,
+          path: filePath,
+          size: file.size,
+        },
+      });
       // 3. 根据存储引擎进行上传 - 当前只支持火山云
       if (policyInfo.storage !== 'volcengine' || !policyInfo.volcengine) {
         throw new Error(
           `当前只支持火山云对象存储，不支持: ${policyInfo.storage}`,
         );
+      }
+
+      if (!policyInfo.fileId) {
+        throw new Error('获取文件ID失败');
       }
 
       return await uploadToVolcengine(
@@ -137,19 +143,31 @@ export function useUpload(scene?: string) {
 
 async function uploadToVolcengine(
   file: File,
-  policy: InfraFileApi.VolcenginePolicy,
+  policy: VolcenginePolicy,
   fileId: string,
   filePath: string,
   onProgress?: ProgressCallback,
 ) {
-  // 创建 TOS 客户端
+  // 验证必需的策略字段
+  if (
+    !policy.accessKeyId ||
+    !policy.secretAccessKey ||
+    !policy.sessionToken ||
+    !policy.region ||
+    !policy.endpoint ||
+    !policy.bucket
+  ) {
+    throw new Error('火山云策略配置不完整');
+  }
+
+  // 创建 TOS 客户端（经过验证后，这些字段已确定存在）
   const client = new TOS({
-    accessKeyId: policy.accessKeyId,
-    accessKeySecret: policy.secretAccessKey,
-    stsToken: policy.sessionToken,
-    region: policy.region,
-    endpoint: policy.endpoint,
-    bucket: policy.bucket,
+    accessKeyId: policy.accessKeyId!,
+    accessKeySecret: policy.secretAccessKey!,
+    stsToken: policy.sessionToken!,
+    region: policy.region!,
+    endpoint: policy.endpoint!,
+    bucket: policy.bucket!,
   });
 
   try {
@@ -170,9 +188,7 @@ async function uploadToVolcengine(
         : undefined,
     });
 
-    const fileUrl = policy.customDomain
-      ? `https://${policy.customDomain}/${filePath}`
-      : `https://${policy.bucket}.${policy.endpoint}/${filePath}`;
+    const fileUrl = `https://${policy.bucket}.${policy.endpoint}/${filePath}`;
 
     return {
       id: fileId,

@@ -7,7 +7,7 @@ import { generateAccessible } from '@vben/access';
 import { preferences } from '@vben/preferences';
 import { convertServerMenuToRouteRecordStringComponent } from '@vben/utils';
 
-import { getAdminMenuApi } from '#/api/core/auth';
+import { sysAuthMenu } from '#/api/v1/sys-auth';
 import { BasicLayout, IFrameView } from '#/layouts';
 
 const forbiddenComponent = () => import('#/views/_core/fallback/forbidden.vue');
@@ -21,8 +21,12 @@ async function generateAccess(options: GenerateMenuAndRoutesOptions) {
   return await generateAccessible(preferences.app.accessMode, {
     ...options,
     fetchMenuListAsync: async () => {
-      const list = await getAdminMenuApi();
-      return convertServerMenuToRouteRecordStringComponent(list.menu);
+      const list = await sysAuthMenu({});
+      return convertServerMenuToRouteRecordStringComponent(
+        (list.menu || []) as unknown as Parameters<
+          typeof convertServerMenuToRouteRecordStringComponent
+        >[0],
+      );
     },
     // 可以指定没有权限跳转403页面
     forbiddenComponent,

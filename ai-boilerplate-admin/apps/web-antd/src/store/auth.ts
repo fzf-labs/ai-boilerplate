@@ -11,11 +11,11 @@ import { notification } from 'ant-design-vue';
 import { defineStore } from 'pinia';
 
 import {
-  getAdminInfoApi,
-  getAdminPermissionApi,
-  loginApi,
-  logoutApi,
-} from '#/api';
+  sysAuthAdminInfo,
+  sysAuthLogin,
+  sysAuthLogout,
+  sysAuthPermission,
+} from '#/api/v1/sys-auth';
 import { $t } from '#/locales';
 
 export const useAuthStore = defineStore('auth', () => {
@@ -38,13 +38,15 @@ export const useAuthStore = defineStore('auth', () => {
     let adminInfo: AuthAdminInfo | null = null;
     try {
       loginLoading.value = true;
-      const { token } = await loginApi(params);
+      const { token } = await sysAuthLogin({
+        body: params as unknown as { username: string; password: string },
+      });
       // 如果成功获取到 accessToken
       if (token) {
         accessStore.setAccessToken(token);
         // 获取用户信息并存储到 accessStore 中
         const fetchAdminInfoResult = await fetchAdminInfo();
-        adminInfo = fetchAdminInfoResult;
+        adminInfo = fetchAdminInfoResult as unknown as AuthAdminInfo;
         if (accessStore.loginExpired) {
           accessStore.setLoginExpired(false);
         } else {
@@ -73,7 +75,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function logout(redirect: boolean = true) {
     try {
-      await logoutApi();
+      await sysAuthLogout({ body: {} });
     } catch {
       // 不做任何处理
     }
@@ -92,11 +94,13 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function fetchAdminInfo() {
-    const adminInfo = await getAdminInfoApi();
-    const permission = await getAdminPermissionApi();
-    userStore.setUserInfo(adminInfo.info);
-    accessStore.setAccessCodes(permission.permission);
-    return adminInfo;
+    const adminInfo = await sysAuthAdminInfo({});
+    const permission = await sysAuthPermission({});
+    if (adminInfo.info) {
+      userStore.setUserInfo(adminInfo.info as any);
+    }
+    accessStore.setAccessCodes(permission.permission || []);
+    return adminInfo as unknown as AuthAdminInfo;
   }
 
   function $reset() {
