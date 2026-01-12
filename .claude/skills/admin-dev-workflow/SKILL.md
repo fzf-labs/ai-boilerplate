@@ -1,19 +1,19 @@
 ---
-description: app-dev
-allowed-tools: Task,AskUserQuestion
+name: admin-dev-workflow
+description: Admin 管理后台前端开发完整流程编排。自动编排执行：(1) interview 需求澄清 (2) admin-api-gen 生成 API 客户端 (3) admin-codeing 实现页面功能。触发场景：开发 Admin 管理后台页面、表单表格开发、完整的前端 CRUD 功能开发
 ---
 ```mermaid
 flowchart TD
     start_node_default([开始])
     end_node_default([结束])
-    skill_1768095891986[[Skill: interview]]
-    skill_1768095903165[[Skill: app-api-gen]]
-    skill_1768095911507[[Skill: app-codeing]]
+    skill_1768099887308[[Skill: interview]]
+    skill_1768099899757[[Skill: admin-api-gen]]
+    skill_1768099911056[[Skill: admin-codeing]]
 
-    start_node_default --> skill_1768095891986
-    skill_1768095891986 --> skill_1768095903165
-    skill_1768095903165 --> skill_1768095911507
-    skill_1768095911507 --> end_node_default
+    start_node_default --> skill_1768099887308
+    skill_1768099887308 --> skill_1768099899757
+    skill_1768099899757 --> skill_1768099911056
+    skill_1768099911056 --> end_node_default
 ```
 
 ## 工作流执行指南
@@ -29,7 +29,7 @@ flowchart TD
 
 ## Skill Nodes
 
-#### skill_1768095891986(interview)
+#### skill_1768099887308(interview)
 
 **Description**: This skill conducts discovery conversations to understand user intent and agree on approach before taking action. It should be used when the user explicitly calls /interview, asks for recommendations, needs exploration, wants to clarify, or when the request could be misunderstood. Prevents building the wrong thing by uncovering WHY behind WHAT.
 
@@ -41,9 +41,9 @@ flowchart TD
 
 This node executes a Claude Code Skill. The Skill definition is stored in the SKILL.md file at the path shown above.
 
-#### skill_1768095903165(app-api-gen)
+#### skill_1768099899757(admin-api-gen)
 
-**Description**: "App API 代码生成技能。从后端 Swagger 文件生成 TypeScript API 客户端代码。触发场景：(1) 后端 API 更新后需要同步 (2) 新增 API 接口后生成客户端代码 (3) 需要刷新/重新生成 API 类型定义"
+**Description**: "Admin API 代码生成技能。从后端 Swagger 文件生成 TypeScript API 客户端代码。触发场景：(1) 后端 API 更新后需要同步 (2) 新增 API 接口后生成客户端代码 (3) 需要刷新/重新生成 API 类型定义"
 
 **Scope**: project
 
@@ -51,18 +51,18 @@ This node executes a Claude Code Skill. The Skill definition is stored in the SK
 
 **Allowed Tools**: Bash, Read, Glob
 
-**Skill Path**: `.claude/skills/app-api-gen/SKILL.md`
+**Skill Path**: `.claude/skills/admin-api-gen/SKILL.md`
 
 This node executes a Claude Code Skill. The Skill definition is stored in the SKILL.md file at the path shown above.
 
-#### skill_1768095911507(app-codeing)
+#### skill_1768099911056(admin-codeing)
 
-**Description**: "App development skill for uni-app mobile application. Use when developing mobile pages, integrating backend APIs, implementing features with wot-design-uni components. Triggers include：(1) Creating new pages (2) Form and list development (3) API integration (4) State management (5) Component usage (6) Complete mobile app development workflow"
+**Description**: Admin 管理后台开发技能。当用户需要开发前端页面、对接后端接口、实现 CRUD 功能时使用此技能。触发场景包括：(1) 新增管理页面 (2) 表单和表格开发 (3) API 接口对接 (4) 权限控制实现 (5) 组件封装 (6) 完整的前端功能开发流程
 
 **Scope**: project
 
 **Validation Status**: valid
 
-**Skill Path**: `.claude/skills/app-codeing/SKILL.md`
+**Skill Path**: `.claude/skills/admin-codeing/SKILL.md`
 
 This node executes a Claude Code Skill. The Skill definition is stored in the SKILL.md file at the path shown above.
