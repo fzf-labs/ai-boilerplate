@@ -42,7 +42,7 @@ func RegisterBannerHTTPServer(s *http.Server, srv BannerHTTPServer) {
 	r.POST("/admin/v1/banner/update/status", _Banner_UpdateBannerStatus0_HTTP_Handler(srv))
 	r.POST("/admin/v1/banner/delete", _Banner_DeleteBanner0_HTTP_Handler(srv))
 	r.GET("/admin/v1/banner/info", _Banner_GetBannerInfo0_HTTP_Handler(srv))
-	r.GET("/admin/v1/banner/list", _Banner_GetBannerList1_HTTP_Handler(srv))
+	r.GET("/admin/v1/banner/list", _Banner_GetBannerList0_HTTP_Handler(srv))
 }
 
 func _Banner_CreateBanner0_HTTP_Handler(srv BannerHTTPServer) func(ctx http.Context) error {
@@ -140,7 +140,7 @@ func _Banner_GetBannerInfo0_HTTP_Handler(srv BannerHTTPServer) func(ctx http.Con
 	}
 }
 
-func _Banner_GetBannerList1_HTTP_Handler(srv BannerHTTPServer) func(ctx http.Context) error {
+func _Banner_GetBannerList0_HTTP_Handler(srv BannerHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in GetBannerListReq
 		if err := ctx.BindQuery(&in); err != nil {

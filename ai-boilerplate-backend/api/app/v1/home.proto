@@ -10,21 +10,6 @@ option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/app/v1;v1";
 
 // 首页服务
 service Home {
-  // 获取轮播图列表
-  rpc GetBannerList(GetBannerListReq) returns (GetBannerListReply) {
-    option (google.api.http) = {get: "/app/v1/home/banner/list"};
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      parameters: {
-        headers: {
-          name: "Authorization"
-          description: "Bearer Token"
-          type: STRING
-          required: true
-        }
-      }
-    };
-  }
-
   // 获取内容列表
   rpc GetContentList(GetContentListReq) returns (GetContentListReply) {
     option (google.api.http) = {get: "/app/v1/home/content/list"};
@@ -54,23 +39,6 @@ service Home {
       }
     };
   }
-}
-
-// 轮播图信息
-message BannerInfo {
-  string id = 1; // 轮播图ID
-  string imageUrl = 2; // 图片URL
-  string linkUrl = 3; // 跳转链接
-  string title = 4; // 标题
-  int32 sort = 5; // 排序
-}
-
-// 请求-获取轮播图列表
-message GetBannerListReq {}
-
-// 响应-获取轮播图列表
-message GetBannerListReply {
-  repeated BannerInfo list = 1; // 轮播图列表
 }
 
 // 内容信息

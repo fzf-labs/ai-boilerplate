@@ -22,8 +22,6 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type HomeClient interface {
-	// 获取轮播图列表
-	GetBannerList(ctx context.Context, in *GetBannerListReq, opts ...grpc.CallOption) (*GetBannerListReply, error)
 	// 获取内容列表
 	GetContentList(ctx context.Context, in *GetContentListReq, opts ...grpc.CallOption) (*GetContentListReply, error)
 	// 获取内容详情
@@ -36,15 +34,6 @@ type homeClient struct {
 
 func NewHomeClient(cc grpc.ClientConnInterface) HomeClient {
 	return &homeClient{cc}
-}
-
-func (c *homeClient) GetBannerList(ctx context.Context, in *GetBannerListReq, opts ...grpc.CallOption) (*GetBannerListReply, error) {
-	out := new(GetBannerListReply)
-	err := c.cc.Invoke(ctx, "/app.v1.Home/GetBannerList", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
 }
 
 func (c *homeClient) GetContentList(ctx context.Context, in *GetContentListReq, opts ...grpc.CallOption) (*GetContentListReply, error) {
@@ -69,8 +58,6 @@ func (c *homeClient) GetContentDetail(ctx context.Context, in *GetContentDetailR
 // All implementations must embed UnimplementedHomeServer
 // for forward compatibility
 type HomeServer interface {
-	// 获取轮播图列表
-	GetBannerList(context.Context, *GetBannerListReq) (*GetBannerListReply, error)
 	// 获取内容列表
 	GetContentList(context.Context, *GetContentListReq) (*GetContentListReply, error)
 	// 获取内容详情
@@ -82,9 +69,6 @@ type HomeServer interface {
 type UnimplementedHomeServer struct {
 }
 
-func (UnimplementedHomeServer) GetBannerList(context.Context, *GetBannerListReq) (*GetBannerListReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetBannerList not implemented")
-}
 func (UnimplementedHomeServer) GetContentList(context.Context, *GetContentListReq) (*GetContentListReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetContentList not implemented")
 }
@@ -102,24 +86,6 @@ type UnsafeHomeServer interface {
 
 func RegisterHomeServer(s grpc.ServiceRegistrar, srv HomeServer) {
 	s.RegisterService(&Home_ServiceDesc, srv)
-}
-
-func _Home_GetBannerList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetBannerListReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(HomeServer).GetBannerList(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/app.v1.Home/GetBannerList",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(HomeServer).GetBannerList(ctx, req.(*GetBannerListReq))
-	}
-	return interceptor(ctx, in, info, handler)
 }
 
 func _Home_GetContentList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -165,10 +131,6 @@ var Home_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "app.v1.Home",
 	HandlerType: (*HomeServer)(nil),
 	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "GetBannerList",
-			Handler:    _Home_GetBannerList_Handler,
-		},
 		{
 			MethodName: "GetContentList",
 			Handler:    _Home_GetContentList_Handler,

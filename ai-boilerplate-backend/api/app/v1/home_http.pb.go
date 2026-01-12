@@ -19,40 +19,18 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationHomeGetBannerList = "/app.v1.Home/GetBannerList"
 const OperationHomeGetContentDetail = "/app.v1.Home/GetContentDetail"
 const OperationHomeGetContentList = "/app.v1.Home/GetContentList"
 
 type HomeHTTPServer interface {
-	GetBannerList(context.Context, *GetBannerListReq) (*GetBannerListReply, error)
 	GetContentDetail(context.Context, *GetContentDetailReq) (*GetContentDetailReply, error)
 	GetContentList(context.Context, *GetContentListReq) (*GetContentListReply, error)
 }
 
 func RegisterHomeHTTPServer(s *http.Server, srv HomeHTTPServer) {
 	r := s.Route("/")
-	r.GET("/app/v1/home/banner/list", _Home_GetBannerList0_HTTP_Handler(srv))
 	r.GET("/app/v1/home/content/list", _Home_GetContentList0_HTTP_Handler(srv))
 	r.GET("/app/v1/home/content/detail", _Home_GetContentDetail0_HTTP_Handler(srv))
-}
-
-func _Home_GetBannerList0_HTTP_Handler(srv HomeHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in GetBannerListReq
-		if err := ctx.BindQuery(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, OperationHomeGetBannerList)
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetBannerList(ctx, req.(*GetBannerListReq))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*GetBannerListReply)
-		return ctx.Result(200, reply)
-	}
 }
 
 func _Home_GetContentList0_HTTP_Handler(srv HomeHTTPServer) func(ctx http.Context) error {
@@ -94,7 +72,6 @@ func _Home_GetContentDetail0_HTTP_Handler(srv HomeHTTPServer) func(ctx http.Cont
 }
 
 type HomeHTTPClient interface {
-	GetBannerList(ctx context.Context, req *GetBannerListReq, opts ...http.CallOption) (rsp *GetBannerListReply, err error)
 	GetContentDetail(ctx context.Context, req *GetContentDetailReq, opts ...http.CallOption) (rsp *GetContentDetailReply, err error)
 	GetContentList(ctx context.Context, req *GetContentListReq, opts ...http.CallOption) (rsp *GetContentListReply, err error)
 }
@@ -105,19 +82,6 @@ type HomeHTTPClientImpl struct {
 
 func NewHomeHTTPClient(client *http.Client) HomeHTTPClient {
 	return &HomeHTTPClientImpl{client}
-}
-
-func (c *HomeHTTPClientImpl) GetBannerList(ctx context.Context, in *GetBannerListReq, opts ...http.CallOption) (*GetBannerListReply, error) {
-	var out GetBannerListReply
-	pattern := "/app/v1/home/banner/list"
-	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationHomeGetBannerList))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, err
 }
 
 func (c *HomeHTTPClientImpl) GetContentDetail(ctx context.Context, in *GetContentDetailReq, opts ...http.CallOption) (*GetContentDetailReply, error) {

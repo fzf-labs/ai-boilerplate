@@ -16,38 +16,6 @@
     "application/json"
   ],
   "paths": {
-    "/app/v1/home/banner/list": {
-      "get": {
-        "summary": "获取轮播图列表",
-        "operationId": "Home_GetBannerList",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/app.v1.GetBannerListReply"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/google.rpc.Status"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "Authorization",
-            "description": "Bearer Token",
-            "in": "header",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "Home"
-        ]
-      }
-    },
     "/app/v1/home/content/detail": {
       "get": {
         "summary": "获取内容详情",
@@ -138,33 +106,6 @@
     }
   },
   "definitions": {
-    "app.v1.BannerInfo": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "title": "轮播图ID"
-        },
-        "imageUrl": {
-          "type": "string",
-          "title": "图片URL"
-        },
-        "linkUrl": {
-          "type": "string",
-          "title": "跳转链接"
-        },
-        "title": {
-          "type": "string",
-          "title": "标题"
-        },
-        "sort": {
-          "type": "integer",
-          "format": "int32",
-          "title": "排序"
-        }
-      },
-      "title": "轮播图信息"
-    },
     "app.v1.ContentDetail": {
       "type": "object",
       "properties": {
@@ -250,20 +191,6 @@
         }
       },
       "title": "内容信息"
-    },
-    "app.v1.GetBannerListReply": {
-      "type": "object",
-      "properties": {
-        "list": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/app.v1.BannerInfo"
-          },
-          "title": "轮播图列表"
-        }
-      },
-      "title": "响应-获取轮播图列表"
     },
     "app.v1.GetContentDetailReply": {
       "type": "object",
