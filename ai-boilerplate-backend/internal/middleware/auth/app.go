@@ -21,6 +21,7 @@ var AppPrefixPathToWhiteList = map[string][]string{
 		pb.OperationHomeGetBannerList,
 		pb.OperationHomeGetContentList,
 		pb.OperationHomeGetContentDetail,
+		pb.OperationSelfAppReleaseCheckUpdate,
 	},
 }
 
