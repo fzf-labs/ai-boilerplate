@@ -10,10 +10,10 @@ import (
 	"github.com/fzf-labs/kratos-contrib/meta"
 )
 
-// GetBannerList 获取轮播图列表
-func (s *AppV1HomeService) GetBannerList(ctx context.Context, _ *pb.GetBannerListReq) (*pb.GetBannerListReply, error) {
-	resp := &pb.GetBannerListReply{
-		List: []*pb.BannerInfo{},
+// ListBanners 通用-轮播图-列表数据查询
+func (a *AppV1BannerService) ListBanners(ctx context.Context, req *pb.ListBannersReq) (*pb.ListBannersReply, error) {
+	resp := &pb.ListBannersReply{
+		List: []*pb.BannerItem{},
 	}
 	tenantID := meta.GetMetadataFromClient(ctx, constant.XMdTenantID)
 	param := &condition.Req{
@@ -28,7 +28,7 @@ func (s *AppV1HomeService) GetBannerList(ctx context.Context, _ *pb.GetBannerLis
 			},
 			{
 				Field: "position",
-				Value: "home",
+				Value: req.GetPosition(),
 				Exp:   condition.EQ,
 				Logic: condition.AND,
 			},
@@ -52,7 +52,15 @@ func (s *AppV1HomeService) GetBannerList(ctx context.Context, _ *pb.GetBannerLis
 			Logic: condition.AND,
 		})
 	}
-	list, _, err := s.bannerRepo.FindMultiCacheByCondition(ctx, param)
+	if req.GetPlatform() != "" {
+		param.Query = append(param.Query, &condition.QueryParam{
+			Field: "platform",
+			Value: []string{req.GetPlatform(), "all"},
+			Exp:   condition.IN,
+			Logic: condition.AND,
+		})
+	}
+	list, _, err := a.bannerRepo.FindMultiCacheByCondition(ctx, param)
 	if err != nil {
 		return nil, pb.ErrorReasonDataSQLError(pb.WithError(err))
 	}
@@ -64,11 +72,14 @@ func (s *AppV1HomeService) GetBannerList(ctx context.Context, _ *pb.GetBannerLis
 		if v.EndTime.Valid && v.EndTime.Time.Before(now) {
 			continue
 		}
-		resp.List = append(resp.List, &pb.BannerInfo{
+		resp.List = append(resp.List, &pb.BannerItem{
 			Id:       v.ID,
-			ImageUrl: v.ImageURL,
-			LinkUrl:  v.LinkURL,
 			Title:    v.Title,
+			ImageURL: v.ImageURL,
+			LinkURL:  v.LinkURL,
+			LinkType: v.LinkType,
+			Position: v.Position,
+			Platform: v.Platform,
 			Sort:     v.Sort,
 		})
 	}

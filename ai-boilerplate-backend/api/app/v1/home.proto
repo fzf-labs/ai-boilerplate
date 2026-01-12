@@ -58,7 +58,7 @@ service Home {
 
 // 轮播图信息
 message BannerInfo {
-  int64 id = 1; // 轮播图ID
+  string id = 1; // 轮播图ID
   string imageUrl = 2; // 图片URL
   string linkUrl = 3; // 跳转链接
   string title = 4; // 标题

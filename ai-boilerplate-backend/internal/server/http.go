@@ -29,6 +29,7 @@ func NewHTTPServer(
 	adminV1DictDatumService *service.AdminV1DictDatumService,
 	adminV1SysNotifyMessageService *service.AdminV1SysNotifyMessageService,
 	adminV1SysNoticeService *service.AdminV1SysNoticeService,
+	adminV1BannerService *service.AdminV1BannerService,
 	adminV1SmsChannelService *service.AdminV1SmsChannelService,
 	adminV1SmsTemplateService *service.AdminV1SmsTemplateService,
 	adminV1SmsLogService *service.AdminV1SmsLogService,
@@ -72,6 +73,7 @@ func NewHTTPServer(
 	adminV1AiIndexChatService *service.AdminV1AiIndexChatService,
 	// App
 	appV1HomeService *service.AppV1HomeService,
+	appV1BannerService *service.AppV1BannerService,
 	appV1UserService *service.AppV1UserService,
 	appV1MembershipService *service.AppV1MembershipService,
 	appV1HelpFeedbackService *service.AppV1HelpFeedbackService,
@@ -99,6 +101,7 @@ func NewHTTPServer(
 	adminv1.RegisterDictDatumHTTPServer(srv, adminV1DictDatumService)
 	adminv1.RegisterSysNotifyMessageHTTPServer(srv, adminV1SysNotifyMessageService)
 	adminv1.RegisterSysNoticeHTTPServer(srv, adminV1SysNoticeService)
+	adminv1.RegisterBannerHTTPServer(srv, adminV1BannerService)
 	adminv1.RegisterSmsChannelHTTPServer(srv, adminV1SmsChannelService)
 	adminv1.RegisterSmsTemplateHTTPServer(srv, adminV1SmsTemplateService)
 	adminv1.RegisterSmsLogHTTPServer(srv, adminV1SmsLogService)
@@ -141,6 +144,7 @@ func NewHTTPServer(
 	adminv1.RegisterAiIndexChatHTTPServer(srv, adminV1AiIndexChatService)
 	// App v1 服务注册
 	appv1.RegisterHomeHTTPServer(srv, appV1HomeService)
+	appv1.RegisterBannerHTTPServer(srv, appV1BannerService)
 	appv1.RegisterUserHTTPServer(srv, appV1UserService)
 	appv1.RegisterMembershipHTTPServer(srv, appV1MembershipService)
 	appv1.RegisterHelpFeedbackHTTPServer(srv, appV1HelpFeedbackService)

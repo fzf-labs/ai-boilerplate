@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package app.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/app/v1;v1";
+
+//通用-轮播图
+service Banner {
+  //通用-轮播图-列表数据查询
+  rpc ListBanners(ListBannersReq) returns (ListBannersReply) {
+    option (google.api.http) = {get: "/app/v1/banner/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+//通用-轮播图信息
+message BannerItem {
+  string id = 1; // id
+  string title = 2; // 标题
+  string imageURL = 3; // 图片URL
+  string linkURL = 4; // 跳转链接
+  string linkType = 5; // 跳转类型
+  string position = 6; // 展示位置
+  string platform = 7; // 平台
+  int32 sort = 8; // 排序
+}
+
+//请求-通用-轮播图-列表数据查询
+message ListBannersReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["position"]
+    }
+  };
+  string position = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }]; // 展示位置
+  string platform = 2 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 32
+    }
+  ]; // 平台
+}
+
+//响应-通用-轮播图-列表数据查询
+message ListBannersReply {
+  repeated BannerItem list = 1; // 列表数据
+}

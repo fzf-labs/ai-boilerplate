@@ -1,0 +1,149 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "app/v1/banner.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "Banner"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/app/v1/banner/list": {
+      "get": {
+        "summary": "通用-轮播图-列表数据查询",
+        "operationId": "Banner_ListBanners",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.ListBannersReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "position",
+            "description": "展示位置",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "platform",
+            "description": "平台",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Banner"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "app.v1.BannerItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "title": {
+          "type": "string",
+          "title": "标题"
+        },
+        "imageURL": {
+          "type": "string",
+          "title": "图片URL"
+        },
+        "linkURL": {
+          "type": "string",
+          "title": "跳转链接"
+        },
+        "linkType": {
+          "type": "string",
+          "title": "跳转类型"
+        },
+        "position": {
+          "type": "string",
+          "title": "展示位置"
+        },
+        "platform": {
+          "type": "string",
+          "title": "平台"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "排序"
+        }
+      },
+      "title": "通用-轮播图信息"
+    },
+    "app.v1.ListBannersReply": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/app.v1.BannerItem"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-通用-轮播图-列表数据查询"
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

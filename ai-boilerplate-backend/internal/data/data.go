@@ -139,6 +139,8 @@ var ProviderSet = wire.NewSet(
 	ai_boilerplate_repo.NewWxGzhTagRepo,
 	ai_boilerplate_repo.NewWxGzhUserRepo,
 	ai_boilerplate_repo.NewWxXcxUserRepo,
+	NewBannerRepo,
+	ai_boilerplate_repo.NewBannerRepo,
 )
 
 // Data .

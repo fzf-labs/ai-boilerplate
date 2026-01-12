@@ -6,19 +6,19 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 )
 
-func NewAppV1HomeService(
+func NewAppV1BannerService(
 	logger log.Logger,
 	bannerRepo *data.BannerRepo,
-) *AppV1HomeService {
-	l := log.NewHelper(log.With(logger, "module", "service/app_home"))
-	return &AppV1HomeService{
+) *AppV1BannerService {
+	l := log.NewHelper(log.With(logger, "module", "service/banner"))
+	return &AppV1BannerService{
 		log:        l,
 		bannerRepo: bannerRepo,
 	}
 }
 
-type AppV1HomeService struct {
-	pb.UnimplementedHomeServer
+type AppV1BannerService struct {
+	pb.UnimplementedBannerServer
 	log        *log.Helper
 	bannerRepo *data.BannerRepo
 }

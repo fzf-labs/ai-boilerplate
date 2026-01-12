@@ -1,24 +1,24 @@
 package service
 
 import (
-	pb "github.com/fzf-labs/ai-boilerplate-backend/api/app/v1"
+	pb "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1"
 	"github.com/fzf-labs/ai-boilerplate-backend/internal/data"
 	"github.com/go-kratos/kratos/v2/log"
 )
 
-func NewAppV1HomeService(
+func NewAdminV1BannerService(
 	logger log.Logger,
 	bannerRepo *data.BannerRepo,
-) *AppV1HomeService {
-	l := log.NewHelper(log.With(logger, "module", "service/app_home"))
-	return &AppV1HomeService{
+) *AdminV1BannerService {
+	l := log.NewHelper(log.With(logger, "module", "service/banner"))
+	return &AdminV1BannerService{
 		log:        l,
 		bannerRepo: bannerRepo,
 	}
 }
 
-type AppV1HomeService struct {
-	pb.UnimplementedHomeServer
+type AdminV1BannerService struct {
+	pb.UnimplementedBannerServer
 	log        *log.Helper
 	bannerRepo *data.BannerRepo
 }

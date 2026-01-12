@@ -143,7 +143,6 @@
       "properties": {
         "id": {
           "type": "string",
-          "format": "int64",
           "title": "轮播图ID"
         },
         "imageUrl": {
