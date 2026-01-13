@@ -1,5 +1,5 @@
 ---
-name: app-dev-workflow
+name: app-dev
 description: App 移动端前端开发完整流程编排。自动编排执行：(1) interview 需求澄清 (2) app-api-gen 生成 API 客户端 (3) app-codeing 实现页面功能。触发场景：开发 uni-app 移动端页面、表单列表开发、完整的移动端功能开发
 ---
 ```mermaid

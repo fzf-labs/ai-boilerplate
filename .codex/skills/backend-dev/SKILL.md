@@ -1,5 +1,5 @@
 ---
-name: backend-dev-workflow
+name: backend-dev
 description: 后端开发完整流程编排技能。自动编排执行 Step 0-7 的完整后端开发流程。触发场景：(1) 需要完整的后端 CRUD 开发 (2) 从零开始开发新功能 (3) 用户说"帮我开发xxx后端功能" (4) 需要自动化执行多个后端开发步骤
 ---
 ```mermaid

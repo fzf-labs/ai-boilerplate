@@ -1,5 +1,5 @@
 ---
-name: admin-dev-workflow
+name: admin-dev
 description: Admin 管理后台前端开发完整流程编排。自动编排执行：(1) interview 需求澄清 (2) admin-api-gen 生成 API 客户端 (3) admin-codeing 实现页面功能。触发场景：开发 Admin 管理后台页面、表单表格开发、完整的前端 CRUD 功能开发
 ---
 ```mermaid
