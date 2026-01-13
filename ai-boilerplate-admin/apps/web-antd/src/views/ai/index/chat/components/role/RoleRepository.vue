@@ -1,33 +1,19 @@
 <script setup lang="ts">
-import type { AiModelChatRoleApi } from '#/api/ai/model/chatRole';
-import type { AiChatConversationApi } from '#/api/ai/chat';
-
 import { onMounted, reactive, ref } from 'vue';
-import { useRouter } from 'vue-router';
 
-import { useVbenDrawer, useVbenModal } from '@vben/common-ui';
+import { useVbenDrawer } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
 
-import { Button, Input, Layout, Tabs } from 'ant-design-vue';
-
-import { deleteMy, getCategoryList, getMyPage } from '#/api/ai/model/chatRole';
-import { createChatConversationMy } from '#/api/ai/chat';
-
-import Form from '../../../../manager/chatRole/modules/form.vue';
+import { Button, Input, Layout, Tabs, message } from 'ant-design-vue';
 import RoleCategoryList from './RoleCategoryList.vue';
 import RoleList from './RoleList.vue';
 
-const router = useRouter(); // 路由对象
 const [Drawer] = useVbenDrawer({
   title: '角色管理',
   footer: false,
   class: 'w-2/5',
 });
 
-const [FormModal, formModalApi] = useVbenModal({
-  connectedComponent: Form,
-  destroyOnClose: true,
-});
 // 属性定义
 const loading = ref<boolean>(false); // 加载中
 const activeTab = ref<string>('my-role'); // 选中的角色 Tab
@@ -36,12 +22,16 @@ const myRoleParams = reactive({
   pageNo: 1,
   pageSize: 50,
 });
-const myRoleList = ref<AiModelChatRoleApi.ChatRole[]>([]); // my 分页大小
+const myRoleList = ref<
+  Array<{ id?: string; name?: string; description?: string; avatar?: string }>
+>([]); // my 分页大小
 const publicRoleParams = reactive({
   pageNo: 1,
   pageSize: 50,
 });
-const publicRoleList = ref<AiModelChatRoleApi.ChatRole[]>([]); // public 分页大小
+const publicRoleList = ref<
+  Array<{ id?: string; name?: string; description?: string; avatar?: string }>
+>([]); // public 分页大小
 const activeCategory = ref<string>('全部'); // 选择中的分类
 const categoryList = ref<string[]>([]); // 角色分类类别
 
@@ -55,33 +45,18 @@ async function handleTabsClick(tab: any) {
 
 /** 获取 my role 我的角色 */
 async function getMyRole(append?: boolean) {
-  const params: AiModelChatRoleApi.ChatRolePageReq = {
-    ...myRoleParams,
-    name: search.value,
-    publicStatus: false,
-  };
-  const { list } = await getMyPage(params);
   if (append) {
-    myRoleList.value.push(...list);
-  } else {
-    myRoleList.value = list;
+    return;
   }
+  myRoleList.value = [];
 }
 
 /** 获取 public role 公共角色 */
 async function getPublicRole(append?: boolean) {
-  const params: AiModelChatRoleApi.ChatRolePageReq = {
-    ...publicRoleParams,
-    category: activeCategory.value === '全部' ? '' : activeCategory.value,
-    name: search.value,
-    publicStatus: true,
-  };
-  const { list } = await getMyPage(params);
   if (append) {
-    publicRoleList.value.push(...list);
-  } else {
-    publicRoleList.value = list;
+    return;
   }
+  publicRoleList.value = [];
 }
 
 /** 获取选中的 tabs 角色 */
@@ -97,7 +72,7 @@ async function getActiveTabsRole() {
 
 /** 获取角色分类列表 */
 async function getRoleCategoryList() {
-  categoryList.value = ['全部', ...(await getCategoryList())];
+  categoryList.value = ['全部'];
 }
 
 /** 处理分类点击 */
@@ -109,11 +84,11 @@ async function handlerCategoryClick(category: string) {
 }
 
 async function handlerAddRole() {
-  formModalApi.setData({ formType: 'my-create' }).open();
+  message.info('角色仓库暂不可用');
 }
 /** 编辑角色 */
 async function handlerCardEdit(role: any) {
-  formModalApi.setData({ formType: 'my-update', id: role.id }).open();
+  message.info('角色仓库暂不可用');
 }
 
 /** 添加角色成功 */
@@ -124,9 +99,7 @@ async function handlerAddRoleSuccess() {
 
 /** 删除角色 */
 async function handlerCardDelete(role: any) {
-  await deleteMy(role.id);
-  // 刷新数据
-  await getActiveTabsRole();
+  message.info('角色仓库暂不可用');
 }
 
 /** 角色分页：获取下一页 */
@@ -147,19 +120,7 @@ async function handlerCardPage(type: string) {
 
 /** 选择 card 角色：新建聊天对话 */
 async function handlerCardUse(role: any) {
-  // 1. 创建对话
-  const data: AiChatConversationApi.ChatConversation = {
-    roleId: role.id,
-  } as unknown as AiChatConversationApi.ChatConversation;
-  const conversationId = await createChatConversationMy(data);
-
-  // 2. 跳转页面
-  await router.push({
-    path: '/ai/chat',
-    query: {
-      conversationId,
-    },
-  });
+  message.info('角色仓库暂不可用');
 }
 
 /** 初始化 */
@@ -176,8 +137,6 @@ onMounted(async () => {
     <Layout
       class="bg-card absolute inset-0 flex h-full w-full flex-col overflow-hidden"
     >
-      <FormModal @success="handlerAddRoleSuccess" />
-
       <Layout.Content class="relative m-0 flex-1 overflow-hidden p-0">
         <div class="z-100 absolute right-0 top--1 mr-5 mt-5">
           <!-- 搜索输入框 -->

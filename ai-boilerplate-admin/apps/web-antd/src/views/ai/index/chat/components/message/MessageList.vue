@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue';
-
-import type { AiChatConversationApi, AiChatMessageApi } from '#/api/ai/chat';
+import type * as AiIndexChatApi from '#/api/v1/ai-index-chat';
 
 import { computed, nextTick, onMounted, ref, toRefs } from 'vue';
 
@@ -15,15 +14,14 @@ import { Avatar, Button, message } from 'ant-design-vue';
 
 import { MarkdownView } from '#/components/markdown-view';
 
-import MessageKnowledge from './MessageKnowledge.vue';
 // 定义 props
 const props = defineProps({
   conversation: {
-    type: Object as PropType<AiChatConversationApi.ChatConversation>,
+    type: Object as PropType<AiIndexChatApi.AiIndexChatConversationItem>,
     required: true,
   },
   list: {
-    type: Array as PropType<AiChatMessageApi.ChatMessage[]>,
+    type: Array as PropType<AiIndexChatApi.AiIndexChatMessageItem[]>,
     required: true,
   },
 });
@@ -84,7 +82,7 @@ async function copyContent(content: string) {
   message.success('复制成功！');
 }
 /** 删除 */
-async function onDelete(target: AiChatMessageApi.ChatMessage) {
+async function onDelete(target: AiIndexChatApi.AiIndexChatMessageItem) {
   if (!target.id) {
     message.warning('无法删除该消息');
     return;
@@ -94,12 +92,12 @@ async function onDelete(target: AiChatMessageApi.ChatMessage) {
 }
 
 /** 刷新 */
-async function onRefresh(message: AiChatMessageApi.ChatMessage) {
+async function onRefresh(message: AiIndexChatApi.AiIndexChatMessageItem) {
   emits('onRefresh', message);
 }
 
 /** 编辑 */
-async function onEdit(message: AiChatMessageApi.ChatMessage) {
+async function onEdit(message: AiIndexChatApi.AiIndexChatMessageItem) {
   emits('onEdit', message);
 }
 
@@ -118,15 +116,11 @@ onMounted(async () => {
       <!-- 左侧消息：system、assistant -->
       <div v-if="item.type !== 'user'" class="flex flex-row">
         <div class="avatar">
-          <Avatar
-            v-if="conversation.roleAvatar"
-            :src="conversation.roleAvatar"
-          />
-          <SvgGptIcon v-else class="size-8" />
+          <SvgGptIcon class="size-8" />
         </div>
         <div class="mx-4 flex flex-col text-left">
           <div class="text-left leading-10">
-            {{ formatDate(item.createTime) }}
+            {{ formatDate(item.createdAt) }}
           </div>
           <div
             class="relative flex flex-col break-words rounded-lg bg-gray-100 p-2.5 pb-1 pt-2.5 shadow-sm"
@@ -135,7 +129,6 @@ onMounted(async () => {
               class="text-sm text-gray-600"
               :content="item.content"
             />
-            <MessageKnowledge v-if="item.segments" :segments="item.segments" />
           </div>
           <div class="mt-2 flex flex-row">
             <Button
@@ -164,7 +157,7 @@ onMounted(async () => {
         </div>
         <div class="mx-4 flex flex-col text-left">
           <div class="text-left leading-8">
-            {{ formatDate(item.createTime) }}
+            {{ formatDate(item.createdAt) }}
           </div>
           <div class="flex flex-row-reverse">
             <div

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { AiWriteApi } from '#/api/ai/write';
-import type { AiModelModelApi } from '#/api/ai/model/model';
+import type { CreateAiWriteRecordReq } from '#/api/v1/ai-write-record';
+import type { ProviderModelOption } from '../../utils';
 
 import { onMounted, ref } from 'vue';
 
@@ -9,11 +9,11 @@ import { IconifyIcon } from '@vben/icons';
 import { createReusableTemplate } from '@vueuse/core';
 import { Button, message, Select, Textarea } from 'ant-design-vue';
 
-import { getModelSimpleList } from '#/api/ai/model/model';
+import { fetchProviderModels } from '../../utils';
 import Tag from './Tag.vue';
 import { AiWriteTypeEnum, WriteExample } from './typing';
 
-type TabType = AiWriteApi.Write['type'];
+type TabType = CreateAiWriteRecordReq['type'];
 
 defineProps<{
   isWriting: boolean;
@@ -22,7 +22,13 @@ defineProps<{
 const emit = defineEmits<{
   (e: 'example', param: 'reply' | 'write'): void;
   (e: 'reset'): void;
-  (e: 'submit', params: Partial<AiWriteApi.Write>): void;
+  (
+    e: 'submit',
+    params: Partial<CreateAiWriteRecordReq> & {
+      model?: string;
+      platform?: string;
+    },
+  ): void;
 }>();
 
 function omit(obj: Record<string, any>, keysToOmit: string[]) {
@@ -70,7 +76,17 @@ const [DefineLabel, ReuseLabel] = createReusableTemplate<{
   label: string;
 }>();
 
-const initData: AiWriteApi.Write = {
+const initData: Pick<
+  CreateAiWriteRecordReq,
+  | 'type'
+  | 'prompt'
+  | 'originalContent'
+  | 'tone'
+  | 'language'
+  | 'length'
+  | 'format'
+  | 'modelId'
+> = {
   type: 1,
   prompt: '',
   originalContent: '',
@@ -81,11 +97,11 @@ const initData: AiWriteApi.Write = {
   modelId: '',
 };
 
-const formData = ref<AiWriteApi.Write>({ ...initData });
-const modelOptions = ref<AiModelModelApi.Model[]>([]);
+const formData = ref({ ...initData });
+const modelOptions = ref<ProviderModelOption[]>([]);
 
 /** 用来记录切换之前所填写的数据，切换的时候给赋值回来 */
-const recordFormData = {} as Record<number, AiWriteApi.Write>;
+const recordFormData = {} as Record<number, typeof initData>;
 /** 切换tab */
 function switchTab(value: TabType) {
   if (value !== selectedTab.value) {
@@ -111,6 +127,9 @@ function submit() {
     message.warning('请选择模型');
     return;
   }
+  const selectedModel = modelOptions.value.find(
+    (item) => item.modelId === formData.value.modelId,
+  );
   emit('submit', {
     /** 撰写的时候没有 originalContent 字段*/
     ...(selectedTab.value === 1
@@ -118,15 +137,17 @@ function submit() {
       : formData.value),
     /** 使用选中 tab 值覆盖当前的 type 类型 */
     type: selectedTab.value,
+    model: selectedModel?.modelName || selectedModel?.modelId,
+    platform: selectedModel?.platformName,
   });
 }
 
 onMounted(async () => {
   try {
-    modelOptions.value = await getModelSimpleList();
+    modelOptions.value = await fetchProviderModels('text');
     if (!formData.value.modelId && modelOptions.value[0]) {
-      formData.value.modelId = modelOptions.value[0].id;
-      initData.modelId = modelOptions.value[0].id;
+      formData.value.modelId = modelOptions.value[0].modelId || '';
+      initData.modelId = modelOptions.value[0].modelId || '';
     }
   } catch {
     message.warning('模型列表加载失败');
@@ -192,8 +213,8 @@ onMounted(async () => {
           placeholder="请选择模型"
           :options="
             modelOptions.map((item) => ({
-              label: item.name,
-              value: item.id,
+              label: item.modelName || item.modelId,
+              value: item.modelId,
             }))
           "
         />

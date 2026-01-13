@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import type { AiImageApi } from '#/api/ai/image';
+import type { PropType } from 'vue';
 
-import { ref, toRefs, watch } from 'vue';
+import { computed } from 'vue';
 
 import { formatDate } from '@vben/utils';
 
 import { Image } from 'ant-design-vue';
 
-import { getImageMy } from '#/api/ai/image';
-
 import {
   AiPlatformEnum,
   Dall3StyleList,
+  type ImageRecordView,
+  normalizeImageRecord,
   StableDiffusionClipGuidancePresets,
   StableDiffusionSamplers,
   StableDiffusionStylePresets,
@@ -19,34 +19,20 @@ import {
 
 // 图片详细信息
 const props = defineProps({
-  id: {
-    type: Number,
-    required: true,
+  detail: {
+    type: Object as PropType<ImageRecordView | null>,
+    default: null,
   },
 });
-const detail = ref<AiImageApi.Image>({} as AiImageApi.Image);
-
-/**  获取图片详情  */
-async function getImageDetail(id: number) {
-  detail.value = await getImageMy(id);
-}
-
-const { id } = toRefs(props);
-watch(
-  id,
-  async (newVal) => {
-    if (newVal) {
-      await getImageDetail(newVal);
-    }
-  },
-  { immediate: true },
+const detail = computed(() =>
+  props.detail ? normalizeImageRecord(props.detail) : null,
 );
 </script>
 
 <template>
   <div class="mb-5 w-full overflow-hidden break-words">
     <div class="mt-2 text-gray-600">
-      <Image class="rounded-lg" :src="detail?.picUrl" />
+      <Image class="rounded-lg" :src="detail?.picUrl || detail?.picURL" />
     </div>
   </div>
 
@@ -55,10 +41,10 @@ watch(
     <div class="text-lg font-bold">时间</div>
     <div class="mt-2 text-gray-600">
       <div>
-        提交时间：{{ formatDate(detail.createTime, 'yyyy-MM-dd HH:mm:ss') }}
+        提交时间：{{ formatDate(detail?.createTime, 'yyyy-MM-dd HH:mm:ss') }}
       </div>
       <div>
-        生成时间：{{ formatDate(detail.finishTime, 'yyyy-MM-dd HH:mm:ss') }}
+        生成时间：{{ formatDate(detail?.finishTime, 'yyyy-MM-dd HH:mm:ss') }}
       </div>
     </div>
   </div>
@@ -67,7 +53,7 @@ watch(
   <div class="mb-5 w-full overflow-hidden break-words">
     <div class="text-lg font-bold">模型</div>
     <div class="mt-2 text-gray-600">
-      {{ detail.model }}({{ detail.height }}x{{ detail.width }})
+      {{ detail?.model }}({{ detail?.height }}x{{ detail?.width }})
     </div>
   </div>
 
@@ -75,7 +61,7 @@ watch(
   <div class="mb-5 w-full overflow-hidden break-words">
     <div class="text-lg font-bold">提示词</div>
     <div class="mt-2 text-gray-600">
-      {{ detail.prompt }}
+      {{ detail?.prompt }}
     </div>
   </div>
 
@@ -83,14 +69,14 @@ watch(
   <div class="mb-5 w-full overflow-hidden break-words">
     <div class="text-lg font-bold">图片地址</div>
     <div class="mt-2 text-gray-600">
-      {{ detail.picUrl }}
+      {{ detail?.picUrl || detail?.picURL }}
     </div>
   </div>
 
   <!-- StableDiffusion 专属 -->
   <div
     v-if="
-      detail.platform === AiPlatformEnum.STABLE_DIFFUSION &&
+      detail?.platform === AiPlatformEnum.STABLE_DIFFUSION &&
       detail?.options?.sampler
     "
     class="mb-5 w-full overflow-hidden break-words"
@@ -107,7 +93,7 @@ watch(
 
   <div
     v-if="
-      detail.platform === AiPlatformEnum.STABLE_DIFFUSION &&
+      detail?.platform === AiPlatformEnum.STABLE_DIFFUSION &&
       detail?.options?.clipGuidancePreset
     "
     class="mb-5 w-full overflow-hidden break-words"
@@ -124,7 +110,7 @@ watch(
 
   <div
     v-if="
-      detail.platform === AiPlatformEnum.STABLE_DIFFUSION &&
+      detail?.platform === AiPlatformEnum.STABLE_DIFFUSION &&
       detail?.options?.stylePreset
     "
     class="mb-5 w-full overflow-hidden break-words"
@@ -141,7 +127,7 @@ watch(
 
   <div
     v-if="
-      detail.platform === AiPlatformEnum.STABLE_DIFFUSION &&
+      detail?.platform === AiPlatformEnum.STABLE_DIFFUSION &&
       detail?.options?.steps
     "
     class="mb-5 w-full overflow-hidden break-words"
@@ -152,7 +138,7 @@ watch(
 
   <div
     v-if="
-      detail.platform === AiPlatformEnum.STABLE_DIFFUSION &&
+      detail?.platform === AiPlatformEnum.STABLE_DIFFUSION &&
       detail?.options?.scale
     "
     class="mb-5 w-full overflow-hidden break-words"
@@ -163,7 +149,7 @@ watch(
 
   <div
     v-if="
-      detail.platform === AiPlatformEnum.STABLE_DIFFUSION &&
+      detail?.platform === AiPlatformEnum.STABLE_DIFFUSION &&
       detail?.options?.seed
     "
     class="mb-5 w-full overflow-hidden break-words"
@@ -174,7 +160,7 @@ watch(
 
   <!-- Dall3 专属 -->
   <div
-    v-if="detail.platform === AiPlatformEnum.OPENAI && detail?.options?.style"
+    v-if="detail?.platform === AiPlatformEnum.OPENAI && detail?.options?.style"
     class="mb-5 w-full overflow-hidden break-words"
   >
     <div class="text-lg font-bold">风格选择</div>
@@ -188,7 +174,7 @@ watch(
   <!-- Midjourney 专属 -->
   <div
     v-if="
-      detail.platform === AiPlatformEnum.MIDJOURNEY && detail?.options?.version
+      detail?.platform === AiPlatformEnum.MIDJOURNEY && detail?.options?.version
     "
     class="mb-5 w-full overflow-hidden break-words"
   >
@@ -198,14 +184,14 @@ watch(
 
   <div
     v-if="
-      detail.platform === AiPlatformEnum.MIDJOURNEY &&
+      detail?.platform === AiPlatformEnum.MIDJOURNEY &&
       detail?.options?.referImageUrl
     "
     class="mb-5 w-full overflow-hidden break-words"
   >
     <div class="text-lg font-bold">参考图</div>
     <div class="mt-2 text-gray-600">
-      <Image :src="detail.options.referImageUrl" />
+      <Image :src="detail?.options?.referImageUrl" />
     </div>
   </div>
 </template>

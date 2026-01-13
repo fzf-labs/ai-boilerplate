@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { AiImageApi } from '#/api/ai/image';
 
 import { onMounted, onUnmounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -11,15 +10,18 @@ import { useDebounceFn } from '@vueuse/core';
 import { Button, Card, message, Pagination } from 'ant-design-vue';
 
 import {
-  deleteImageMy,
-  getImageListMyByIds,
-  getImagePageMy,
-  midjourneyAction,
-} from '#/api/ai/image';
+  deleteAiIndexImageRecord,
+  getAiIndexImageRecordList,
+} from '#/api/v1/ai-index-image';
 
 import ImageCard from './ImageCard.vue';
 import ImageDetail from './ImageDetail.vue';
-import { AiImageStatusEnum } from './typing';
+import {
+  AiImageStatusEnum,
+  type ImageMidjourneyButton,
+  type ImageRecordView,
+  normalizeImageRecord,
+} from './typing';
 
 // 暴露组件方法
 
@@ -35,12 +37,12 @@ const queryParams = reactive({
   pageSize: 10,
 });
 const pageTotal = ref<number>(0); // page size
-const imageList = ref<AiImageApi.Image[]>([]); // image 列表
+const imageList = ref<ImageRecordView[]>([]); // image 列表
 const imageListRef = ref<any>(); // ref
 // 图片轮询相关的参数（正在生成中的）
 const inProgressImageMap = ref<{}>({}); // 监听的 image 映射，一般是生成中（需要轮询），key 为 image 编号，value 为 image
 const inProgressTimer = ref<any>(); // 生成中的 image 定时器，轮询生成进展
-const showImageDetailId = ref<number>(0); // 图片详情的图片编号
+const showImageDetail = ref<ImageRecordView | null>(null); // 图片详情的图片信息
 
 /** 处理查看绘图作品 */
 function handleViewPublic() {
@@ -54,16 +56,23 @@ async function handleDetailOpen() {
   drawerApi.open();
 }
 /** 获得 image 图片列表 */
-async function getImageList() {
-  const loading = message.loading({
-    content: `加载中...`,
-  });
+async function getImageList(isSilent = false) {
+  const loading = isSilent
+    ? null
+    : message.loading({
+        content: `加载中...`,
+      });
   try {
     // 1. 加载图片列表
 
-    const { list, total } = await getImagePageMy(queryParams);
-    imageList.value = list;
-    pageTotal.value = total;
+    const { list, total } = await getAiIndexImageRecordList({
+      params: {
+        page: queryParams.page,
+        pageSize: queryParams.pageSize,
+      },
+    });
+    imageList.value = (list || []).map(normalizeImageRecord);
+    pageTotal.value = total || 0;
 
     // 2. 计算需要轮询的图片
     const newWatImages: any = {};
@@ -75,49 +84,41 @@ async function getImageList() {
     inProgressImageMap.value = newWatImages;
   } finally {
     // 关闭正在“加载中”的 Loading
-    loading();
+    if (loading) {
+      loading();
+    }
   }
 }
 const debounceGetImageList = useDebounceFn(getImageList, 80);
 /** 轮询生成中的 image 列表 */
 async function refreshWatchImages() {
-  const imageIds = Object.keys(inProgressImageMap.value).map(Number);
-  if (imageIds.length === 0) {
+  if (Object.keys(inProgressImageMap.value).length === 0) {
     return;
   }
-  const list = (await getImageListMyByIds(imageIds)) as AiImageApi.Image[];
-  const newWatchImages: any = {};
-  list.forEach((image) => {
-    if (image.status === AiImageStatusEnum.IN_PROGRESS) {
-      newWatchImages[image.id] = image;
-    } else {
-      const index = imageList.value.findIndex(
-        (oldImage) => image.id === oldImage.id,
-      );
-      if (index !== -1) {
-        // 更新 imageList
-        imageList.value[index] = image;
-      }
-    }
-  });
-  inProgressImageMap.value = newWatchImages;
+  await getImageList(true);
 }
 
 /** 图片的点击事件 */
 async function handleImageButtonClick(
   type: string,
-  imageDetail: AiImageApi.Image,
+  imageDetail: ImageRecordView,
 ) {
   // 详情
   if (type === 'more') {
-    showImageDetailId.value = imageDetail.id;
+    showImageDetail.value = imageDetail;
     await handleDetailOpen();
     return;
   }
   // 删除
   if (type === 'delete') {
     await confirm(`是否删除照片?`);
-    await deleteImageMy(imageDetail.id);
+    if (imageDetail.id) {
+      await deleteAiIndexImageRecord({
+        body: {
+          id: imageDetail.id,
+        },
+      });
+    }
     await getImageList();
     message.success('删除成功!');
     return;
@@ -126,7 +127,7 @@ async function handleImageButtonClick(
   if (type === 'download') {
     await downloadFileFromImageUrl({
       fileName: imageDetail.model,
-      source: imageDetail.picUrl,
+      source: imageDetail.picUrl || imageDetail.picURL,
     });
     return;
   }
@@ -138,18 +139,13 @@ async function handleImageButtonClick(
 
 /** 处理 Midjourney 按钮点击事件  */
 async function handleImageMidjourneyButtonClick(
-  button: AiImageApi.ImageMidjourneyButtons,
-  imageDetail: AiImageApi.Image,
+  button: ImageMidjourneyButton,
+  imageDetail: ImageRecordView,
 ) {
-  // 1. 构建 params 参数
-  const data = {
-    id: imageDetail.id,
-    customId: button.customId,
-  } as AiImageApi.ImageMidjourneyAction;
-  // 2. 发送 action
-  await midjourneyAction(data);
-  // 3. 刷新列表
-  await getImageList();
+  if (!button || !imageDetail?.id) {
+    return;
+  }
+  message.info('当前接口暂不支持该操作');
 }
 
 defineExpose({ getImageList }); /** 组件挂在的时候 */
@@ -171,7 +167,7 @@ onUnmounted(async () => {
 </script>
 <template>
   <Drawer class="w-2/5">
-    <ImageDetail :id="showImageDetailId" />
+    <ImageDetail :detail="showImageDetail" />
   </Drawer>
   <Card
     class="flex h-full w-full flex-col"

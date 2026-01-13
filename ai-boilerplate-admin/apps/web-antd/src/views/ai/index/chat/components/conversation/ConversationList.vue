@@ -1,25 +1,21 @@
 <script setup lang="ts">
 import type { PropType } from 'vue';
-
-import type { AiChatConversationApi } from '#/api/ai/chat';
+import type * as AiIndexChatApi from '#/api/v1/ai-index-chat';
 
 import { h, onMounted, ref, toRefs, watch } from 'vue';
 
-import { confirm, prompt, useVbenDrawer } from '@vben/common-ui';
+import { confirm, prompt } from '@vben/common-ui';
 import { IconifyIcon, SvgGptIcon } from '@vben/icons';
 
-import { Avatar, Button, Empty, Input, Layout, message } from 'ant-design-vue';
+import { Button, Empty, Input, Layout, message } from 'ant-design-vue';
 
 import {
-  createChatConversationMy,
-  deleteChatConversationMy,
-  deleteChatConversationMyByUnpinned,
-  getChatConversationMyList,
-  pinChatConversation,
-  updateChatConversationMy,
-} from '#/api/ai/chat';
-
-import RoleRepository from '../role/RoleRepository.vue';
+  createAiIndexChatConversation,
+  deleteAiIndexChatConversation,
+  getAiIndexChatConversationList,
+  pinAiIndexChatConversation,
+  updateAiIndexChatConversation,
+} from '#/api/v1/ai-index-chat';
 
 // 定义组件 props
 const props = defineProps({
@@ -37,15 +33,13 @@ const emits = defineEmits([
   'onConversationDelete',
 ]);
 
-const [Drawer, drawerApi] = useVbenDrawer({
-  connectedComponent: RoleRepository,
-});
-
 // 定义属性
 const searchName = ref<string>(''); // 对话搜索
 const activeConversationId = ref<null | string>(null); // 选中的对话，默认为 null
 const hoverConversationId = ref<null | string>(null); // 悬浮上去的对话
-const conversationList = ref([] as AiChatConversationApi.ChatConversation[]); // 对话列表
+const conversationList = ref(
+  [] as AiIndexChatApi.AiIndexChatConversationItem[],
+); // 对话列表
 const conversationMap = ref<any>({}); // 对话分组 (置顶、今天、三天前、一星期前、一个月前)
 const loading = ref<boolean>(false); // 加载中
 const loadingTime = ref<any>();
@@ -94,10 +88,15 @@ async function getChatConversationList() {
     }, 50);
 
     // 1.1 获取 对话数据
-    conversationList.value = await getChatConversationMyList();
+    const { list } = await getAiIndexChatConversationList({
+      params: { page: 1, pageSize: 200 },
+    });
+    conversationList.value = list || [];
     // 1.2 排序
     conversationList.value.sort((a, b) => {
-      return Number(b.createTime || 0) - Number(a.createTime || 0);
+      const bTime = Date.parse(b.createdAt || '') || 0;
+      const aTime = Date.parse(a.createdAt || '') || 0;
+      return bTime - aTime;
     });
     // 1.3 没有任何对话情况
     if (conversationList.value.length === 0) {
@@ -122,7 +121,7 @@ async function getChatConversationList() {
 
 /** 按照 creteTime 创建时间，进行分组 */
 async function getConversationGroupByCreateTime(
-  list: AiChatConversationApi.ChatConversation[],
+  list: AiIndexChatApi.AiIndexChatConversationItem[],
 ) {
   // 排序、指定、时间分组(今天、一天前、三天前、七天前、30天前)
   // noinspection NonAsciiCharacters
@@ -148,7 +147,8 @@ async function getConversationGroupByCreateTime(
       continue;
     }
     // 计算时间差（单位：毫秒）
-    const diff = now - Number(conversation.createTime || 0);
+    const createdTime = Date.parse(conversation.createdAt || '') || 0;
+    const diff = now - createdTime;
     // 根据时间间隔判断
     if (diff < oneDay) {
       groupMap['今天'].push(conversation);
@@ -167,9 +167,12 @@ async function getConversationGroupByCreateTime(
 
 async function createConversation() {
   // 1. 新建对话
-  const conversationId = await createChatConversationMy(
-    {} as unknown as AiChatConversationApi.ChatConversation,
-  );
+  const res = await createAiIndexChatConversation({
+    body: {
+      title: '新对话',
+    },
+  });
+  const conversationId = res?.id;
   // 2. 获取对话内容
   await getChatConversationList();
   // 3. 选中对话
@@ -182,7 +185,7 @@ async function createConversation() {
 
 /** 修改对话的标题 */
 async function updateConversationTitle(
-  conversation: AiChatConversationApi.ChatConversation,
+  conversation: AiIndexChatApi.AiIndexChatConversationItem,
 ) {
   if (!conversation.id) {
     return;
@@ -194,10 +197,12 @@ async function updateConversationTitle(
         if (scope.value) {
           try {
             // 2. 发起修改
-            await updateChatConversationMy({
-              id: conversation.id,
-              title: scope.value,
-            } as AiChatConversationApi.ChatConversation);
+            await updateAiIndexChatConversation({
+              body: {
+                id: conversation.id,
+                title: scope.value,
+              },
+            });
             message.success('重命名成功');
             // 3. 刷新列表
             await getChatConversationList();
@@ -239,7 +244,7 @@ async function updateConversationTitle(
 
 /** 删除聊天对话 */
 async function deleteChatConversation(
-  conversation: AiChatConversationApi.ChatConversation,
+  conversation: AiIndexChatApi.AiIndexChatConversationItem,
 ) {
   try {
     if (!conversation.id) {
@@ -248,7 +253,11 @@ async function deleteChatConversation(
     // 删除的二次确认
     await confirm(`是否确认删除对话 - ${conversation.title}?`);
     // 发起删除
-    await deleteChatConversationMy(conversation.id);
+    await deleteAiIndexChatConversation({
+      body: {
+        id: conversation.id,
+      },
+    });
     message.success('对话已删除');
     // 刷新列表
     await getChatConversationList();
@@ -260,7 +269,14 @@ async function deleteChatConversation(
 async function handleClearConversation() {
   try {
     await confirm('确认后对话会全部清空，置顶的对话除外。');
-    await deleteChatConversationMyByUnpinned();
+    const targets = conversationList.value.filter((item) => !item.pinned);
+    await Promise.all(
+      targets.map((item) =>
+        item.id
+          ? deleteAiIndexChatConversation({ body: { id: item.id } })
+          : Promise.resolve(),
+      ),
+    );
     message.success('操作成功!');
     // 清空 对话 和 对话内容
     activeConversationId.value = null;
@@ -272,21 +288,19 @@ async function handleClearConversation() {
 }
 
 /** 对话置顶 */
-async function handleTop(conversation: AiChatConversationApi.ChatConversation) {
+async function handleTop(conversation: AiIndexChatApi.AiIndexChatConversationItem) {
   if (!conversation.id) {
     return;
   }
-  await pinChatConversation(conversation.id, !conversation.pinned);
+  await pinAiIndexChatConversation({
+    body: {
+      id: conversation.id,
+      pinned: !conversation.pinned,
+    },
+  });
   // 刷新对话
   await getChatConversationList();
 }
-
-// ============ 角色仓库 ============
-
-/** 角色仓库抽屉 */
-const handleRoleRepository = async () => {
-  drawerApi.open();
-};
 
 /** 监听选中的对话 */
 const { activeId } = toRefs(props);
@@ -320,7 +334,6 @@ onMounted(async () => {
     width="280px"
     class="conversation-container relative flex h-full flex-col justify-between overflow-hidden p-4"
   >
-    <Drawer />
     <!-- 左顶部：对话 -->
     <div class="flex h-full flex-col">
       <Button class="h-9 w-full" type="primary" @click="createConversation">
@@ -377,11 +390,7 @@ onMounted(async () => {
               ]"
             >
               <div class="title-wrapper flex items-center">
-                <Avatar
-                  v-if="conversation.roleAvatar"
-                  :src="conversation.roleAvatar"
-                />
-                <SvgGptIcon v-else class="size-8" />
+                <SvgGptIcon class="size-8" />
                 <span
                   class="max-w-36 overflow-hidden text-ellipsis whitespace-nowrap p-2 text-sm font-normal text-gray-600"
                 >
@@ -435,13 +444,6 @@ onMounted(async () => {
     <div
       class="bg-card absolute bottom-1 left-0 right-0 mb-4 flex items-center justify-between px-5 leading-9 text-gray-400 shadow-sm"
     >
-      <div
-        class="flex cursor-pointer items-center text-gray-400"
-        @click="handleRoleRepository"
-      >
-        <IconifyIcon icon="lucide:user" />
-        <span class="ml-1">角色仓库</span>
-      </div>
       <div
         class="flex cursor-pointer items-center text-gray-400"
         @click="handleClearConversation"

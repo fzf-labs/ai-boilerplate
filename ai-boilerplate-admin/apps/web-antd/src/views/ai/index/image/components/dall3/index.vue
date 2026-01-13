@@ -2,30 +2,32 @@
 <script setup lang="ts">
 import type { ImageModel, ImageSize } from '../typing';
 
-import type { AiImageApi } from '#/api/ai/image';
-import type { AiModelModelApi } from '#/api/ai/model/model';
+import type { ProviderModelOption } from '../../../utils';
 
 import { ref } from 'vue';
 
 import { confirm } from '@vben/common-ui';
+import { useUserStore } from '@vben/stores';
 
 import { Button, Image, message, Space, Textarea } from 'ant-design-vue';
 
-import { drawImage } from '#/api/ai/image';
+import { createAiIndexImageRecord } from '#/api/v1/ai-index-image';
 
 import {
+  AiImageStatusEnum,
   AiPlatformEnum,
   Dall3Models,
   Dall3SizeList,
   Dall3StyleList,
   ImageHotWords,
+  type ImageRecordView,
 } from '../typing';
 
 // 接收父组件传入的模型列表
 const props = defineProps({
   models: {
-    type: Array<AiModelModelApi.Model>,
-    default: () => [] as AiModelModelApi.Model[],
+    type: Array<ProviderModelOption>,
+    default: () => [] as ProviderModelOption[],
   },
 });
 const emits = defineEmits(['onDrawStart', 'onDrawComplete']);
@@ -37,6 +39,7 @@ const selectHotWord = ref<string>(''); // 选中的热词
 const selectModel = ref<string>('dall-e-3'); // 模型
 const selectSize = ref<string>('1024x1024'); // 选中 size
 const style = ref<string>('vivid'); // style 样式
+const userStore = useUserStore();
 
 /** 选择热词 */
 async function handleHotWordClick(hotWord: string) {
@@ -92,8 +95,8 @@ async function handleGenerateImage() {
   // 从 models 中查找匹配的模型
   const matchedModel = props.models.find(
     (item) =>
-      item.model === selectModel.value &&
-      item.platform === AiPlatformEnum.OPENAI,
+      item.modelId === selectModel.value &&
+      item.platformName === AiPlatformEnum.OPENAI,
   );
   if (!matchedModel) {
     message.error('该模型不可用，请选择其它模型');
@@ -110,19 +113,22 @@ async function handleGenerateImage() {
     const imageSize = Dall3SizeList.find(
       (item) => item.key === selectSize.value,
     ) as ImageSize;
-    const form = {
-      platform: AiPlatformEnum.OPENAI,
-      prompt: prompt.value, // 提示词
-      modelId: matchedModel.id, // 使用匹配到的模型
-      style: style.value, // 图像生成的风格
-      width: imageSize.width, // size 不能为空
-      height: imageSize.height, // size 不能为空
-      options: {
-        style: style.value, // 图像生成的风格
+    await createAiIndexImageRecord({
+      body: {
+        adminId: userStore.userInfo?.userId || '',
+        prompt: prompt.value,
+        platform: AiPlatformEnum.OPENAI,
+        modelId: matchedModel.modelId || '',
+        model: matchedModel.modelName || matchedModel.modelId || '',
+        width: Number(imageSize.width),
+        height: Number(imageSize.height),
+        status: AiImageStatusEnum.IN_PROGRESS,
+        publicStatus: false,
+        options: JSON.stringify({
+          style: style.value,
+        }),
       },
-    } as AiImageApi.ImageDrawReq;
-    // 发送请求
-    await drawImage(form);
+    });
   } finally {
     // 回调
     emits('onDrawComplete', AiPlatformEnum.OPENAI);
@@ -132,9 +138,9 @@ async function handleGenerateImage() {
 }
 
 /** 填充值 */
-async function settingValues(detail: AiImageApi.Image) {
+async function settingValues(detail: ImageRecordView) {
   prompt.value = detail.prompt;
-  selectModel.value = detail.model;
+  selectModel.value = detail.modelId || detail.model;
   style.value = detail.options?.style;
   const imageSize = Dall3SizeList.find(
     (item) => item.key === `${detail.width}x${detail.height}`,

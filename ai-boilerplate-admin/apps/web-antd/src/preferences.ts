@@ -12,4 +12,7 @@ export const overridesPreferences = defineOverridesPreferences({
     accessMode: 'backend', // 权限模式
     enableRefreshToken: true, // 是否开启刷新token
   },
+  logo: {
+    source: '/favicon.svg',
+  },
 });

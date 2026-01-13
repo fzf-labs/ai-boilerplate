@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import type { AiImageApi } from '#/api/ai/image';
-import type { AiModelModelApi } from '#/api/ai/model/model';
+import type { AiIndexImageRecordInfo } from '#/api/v1/ai-index-image';
 
 import { nextTick, onMounted, ref } from 'vue';
 
@@ -8,14 +7,17 @@ import { Page } from '@vben/common-ui';
 
 import { Segmented } from 'ant-design-vue';
 
-import { getModelSimpleList } from '#/api/ai/model/model';
-
 import Common from './components/common/index.vue';
 import Dall3 from './components/dall3/index.vue';
 import ImageList from './components/ImageList.vue';
 import Midjourney from './components/midjourney/index.vue';
 import StableDiffusion from './components/stableDiffusion/index.vue';
-import { AiModelTypeEnum, AiPlatformEnum } from './components/typing';
+import { AiPlatformEnum } from './components/typing';
+import { fetchProviderModels, type ProviderModelOption } from '../utils';
+
+type ImageRecordView = AiIndexImageRecordInfo & {
+  options?: Record<string, any>;
+};
 
 const imageListRef = ref<any>(); // image 列表 ref
 const dall3Ref = ref<any>(); // dall3(openai) ref
@@ -44,7 +46,7 @@ const platformOptions = [
   },
 ];
 
-const models = ref<AiModelModelApi.Model[]>([]); // 模型列表
+const models = ref<ProviderModelOption[]>([]); // 模型列表
 
 /** 绘画 start  */
 const handleDrawStart = async () => {};
@@ -55,7 +57,7 @@ const handleDrawComplete = async () => {
 };
 
 /** 重新生成：将画图详情填充到对应平台 */
-const handleRegeneration = async (image: AiImageApi.Image) => {
+const handleRegeneration = async (image: ImageRecordView) => {
   // 切换平台
   selectPlatform.value = image.platform;
   // 根据不同平台填充 image
@@ -84,7 +86,7 @@ const handleRegeneration = async (image: AiImageApi.Image) => {
 /** 组件挂载的时候 */
 onMounted(async () => {
   // 获取模型列表
-  models.value = await getModelSimpleList(AiModelTypeEnum.IMAGE);
+  models.value = await fetchProviderModels('image');
 });
 </script>
 

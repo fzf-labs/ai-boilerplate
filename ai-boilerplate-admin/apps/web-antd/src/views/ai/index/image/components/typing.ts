@@ -23,6 +23,66 @@ export const AiPlatformEnum = {
   SUNO: 'Suno', // Suno AI
 };
 
+export type ImageMidjourneyButton = {
+  label?: string;
+  emoji?: string;
+  customId?: string;
+};
+
+export type ImageRecordView = {
+  id?: string;
+  adminId?: string;
+  prompt?: string;
+  platform?: string;
+  modelId?: string;
+  model?: string;
+  width?: number;
+  height?: number;
+  status?: number;
+  finishTime?: string;
+  errorMessage?: string;
+  publicStatus?: boolean;
+  picURL?: string;
+  picUrl?: string;
+  options?: Record<string, any>;
+  taskId?: string;
+  buttons?: ImageMidjourneyButton[];
+  createTime?: string;
+  createdAt?: string;
+};
+
+export function normalizeImageRecord(record: any): ImageRecordView {
+  let options: Record<string, any> = {};
+  if (record?.options) {
+    try {
+      options =
+        typeof record.options === 'string'
+          ? JSON.parse(record.options)
+          : record.options;
+    } catch {
+      options = {};
+    }
+  }
+  let buttons: ImageMidjourneyButton[] = [];
+  if (record?.buttons) {
+    try {
+      buttons =
+        typeof record.buttons === 'string'
+          ? JSON.parse(record.buttons)
+          : record.buttons;
+    } catch {
+      buttons = [];
+    }
+  }
+  return {
+    ...record,
+    picUrl: record?.picUrl || record?.picURL,
+    createTime: record?.createTime || record?.createdAt,
+    options,
+    buttons,
+  };
+}
+
 export interface ImageModel {
   key: string;
   name: string;

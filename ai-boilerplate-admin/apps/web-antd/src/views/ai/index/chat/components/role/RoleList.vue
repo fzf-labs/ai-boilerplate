@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue';
 
-import type { AiModelChatRoleApi } from '#/api/ai/model/chatRole';
-
 import { ref } from 'vue';
 
 import { IconifyIcon } from '@vben/icons';
@@ -18,7 +16,9 @@ const props = defineProps({
     required: true,
   },
   roleList: {
-    type: Array as PropType<AiModelChatRoleApi.ChatRole[]>,
+    type: Array as PropType<
+      Array<{ id?: string; name?: string; description?: string; avatar?: string }>
+    >,
     required: true,
   },
   showMore: {

@@ -1,15 +1,21 @@
 <script setup lang="ts">
 import type { Recordable } from '@vben/types';
-import type { AiMusicApi } from '#/api/ai/music';
+import type { AiIndexAudioRecordInfo } from '#/api/v1/ai-index-audio';
+import type { ProviderModelOption } from '../../utils';
 
 import { onMounted, provide, ref } from 'vue';
 
+import { useUserStore } from '@vben/stores';
 import { Col, Empty, Row, TabPane, Tabs, message } from 'ant-design-vue';
 
 import audioBar from './audioBar/index.vue';
 import songCard from './songCard/index.vue';
 import songInfo from './songInfo/index.vue';
-import { createMusicRecord, getMusicPageMy } from '#/api/ai/music';
+import {
+  createAiIndexAudioRecord,
+  getAiIndexAudioRecordList,
+} from '#/api/v1/ai-index-audio';
+import { fetchProviderModels } from '../../utils';
 
 defineOptions({ name: 'AiMusicListIndex' });
 
@@ -18,16 +24,38 @@ const currentType = ref('mine');
 const loading = ref(false);
 // 当前音乐
 const currentSong = ref({});
+const userStore = useUserStore();
+const modelOptions = ref<ProviderModelOption[]>([]);
 
-const mySongList = ref<AiMusicApi.Music[]>([]);
-const squareSongList = ref<AiMusicApi.Music[]>([]);
+type MusicRecordView = AiIndexAudioRecordInfo & {
+  imageUrl?: string;
+  audioUrl?: string;
+  desc?: string;
+  date?: string;
+};
+
+const mySongList = ref<MusicRecordView[]>([]);
+const squareSongList = ref<MusicRecordView[]>([]);
+
+function normalizeMusicRecord(record: AiIndexAudioRecordInfo): MusicRecordView {
+  return {
+    ...record,
+    imageUrl: record.imageURL,
+    audioUrl: record.audioURL,
+    desc: record.description,
+    date: record.createdAt,
+  };
+}
 
 async function loadMusicList() {
-  const { list } = await getMusicPageMy({ page: 1, pageSize: 50 });
-  mySongList.value = list.filter((item) => !item.publicStatus);
-  squareSongList.value = list.filter((item) => item.publicStatus);
-  if (!currentSong.value?.id && list[0]) {
-    currentSong.value = list[0];
+  const { list } = await getAiIndexAudioRecordList({
+    params: { page: 1, pageSize: 50 },
+  });
+  const normalized = (list || []).map(normalizeMusicRecord);
+  mySongList.value = normalized.filter((item) => !item.publicStatus);
+  squareSongList.value = normalized.filter((item) => item.publicStatus);
+  if (!currentSong.value?.id && normalized[0]) {
+    currentSong.value = normalized[0];
   }
 }
 
@@ -43,6 +71,11 @@ async function generateMusic(formData: Recordable<any>) {
       message.warning('请填写生成信息');
       return;
     }
+    const selectedModel = modelOptions.value[0];
+    if (!selectedModel) {
+      message.warning('未配置音频模型');
+      return;
+    }
     const isLyric = formData.generateMode === 'lyric' || !!formData.lyric;
     const desc = formData.desc || formData.description || '';
     const title =
@@ -52,14 +85,22 @@ async function generateMusic(formData: Recordable<any>) {
       formData.pure ? '纯音乐' : '',
       formData.version ? `版本:${formData.version}` : '',
     ].filter(Boolean);
-    await createMusicRecord({
-      title,
-      description: desc || formData.style,
-      lyric: formData.lyric,
-      prompt: promptParts.join(' '),
-      tags: formData.style,
-      generateMode: isLyric ? 2 : 1,
-      publicStatus: false,
+    await createAiIndexAudioRecord({
+      body: {
+        tenantId: userStore.userInfo?.tenantId || '',
+        adminId: userStore.userInfo?.userId || '',
+        title,
+        description: desc || formData.style,
+        lyric: formData.lyric,
+        prompt: promptParts.join(' '),
+        tags: formData.style,
+        generateMode: isLyric ? 2 : 1,
+        publicStatus: false,
+        status: 10,
+        platform: selectedModel.platformName || '',
+        modelId: selectedModel.modelId || '',
+        model: selectedModel.modelName || selectedModel.modelId || '',
+      },
     });
     await loadMusicList();
     message.success('已提交音乐任务');
@@ -88,6 +129,7 @@ provide('currentSong', currentSong);
 onMounted(async () => {
   try {
     loading.value = true;
+    modelOptions.value = await fetchProviderModels('audio');
     await loadMusicList();
   } catch (error: any) {
     message.error(error?.message || '音乐列表加载失败');

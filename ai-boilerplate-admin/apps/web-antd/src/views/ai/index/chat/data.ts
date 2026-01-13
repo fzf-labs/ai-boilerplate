@@ -1,6 +1,18 @@
 import type { VbenFormSchema } from '#/adapter/form';
 
-import { getModelSimpleList } from '#/api/ai/model/model';
+import { getAiProviderModelList } from '#/api/v1/ai-provider-model';
+
+async function getChatModelOptions() {
+  const { list } = await getAiProviderModelList({
+    params: { page: 1, pageSize: 200 },
+  });
+  return (list || [])
+    .filter((item) => item.modelType === 'text')
+    .map((item) => ({
+      label: item.modelName || item.modelId,
+      value: item.modelId,
+    }));
+}
 
 export function useFormSchema(): VbenFormSchema[] {
   return [
@@ -26,9 +38,9 @@ export function useFormSchema(): VbenFormSchema[] {
       fieldName: 'modelId',
       label: '模型',
       componentProps: {
-        api: getModelSimpleList,
-        labelField: 'name',
-        valueField: 'id',
+        api: getChatModelOptions,
+        labelField: 'label',
+        valueField: 'value',
         allowClear: true,
         placeholder: '请选择模型',
       },

@@ -2,12 +2,12 @@
 <script setup lang="ts">
 import type { ImageModel, ImageSize } from '../typing';
 
-import type { AiImageApi } from '#/api/ai/image';
-import type { AiModelModelApi } from '#/api/ai/model/model';
+import type { ProviderModelOption } from '../../../utils';
 
 import { ref } from 'vue';
 
 import { confirm } from '@vben/common-ui';
+import { useUserStore } from '@vben/stores';
 
 import {
   Button,
@@ -18,16 +18,18 @@ import {
   Textarea,
 } from 'ant-design-vue';
 
-import { midjourneyImagine } from '#/api/ai/image';
+import { createAiIndexImageRecord } from '#/api/v1/ai-index-image';
 import { ImageUpload } from '#/components/upload';
 
 import {
+  AiImageStatusEnum,
   AiPlatformEnum,
   ImageHotWords,
   MidjourneyModels,
   MidjourneySizeList,
   MidjourneyVersions,
   NijiVersionList,
+  type ImageRecordView,
 } from '../typing';
 
 // 消息弹窗
@@ -35,8 +37,8 @@ import {
 // 接收父组件传入的模型列表
 const props = defineProps({
   models: {
-    type: Array<AiModelModelApi.Model>,
-    default: () => [] as AiModelModelApi.Model[],
+    type: Array<ProviderModelOption>,
+    default: () => [] as ProviderModelOption[],
   },
 });
 const emits = defineEmits(['onDrawStart', 'onDrawComplete']);
@@ -51,6 +53,7 @@ const selectModel = ref<string>('midjourney'); // 选中的模型
 const selectSize = ref<string>('1:1'); // 选中 size
 const selectVersion = ref<any>('6.0'); // 选中的 version
 const versionList = ref<any>(MidjourneyVersions); // version 列表
+const userStore = useUserStore();
 
 /** 选择热词 */
 async function handleHotWordClick(hotWord: string) {
@@ -83,8 +86,8 @@ async function handleGenerateImage() {
   // 从 models 中查找匹配的模型
   const matchedModel = props.models.find(
     (item) =>
-      item.model === selectModel.value &&
-      item.platform === AiPlatformEnum.MIDJOURNEY,
+      item.modelId === selectModel.value &&
+      item.platformName === AiPlatformEnum.MIDJOURNEY,
   );
   if (!matchedModel) {
     message.error('该模型不可用，请选择其它模型');
@@ -102,15 +105,24 @@ async function handleGenerateImage() {
     const imageSize = MidjourneySizeList.find(
       (item) => selectSize.value === item.key,
     ) as ImageSize;
-    const req = {
-      prompt: prompt.value,
-      modelId: matchedModel.id,
-      width: imageSize.width,
-      height: imageSize.height,
-      version: selectVersion.value,
-      referImageUrl: referImageUrl.value,
-    } as AiImageApi.ImageMidjourneyImagineReq;
-    await midjourneyImagine(req);
+    await createAiIndexImageRecord({
+      body: {
+        adminId: userStore.userInfo?.userId || '',
+        prompt: prompt.value,
+        platform: AiPlatformEnum.MIDJOURNEY,
+        modelId: matchedModel.modelId || '',
+        model: matchedModel.modelName || matchedModel.modelId || '',
+        width: Number(imageSize.width),
+        height: Number(imageSize.height),
+        status: AiImageStatusEnum.IN_PROGRESS,
+        publicStatus: false,
+        options: JSON.stringify({
+          model: selectModel.value,
+          version: selectVersion.value,
+          referImageUrl: referImageUrl.value,
+        }),
+      },
+    });
   } finally {
     // 回调
     emits('onDrawComplete', AiPlatformEnum.MIDJOURNEY);
@@ -120,7 +132,7 @@ async function handleGenerateImage() {
 }
 
 /** 填充值 */
-async function settingValues(detail: AiImageApi.Image) {
+async function settingValues(detail: ImageRecordView) {
   // 提示词
   prompt.value = detail.prompt;
   // image size
@@ -130,7 +142,7 @@ async function settingValues(detail: AiImageApi.Image) {
   selectSize.value = imageSize.key;
   // 选中模型
   const model = MidjourneyModels.find(
-    (item) => item.key === detail.options?.model,
+    (item) => item.key === (detail.options?.model || detail.modelId),
   ) as ImageModel;
   await handleModelClick(model);
   // 版本

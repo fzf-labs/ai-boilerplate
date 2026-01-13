@@ -1,11 +1,17 @@
 <script lang="ts" setup>
-import type { AiWriteApi } from '#/api/ai/write';
+import type { CreateAiWriteRecordReq } from '#/api/v1/ai-write-record';
 
 import { nextTick, ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
+import { useUserStore } from '@vben/stores';
 
-import { writeStream } from '#/api/ai/write';
+import { message } from 'ant-design-vue';
+
+import {
+  createAiWriteRecord,
+  getAiWriteRecordInfo,
+} from '#/api/v1/ai-write-record';
 
 import Left from './components/Left.vue';
 import Right from './components/Right.vue';
@@ -13,41 +19,65 @@ import { WriteExample } from './components/typing';
 
 const writeResult = ref(''); // 写作结果
 const isWriting = ref(false); // 是否正在写作中
-const abortController = ref<AbortController>(); // // 写作进行中 abort 控制器(控制 stream 写作)
+const userStore = useUserStore();
 
 /** 停止 stream 生成 */
 function stopStream() {
-  abortController.value?.abort();
   isWriting.value = false;
 }
 
 /** 执行写作 */
 const rightRef = ref<InstanceType<typeof Right>>();
 
-function submit(data: Partial<AiWriteApi.Write>) {
-  abortController.value = new AbortController();
-  writeResult.value = '';
-  isWriting.value = true;
-  writeStream({
-    data,
-    onMessage: async (content: string) => {
-      if (!content) {
-        return;
+type WriteSubmitPayload = Partial<CreateAiWriteRecordReq> & {
+  model?: string;
+  platform?: string;
+};
+
+async function submit(data: WriteSubmitPayload) {
+  try {
+    writeResult.value = '';
+    isWriting.value = true;
+    if (!data.modelId || !data.model) {
+      message.error('请选择模型');
+      return;
+    }
+    const payload: CreateAiWriteRecordReq = {
+      adminId: userStore.userInfo?.userId || '',
+      platform: data.platform || '',
+      modelId: data.modelId,
+      model: data.model,
+      prompt: data.prompt || '',
+      generatedContent: data.generatedContent,
+      originalContent: data.originalContent,
+      length: data.length,
+      format: data.format,
+      tone: data.tone,
+      language: data.language,
+      type: data.type,
+    };
+    const res = await createAiWriteRecord({
+      body: payload,
+    });
+    if (res?.id) {
+      const info = await getAiWriteRecordInfo({
+        params: { id: res.id },
+      });
+      if (info?.info?.generatedContent) {
+        writeResult.value = info.info.generatedContent;
+        await nextTick();
+        rightRef.value?.scrollToBottom();
+      } else if (info?.info?.errorMessage) {
+        message.error(info.info.errorMessage);
+      } else {
+        message.success('已提交写作任务');
       }
-      writeResult.value = writeResult.value + content;
-      // 滚动到底部
-      await nextTick();
-      rightRef.value?.scrollToBottom();
-    },
-    ctrl: abortController.value,
-    onClose: stopStream,
-    onError: (error: any) => {
-      console.error('写作异常', error);
-      stopStream();
-      // 需要抛出异常，禁止重试
-      throw error;
-    },
-  });
+    }
+  } catch (error: any) {
+    message.error(error?.message || '写作失败');
+  } finally {
+    isWriting.value = false;
+  }
 }
 
 /** 点击示例触发 */

@@ -1,11 +1,11 @@
 <!-- dall3 -->
 <script setup lang="ts">
-import type { AiImageApi } from '#/api/ai/image';
-import type { AiModelModelApi } from '#/api/ai/model/model';
+import type { ProviderModelOption } from '../../../utils';
 
 import { ref } from 'vue';
 
 import { alert, confirm } from '@vben/common-ui';
+import { useUserStore } from '@vben/stores';
 
 import {
   Button,
@@ -16,21 +16,23 @@ import {
   Textarea,
 } from 'ant-design-vue';
 
-import { drawImage } from '#/api/ai/image';
+import { createAiIndexImageRecord } from '#/api/v1/ai-index-image';
 
 import {
+  AiImageStatusEnum,
   AiPlatformEnum,
   ImageHotEnglishWords,
   StableDiffusionClipGuidancePresets,
   StableDiffusionSamplers,
   StableDiffusionStylePresets,
+  type ImageRecordView,
 } from '../typing';
 
 // 接收父组件传入的模型列表
 const props = defineProps({
   models: {
-    type: Array<AiModelModelApi.Model>,
-    default: () => [] as AiModelModelApi.Model[],
+    type: Array<ProviderModelOption>,
+    default: () => [] as ProviderModelOption[],
   },
 });
 
@@ -53,6 +55,7 @@ const seed = ref<number>(42); // 控制生成图像的随机性
 const scale = ref<number>(7.5); // 引导系数
 const clipGuidancePreset = ref<string>('NONE'); // 文本提示相匹配的图像(clip_guidance_preset) 简称 CLIP
 const stylePreset = ref<string>('3d-model'); // 风格
+const userStore = useUserStore();
 
 /** 选择热词 */
 async function handleHotWordClick(hotWord: string) {
@@ -73,8 +76,8 @@ async function handleGenerateImage() {
   const selectModel = 'stable-diffusion-v1-6';
   const matchedModel = props.models.find(
     (item) =>
-      item.model === selectModel &&
-      item.platform === AiPlatformEnum.STABLE_DIFFUSION,
+      item.modelId === selectModel &&
+      item.platformName === AiPlatformEnum.STABLE_DIFFUSION,
   );
   if (!matchedModel) {
     message.error('该模型不可用，请选择其它模型');
@@ -94,21 +97,27 @@ async function handleGenerateImage() {
     // 回调
     emits('onDrawStart', AiPlatformEnum.STABLE_DIFFUSION);
     // 发送请求
-    const form = {
-      modelId: matchedModel.id,
-      prompt: prompt.value, // 提示词
-      width: width.value, // 图片宽度
-      height: height.value, // 图片高度
-      options: {
-        seed: seed.value, // 随机种子
-        steps: steps.value, // 图片生成步数
-        scale: scale.value, // 引导系数
-        sampler: sampler.value, // 采样算法
-        clipGuidancePreset: clipGuidancePreset.value, // 文本提示相匹配的图像 CLIP
-        stylePreset: stylePreset.value, // 风格
+    await createAiIndexImageRecord({
+      body: {
+        adminId: userStore.userInfo?.userId || '',
+        prompt: prompt.value,
+        platform: AiPlatformEnum.STABLE_DIFFUSION,
+        modelId: matchedModel.modelId || '',
+        model: matchedModel.modelName || matchedModel.modelId || '',
+        width: width.value,
+        height: height.value,
+        status: AiImageStatusEnum.IN_PROGRESS,
+        publicStatus: false,
+        options: JSON.stringify({
+          seed: seed.value,
+          steps: steps.value,
+          scale: scale.value,
+          sampler: sampler.value,
+          clipGuidancePreset: clipGuidancePreset.value,
+          stylePreset: stylePreset.value,
+        }),
       },
-    } as unknown as AiImageApi.ImageDrawReq;
-    await drawImage(form);
+    });
   } finally {
     // 回调
     emits('onDrawComplete', AiPlatformEnum.STABLE_DIFFUSION);
@@ -118,7 +127,7 @@ async function handleGenerateImage() {
 }
 
 /** 填充值 */
-async function settingValues(detail: AiImageApi.Image) {
+async function settingValues(detail: ImageRecordView) {
   prompt.value = detail.prompt;
   width.value = detail.width;
   height.value = detail.height;

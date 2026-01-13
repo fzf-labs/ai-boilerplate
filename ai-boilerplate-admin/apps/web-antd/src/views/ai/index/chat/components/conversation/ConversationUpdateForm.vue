@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { AiChatConversationApi } from '#/api/ai/chat';
+import type * as AiIndexChatApi from '#/api/v1/ai-index-chat';
 
 import { ref } from 'vue';
 
@@ -9,15 +9,15 @@ import { message } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
 import {
-  getChatConversationMy,
-  updateChatConversationMy,
-} from '#/api/ai/chat';
+  getAiIndexChatConversationItem,
+  updateAiIndexChatConversation,
+} from '#/api/v1/ai-index-chat';
 import { $t } from '#/locales';
 
 import { useFormSchema } from '../../data';
 
 const emit = defineEmits(['success']);
-const formData = ref<AiChatConversationApi.ChatConversation>();
+const formData = ref<AiIndexChatApi.AiIndexChatConversationItem>();
 
 const [Form, formApi] = useVbenForm({
   commonConfig: {
@@ -40,13 +40,14 @@ const [Modal, modalApi] = useVbenModal({
     }
     modalApi.lock();
     // 提交表单
-    const values =
-      (await formApi.getValues()) as AiChatConversationApi.ChatConversation & {
-        modelId?: string;
-        temperature?: number;
-        maxTokens?: number;
-        maxContexts?: number;
-      };
+    const values = (await formApi.getValues()) as {
+      id?: string;
+      systemMessage?: string;
+      modelId?: string;
+      temperature?: number;
+      maxTokens?: number;
+      maxContexts?: number;
+    };
     try {
       const modelSetting = {
         ...(formData.value?.modelSetting || {}),
@@ -58,11 +59,17 @@ const [Modal, modalApi] = useVbenModal({
         max_contexts:
           values.maxContexts ?? formData.value?.modelSetting?.max_contexts,
       };
-      await updateChatConversationMy({
-        id: values.id,
-        systemMessage: values.systemMessage,
-        modelSetting,
-      } as AiChatConversationApi.ChatConversation);
+      const promptSetting = {
+        ...(formData.value?.promptSetting || {}),
+        prompt: values.systemMessage,
+      };
+      await updateAiIndexChatConversation({
+        body: {
+          id: values.id || '',
+          promptSetting,
+          modelSetting,
+        },
+      });
 
       // 关闭并提示
       await modalApi.close();
@@ -78,21 +85,24 @@ const [Modal, modalApi] = useVbenModal({
       return;
     }
     // 加载数据
-    const data = modalApi.getData<AiChatConversationApi.ChatConversation>();
+    const data = modalApi.getData<AiIndexChatApi.AiIndexChatConversationItem>();
     if (!data || !data.id) {
       return;
     }
     modalApi.lock();
     try {
-      formData.value = await getChatConversationMy(data.id as string);
+      const res = await getAiIndexChatConversationItem({
+        params: { id: data.id as string },
+      });
+      formData.value = res.info;
       // 设置到 values
       await formApi.setValues({
-        id: formData.value.id,
-        systemMessage: formData.value.systemMessage,
-        modelId: formData.value.modelSetting?.modelId,
-        temperature: formData.value.modelSetting?.temperature,
-        maxTokens: formData.value.modelSetting?.max_tokens,
-        maxContexts: formData.value.modelSetting?.max_contexts,
+        id: formData.value?.id,
+        systemMessage: formData.value?.promptSetting?.prompt,
+        modelId: formData.value?.modelSetting?.modelId,
+        temperature: formData.value?.modelSetting?.temperature,
+        maxTokens: formData.value?.modelSetting?.max_tokens,
+        maxContexts: formData.value?.modelSetting?.max_contexts,
       });
     } finally {
       modalApi.unlock();

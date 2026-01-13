@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { AiImageApi } from '#/api/ai/image';
 
 import { onMounted, reactive, ref } from 'vue';
 
@@ -8,13 +7,14 @@ import { Page } from '@vben/common-ui';
 import { useDebounceFn } from '@vueuse/core';
 import { Image, Input, Pagination } from 'ant-design-vue';
 
-import { getImagePageMy } from '#/api/ai/image';
+import { getAiIndexImageRecordList } from '#/api/v1/ai-index-image';
+import { type ImageRecordView, normalizeImageRecord } from '../components/typing';
 
 const loading = ref(true); // 列表的加载中
-const list = ref<AiImageApi.Image[]>([]); // 列表的数据
+const list = ref<ImageRecordView[]>([]); // 列表的数据
 const total = ref(0); // 列表的总页数
 const queryParams = reactive({
-  pageNo: 1,
+  page: 1,
   pageSize: 10,
   publicStatus: true,
   prompt: undefined,
@@ -24,9 +24,11 @@ const queryParams = reactive({
 async function getList() {
   loading.value = true;
   try {
-    const data = await getImagePageMy(queryParams);
-    list.value = data.list;
-    total.value = data.total;
+    const data = await getAiIndexImageRecordList({
+      params: queryParams as any,
+    });
+    list.value = (data.list || []).map(normalizeImageRecord);
+    total.value = data.total || 0;
   } finally {
     loading.value = false;
   }
@@ -34,7 +36,7 @@ async function getList() {
 const debounceGetList = useDebounceFn(getList, 80);
 /** 搜索按钮操作 */
 const handleQuery = () => {
-  queryParams.pageNo = 1;
+  queryParams.page = 1;
   getList();
 };
 
@@ -62,7 +64,7 @@ onMounted(async () => {
           class="bg-card relative cursor-pointer overflow-hidden transition-transform duration-300 hover:scale-105"
         >
           <Image
-            :src="item.picUrl"
+            :src="item.picUrl || item.picURL"
             class="block h-auto w-full transition-transform duration-300 hover:scale-110"
           />
         </div>
@@ -73,7 +75,7 @@ onMounted(async () => {
         :show-total="(total) => `共 ${total} 条`"
         show-quick-jumper
         show-size-changer
-        v-model:current="queryParams.pageNo"
+        v-model:current="queryParams.page"
         v-model:page-size="queryParams.pageSize"
         @change="debounceGetList"
         @show-size-change="debounceGetList"

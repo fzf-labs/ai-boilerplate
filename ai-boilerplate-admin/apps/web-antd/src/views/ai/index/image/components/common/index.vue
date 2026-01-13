@@ -1,25 +1,31 @@
 <!-- dall3 -->
 <script setup lang="ts">
-import type { AiImageApi } from '#/api/ai/image';
-import type { AiModelModelApi } from '#/api/ai/model/model';
+import type { ProviderModelOption } from '../../../utils';
 
 import { ref, watch } from 'vue';
 
 import { confirm } from '@vben/common-ui';
+import { useUserStore } from '@vben/stores';
 
-import { Button, InputNumber, Select, Space, Textarea } from 'ant-design-vue';
+import { Button, InputNumber, message, Select, Space, Textarea } from 'ant-design-vue';
 
-import { drawImage } from '#/api/ai/image';
+import { createAiIndexImageRecord } from '#/api/v1/ai-index-image';
 
-import { AiPlatformEnum, ImageHotWords, OtherPlatformEnum } from '../typing';
+import {
+  AiImageStatusEnum,
+  AiPlatformEnum,
+  ImageHotWords,
+  OtherPlatformEnum,
+  type ImageRecordView,
+} from '../typing';
 
 // 消息弹窗
 
 // 接收父组件传入的模型列表
 const props = defineProps({
   models: {
-    type: Array<AiModelModelApi.Model>,
-    default: () => [] as AiModelModelApi.Model[],
+    type: Array<ProviderModelOption>,
+    default: () => [] as ProviderModelOption[],
   },
 });
 const emits = defineEmits(['onDrawStart', 'onDrawComplete']);
@@ -32,8 +38,9 @@ const prompt = ref<string>(''); // 提示词
 const width = ref<number>(512); // 图片宽度
 const height = ref<number>(512); // 图片高度
 const otherPlatform = ref<string>(AiPlatformEnum.TONG_YI); // 平台
-const platformModels = ref<AiModelModelApi.Model[]>([]); // 模型列表
-const modelId = ref<number>(); // 选中的模型
+const platformModels = ref<ProviderModelOption[]>([]); // 模型列表
+const modelId = ref<string>(); // 选中的模型
+const userStore = useUserStore();
 
 /** 选择热词 */
 async function handleHotWordClick(hotWord: string) {
@@ -58,15 +65,27 @@ async function handleGenerateImage() {
     // 回调
     emits('onDrawStart', otherPlatform.value);
     // 发送请求
-    const form = {
-      platform: otherPlatform.value,
-      modelId: modelId.value, // 模型
-      prompt: prompt.value, // 提示词
-      width: width.value, // 图片宽度
-      height: height.value, // 图片高度
-      options: {},
-    } as unknown as AiImageApi.ImageDrawReq;
-    await drawImage(form);
+    const selectedModel = platformModels.value.find(
+      (item) => item.modelId === modelId.value,
+    );
+    if (!selectedModel) {
+      message.error('请选择模型');
+      return;
+    }
+    await createAiIndexImageRecord({
+      body: {
+        adminId: userStore.userInfo?.userId || '',
+        prompt: prompt.value,
+        platform: otherPlatform.value,
+        modelId: selectedModel.modelId || '',
+        model: selectedModel.modelName || selectedModel.modelId || '',
+        width: width.value,
+        height: height.value,
+        status: AiImageStatusEnum.IN_PROGRESS,
+        publicStatus: false,
+        options: JSON.stringify({}),
+      },
+    });
   } finally {
     // 回调
     emits('onDrawComplete', otherPlatform.value);
@@ -76,7 +95,7 @@ async function handleGenerateImage() {
 }
 
 /** 填充值 */
-async function settingValues(detail: AiImageApi.Image) {
+async function settingValues(detail: ImageRecordView) {
   prompt.value = detail.prompt;
   width.value = detail.width;
   height.value = detail.height;
@@ -86,11 +105,11 @@ async function settingValues(detail: AiImageApi.Image) {
 async function handlerPlatformChange(platform: any) {
   // 根据选择的平台筛选模型
   platformModels.value = props.models.filter(
-    (item: AiModelModelApi.Model) => item.platform === platform,
+    (item: ProviderModelOption) => item.platformName === platform,
   );
   modelId.value =
     platformModels.value.length > 0 && platformModels.value[0]
-      ? platformModels.value[0].id
+      ? platformModels.value[0].modelId
       : undefined;
   // 切换平台，默认选择一个模型
 }
