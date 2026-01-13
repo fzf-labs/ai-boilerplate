@@ -85,15 +85,15 @@ func (a *AdminV1AiIndexChatService) AiIndexChatCompletionsHandler(ctx http.Conte
 		if err != nil {
 			return nil, pb.ErrorReasonDataSQLError(pb.WithError(err))
 		}
-	if platformRecord == nil || platformRecord.ID == "" {
-		return nil, pb.ErrorReasonDataRecordNotFound()
-	}
-	if platformRecord.APIKey == "" {
-		return nil, pb.ErrorReasonParamError()
-	}
-	if strings.ToLower(platformRecord.Platform) != "ark" {
-		return nil, pb.ErrorReasonParamError()
-	}
+		if platformRecord == nil || platformRecord.ID == "" {
+			return nil, pb.ErrorReasonDataRecordNotFound()
+		}
+		if platformRecord.APIKey == "" {
+			return nil, pb.ErrorReasonParamError()
+		}
+		if strings.ToLower(platformRecord.Platform) != "ark" {
+			return nil, pb.ErrorReasonParamError()
+		}
 
 		systemPrompt := strings.TrimSpace(promptSetting.GetPrompt())
 		if systemPrompt == "" {

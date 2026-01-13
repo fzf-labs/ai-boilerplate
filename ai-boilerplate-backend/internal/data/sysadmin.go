@@ -2,12 +2,14 @@ package data
 
 import (
 	"context"
+	"time"
 
 	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/gorm/ai_boilerplate_model"
 	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/gorm/ai_boilerplate_repo"
 	"github.com/fzf-labs/gopkg/jwt"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/samber/lo"
+	"github.com/spf13/cast"
 )
 
 func NewSysAdminRepo(
@@ -46,6 +48,28 @@ func (r *SysAdminRepo) GenerateToken(ctx context.Context, sysAdmin *ai_boilerpla
 		"nickname":  sysAdmin.Nickname,
 		"tenant_id": sysAdmin.TenantID,
 	})
+	if err != nil {
+		return nil, err
+	}
+	return token, nil
+}
+
+// RefreshToken 刷新token
+func (r *SysAdminRepo) RefreshToken(ctx context.Context, refreshToken string) (*jwt.Token, error) {
+	_ = ctx
+
+	claims, err := r.jwt.ParseToken(refreshToken)
+	if err != nil {
+		return nil, err
+	}
+	if ok, token := r.jwt.JwtBlackTokenCheck(claims); ok && token != nil {
+		return token, nil
+	}
+	refreshAt := cast.ToInt64(claims[jwt.JwtRefresh])
+	if refreshAt > 0 && time.Now().Unix() < refreshAt {
+		return nil, jwt.TokenCanNotRefresh
+	}
+	token, _, err := r.jwt.RefreshToken(claims)
 	if err != nil {
 		return nil, err
 	}

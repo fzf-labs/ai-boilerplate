@@ -1,4 +1,5 @@
-import type { AxiosProgressEvent } from '#/api/infra/file/data';
+// 上传进度事件类型
+type UploadProgressEvent = (progressEvent: any) => void;
 
 export enum UploadResultStatus {
   DONE = 'done',
@@ -12,7 +13,7 @@ export type UploadListType = 'picture' | 'picture-card' | 'text';
 export interface FileUploadProps {
   // 根据后缀，或者其他
   accept?: string[];
-  api?: (file: File, onUploadProgress?: AxiosProgressEvent) => Promise<any>;
+  api?: (file: File, onUploadProgress?: UploadProgressEvent) => Promise<any>;
   disabled?: boolean;
   helpText?: string;
   listType?: UploadListType;

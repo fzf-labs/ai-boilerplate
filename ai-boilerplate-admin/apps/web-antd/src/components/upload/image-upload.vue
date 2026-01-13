@@ -4,7 +4,8 @@ import type { UploadRequestOption } from 'ant-design-vue/lib/vc-upload/interface
 
 import type { FileUploadProps } from './typing';
 
-import type { AxiosProgressEvent } from '#/api/infra/file/data';
+// 上传进度事件类型
+type UploadProgressEvent = (progressEvent: any) => void;
 
 import { ref, toRefs, watch } from 'vue';
 
@@ -154,7 +155,7 @@ async function customRequest(info: UploadRequestOption<any>) {
   }
   try {
     // 上传文件
-    const progressEvent: AxiosProgressEvent = (e: any) => {
+    const progressEvent: UploadProgressEvent = (e: any) => {
       const percent = Math.trunc((e.loaded / e.total!) * 100);
       info.onProgress!({ percent });
     };

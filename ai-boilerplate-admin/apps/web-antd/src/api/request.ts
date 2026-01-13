@@ -18,6 +18,7 @@ import { useAccessStore } from '@vben/stores';
 
 import { message } from 'ant-design-vue';
 
+import { sysAuthRefreshToken } from '#/api/v1/sys-auth';
 import { useAuthStore } from '#/store';
 
 const { apiURL } = useAppConfig(import.meta.env, import.meta.env.PROD);
@@ -67,9 +68,27 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
    */
   async function doRefreshToken() {
     const accessStore = useAccessStore();
-    const resp = await refreshTokenApi();
-    const newToken = resp.data;
+    const oldRefreshToken = accessStore.refreshToken;
+    
+    if (!oldRefreshToken) {
+      throw new Error('No refresh token available');
+    }
+    
+    const resp = await sysAuthRefreshToken({
+      body: { refreshToken: oldRefreshToken },
+    });
+    
+    const newToken = resp.token;
+    if (!newToken) {
+      throw new Error('Failed to refresh token');
+    }
+    
     accessStore.setAccessToken(newToken);
+    // 如果返回了新的 refreshToken，也更新它
+    if (resp.refreshAt) {
+      accessStore.setRefreshToken(newToken);
+    }
+    
     return newToken;
   }
 

@@ -24,6 +24,7 @@ const OperationSysAuthSysAuthLogin = "/admin.v1.SysAuth/SysAuthLogin"
 const OperationSysAuthSysAuthLogout = "/admin.v1.SysAuth/SysAuthLogout"
 const OperationSysAuthSysAuthMenu = "/admin.v1.SysAuth/SysAuthMenu"
 const OperationSysAuthSysAuthPermission = "/admin.v1.SysAuth/SysAuthPermission"
+const OperationSysAuthSysAuthRefreshToken = "/admin.v1.SysAuth/SysAuthRefreshToken"
 const OperationSysAuthSysAuthUpdateAdminInfo = "/admin.v1.SysAuth/SysAuthUpdateAdminInfo"
 const OperationSysAuthSysAuthUpdateAdminPassword = "/admin.v1.SysAuth/SysAuthUpdateAdminPassword"
 
@@ -33,6 +34,7 @@ type SysAuthHTTPServer interface {
 	SysAuthLogout(context.Context, *SysAuthLogoutReq) (*SysAuthLogoutReply, error)
 	SysAuthMenu(context.Context, *SysAuthMenuReq) (*SysAuthMenuReply, error)
 	SysAuthPermission(context.Context, *SysAuthPermissionReq) (*SysAuthPermissionReply, error)
+	SysAuthRefreshToken(context.Context, *SysAuthRefreshTokenReq) (*SysAuthRefreshTokenReply, error)
 	SysAuthUpdateAdminInfo(context.Context, *SysAuthUpdateAdminInfoReq) (*SysAuthUpdateAdminInfoReply, error)
 	SysAuthUpdateAdminPassword(context.Context, *SysAuthUpdateAdminPasswordReq) (*SysAuthUpdateAdminPasswordReply, error)
 }
@@ -40,6 +42,7 @@ type SysAuthHTTPServer interface {
 func RegisterSysAuthHTTPServer(s *http.Server, srv SysAuthHTTPServer) {
 	r := s.Route("/")
 	r.POST("/admin/v1/sys_auth/login", _SysAuth_SysAuthLogin0_HTTP_Handler(srv))
+	r.POST("/admin/v1/sys_auth/refresh_token", _SysAuth_SysAuthRefreshToken0_HTTP_Handler(srv))
 	r.POST("/admin/v1/sys_auth/logout", _SysAuth_SysAuthLogout0_HTTP_Handler(srv))
 	r.GET("/admin/v1/sys_auth/admin_info", _SysAuth_SysAuthAdminInfo0_HTTP_Handler(srv))
 	r.POST("/admin/v1/sys_auth/update/admin_info", _SysAuth_SysAuthUpdateAdminInfo0_HTTP_Handler(srv))
@@ -63,6 +66,25 @@ func _SysAuth_SysAuthLogin0_HTTP_Handler(srv SysAuthHTTPServer) func(ctx http.Co
 			return err
 		}
 		reply := out.(*SysAuthLoginReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _SysAuth_SysAuthRefreshToken0_HTTP_Handler(srv SysAuthHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in SysAuthRefreshTokenReq
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationSysAuthSysAuthRefreshToken)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.SysAuthRefreshToken(ctx, req.(*SysAuthRefreshTokenReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*SysAuthRefreshTokenReply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -187,6 +209,7 @@ type SysAuthHTTPClient interface {
 	SysAuthLogout(ctx context.Context, req *SysAuthLogoutReq, opts ...http.CallOption) (rsp *SysAuthLogoutReply, err error)
 	SysAuthMenu(ctx context.Context, req *SysAuthMenuReq, opts ...http.CallOption) (rsp *SysAuthMenuReply, err error)
 	SysAuthPermission(ctx context.Context, req *SysAuthPermissionReq, opts ...http.CallOption) (rsp *SysAuthPermissionReply, err error)
+	SysAuthRefreshToken(ctx context.Context, req *SysAuthRefreshTokenReq, opts ...http.CallOption) (rsp *SysAuthRefreshTokenReply, err error)
 	SysAuthUpdateAdminInfo(ctx context.Context, req *SysAuthUpdateAdminInfoReq, opts ...http.CallOption) (rsp *SysAuthUpdateAdminInfoReply, err error)
 	SysAuthUpdateAdminPassword(ctx context.Context, req *SysAuthUpdateAdminPasswordReq, opts ...http.CallOption) (rsp *SysAuthUpdateAdminPasswordReply, err error)
 }
@@ -258,6 +281,19 @@ func (c *SysAuthHTTPClientImpl) SysAuthPermission(ctx context.Context, in *SysAu
 	opts = append(opts, http.Operation(OperationSysAuthSysAuthPermission))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *SysAuthHTTPClientImpl) SysAuthRefreshToken(ctx context.Context, in *SysAuthRefreshTokenReq, opts ...http.CallOption) (*SysAuthRefreshTokenReply, error) {
+	var out SysAuthRefreshTokenReply
+	pattern := "/admin/v1/sys_auth/refresh_token"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationSysAuthSysAuthRefreshToken))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
 		return nil, err
 	}

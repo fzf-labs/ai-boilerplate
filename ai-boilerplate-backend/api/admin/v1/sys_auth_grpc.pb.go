@@ -24,6 +24,8 @@ const _ = grpc.SupportPackageIsVersion7
 type SysAuthClient interface {
 	// Auth-登录
 	SysAuthLogin(ctx context.Context, in *SysAuthLoginReq, opts ...grpc.CallOption) (*SysAuthLoginReply, error)
+	// Auth-刷新token
+	SysAuthRefreshToken(ctx context.Context, in *SysAuthRefreshTokenReq, opts ...grpc.CallOption) (*SysAuthRefreshTokenReply, error)
 	// Auth-退出
 	SysAuthLogout(ctx context.Context, in *SysAuthLogoutReq, opts ...grpc.CallOption) (*SysAuthLogoutReply, error)
 	// Auth-检查token
@@ -51,6 +53,15 @@ func NewSysAuthClient(cc grpc.ClientConnInterface) SysAuthClient {
 func (c *sysAuthClient) SysAuthLogin(ctx context.Context, in *SysAuthLoginReq, opts ...grpc.CallOption) (*SysAuthLoginReply, error) {
 	out := new(SysAuthLoginReply)
 	err := c.cc.Invoke(ctx, "/admin.v1.SysAuth/SysAuthLogin", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sysAuthClient) SysAuthRefreshToken(ctx context.Context, in *SysAuthRefreshTokenReq, opts ...grpc.CallOption) (*SysAuthRefreshTokenReply, error) {
+	out := new(SysAuthRefreshTokenReply)
+	err := c.cc.Invoke(ctx, "/admin.v1.SysAuth/SysAuthRefreshToken", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -126,6 +137,8 @@ func (c *sysAuthClient) SysAuthPermission(ctx context.Context, in *SysAuthPermis
 type SysAuthServer interface {
 	// Auth-登录
 	SysAuthLogin(context.Context, *SysAuthLoginReq) (*SysAuthLoginReply, error)
+	// Auth-刷新token
+	SysAuthRefreshToken(context.Context, *SysAuthRefreshTokenReq) (*SysAuthRefreshTokenReply, error)
 	// Auth-退出
 	SysAuthLogout(context.Context, *SysAuthLogoutReq) (*SysAuthLogoutReply, error)
 	// Auth-检查token
@@ -149,6 +162,9 @@ type UnimplementedSysAuthServer struct {
 
 func (UnimplementedSysAuthServer) SysAuthLogin(context.Context, *SysAuthLoginReq) (*SysAuthLoginReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SysAuthLogin not implemented")
+}
+func (UnimplementedSysAuthServer) SysAuthRefreshToken(context.Context, *SysAuthRefreshTokenReq) (*SysAuthRefreshTokenReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SysAuthRefreshToken not implemented")
 }
 func (UnimplementedSysAuthServer) SysAuthLogout(context.Context, *SysAuthLogoutReq) (*SysAuthLogoutReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SysAuthLogout not implemented")
@@ -198,6 +214,24 @@ func _SysAuth_SysAuthLogin_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(SysAuthServer).SysAuthLogin(ctx, req.(*SysAuthLoginReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SysAuth_SysAuthRefreshToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SysAuthRefreshTokenReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SysAuthServer).SysAuthRefreshToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/admin.v1.SysAuth/SysAuthRefreshToken",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SysAuthServer).SysAuthRefreshToken(ctx, req.(*SysAuthRefreshTokenReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -338,6 +372,10 @@ var SysAuth_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SysAuthLogin",
 			Handler:    _SysAuth_SysAuthLogin_Handler,
+		},
+		{
+			MethodName: "SysAuthRefreshToken",
+			Handler:    _SysAuth_SysAuthRefreshToken_Handler,
 		},
 		{
 			MethodName: "SysAuthLogout",

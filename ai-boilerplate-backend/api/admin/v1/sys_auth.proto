@@ -18,6 +18,13 @@ service SysAuth {
       body: "*"
     };
   }
+  //Auth-刷新token
+  rpc SysAuthRefreshToken(SysAuthRefreshTokenReq) returns (SysAuthRefreshTokenReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/sys_auth/refresh_token"
+      body: "*"
+    };
+  }
   //Auth-退出
   rpc SysAuthLogout(SysAuthLogoutReq) returns (SysAuthLogoutReply) {
     option (google.api.http) = {
@@ -88,6 +95,24 @@ message SysAuthLoginReq {
 
 //响应-登录
 message SysAuthLoginReply {
+  string token = 1; //token
+  int64 expiredAt = 2; //过期时间
+  int64 refreshAt = 3; //刷新时间
+}
+
+//请求-刷新token
+message SysAuthRefreshTokenReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["refreshToken"]
+    }
+  };
+
+  string refreshToken = 1 [(buf.validate.field).string = {min_len: 1}]; //刷新token
+}
+
+//响应-刷新token
+message SysAuthRefreshTokenReply {
   string token = 1; //token
   int64 expiredAt = 2; //过期时间
   int64 refreshAt = 3; //刷新时间

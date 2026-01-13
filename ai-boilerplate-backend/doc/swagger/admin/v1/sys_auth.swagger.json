@@ -151,6 +151,39 @@
         ]
       }
     },
+    "/admin/v1/sys_auth/refresh_token": {
+      "post": {
+        "summary": "Auth-刷新token",
+        "operationId": "SysAuth_SysAuthRefreshToken",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.SysAuthRefreshTokenReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.SysAuthRefreshTokenReq"
+            }
+          }
+        ],
+        "tags": [
+          "SysAuth"
+        ]
+      }
+    },
     "/admin/v1/sys_auth/update/admin_info": {
       "post": {
         "summary": "Auth-更新用户信息",
@@ -373,6 +406,39 @@
         }
       },
       "title": "响应-获取权限"
+    },
+    "admin.v1.SysAuthRefreshTokenReply": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "title": "token"
+        },
+        "expiredAt": {
+          "type": "string",
+          "format": "int64",
+          "title": "过期时间"
+        },
+        "refreshAt": {
+          "type": "string",
+          "format": "int64",
+          "title": "刷新时间"
+        }
+      },
+      "title": "响应-刷新token"
+    },
+    "admin.v1.SysAuthRefreshTokenReq": {
+      "type": "object",
+      "properties": {
+        "refreshToken": {
+          "type": "string",
+          "title": "刷新token"
+        }
+      },
+      "title": "请求-刷新token",
+      "required": [
+        "refreshToken"
+      ]
     },
     "admin.v1.SysAuthUpdateAdminInfoReply": {
       "type": "object",

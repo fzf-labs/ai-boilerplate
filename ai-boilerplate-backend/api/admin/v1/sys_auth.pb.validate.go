@@ -402,6 +402,218 @@ var _ interface {
 	ErrorName() string
 } = SysAuthLoginReplyValidationError{}
 
+// Validate checks the field values on SysAuthRefreshTokenReq with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *SysAuthRefreshTokenReq) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SysAuthRefreshTokenReq with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// SysAuthRefreshTokenReqMultiError, or nil if none found.
+func (m *SysAuthRefreshTokenReq) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SysAuthRefreshTokenReq) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for RefreshToken
+
+	if len(errors) > 0 {
+		return SysAuthRefreshTokenReqMultiError(errors)
+	}
+
+	return nil
+}
+
+// SysAuthRefreshTokenReqMultiError is an error wrapping multiple validation
+// errors returned by SysAuthRefreshTokenReq.ValidateAll() if the designated
+// constraints aren't met.
+type SysAuthRefreshTokenReqMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SysAuthRefreshTokenReqMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SysAuthRefreshTokenReqMultiError) AllErrors() []error { return m }
+
+// SysAuthRefreshTokenReqValidationError is the validation error returned by
+// SysAuthRefreshTokenReq.Validate if the designated constraints aren't met.
+type SysAuthRefreshTokenReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SysAuthRefreshTokenReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SysAuthRefreshTokenReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SysAuthRefreshTokenReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SysAuthRefreshTokenReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SysAuthRefreshTokenReqValidationError) ErrorName() string {
+	return "SysAuthRefreshTokenReqValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e SysAuthRefreshTokenReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSysAuthRefreshTokenReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SysAuthRefreshTokenReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SysAuthRefreshTokenReqValidationError{}
+
+// Validate checks the field values on SysAuthRefreshTokenReply with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *SysAuthRefreshTokenReply) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SysAuthRefreshTokenReply with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// SysAuthRefreshTokenReplyMultiError, or nil if none found.
+func (m *SysAuthRefreshTokenReply) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SysAuthRefreshTokenReply) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Token
+
+	// no validation rules for ExpiredAt
+
+	// no validation rules for RefreshAt
+
+	if len(errors) > 0 {
+		return SysAuthRefreshTokenReplyMultiError(errors)
+	}
+
+	return nil
+}
+
+// SysAuthRefreshTokenReplyMultiError is an error wrapping multiple validation
+// errors returned by SysAuthRefreshTokenReply.ValidateAll() if the designated
+// constraints aren't met.
+type SysAuthRefreshTokenReplyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SysAuthRefreshTokenReplyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SysAuthRefreshTokenReplyMultiError) AllErrors() []error { return m }
+
+// SysAuthRefreshTokenReplyValidationError is the validation error returned by
+// SysAuthRefreshTokenReply.Validate if the designated constraints aren't met.
+type SysAuthRefreshTokenReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SysAuthRefreshTokenReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SysAuthRefreshTokenReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SysAuthRefreshTokenReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SysAuthRefreshTokenReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SysAuthRefreshTokenReplyValidationError) ErrorName() string {
+	return "SysAuthRefreshTokenReplyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e SysAuthRefreshTokenReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSysAuthRefreshTokenReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SysAuthRefreshTokenReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SysAuthRefreshTokenReplyValidationError{}
+
 // Validate checks the field values on SysAuthLogoutReq with the rules defined
 // in the proto definition for this message. If any rules are violated, the
 // first error encountered is returned, or nil if there are no violations.

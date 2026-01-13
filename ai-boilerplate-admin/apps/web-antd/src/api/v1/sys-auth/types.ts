@@ -135,6 +135,31 @@ export type SysAuthPermissionResponses = {
   default: Status;
 };
 
+export type SysAuthRefreshTokenReply = {
+  /** token */
+  token?: string;
+  /** 过期时间 */
+  expiredAt?: number;
+  /** 刷新时间 */
+  refreshAt?: number;
+};
+
+export type SysAuthRefreshTokenReq = {
+  /** 刷新token */
+  refreshToken: string;
+};
+
+export type SysAuthRefreshTokenResponses = {
+  /**
+   * A successful response.
+   */
+  200: SysAuthRefreshTokenReply;
+  /**
+   * An unexpected error response.
+   */
+  default: Status;
+};
+
 export type SysAuthUpdateAdminInfoReply = object;
 
 export type SysAuthUpdateAdminInfoReq = {

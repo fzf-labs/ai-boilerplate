@@ -18,11 +18,17 @@ import { preferences } from '@vben/preferences';
 import { useAccessStore, useUserStore } from '@vben/stores';
 import { formatDateTime } from '@vben/utils';
 
+import {
+  getSysNotifyMessageMyUnreadCount,
+  getSysNotifyMessageMyUnreadList,
+  updateSysNotifyMessageAllRead,
+  updateSysNotifyMessageRead,
+} from '#/api/v1/sys-notify-message';
 import { router } from '#/router';
 import { useAuthStore } from '#/store';
 import LoginForm from '#/views/_core/authentication/login.vue';
 
-const notifications = ref<NotificationItem[]>([]);
+const notifications = ref<(NotificationItem & { id?: string })[]>([]);
 const unreadCount = ref(0);
 const showDot = computed(() => unreadCount.value > 0);
 
@@ -52,21 +58,25 @@ async function handleLogout() {
 
 /** 获得未读消息数 */
 async function handleNotificationGetUnreadCount() {
-  const res = await getMyUnreadNotifyMessageCount();
-  unreadCount.value = res.count;
+  const res = await getSysNotifyMessageMyUnreadCount({});
+  unreadCount.value = res.count ?? 0;
 }
 
 /** 获得消息列表 */
 async function handleNotificationGetList() {
-  const res = await getMyUnreadNotifyMessageList();
-  notifications.value = res.list.map((item) => ({
-    avatar: preferences.app.defaultAvatar,
-    date: formatDateTime(item.sendTime.toString()) as string,
-    isRead: item.readTime.toString() !== '',
-    id: item.id,
-    message: item.content,
-    title: item.subject,
-  }));
+  const res = await getSysNotifyMessageMyUnreadList({});
+  notifications.value = (res.list ?? []).map((item) => {
+    const sendTime = item.sendTime ?? '';
+    const readTime = item.readTime ?? '';
+    return {
+      avatar: preferences.app.defaultAvatar,
+      date: formatDateTime(sendTime) as string,
+      isRead: readTime !== '',
+      id: item.id,
+      message: item.content ?? '',
+      title: item.subject ?? '',
+    };
+  });
 }
 
 /** 跳转我的站内信 */
@@ -78,7 +88,7 @@ function handleNotificationViewAll() {
 
 /** 标记所有已读 */
 async function handleNotificationMakeAll() {
-  await updateMyAllNotifyMessageRead();
+  await updateSysNotifyMessageAllRead({ body: {} });
   unreadCount.value = 0;
   notifications.value = [];
 }
@@ -90,12 +100,18 @@ async function handleNotificationClear() {
 
 /** 标记单个已读 */
 async function handleNotificationRead(item: NotificationItem) {
-  if (!item.id) {
+  // 从数组中找到对应的项（包含 id）
+  const found = notifications.value.find(
+    (n) => n.title === item.title && n.message === item.message && n.date === item.date
+  );
+  
+  if (!found?.id) {
     return;
   }
-  await updateMyNotifyMessageRead([item.id]);
+  
+  await updateSysNotifyMessageRead({ body: { ids: [found.id] } });
   await handleNotificationGetUnreadCount();
-  notifications.value = notifications.value.filter((n) => n.id !== item.id);
+  notifications.value = notifications.value.filter((n) => n.id !== found.id);
 }
 
 /** 处理通知打开 */
@@ -142,8 +158,8 @@ watch(
   <BasicLayout @clear-preferences-and-logout="handleLogout">
     <template #user-dropdown>
       <UserDropdown
-        :avatar="userStore.userInfo?.avatar"
-        :menus
+        :avatar="avatar"
+        :menus="menus"
         :text="userStore.userInfo?.nickname"
         :description="userStore.userInfo?.username"
         @logout="handleLogout"
@@ -163,13 +179,13 @@ watch(
     <template #extra>
       <AuthenticationLoginExpiredModal
         v-model:open="accessStore.loginExpired"
-        :avatar
+        :avatar="avatar"
       >
         <LoginForm />
       </AuthenticationLoginExpiredModal>
     </template>
     <template #lock-screen>
-      <LockScreen :avatar @to-login="handleLogout" />
+      <LockScreen :avatar="avatar" @to-login="handleLogout" />
     </template>
   </BasicLayout>
 </template>

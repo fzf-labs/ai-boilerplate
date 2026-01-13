@@ -76,6 +76,27 @@ export function sysAuthPermission({
   });
 }
 
+/** Auth-刷新token 返回值: An unexpected error response. POST /admin/v1/sys_auth/refresh_token */
+export function sysAuthRefreshToken({
+  body,
+  options,
+}: {
+  body: API.SysAuthRefreshTokenReq;
+  options?: { [key: string]: unknown };
+}) {
+  return request<API.SysAuthRefreshTokenReply>(
+    '/admin/v1/sys_auth/refresh_token',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: body,
+      ...(options || {}),
+    }
+  );
+}
+
 /** Auth-更新用户信息 返回值: An unexpected error response. POST /admin/v1/sys_auth/update/admin_info */
 export function sysAuthUpdateAdminInfo({
   body,
