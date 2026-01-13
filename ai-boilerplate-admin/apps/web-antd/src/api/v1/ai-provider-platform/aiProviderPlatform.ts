@@ -21,7 +21,7 @@ export function createAiProviderPlatform({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -42,7 +42,7 @@ export function deleteAiProviderPlatform({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -63,7 +63,7 @@ export function getAiProviderPlatformInfo({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -84,7 +84,7 @@ export function getAiProviderPlatformList({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -99,7 +99,7 @@ export function getAiProviderPlatformSelector({
     {
       method: 'GET',
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -120,7 +120,7 @@ export function updateAiProviderPlatform({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -141,6 +141,6 @@ export function updateAiProviderPlatformStatus({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

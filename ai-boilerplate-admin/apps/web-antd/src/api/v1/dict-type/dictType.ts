@@ -129,6 +129,6 @@ export function updateDictTypeStatus({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

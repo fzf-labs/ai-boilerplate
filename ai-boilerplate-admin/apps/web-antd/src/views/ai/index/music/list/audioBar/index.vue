@@ -49,8 +49,8 @@ function audioTimeUpdate(args: any) {
         :width="45"
       />
       <div>
-        <div>{{ currentSong.name }}</div>
-        <div class="text-xs text-gray-400">{{ currentSong.singer }}</div>
+        <div>{{ currentSong.title }}</div>
+        <div class="text-xs text-gray-400">{{ currentSong.desc }}</div>
       </div>
     </div>
     <!-- 音频controls -->
@@ -88,8 +88,8 @@ function audioTimeUpdate(args: any) {
         controls
         v-show="!audioProps"
         @timeupdate="audioTimeUpdate"
+        :src="currentSong.audioUrl"
       >
-        <!-- <source :src="audioUrl" /> -->
       </audio>
     </div>
     <div class="flex items-center gap-4">

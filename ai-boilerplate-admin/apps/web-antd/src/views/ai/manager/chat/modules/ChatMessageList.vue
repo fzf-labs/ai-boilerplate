@@ -1,54 +1,20 @@
 <script lang="ts" setup>
 import type { VxeTableGridOptions } from '#/adapter/vxe-table';
-import type { AiChatMessageApi } from '#/api/ai/manager/chatMessage';
+import type * as AiChatMessageApi from '#/api/v1/ai-chat-message';
 import type { SysAdminInfo } from '#/api/v1/sys-admin';
 
 import { onMounted, ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
-import { message } from 'ant-design-vue';
-
-import {
-  TABLE_ACTION_ICON,
-  TableAction,
-  useVbenVxeGrid,
-} from '#/adapter/vxe-table';
-import {
-  deleteAiChatMessage,
-  getAiChatMessageList,
-} from '#/api/ai/manager/chatMessage';
+import { TableAction, useVbenVxeGrid } from '#/adapter/vxe-table';
+import { getAiChatMessageList } from '#/api/v1/ai-chat-message';
 import { getSysAdminSelector } from '#/api/v1/sys-admin';
-import { $t } from '#/locales';
-
 import { useGridColumnsMessage, useGridFormSchemaMessage } from '../data';
 
 const userList = ref<SysAdminInfo[]>([]); // 用户列表
 
-/** 刷新表格 */
-function onRefresh() {
-  gridApi.query();
-}
-
-/** 删除 */
-async function handleDelete(row: AiChatMessageApi.AiChatMessageInfo) {
-  const hideLoading = message.loading({
-    content: $t('ui.actionMessage.deleting', [row.id]),
-    key: 'action_key_msg',
-  });
-  try {
-    await deleteAiChatMessage(row.id);
-    message.success({
-      content: $t('ui.actionMessage.deleteSuccess', [row.id]),
-      key: 'action_key_msg',
-    });
-    onRefresh();
-  } finally {
-    hideLoading();
-  }
-}
-
-const [Grid, gridApi] = useVbenVxeGrid({
+const [Grid] = useVbenVxeGrid({
   formOptions: {
     schema: useGridFormSchemaMessage(),
   },
@@ -59,10 +25,15 @@ const [Grid, gridApi] = useVbenVxeGrid({
     proxyConfig: {
       ajax: {
         query: async ({ page }, formValues) => {
+          if (!formValues.conversationId) {
+            return { total: 0, list: [] };
+          }
           return await getAiChatMessageList({
-            page: page.currentPage,
-            pageSize: page.pageSize,
-            ...formValues,
+            params: {
+              page: page.currentPage,
+              pageSize: page.pageSize,
+              ...formValues,
+            } as AiChatMessageApi.GetAiChatMessageListParams,
           });
         },
       },
@@ -95,23 +66,6 @@ onMounted(async () => {
         <span>{{
           userList.find((item) => item.id === row.adminId)?.nickname
         }}</span>
-      </template>
-      <template #actions="{ row }">
-        <TableAction
-          :actions="[
-            {
-              label: $t('common.delete'),
-              type: 'link',
-              danger: true,
-              icon: TABLE_ACTION_ICON.DELETE,
-              auth: ['ai:chat-message:delete'],
-              popConfirm: {
-                title: $t('ui.actionMessage.deleteConfirm', [row.id]),
-                confirm: handleDelete.bind(null, row),
-              },
-            },
-          ]"
-        />
       </template>
     </Grid>
   </Page>

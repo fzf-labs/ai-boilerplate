@@ -21,7 +21,7 @@ export function batchGenerateMallActivationCode({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -42,7 +42,7 @@ export function deleteMallActivationCode({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -63,7 +63,7 @@ export function getMallActivationCodeInfo({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -84,7 +84,7 @@ export function getMallActivationCodeList({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -105,7 +105,7 @@ export function updateMallActivationCode({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -126,6 +126,6 @@ export function updateMallActivationCodeStatus({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

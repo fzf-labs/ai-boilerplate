@@ -21,6 +21,6 @@ export function getSysOperateLogList({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }

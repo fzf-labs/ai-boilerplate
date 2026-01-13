@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { AiProviderPlatformApi } from '#/api/ai/manager/providerPlatform';
+import type * as AiProviderPlatformApi from '#/api/v1/ai-provider-platform';
 
 import { computed, ref } from 'vue';
 
@@ -12,7 +12,7 @@ import {
   createAiProviderPlatform,
   getAiProviderPlatformInfo,
   updateAiProviderPlatform,
-} from '#/api/ai/manager/providerPlatform';
+} from '#/api/v1/ai-provider-platform';
 import { $t } from '#/locales';
 
 import { usePlatformFormSchema } from '../data';
@@ -60,12 +60,14 @@ const [Modal, modalApi] = useVbenModal({
     try {
       await (formData.value?.id
         ? updateAiProviderPlatform({
-            ...data,
-            id: formData.value.id,
-          } as AiProviderPlatformApi.UpdateAiProviderPlatformReq)
-        : createAiProviderPlatform(
-            data as AiProviderPlatformApi.CreateAiProviderPlatformReq,
-          ));
+            body: {
+              ...data,
+              id: formData.value.id,
+            } as AiProviderPlatformApi.UpdateAiProviderPlatformReq,
+          })
+        : createAiProviderPlatform({
+            body: data as AiProviderPlatformApi.CreateAiProviderPlatformReq,
+          }));
       // 关闭并提示
       await modalApi.close();
       emit('success');
@@ -87,7 +89,9 @@ const [Modal, modalApi] = useVbenModal({
     }
     modalApi.lock();
     try {
-      const response = await getAiProviderPlatformInfo(data.id);
+      const response = await getAiProviderPlatformInfo({
+        params: { id: data.id },
+      });
       formData.value = response.info;
       // 设置到 values
       await formApi.setValues(formData.value);

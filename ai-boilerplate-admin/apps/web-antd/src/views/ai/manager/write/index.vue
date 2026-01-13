@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { VxeTableGridOptions } from '#/adapter/vxe-table';
-import type { AiWriteRecordApi } from '#/api/v1/ai-write-record';
+import type * as AiWriteRecordApi from '#/api/v1/ai-write-record';
 import type { SysAdminInfo } from '#/api/v1/sys-admin';
 
 import { onMounted, ref } from 'vue';
@@ -37,7 +37,10 @@ async function handleDelete(row: AiWriteRecordApi.AiWriteRecordInfo) {
     key: 'action_key_msg',
   });
   try {
-    await deleteAiWriteRecord(row.id);
+    if (!row.id) {
+      return;
+    }
+    await deleteAiWriteRecord({ body: { id: row.id } });
     message.success({
       content: $t('ui.actionMessage.deleteSuccess', [row.id]),
       key: 'action_key_msg',
@@ -60,9 +63,11 @@ const [Grid, gridApi] = useVbenVxeGrid({
       ajax: {
         query: async ({ page }, formValues) => {
           return await getAiWriteRecordList({
-            page: page.currentPage,
-            pageSize: page.pageSize,
-            ...formValues,
+            params: {
+              page: page.currentPage,
+              pageSize: page.pageSize,
+              ...formValues,
+            } as AiWriteRecordApi.GetAiWriteRecordListParams,
           });
         },
       },

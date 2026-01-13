@@ -21,7 +21,7 @@ export function getMallPaymentRecordListByOrderId({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -42,6 +42,6 @@ export function getMallPaymentRecordSuccessByOrderId({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }

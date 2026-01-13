@@ -111,6 +111,6 @@ export function updateMembershipStatus({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

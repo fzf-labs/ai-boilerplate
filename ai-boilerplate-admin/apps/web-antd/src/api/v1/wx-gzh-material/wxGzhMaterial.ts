@@ -21,7 +21,7 @@ export function deleteWxGzhMaterial({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -42,7 +42,7 @@ export function getWxGzhMaterialInfo({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -63,7 +63,7 @@ export function getWxGzhMaterialList({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -84,7 +84,7 @@ export function getWxGzhMaterialStats({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 

@@ -123,7 +123,7 @@ export function updateSysAdminPassword({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -144,6 +144,6 @@ export function updateSysAdminStatus({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

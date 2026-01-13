@@ -21,7 +21,7 @@ export function createAiIndexChatConversation({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -42,7 +42,7 @@ export function deleteAiIndexChatConversation({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -63,7 +63,7 @@ export function getAiIndexChatConversationItem({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -84,7 +84,7 @@ export function getAiIndexChatConversationList({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -105,7 +105,7 @@ export function pinAiIndexChatConversation({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -126,7 +126,7 @@ export function updateAiIndexChatConversation({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -147,6 +147,6 @@ export function getAiIndexChatMessageList({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }

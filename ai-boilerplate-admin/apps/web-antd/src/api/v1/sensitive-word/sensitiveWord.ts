@@ -21,7 +21,7 @@ export function createSensitiveWord({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -42,7 +42,7 @@ export function deleteSensitiveWord({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -63,7 +63,7 @@ export function getSensitiveWordInfo({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -78,7 +78,7 @@ export function getSensitiveWordLabsSelector({
     {
       method: 'GET',
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -99,7 +99,7 @@ export function getSensitiveWordList({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -120,6 +120,6 @@ export function updateSensitiveWord({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

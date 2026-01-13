@@ -21,7 +21,7 @@ export function deleteAiAudioRecord({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -42,7 +42,7 @@ export function getAiAudioRecordInfo({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -63,6 +63,6 @@ export function getAiAudioRecordList({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }

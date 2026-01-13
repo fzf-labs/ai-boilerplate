@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { VxeTableGridOptions } from '#/adapter/vxe-table';
-import type { AiChatConversationApi } from '#/api/v1/ai-chat-conversation';
+import type * as AiChatConversationApi from '#/api/v1/ai-chat-conversation';
 import type { SysAdminInfo } from '#/api/v1/sys-admin';
 
 import { onMounted, ref } from 'vue';
@@ -40,7 +40,10 @@ async function handleDelete(row: AiChatConversationApi.AiChatConversationInfo) {
     key: 'action_key_msg',
   });
   try {
-    await deleteAiChatConversation(row.id);
+    if (!row.id) {
+      return;
+    }
+    await deleteAiChatConversation({ body: { id: row.id } });
     message.success({
       content: $t('ui.actionMessage.deleteSuccess', [row.id]),
       key: 'action_key_msg',
@@ -63,9 +66,11 @@ const [Grid, gridApi] = useVbenVxeGrid({
       ajax: {
         query: async ({ page }, formValues) => {
           return await getAiChatConversationList({
-            page: page.currentPage,
-            pageSize: page.pageSize,
-            ...formValues,
+            params: {
+              page: page.currentPage,
+              pageSize: page.pageSize,
+              ...formValues,
+            } as AiChatConversationApi.GetAiChatConversationListParams,
           });
         },
       },

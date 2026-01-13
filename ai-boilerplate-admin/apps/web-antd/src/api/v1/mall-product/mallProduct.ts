@@ -93,7 +93,7 @@ export function getMallProductSelector({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -132,6 +132,6 @@ export function updateMallProductStatus({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

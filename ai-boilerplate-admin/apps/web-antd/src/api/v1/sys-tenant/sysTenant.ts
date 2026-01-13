@@ -111,6 +111,6 @@ export function updateSysTenantStatus({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

@@ -21,7 +21,7 @@ export function createWxGzhAutoReply({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -42,7 +42,7 @@ export function deleteWxGzhAutoReply({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -63,7 +63,7 @@ export function getWxGzhAutoReplyInfo({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -84,7 +84,7 @@ export function getWxGzhAutoReplyList({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -105,7 +105,7 @@ export function updateWxGzhAutoReply({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -126,6 +126,6 @@ export function updateWxGzhAutoReplyStatus({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { AiProviderModelApi } from '#/api/v1/ai-provider-model';
+import type * as AiProviderModelApi from '#/api/v1/ai-provider-model';
 
 import { computed, ref } from 'vue';
 
@@ -52,12 +52,14 @@ const [Modal, modalApi] = useVbenModal({
     try {
       await (formData.value?.id
         ? updateAiProviderModel({
-            ...data,
-            id: formData.value.id,
-          } as AiProviderModelApi.UpdateAiProviderModelReq)
-        : createAiProviderModel(
-            data as AiProviderModelApi.CreateAiProviderModelReq,
-          ));
+            body: {
+              ...data,
+              id: formData.value.id,
+            } as AiProviderModelApi.UpdateAiProviderModelReq,
+          })
+        : createAiProviderModel({
+            body: data as AiProviderModelApi.CreateAiProviderModelReq,
+          }));
       // 关闭并提示
       await modalApi.close();
       emit('success');
@@ -82,7 +84,9 @@ const [Modal, modalApi] = useVbenModal({
     if (data.id) {
       modalApi.lock();
       try {
-        const response = await getAiProviderModelInfo(data.id);
+        const response = await getAiProviderModelInfo({
+          params: { id: data.id },
+        });
         formData.value = response.info;
         // 设置到 values
         await formApi.setValues(formData.value);

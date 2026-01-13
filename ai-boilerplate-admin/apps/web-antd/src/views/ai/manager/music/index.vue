@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import type { VxeTableGridOptions } from '#/adapter/vxe-table';
-import type { AiMusicRecordApi } from '#/api/v1/ai-audio-record';
+import type * as AiAudioRecordApi from '#/api/v1/ai-audio-record';
 import type { SysAdminInfo } from '#/api/v1/sys-admin';
 
 import { onMounted, ref } from 'vue';
 
-import { confirm, Page } from '@vben/common-ui';
+import { Page } from '@vben/common-ui';
 
 import { Button, message, Switch } from 'ant-design-vue';
 
@@ -15,14 +15,13 @@ import {
   useVbenVxeGrid,
 } from '#/adapter/vxe-table';
 import {
-  deleteAiMusicRecord,
-  getAiMusicRecordList,
-  updateAiMusicRecord,
+  deleteAiAudioRecord,
+  getAiAudioRecordList,
 } from '#/api/v1/ai-audio-record';
 import { getSysAdminSelector } from '#/api/v1/sys-admin';
 import { $t } from '#/locales';
 
-import { AiMusicStatusEnum, useGridColumns, useGridFormSchema } from './data';
+import { useGridColumns, useGridFormSchema } from './data';
 
 const userList = ref<SysAdminInfo[]>([]); // 用户列表
 
@@ -32,13 +31,16 @@ function onRefresh() {
 }
 
 /** 删除 */
-async function handleDelete(row: AiMusicRecordApi.AiMusicRecordInfo) {
+async function handleDelete(row: AiAudioRecordApi.AiAudioRecordInfo) {
   const hideLoading = message.loading({
     content: $t('ui.actionMessage.deleting', [row.id]),
     key: 'action_key_msg',
   });
   try {
-    await deleteAiMusicRecord(row.id);
+    if (!row.id) {
+      return;
+    }
+    await deleteAiAudioRecord({ body: { id: row.id } });
     message.success({
       content: $t('ui.actionMessage.deleteSuccess', [row.id]),
       key: 'action_key_msg',
@@ -48,25 +50,6 @@ async function handleDelete(row: AiMusicRecordApi.AiMusicRecordInfo) {
     hideLoading();
   }
 }
-
-/** 修改是否发布 */
-const handleUpdatePublicStatusChange = async (
-  row: AiMusicRecordApi.AiMusicRecordInfo,
-) => {
-  try {
-    // 修改状态的二次确认
-    const text = row.publicStatus ? '公开' : '私有';
-    await confirm(`确认要"${text}"该音乐吗?`).then(async () => {
-      await updateAiMusicRecord({
-        ...row,
-        publicStatus: row.publicStatus,
-      });
-      onRefresh();
-    });
-  } catch {
-    row.publicStatus = !row.publicStatus;
-  }
-};
 
 const [Grid, gridApi] = useVbenVxeGrid({
   formOptions: {
@@ -79,10 +62,12 @@ const [Grid, gridApi] = useVbenVxeGrid({
     proxyConfig: {
       ajax: {
         query: async ({ page }, formValues) => {
-          return await getAiMusicRecordList({
-            page: page.currentPage,
-            pageSize: page.pageSize,
-            ...formValues,
+          return await getAiAudioRecordList({
+            params: {
+              page: page.currentPage,
+              pageSize: page.pageSize,
+              ...formValues,
+            } as AiAudioRecordApi.GetAiAudioRecordListParams,
           });
         },
       },
@@ -94,7 +79,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
       refresh: true,
       search: true,
     },
-  } as VxeTableGridOptions<AiMusicRecordApi.AiMusicRecordInfo>,
+  } as VxeTableGridOptions<AiAudioRecordApi.AiAudioRecordInfo>,
 });
 
 onMounted(async () => {
@@ -148,8 +133,7 @@ onMounted(async () => {
       <template #publicStatus="{ row }">
         <Switch
           v-model:checked="row.publicStatus"
-          @change="handleUpdatePublicStatusChange(row)"
-          :disabled="row.status !== AiMusicStatusEnum.SUCCESS"
+          :disabled="true"
         />
       </template>
       <template #actions="{ row }">

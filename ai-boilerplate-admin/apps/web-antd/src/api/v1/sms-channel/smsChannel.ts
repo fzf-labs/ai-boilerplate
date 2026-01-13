@@ -87,7 +87,7 @@ export function getSmsChannelOperator({
     {
       method: 'GET',
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -102,7 +102,7 @@ export function getSmsChannelSelector({
     {
       method: 'GET',
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -141,6 +141,6 @@ export function updateSmsChannelStatus({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

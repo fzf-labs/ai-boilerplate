@@ -21,7 +21,7 @@ export function createWxGzhAccount({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -42,7 +42,7 @@ export function deleteWxGzhAccount({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -63,7 +63,7 @@ export function getWxGzhAccountInfo({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -84,7 +84,7 @@ export function getWxGzhAccountList({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -99,7 +99,7 @@ export function getWxGzhAccountSelector({
     {
       method: 'GET',
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -120,6 +120,6 @@ export function updateWxGzhAccount({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

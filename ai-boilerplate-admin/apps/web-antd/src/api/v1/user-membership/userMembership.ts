@@ -21,7 +21,7 @@ export function createUserMembership({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -42,7 +42,7 @@ export function deleteUserMembership({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -63,7 +63,7 @@ export function getUserMembershipInfo({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -84,7 +84,7 @@ export function getUserMembershipInfoByUserId({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -105,7 +105,7 @@ export function getUserMembershipList({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -126,7 +126,7 @@ export function updateUserMembership({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -147,6 +147,6 @@ export function updateUserMembershipStatus({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

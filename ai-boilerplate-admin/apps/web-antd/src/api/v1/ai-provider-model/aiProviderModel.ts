@@ -21,7 +21,7 @@ export function createAiProviderModel({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -42,7 +42,7 @@ export function deleteAiProviderModel({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -63,7 +63,7 @@ export function getAiProviderModelInfo({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -84,7 +84,7 @@ export function getAiProviderModelList({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -99,7 +99,7 @@ export function getAiProviderModelLabelSelector({
     {
       method: 'GET',
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -120,7 +120,7 @@ export function updateAiProviderModel({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -141,6 +141,6 @@ export function updateAiProviderModelStatus({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

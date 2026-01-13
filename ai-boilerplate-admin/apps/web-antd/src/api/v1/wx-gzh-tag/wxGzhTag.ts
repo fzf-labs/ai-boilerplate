@@ -93,7 +93,7 @@ export function getWxGzhTagSelector({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 

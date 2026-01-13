@@ -105,6 +105,6 @@ export function updateSysDeptStatus({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

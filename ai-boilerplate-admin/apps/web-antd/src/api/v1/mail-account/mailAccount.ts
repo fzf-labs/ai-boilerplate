@@ -87,7 +87,7 @@ export function getMailAccountSelector({
     {
       method: 'GET',
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -126,6 +126,6 @@ export function updateMailAccountStatus({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

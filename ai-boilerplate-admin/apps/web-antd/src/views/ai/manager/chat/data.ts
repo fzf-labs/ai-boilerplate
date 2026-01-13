@@ -103,8 +103,20 @@ export function useGridColumnsConversation(): VxeTableGridOptions['columns'] {
 }
 
 /** 列表的搜索表单 */
-export function useGridFormSchemaMessage(): VbenFormSchema[] {
+export function useGridFormSchemaMessage(options?: {
+  showConversationId?: boolean;
+}): VbenFormSchema[] {
+  const showConversationId = options?.showConversationId ?? true;
   return [
+    ...(showConversationId
+      ? [
+          {
+            fieldName: 'conversationId',
+            label: '对话编号',
+            component: 'Input',
+          },
+        ]
+      : []),
     {
       fieldName: 'adminId',
       label: '用户编号',
@@ -190,12 +202,6 @@ export function useGridColumnsMessage(): VxeTableGridOptions['columns'] {
       title: '创建时间',
       minWidth: 180,
       formatter: 'formatDateTime',
-    },
-    {
-      title: '操作',
-      width: 130,
-      fixed: 'right',
-      slots: { default: 'actions' },
     },
   ];
 }

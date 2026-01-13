@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { AiChatConversationApi } from '#/api/v1/ai-chat-conversation';
+import type { AiChatConversationApi } from '#/api/ai/chat';
 
 import { ref } from 'vue';
 
@@ -11,7 +11,7 @@ import { useVbenForm } from '#/adapter/form';
 import {
   getChatConversationMy,
   updateChatConversationMy,
-} from '#/api/v1/ai-chat-conversation';
+} from '#/api/ai/chat';
 import { $t } from '#/locales';
 
 import { useFormSchema } from '../../data';
@@ -40,10 +40,29 @@ const [Modal, modalApi] = useVbenModal({
     }
     modalApi.lock();
     // 提交表单
-    const data =
-      (await formApi.getValues()) as AiChatConversationApi.ChatConversation;
+    const values =
+      (await formApi.getValues()) as AiChatConversationApi.ChatConversation & {
+        modelId?: string;
+        temperature?: number;
+        maxTokens?: number;
+        maxContexts?: number;
+      };
     try {
-      await updateChatConversationMy(data);
+      const modelSetting = {
+        ...(formData.value?.modelSetting || {}),
+        modelId: values.modelId || formData.value?.modelSetting?.modelId,
+        temperature:
+          values.temperature ?? formData.value?.modelSetting?.temperature,
+        max_tokens:
+          values.maxTokens ?? formData.value?.modelSetting?.max_tokens,
+        max_contexts:
+          values.maxContexts ?? formData.value?.modelSetting?.max_contexts,
+      };
+      await updateChatConversationMy({
+        id: values.id,
+        systemMessage: values.systemMessage,
+        modelSetting,
+      } as AiChatConversationApi.ChatConversation);
 
       // 关闭并提示
       await modalApi.close();
@@ -65,9 +84,16 @@ const [Modal, modalApi] = useVbenModal({
     }
     modalApi.lock();
     try {
-      formData.value = await getChatConversationMy(data.id as number);
+      formData.value = await getChatConversationMy(data.id as string);
       // 设置到 values
-      await formApi.setValues(formData.value);
+      await formApi.setValues({
+        id: formData.value.id,
+        systemMessage: formData.value.systemMessage,
+        modelId: formData.value.modelSetting?.modelId,
+        temperature: formData.value.modelSetting?.temperature,
+        maxTokens: formData.value.modelSetting?.max_tokens,
+        maxContexts: formData.value.modelSetting?.max_contexts,
+      });
     } finally {
       modalApi.unlock();
     }

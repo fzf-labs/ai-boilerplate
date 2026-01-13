@@ -12,6 +12,7 @@ export * as AiProviderModel from './ai-provider-model';
 export * as AiProviderPlatform from './ai-provider-platform';
 export * as AiVideoRecord from './ai-video-record';
 export * as AiWriteRecord from './ai-write-record';
+export * as Banner from './banner';
 export * as ConfigData from './config-data';
 export * as Device from './device';
 export * as DictData from './dict-data';

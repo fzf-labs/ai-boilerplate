@@ -75,6 +75,6 @@ export function uploadFileOssDefaultPolicy({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }

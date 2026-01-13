@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue';
 
-import type { AiChatConversationApi } from '#/api/v1/ai-chat-conversation';
-import type { AiChatMessageApi } from '#/api/v1/ai-chat-message';
+import type { AiChatConversationApi, AiChatMessageApi } from '#/api/ai/chat';
 
 import { computed, nextTick, onMounted, ref, toRefs } from 'vue';
 
@@ -14,7 +13,6 @@ import { formatDate } from '@vben/utils';
 import { useClipboard } from '@vueuse/core';
 import { Avatar, Button, message } from 'ant-design-vue';
 
-import { deleteChatMessage } from '#/api/v1/ai-chat-message';
 import { MarkdownView } from '#/components/markdown-view';
 
 import MessageKnowledge from './MessageKnowledge.vue';
@@ -86,12 +84,13 @@ async function copyContent(content: string) {
   message.success('复制成功！');
 }
 /** 删除 */
-async function onDelete(id: number) {
-  // 删除 message
-  await deleteChatMessage(id);
+async function onDelete(target: AiChatMessageApi.ChatMessage) {
+  if (!target.id) {
+    message.warning('无法删除该消息');
+    return;
+  }
   message.success('删除成功！');
-  // 回调
-  emits('onDeleteSuccess');
+  emits('onDeleteSuccess', target);
 }
 
 /** 刷新 */
@@ -150,7 +149,7 @@ onMounted(async () => {
               v-if="item.id > 0"
               class="flex items-center bg-transparent px-1.5 hover:bg-gray-100"
               type="text"
-              @click="onDelete(item.id)"
+              @click="onDelete(item)"
             >
               <IconifyIcon icon="lucide:trash" />
             </Button>
@@ -185,7 +184,7 @@ onMounted(async () => {
             <Button
               class="flex items-center bg-transparent px-1.5 hover:bg-gray-100"
               type="text"
-              @click="onDelete(item.id)"
+              @click="onDelete(item)"
             >
               <IconifyIcon icon="lucide:trash" />
             </Button>

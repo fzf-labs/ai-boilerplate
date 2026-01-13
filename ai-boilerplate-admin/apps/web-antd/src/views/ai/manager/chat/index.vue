@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VxeTableGridOptions } from '#/adapter/vxe-table';
-import type { AiChatMessageApi } from '#/api/ai/manager/chatMessage';
-import type { AiChatConversationApi } from '#/api/v1/ai-chat-conversation';
+import type * as AiChatMessageApi from '#/api/v1/ai-chat-message';
+import type * as AiChatConversationApi from '#/api/v1/ai-chat-conversation';
 import type { SysAdminInfo } from '#/api/v1/sys-admin';
 
 import { onMounted, ref } from 'vue';
@@ -15,10 +15,7 @@ import {
   TableAction,
   useVbenVxeGrid,
 } from '#/adapter/vxe-table';
-import {
-  deleteAiChatMessage,
-  getAiChatMessageList,
-} from '#/api/ai/manager/chatMessage';
+import { getAiChatMessageList } from '#/api/v1/ai-chat-message';
 import {
   deleteAiChatConversation,
   getAiChatConversationList,
@@ -42,11 +39,6 @@ function onRefreshConversation() {
   conversationGridApi.query();
 }
 
-/** 刷新消息列表 */
-function onRefreshMessage() {
-  messageGridApi.query();
-}
-
 /** 删除对话 */
 async function handleDeleteConversation(
   row: AiChatConversationApi.AiChatConversationInfo,
@@ -56,30 +48,15 @@ async function handleDeleteConversation(
     key: 'action_key_msg',
   });
   try {
-    await deleteAiChatConversation(row.id);
+    if (!row.id) {
+      return;
+    }
+    await deleteAiChatConversation({ body: { id: row.id } });
     message.success({
       content: $t('ui.actionMessage.deleteSuccess', [row.id]),
       key: 'action_key_msg',
     });
     onRefreshConversation();
-  } finally {
-    hideLoading();
-  }
-}
-
-/** 删除消息 */
-async function handleDeleteMessage(row: AiChatMessageApi.AiChatMessageInfo) {
-  const hideLoading = message.loading({
-    content: $t('ui.actionMessage.deleting', [row.id]),
-    key: 'action_key_msg',
-  });
-  try {
-    await deleteAiChatMessage(row.id);
-    message.success({
-      content: $t('ui.actionMessage.deleteSuccess', [row.id]),
-      key: 'action_key_msg',
-    });
-    onRefreshMessage();
   } finally {
     hideLoading();
   }
@@ -114,9 +91,11 @@ const [ConversationGrid, conversationGridApi] = useVbenVxeGrid({
       ajax: {
         query: async ({ page }, formValues) => {
           return await getAiChatConversationList({
-            page: page.currentPage,
-            pageSize: page.pageSize,
-            ...formValues,
+            params: {
+              page: page.currentPage,
+              pageSize: page.pageSize,
+              ...formValues,
+            } as AiChatConversationApi.GetAiChatConversationListParams,
           });
         },
       },
@@ -135,7 +114,7 @@ const [ConversationGrid, conversationGridApi] = useVbenVxeGrid({
 // 消息列表（用于弹窗）
 const [MessageGrid, messageGridApi] = useVbenVxeGrid({
   formOptions: {
-    schema: useGridFormSchemaMessage(),
+    schema: useGridFormSchemaMessage({ showConversationId: false }),
   },
   gridOptions: {
     columns: useGridColumnsMessage(),
@@ -144,14 +123,16 @@ const [MessageGrid, messageGridApi] = useVbenVxeGrid({
     proxyConfig: {
       ajax: {
         query: async ({ page }, formValues) => {
-          if (!selectedConversation.value) {
+          if (!selectedConversation.value?.id) {
             return { total: 0, list: [] };
           }
           return await getAiChatMessageList({
-            page: page.currentPage,
-            pageSize: page.pageSize,
-            conversationId: selectedConversation.value.id,
-            ...formValues,
+            params: {
+              page: page.currentPage,
+              pageSize: page.pageSize,
+              conversationId: selectedConversation.value.id,
+              ...formValues,
+            } as AiChatMessageApi.GetAiChatMessageListParams,
           });
         },
       },
@@ -228,23 +209,6 @@ onMounted(async () => {
             <span>
               {{ userList.find((item) => item.id === row.adminId)?.nickname }}
             </span>
-          </template>
-          <template #actions="{ row }">
-            <TableAction
-              :actions="[
-                {
-                  label: $t('common.delete'),
-                  type: 'link',
-                  danger: true,
-                  icon: TABLE_ACTION_ICON.DELETE,
-                  auth: ['ai:chat-message:delete'],
-                  popConfirm: {
-                    title: $t('ui.actionMessage.deleteConfirm', [row.id]),
-                    confirm: handleDeleteMessage.bind(null, row),
-                  },
-                },
-              ]"
-            />
           </template>
         </MessageGrid>
       </div>

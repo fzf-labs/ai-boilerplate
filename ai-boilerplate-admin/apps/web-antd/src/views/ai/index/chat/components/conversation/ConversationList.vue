@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue';
 
-import type { AiChatConversationApi } from '#/api/v1/ai-chat-conversation';
+import type { AiChatConversationApi } from '#/api/ai/chat';
 
 import { h, onMounted, ref, toRefs, watch } from 'vue';
 
@@ -15,15 +15,16 @@ import {
   deleteChatConversationMy,
   deleteChatConversationMyByUnpinned,
   getChatConversationMyList,
+  pinChatConversation,
   updateChatConversationMy,
-} from '#/api/v1/ai-chat-conversation';
+} from '#/api/ai/chat';
 
 import RoleRepository from '../role/RoleRepository.vue';
 
 // 定义组件 props
 const props = defineProps({
   activeId: {
-    type: [Number, null] as PropType<null | number>,
+    type: [String, null] as PropType<null | string>,
     default: null,
   },
 });
@@ -42,8 +43,8 @@ const [Drawer, drawerApi] = useVbenDrawer({
 
 // 定义属性
 const searchName = ref<string>(''); // 对话搜索
-const activeConversationId = ref<null | number>(null); // 选中的对话，默认为 null
-const hoverConversationId = ref<null | number>(null); // 悬浮上去的对话
+const activeConversationId = ref<null | string>(null); // 选中的对话，默认为 null
+const hoverConversationId = ref<null | string>(null); // 悬浮上去的对话
 const conversationList = ref([] as AiChatConversationApi.ChatConversation[]); // 对话列表
 const conversationMap = ref<any>({}); // 对话分组 (置顶、今天、三天前、一星期前、一个月前)
 const loading = ref<boolean>(false); // 加载中
@@ -59,7 +60,7 @@ async function searchConversation() {
   } else {
     // 过滤
     const filterValues = conversationList.value.filter((item) => {
-      return item.title.includes(searchName.value.trim());
+      return item.title?.includes(searchName.value.trim());
     });
     conversationMap.value =
       await getConversationGroupByCreateTime(filterValues);
@@ -67,7 +68,10 @@ async function searchConversation() {
 }
 
 /** 点击对话 */
-async function handleConversationClick(id: number) {
+async function handleConversationClick(id?: string) {
+  if (!id) {
+    return;
+  }
   // 过滤出选中的对话
   const filterConversation = conversationList.value.find((item) => {
     return item.id === id;
@@ -93,7 +97,7 @@ async function getChatConversationList() {
     conversationList.value = await getChatConversationMyList();
     // 1.2 排序
     conversationList.value.sort((a, b) => {
-      return Number(b.createTime) - Number(a.createTime);
+      return Number(b.createTime || 0) - Number(a.createTime || 0);
     });
     // 1.3 没有任何对话情况
     if (conversationList.value.length === 0) {
@@ -144,7 +148,7 @@ async function getConversationGroupByCreateTime(
       continue;
     }
     // 计算时间差（单位：毫秒）
-    const diff = now - Number(conversation.createTime);
+    const diff = now - Number(conversation.createTime || 0);
     // 根据时间间隔判断
     if (diff < oneDay) {
       groupMap['今天'].push(conversation);
@@ -169,7 +173,9 @@ async function createConversation() {
   // 2. 获取对话内容
   await getChatConversationList();
   // 3. 选中对话
-  await handleConversationClick(conversationId);
+  if (conversationId) {
+    await handleConversationClick(conversationId);
+  }
   // 4. 回调
   emits('onConversationCreate');
 }
@@ -178,6 +184,9 @@ async function createConversation() {
 async function updateConversationTitle(
   conversation: AiChatConversationApi.ChatConversation,
 ) {
+  if (!conversation.id) {
+    return;
+  }
   // 1. 二次确认
   prompt({
     async beforeClose(scope) {
@@ -233,6 +242,9 @@ async function deleteChatConversation(
   conversation: AiChatConversationApi.ChatConversation,
 ) {
   try {
+    if (!conversation.id) {
+      return;
+    }
     // 删除的二次确认
     await confirm(`是否确认删除对话 - ${conversation.title}?`);
     // 发起删除
@@ -261,9 +273,10 @@ async function handleClearConversation() {
 
 /** 对话置顶 */
 async function handleTop(conversation: AiChatConversationApi.ChatConversation) {
-  // 更新对话置顶
-  conversation.pinned = !conversation.pinned;
-  await updateChatConversationMy(conversation);
+  if (!conversation.id) {
+    return;
+  }
+  await pinChatConversation(conversation.id, !conversation.pinned);
   // 刷新对话
   await getChatConversationList();
 }

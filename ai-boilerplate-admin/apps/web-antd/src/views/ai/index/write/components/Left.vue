@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import type { AiWriteApi } from '#/api/ai/write';
+import type { AiModelModelApi } from '#/api/ai/model/model';
 
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 import { IconifyIcon } from '@vben/icons';
 
 import { createReusableTemplate } from '@vueuse/core';
-import { Button, message, Textarea } from 'ant-design-vue';
+import { Button, message, Select, Textarea } from 'ant-design-vue';
 
+import { getModelSimpleList } from '#/api/ai/model/model';
 import Tag from './Tag.vue';
 import { AiWriteTypeEnum, WriteExample } from './typing';
 
@@ -76,9 +78,11 @@ const initData: AiWriteApi.Write = {
   language: 1,
   length: 1,
   format: 1,
+  modelId: '',
 };
 
 const formData = ref<AiWriteApi.Write>({ ...initData });
+const modelOptions = ref<AiModelModelApi.Model[]>([]);
 
 /** 用来记录切换之前所填写的数据，切换的时候给赋值回来 */
 const recordFormData = {} as Record<number, AiWriteApi.Write>;
@@ -103,6 +107,10 @@ function submit() {
     message.warning(`请输入${selectedTab.value === 1 ? '写作' : '回复'}内容`);
     return;
   }
+  if (!formData.value.modelId) {
+    message.warning('请选择模型');
+    return;
+  }
   emit('submit', {
     /** 撰写的时候没有 originalContent 字段*/
     ...(selectedTab.value === 1
@@ -112,6 +120,18 @@ function submit() {
     type: selectedTab.value,
   });
 }
+
+onMounted(async () => {
+  try {
+    modelOptions.value = await getModelSimpleList();
+    if (!formData.value.modelId && modelOptions.value[0]) {
+      formData.value.modelId = modelOptions.value[0].id;
+      initData.modelId = modelOptions.value[0].id;
+    }
+  } catch {
+    message.warning('模型列表加载失败');
+  }
+});
 </script>
 
 <template>
@@ -165,6 +185,18 @@ function submit() {
       class="bg-card box-border h-full w-96 flex-grow overflow-y-auto px-7 pb-2 lg:block"
     >
       <div>
+        <ReuseLabel label="模型" />
+        <Select
+          v-model:value="formData.modelId"
+          class="w-full"
+          placeholder="请选择模型"
+          :options="
+            modelOptions.map((item) => ({
+              label: item.name,
+              value: item.id,
+            }))
+          "
+        />
         <template v-if="selectedTab === 1">
           <ReuseLabel
             :hint-click="() => example('write')"

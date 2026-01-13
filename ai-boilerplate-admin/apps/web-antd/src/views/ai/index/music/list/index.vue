@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import type { Recordable } from '@vben/types';
+import type { AiMusicApi } from '#/api/ai/music';
 
-import { provide, ref } from 'vue';
+import { onMounted, provide, ref } from 'vue';
 
-import { Col, Empty, Row, TabPane, Tabs } from 'ant-design-vue';
+import { Col, Empty, Row, TabPane, Tabs, message } from 'ant-design-vue';
 
 import audioBar from './audioBar/index.vue';
 import songCard from './songCard/index.vue';
 import songInfo from './songInfo/index.vue';
+import { createMusicRecord, getMusicPageMy } from '#/api/ai/music';
 
 defineOptions({ name: 'AiMusicListIndex' });
 
@@ -17,40 +19,55 @@ const loading = ref(false);
 // 当前音乐
 const currentSong = ref({});
 
-const mySongList = ref<Recordable<any>[]>([]);
-const squareSongList = ref<Recordable<any>[]>([]);
+const mySongList = ref<AiMusicApi.Music[]>([]);
+const squareSongList = ref<AiMusicApi.Music[]>([]);
+
+async function loadMusicList() {
+  const { list } = await getMusicPageMy({ page: 1, pageSize: 50 });
+  mySongList.value = list.filter((item) => !item.publicStatus);
+  squareSongList.value = list.filter((item) => item.publicStatus);
+  if (!currentSong.value?.id && list[0]) {
+    currentSong.value = list[0];
+  }
+}
 
 /*
  *@Description: 调接口生成音乐列表
  *@MethodAuthor: xiaohong
  *@Date: 2024-06-27 17:06:44
  */
-function generateMusic() {
+async function generateMusic(formData: Recordable<any>) {
   loading.value = true;
-  setTimeout(() => {
-    mySongList.value = Array.from({ length: 20 }, (_, index) => {
-      return {
-        id: index,
-        audioUrl: '',
-        videoUrl: '',
-        title: `我走后${index}`,
-        imageUrl:
-          'https://www.carsmp3.com/data/attachment/forum/201909/19/091020q5kgre20fidreqyt.jpg',
-        desc: 'Metal, symphony, film soundtrack, grand, majesticMetal, dtrack, grand, majestic',
-        date: '2024年04月30日 14:02:57',
-        lyric: `<div class="_words_17xen_66"><div>大江东去，浪淘尽，千古风流人物。
-          </div><div>故垒西边，人道是，三国周郎赤壁。
-          </div><div>乱石穿空，惊涛拍岸，卷起千堆雪。
-          </div><div>江山如画，一时多少豪杰。
-          </div><div>
-          </div><div>遥想公瑾当年，小乔初嫁了，雄姿英发。
-          </div><div>羽扇纶巾，谈笑间，樯橹灰飞烟灭。
-          </div><div>故国神游，多情应笑我，早生华发。
-          </div><div>人生如梦，一尊还酹江月。</div></div>`,
-      };
+  try {
+    if (!formData) {
+      message.warning('请填写生成信息');
+      return;
+    }
+    const isLyric = formData.generateMode === 'lyric' || !!formData.lyric;
+    const desc = formData.desc || formData.description || '';
+    const title =
+      formData.name || (desc ? desc.slice(0, 12) : '') || '未命名';
+    const promptParts = [
+      isLyric ? formData.style : desc,
+      formData.pure ? '纯音乐' : '',
+      formData.version ? `版本:${formData.version}` : '',
+    ].filter(Boolean);
+    await createMusicRecord({
+      title,
+      description: desc || formData.style,
+      lyric: formData.lyric,
+      prompt: promptParts.join(' '),
+      tags: formData.style,
+      generateMode: isLyric ? 2 : 1,
+      publicStatus: false,
     });
+    await loadMusicList();
+    message.success('已提交音乐任务');
+  } catch (error: any) {
+    message.error(error?.message || '音乐生成失败');
+  } finally {
     loading.value = false;
-  }, 3000);
+  }
 }
 
 /*
@@ -67,6 +84,17 @@ defineExpose({
 });
 
 provide('currentSong', currentSong);
+
+onMounted(async () => {
+  try {
+    loading.value = true;
+    await loadMusicList();
+  } catch (error: any) {
+    message.error(error?.message || '音乐列表加载失败');
+  } finally {
+    loading.value = false;
+  }
+});
 </script>
 
 <template>

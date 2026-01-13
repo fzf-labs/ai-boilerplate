@@ -111,6 +111,6 @@ export function updateSelfAppStatus({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { AiModelChatRoleApi } from '#/api/ai/model/chatRole';
-import type { AiChatConversationApi } from '#/api/v1/ai-chat-conversation';
+import type { AiChatConversationApi } from '#/api/ai/chat';
 
 import { onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -11,9 +11,9 @@ import { IconifyIcon } from '@vben/icons';
 import { Button, Input, Layout, Tabs } from 'ant-design-vue';
 
 import { deleteMy, getCategoryList, getMyPage } from '#/api/ai/model/chatRole';
-import { createChatConversationMy } from '#/api/v1/ai-chat-conversation';
+import { createChatConversationMy } from '#/api/ai/chat';
 
-import Form from '../../../../../manager/chatRole/modules/form.vue';
+import Form from '../../../../manager/chatRole/modules/form.vue';
 import RoleCategoryList from './RoleCategoryList.vue';
 import RoleList from './RoleList.vue';
 

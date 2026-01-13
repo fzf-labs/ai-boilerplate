@@ -22,7 +22,12 @@ const modeRef = ref<Nullable<{ formData: Recordable<any> }>>(null);
  *@Date: 2024-06-27 16:40:16
  */
 function generateMusic() {
-  emits('generateMusic', { formData: unref(modeRef)?.formData });
+  emits('generateMusic', {
+    formData: {
+      ...unref(modeRef)?.formData,
+      generateMode: generateMode.value,
+    },
+  });
 }
 </script>
 

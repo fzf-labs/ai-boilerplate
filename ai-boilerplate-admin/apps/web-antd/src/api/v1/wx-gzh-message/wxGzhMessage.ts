@@ -21,7 +21,7 @@ export function createWxGzhMessage({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -42,7 +42,7 @@ export function deleteWxGzhMessage({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -63,7 +63,7 @@ export function getWxGzhMessageInfo({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -84,7 +84,7 @@ export function getWxGzhMessageList({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -105,6 +105,6 @@ export function updateWxGzhMessage({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

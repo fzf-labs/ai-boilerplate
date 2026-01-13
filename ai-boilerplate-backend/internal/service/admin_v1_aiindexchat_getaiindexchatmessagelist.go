@@ -5,7 +5,9 @@ import (
 	"time"
 
 	pb "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1"
+	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/constant"
 	"github.com/fzf-labs/godb/orm/condition"
+	"github.com/fzf-labs/kratos-contrib/meta"
 )
 
 // GetAiIndexChatMessageList AI 聊天消息表-列表数据查询
@@ -14,6 +16,8 @@ func (a *AdminV1AiIndexChatService) GetAiIndexChatMessageList(ctx context.Contex
 		Total: 0,
 		List:  []*pb.AiIndexChatMessageItem{},
 	}
+	tenantID := meta.GetMetadataFromClient(ctx, constant.XMdTenantID)
+	adminID := meta.GetMetadataFromClient(ctx, constant.XMdAdminID)
 	param := &condition.Req{
 		Page:     req.GetPage(),
 		PageSize: req.GetPageSize(),
@@ -24,6 +28,22 @@ func (a *AdminV1AiIndexChatService) GetAiIndexChatMessageList(ctx context.Contex
 				Order: condition.DESC,
 			},
 		},
+	}
+	if tenantID != "" {
+		param.Query = append(param.Query, &condition.QueryParam{
+			Field: "tenant_id",
+			Value: tenantID,
+			Exp:   condition.EQ,
+			Logic: condition.AND,
+		})
+	}
+	if adminID != "" {
+		param.Query = append(param.Query, &condition.QueryParam{
+			Field: "admin_id",
+			Value: adminID,
+			Exp:   condition.EQ,
+			Logic: condition.AND,
+		})
 	}
 	list, p, err := a.aiChatMessageRepo.FindMultiCacheByCondition(ctx, param)
 	if err != nil {

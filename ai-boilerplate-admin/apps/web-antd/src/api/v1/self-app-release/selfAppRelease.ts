@@ -21,7 +21,7 @@ export function createSelfAppRelease({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -42,7 +42,7 @@ export function deleteSelfAppRelease({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -63,7 +63,7 @@ export function getSelfAppReleaseInfo({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -84,7 +84,7 @@ export function getSelfAppReleaseList({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -105,7 +105,7 @@ export function updateSelfAppRelease({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -126,6 +126,6 @@ export function updateSelfAppReleaseStatus({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

@@ -69,8 +69,11 @@ func NewHTTPServer(
 	adminV1AiAudioRecordService *service.AdminV1AiAudioRecordService,
 	adminV1AiVideoRecordService *service.AdminV1AiVideoRecordService,
 	adminV1AiWriteRecordService *service.AdminV1AiWriteRecordService,
+	adminV1AiIndexImageService *service.AdminV1AiIndexImageService,
+	adminV1AiIndexAudioService *service.AdminV1AiIndexAudioService,
 	adminV1AiIndexPromptService *service.AdminV1AiIndexPromptService,
 	adminV1AiIndexChatService *service.AdminV1AiIndexChatService,
+	adminV1AiIndexVideoService *service.AdminV1AiIndexVideoService,
 	// App
 	appV1HomeService *service.AppV1HomeService,
 	appV1BannerService *service.AppV1BannerService,
@@ -137,11 +140,14 @@ func NewHTTPServer(
 	adminv1.RegisterAiAudioRecordHTTPServer(srv, adminV1AiAudioRecordService)
 	adminv1.RegisterAiVideoRecordHTTPServer(srv, adminV1AiVideoRecordService)
 	adminv1.RegisterAiWriteRecordHTTPServer(srv, adminV1AiWriteRecordService)
+	adminv1.RegisterAiIndexImageHTTPServer(srv, adminV1AiIndexImageService)
+	adminv1.RegisterAiIndexAudioHTTPServer(srv, adminV1AiIndexAudioService)
 	adminv1.RegisterMallActivationCodeHTTPServer(srv, adminV1MallActivationCodeService)
 	adminv1.RegisterMallOrderHTTPServer(srv, adminV1MallOrderService)
 	adminv1.RegisterMallPaymentRecordHTTPServer(srv, adminV1MallPaymentRecordService)
 	adminv1.RegisterMallProductHTTPServer(srv, adminV1MallProductService)
 	adminv1.RegisterAiIndexChatHTTPServer(srv, adminV1AiIndexChatService)
+	adminv1.RegisterAiIndexVideoHTTPServer(srv, adminV1AiIndexVideoService)
 	// App v1 服务注册
 	appv1.RegisterHomeHTTPServer(srv, appV1HomeService)
 	appv1.RegisterBannerHTTPServer(srv, appV1BannerService)
@@ -153,9 +159,10 @@ func NewHTTPServer(
 	appv1.RegisterSelfAppReleaseHTTPServer(srv, appV1SelfAppReleaseService)
 	// 自定义路由
 	adminRoute := srv.Route("/admin")
-	adminRoute.POST("/v1/ai_index_chat/completions", adminV1AiIndexChatService.AiIndexChatCompletionsHandler) // AI 聊天-聊天 ChatCompletions格式 (SSE 流式返回)
-	adminRoute.POST("/v1/wx_gzh_material/upload", adminV1WxGzhMaterialService.UploadWxGzhMaterialHandler)     // 上传素材
-	srv.HandleFunc("/wx_gzh_account/callback", adminV1WxGzhAccountService.OfficialAccountCallback)            // 公众号回调
+	adminRoute.POST("/v1/ai_index_chat/completions", adminV1AiIndexChatService.AiIndexChatCompletionsHandler)     // AI 聊天-聊天 ChatCompletions格式 (SSE 流式返回)
+	adminRoute.POST("/v1/ai_index_write/completions", adminV1AiWriteRecordService.AiIndexWriteCompletionsHandler) // AI 写作-流式返回
+	adminRoute.POST("/v1/wx_gzh_material/upload", adminV1WxGzhMaterialService.UploadWxGzhMaterialHandler)         // 上传素材
+	srv.HandleFunc("/wx_gzh_account/callback", adminV1WxGzhAccountService.OfficialAccountCallback)                // 公众号回调
 
 	return srv
 }

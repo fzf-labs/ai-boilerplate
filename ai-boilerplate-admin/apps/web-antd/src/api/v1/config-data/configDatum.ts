@@ -111,6 +111,6 @@ export function updateConfigDatumStatus({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

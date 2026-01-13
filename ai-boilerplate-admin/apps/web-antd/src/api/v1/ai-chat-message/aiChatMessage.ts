@@ -21,6 +21,6 @@ export function getAiChatMessageList({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }

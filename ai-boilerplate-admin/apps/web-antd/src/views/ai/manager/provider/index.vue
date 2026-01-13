@@ -3,7 +3,7 @@ import type {
   OnActionClickParams,
   VxeTableGridOptions,
 } from '#/adapter/vxe-table';
-import type { AiProviderPlatformApi } from '#/api/ai/manager/providerPlatform';
+import type * as AiProviderPlatformApi from '#/api/v1/ai-provider-platform';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
@@ -14,7 +14,7 @@ import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
   deleteAiProviderPlatform,
   getAiProviderPlatformList,
-} from '#/api/ai/manager/providerPlatform';
+} from '#/api/v1/ai-provider-platform';
 import { $t } from '#/locales';
 
 import { useGridColumns, useGridFormSchema } from './data';
@@ -56,7 +56,10 @@ async function onDelete(row: AiProviderPlatformApi.AiProviderPlatformInfo) {
     key: 'action_key_msg',
   });
   try {
-    await deleteAiProviderPlatform({ id: row.id });
+    if (!row.id) {
+      return;
+    }
+    await deleteAiProviderPlatform({ body: { id: row.id } });
     message.success({
       content: $t('ui.actionMessage.deleteSuccess', [row.name]),
       key: 'action_key_msg',
@@ -105,9 +108,11 @@ const [Grid, gridApi] = useVbenVxeGrid({
       ajax: {
         query: async ({ page }, formValues) => {
           return await getAiProviderPlatformList({
-            page: page.currentPage,
-            pageSize: page.pageSize,
-            ...formValues,
+            params: {
+              page: page.currentPage,
+              pageSize: page.pageSize,
+              ...formValues,
+            } as AiProviderPlatformApi.GetAiProviderPlatformListParams,
           });
         },
       },

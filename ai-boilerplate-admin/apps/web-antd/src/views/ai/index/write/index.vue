@@ -3,7 +3,7 @@ import type { AiWriteApi } from '#/api/ai/write';
 
 import { nextTick, ref } from 'vue';
 
-import { alert, Page } from '@vben/common-ui';
+import { Page } from '@vben/common-ui';
 
 import { writeStream } from '#/api/ai/write';
 
@@ -30,14 +30,11 @@ function submit(data: Partial<AiWriteApi.Write>) {
   isWriting.value = true;
   writeStream({
     data,
-    onMessage: async (res: any) => {
-      const { code, data, msg } = JSON.parse(res.data);
-      if (code !== 0) {
-        alert(`写作异常! ${msg}`);
-        stopStream();
+    onMessage: async (content: string) => {
+      if (!content) {
         return;
       }
-      writeResult.value = writeResult.value + data;
+      writeResult.value = writeResult.value + content;
       // 滚动到底部
       await nextTick();
       rightRef.value?.scrollToBottom();

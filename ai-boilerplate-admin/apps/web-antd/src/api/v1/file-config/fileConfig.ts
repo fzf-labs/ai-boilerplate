@@ -105,7 +105,7 @@ export function setFileConfigMaster({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -120,7 +120,7 @@ export function getFileConfigStorageSelect({
     {
       method: 'GET',
       ...(options || {}),
-    },
+    }
   );
 }
 

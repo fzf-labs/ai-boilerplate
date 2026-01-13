@@ -21,7 +21,7 @@ export function createAiWriteRecord({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -42,7 +42,7 @@ export function deleteAiWriteRecord({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -63,7 +63,7 @@ export function getAiWriteRecordInfo({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -84,7 +84,7 @@ export function getAiWriteRecordList({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -105,6 +105,6 @@ export function updateAiWriteRecord({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

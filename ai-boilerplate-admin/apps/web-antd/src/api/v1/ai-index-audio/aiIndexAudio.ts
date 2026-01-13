@@ -21,7 +21,7 @@ export function createAiIndexAudioRecord({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -42,7 +42,7 @@ export function deleteAiIndexAudioRecord({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -63,7 +63,7 @@ export function getAiIndexAudioRecordInfo({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -84,6 +84,6 @@ export function getAiIndexAudioRecordList({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }

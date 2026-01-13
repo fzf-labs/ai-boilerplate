@@ -111,6 +111,6 @@ export function updateSysNoticeStatus({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

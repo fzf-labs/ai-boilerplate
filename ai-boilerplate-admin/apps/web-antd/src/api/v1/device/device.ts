@@ -69,7 +69,7 @@ export function getOnlineDeviceCount({
     {
       method: 'GET',
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -108,6 +108,6 @@ export function updateDeviceStatus({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

@@ -111,6 +111,6 @@ export function updateDictDatumStatus({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

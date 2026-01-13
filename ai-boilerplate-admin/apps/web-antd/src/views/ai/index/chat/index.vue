@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import type { AiChatConversationApi } from '#/api/v1/ai-chat-conversation';
-import type { AiChatMessageApi } from '#/api/v1/ai-chat-message';
+import type { AiChatConversationApi, AiChatMessageApi } from '#/api/ai/chat';
 
 import { computed, nextTick, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
@@ -10,12 +9,11 @@ import { IconifyIcon } from '@vben/icons';
 
 import { Button, Layout, message, Switch } from 'ant-design-vue';
 
-import { getChatConversationMy } from '#/api/v1/ai-chat-conversation';
 import {
-  deleteByConversationId,
+  getChatConversationMy,
   getChatMessageListByConversationId,
   sendChatMessageStream,
-} from '#/api/v1/ai-chat-message';
+} from '#/api/ai/chat';
 
 import ConversationList from './components/conversation/ConversationList.vue';
 import ConversationUpdateForm from './components/conversation/ConversationUpdateForm.vue';
@@ -33,7 +31,7 @@ const [FormModal, formModalApi] = useVbenModal({
 });
 // 聊天对话
 const conversationListRef = ref();
-const activeConversationId = ref<null | number>(null); // 选中的对话编号
+const activeConversationId = ref<null | string>(null); // 选中的对话编号
 const activeConversation = ref<AiChatConversationApi.ChatConversation | null>(
   null,
 ); // 选中的 Conversation
@@ -61,7 +59,7 @@ const receiveMessageDisplayedText = ref('');
 // =========== 【聊天对话】相关 ===========
 
 /** 获取对话信息 */
-async function getConversation(id: null | number) {
+async function getConversation(id: null | string) {
   if (!id) {
     return;
   }
@@ -83,6 +81,9 @@ async function getConversation(id: null | number) {
 async function handleConversationClick(
   conversation: AiChatConversationApi.ChatConversation,
 ) {
+  if (!conversation.id) {
+    return false;
+  }
   // 对话进行中，不允许切换
   if (conversationInProgress.value) {
     alert('对话中，不允许切换!');
@@ -196,12 +197,17 @@ const messageList = computed(() => {
 });
 
 /** 处理删除 message 消息 */
-function handleMessageDelete() {
+function handleMessageDelete(message?: AiChatMessageApi.ChatMessage) {
   if (conversationInProgress.value) {
     alert('回答中，不能删除!');
     return;
   }
-  // 刷新 message 列表
+  if (message?.id) {
+    activeMessageList.value = activeMessageList.value.filter(
+      (item) => item.id !== message.id,
+    );
+    return;
+  }
   getMessageList();
 }
 
@@ -213,8 +219,6 @@ async function handlerMessageClear() {
   try {
     // 确认提示
     await confirm('确认清空对话消息？');
-    // 清空对话
-    await deleteByConversationId(activeConversationId.value);
     // 刷新 message 列表
     activeMessageList.value = [];
   } catch {}
@@ -306,6 +310,32 @@ async function doSendMessage(content: string) {
   } as AiChatMessageApi.ChatMessage);
 }
 
+function buildStreamMessages(content: string) {
+  const messages: Array<{ type: string; text: string }> = [];
+  if (activeConversation.value?.systemMessage) {
+    messages.push({
+      type: 'system',
+      text: activeConversation.value.systemMessage,
+    });
+  }
+  if (enableContext.value) {
+    activeMessageList.value.forEach((item) => {
+      if (item.id === -1 || item.id === -2) {
+        return;
+      }
+      if (!item.content) {
+        return;
+      }
+      messages.push({
+        type: item.type || 'user',
+        text: item.content,
+      });
+    });
+  }
+  messages.push({ type: 'user', text: content });
+  return messages;
+}
+
 /** 真正执行【发送】消息操作 */
 async function doSendMessageStream(userMessage: AiChatMessageApi.ChatMessage) {
   // 创建 AbortController 实例，以便中止请求
@@ -314,6 +344,7 @@ async function doSendMessageStream(userMessage: AiChatMessageApi.ChatMessage) {
   conversationInProgress.value = true;
   // 设置为空
   receiveMessageFullText.value = '';
+  receiveMessageDisplayedText.value = '';
 
   try {
     // 1.1 先添加两个假数据，等 stream 返回再替换
@@ -329,7 +360,7 @@ async function doSendMessageStream(userMessage: AiChatMessageApi.ChatMessage) {
         id: -2,
         conversationId: activeConversationId.value,
         type: 'assistant',
-        content: '思考中...',
+        content: '',
         createTime: new Date(),
       } as AiChatMessageApi.ChatMessage,
     );
@@ -340,48 +371,26 @@ async function doSendMessageStream(userMessage: AiChatMessageApi.ChatMessage) {
     textRoll();
 
     // 2. 发送 event stream
-    let isFirstChunk = true; // 是否是第一个 chunk 消息段
-    await sendChatMessageStream(
-      userMessage.conversationId,
-      userMessage.content,
-      conversationInAbortController.value,
-      enableContext.value,
-      async (res: any) => {
-        const { code, data, msg } = JSON.parse(res.data);
-        if (code !== 0) {
-          alert(`对话异常! ${msg}`);
+    await sendChatMessageStream({
+      conversationId: userMessage.conversationId as string,
+      messages: buildStreamMessages(userMessage.content || ''),
+      ctrl: conversationInAbortController.value,
+      onMessage: async (content) => {
+        if (!content) {
           return;
         }
-
-        // 如果内容为空，就不处理。
-        if (data.receive.content === '') {
-          return;
-        }
-        // 首次返回需要添加一个 message 到页面，后面的都是更新
-        if (isFirstChunk) {
-          isFirstChunk = false;
-          // 弹出两个假数据
-          activeMessageList.value.pop();
-          activeMessageList.value.pop();
-          // 更新返回的数据
-          activeMessageList.value.push(data.send, data.receive);
-        }
-        // debugger
-        receiveMessageFullText.value =
-          receiveMessageFullText.value + data.receive.content;
-        // 滚动到最下面
+        receiveMessageFullText.value = receiveMessageFullText.value + content;
         await scrollToBottom();
       },
-      (error: any) => {
+      onError: (error: any) => {
         alert(`对话异常! ${error}`);
         stopStream();
-        // 需要抛出异常，禁止重试
         throw error;
       },
-      () => {
+      onClose: () => {
         stopStream();
       },
-    );
+    });
   } catch {}
 }
 
@@ -479,7 +488,7 @@ async function textRoll() {
 onMounted(async () => {
   // 如果有 conversationId 参数，则默认选中
   if (route.query.conversationId) {
-    const id = route.query.conversationId as unknown as number;
+    const id = String(route.query.conversationId);
     activeConversationId.value = id;
     await getConversation(id);
   }
@@ -524,7 +533,13 @@ onMounted(async () => {
               size="small"
               @click="openChatConversationUpdateForm"
             >
-              <span>{{ activeConversation?.modelName }}</span>
+              <span>
+                {{
+                  activeConversation?.modelSetting?.modelType ||
+                  activeConversation?.modelSetting?.modelId ||
+                  '模型'
+                }}
+              </span>
               <IconifyIcon icon="lucide:settings" class="ml-2 size-4" />
             </Button>
             <Button size="small" class="mr-2 px-2" @click="handlerMessageClear">

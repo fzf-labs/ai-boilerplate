@@ -21,7 +21,7 @@ export function deleteAiChatConversation({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -42,7 +42,7 @@ export function getAiChatConversationInfo({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -63,6 +63,6 @@ export function getAiChatConversationList({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }

@@ -21,7 +21,7 @@ export function createAiIndexVideoRecord({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -42,7 +42,7 @@ export function deleteAiIndexVideoRecord({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -63,7 +63,7 @@ export function getAiIndexVideoRecordInfo({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -84,7 +84,7 @@ export function getAiIndexVideoRecordList({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -105,7 +105,7 @@ export function updateAiIndexVideoRecord({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -126,6 +126,6 @@ export function updateAiIndexVideoRecordStatus({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

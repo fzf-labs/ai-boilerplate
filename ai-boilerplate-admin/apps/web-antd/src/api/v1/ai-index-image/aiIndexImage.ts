@@ -21,7 +21,7 @@ export function createAiIndexImageRecord({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -42,7 +42,7 @@ export function deleteAiIndexImageRecord({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -63,6 +63,6 @@ export function getAiIndexImageRecordList({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }

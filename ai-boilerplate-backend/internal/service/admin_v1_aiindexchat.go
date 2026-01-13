@@ -10,12 +10,16 @@ func NewAdminV1AiIndexChatService(
 	logger log.Logger,
 	aiChatConversationRepo *data.AiChatConversationRepo,
 	aiChatMessageRepo *data.AiChatMessageRepo,
+	aiProviderModelRepo *data.AiProviderModelRepo,
+	aiProviderPlatformRepo *data.AiProviderPlatformRepo,
 ) *AdminV1AiIndexChatService {
 	l := log.NewHelper(log.With(logger, "module", "service/aiIndexChat"))
 	return &AdminV1AiIndexChatService{
 		log:                    l,
 		aiChatConversationRepo: aiChatConversationRepo,
 		aiChatMessageRepo:      aiChatMessageRepo,
+		aiProviderModelRepo:    aiProviderModelRepo,
+		aiProviderPlatformRepo: aiProviderPlatformRepo,
 	}
 }
 
@@ -24,4 +28,6 @@ type AdminV1AiIndexChatService struct {
 	log                    *log.Helper
 	aiChatConversationRepo *data.AiChatConversationRepo
 	aiChatMessageRepo      *data.AiChatMessageRepo
+	aiProviderModelRepo    *data.AiProviderModelRepo
+	aiProviderPlatformRepo *data.AiProviderPlatformRepo
 }

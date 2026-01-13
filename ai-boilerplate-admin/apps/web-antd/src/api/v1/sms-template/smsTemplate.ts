@@ -87,7 +87,7 @@ export function getSmsTemplateSelector({
     {
       method: 'GET',
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -108,7 +108,7 @@ export function sendSmsTemplateMsg({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -147,6 +147,6 @@ export function updateSmsTemplateStatus({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

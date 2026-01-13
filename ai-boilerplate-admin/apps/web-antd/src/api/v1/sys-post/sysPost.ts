@@ -123,6 +123,6 @@ export function updateSysPostStatus({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

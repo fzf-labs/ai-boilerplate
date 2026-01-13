@@ -21,7 +21,7 @@ export function getSysNotifyMessageInfo({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -42,7 +42,7 @@ export function getSysNotifyMessageList({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -63,7 +63,7 @@ export function getSysNotifyMessageMyList({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -78,7 +78,7 @@ export function getSysNotifyMessageMyUnreadCount({
     {
       method: 'GET',
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -93,7 +93,7 @@ export function getSysNotifyMessageMyUnreadList({
     {
       method: 'GET',
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -114,7 +114,7 @@ export function updateSysNotifyMessageAllRead({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -135,6 +135,6 @@ export function updateSysNotifyMessageRead({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

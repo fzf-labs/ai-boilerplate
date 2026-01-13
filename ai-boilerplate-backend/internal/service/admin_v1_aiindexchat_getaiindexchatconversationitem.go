@@ -5,7 +5,9 @@ import (
 	"time"
 
 	pb "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1"
+	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/constant"
 	"github.com/fzf-labs/goutil/jsonutil"
+	"github.com/fzf-labs/kratos-contrib/meta"
 )
 
 // GetAiIndexChatConversationItem AI 聊天对话表-单条数据查询
@@ -18,6 +20,14 @@ func (a *AdminV1AiIndexChatService) GetAiIndexChatConversationItem(ctx context.C
 		return nil, pb.ErrorReasonDataSQLError(pb.WithError(err))
 	}
 	if data == nil || data.ID == "" {
+		return nil, pb.ErrorReasonDataRecordNotFound()
+	}
+	tenantID := meta.GetMetadataFromClient(ctx, constant.XMdTenantID)
+	adminID := meta.GetMetadataFromClient(ctx, constant.XMdAdminID)
+	if tenantID != "" && data.TenantID != tenantID {
+		return nil, pb.ErrorReasonDataRecordNotFound()
+	}
+	if adminID != "" && data.AdminID != adminID {
 		return nil, pb.ErrorReasonDataRecordNotFound()
 	}
 	promptSetting := &pb.AiIndexChatConversationItem_PromptSetting{}

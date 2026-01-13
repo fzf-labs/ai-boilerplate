@@ -105,6 +105,6 @@ export function updateSysMenuStatus({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

@@ -9,16 +9,22 @@ import (
 func NewAdminV1AiWriteRecordService(
 	logger log.Logger,
 	aiWriteRecordRepo *data.AiWriteRecordRepo,
+	aiProviderModelRepo *data.AiProviderModelRepo,
+	aiProviderPlatformRepo *data.AiProviderPlatformRepo,
 ) *AdminV1AiWriteRecordService {
 	l := log.NewHelper(log.With(logger, "module", "service/aiWriteRecord"))
 	return &AdminV1AiWriteRecordService{
-		log:               l,
-		aiWriteRecordRepo: aiWriteRecordRepo,
+		log:                    l,
+		aiWriteRecordRepo:      aiWriteRecordRepo,
+		aiProviderModelRepo:    aiProviderModelRepo,
+		aiProviderPlatformRepo: aiProviderPlatformRepo,
 	}
 }
 
 type AdminV1AiWriteRecordService struct {
 	pb.UnimplementedAiWriteRecordServer
-	log               *log.Helper
-	aiWriteRecordRepo *data.AiWriteRecordRepo
+	log                    *log.Helper
+	aiWriteRecordRepo      *data.AiWriteRecordRepo
+	aiProviderModelRepo    *data.AiProviderModelRepo
+	aiProviderPlatformRepo *data.AiProviderPlatformRepo
 }

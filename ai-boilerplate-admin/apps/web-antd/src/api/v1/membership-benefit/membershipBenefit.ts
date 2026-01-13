@@ -21,7 +21,7 @@ export function createMembershipBenefit({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -42,7 +42,7 @@ export function deleteMembershipBenefit({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -63,7 +63,7 @@ export function getMembershipBenefitInfo({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -78,7 +78,7 @@ export function getMembershipBenefitKeySelect({
     {
       method: 'GET',
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -99,7 +99,7 @@ export function getMembershipBenefitList({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -120,7 +120,7 @@ export function updateMembershipBenefit({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -141,6 +141,6 @@ export function updateMembershipBenefitStatus({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

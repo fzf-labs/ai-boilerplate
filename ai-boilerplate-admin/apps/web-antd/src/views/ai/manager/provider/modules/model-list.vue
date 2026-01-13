@@ -3,8 +3,8 @@ import type {
   OnActionClickParams,
   VxeTableGridOptions,
 } from '#/adapter/vxe-table';
-import type { AiProviderPlatformApi } from '#/api/ai/manager/providerPlatform';
-import type { AiProviderModelApi } from '#/api/v1/ai-provider-model';
+import type * as AiProviderPlatformApi from '#/api/v1/ai-provider-platform';
+import type * as AiProviderModelApi from '#/api/v1/ai-provider-model';
 
 import { computed, ref } from 'vue';
 
@@ -65,7 +65,10 @@ async function onDelete(row: AiProviderModelApi.AiProviderModelInfo) {
     key: 'action_key_msg',
   });
   try {
-    await deleteAiProviderModel({ id: row.id });
+    if (!row.id) {
+      return;
+    }
+    await deleteAiProviderModel({ body: { id: row.id } });
     message.success({
       content: $t('ui.actionMessage.deleteSuccess', [row.modelName]),
       key: 'action_key_msg',
@@ -105,9 +108,11 @@ const [Grid, gridApi] = useVbenVxeGrid({
             return { list: [], total: 0 };
           }
           return await getAiProviderModelList({
-            page: page.currentPage,
-            pageSize: page.pageSize,
-            platformId: platformData.value.id,
+            params: {
+              page: page.currentPage,
+              pageSize: page.pageSize,
+              platformId: platformData.value.id,
+            } as AiProviderModelApi.GetAiProviderModelListParams,
           });
         },
       },

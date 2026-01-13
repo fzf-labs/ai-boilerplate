@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { VxeTableGridOptions } from '#/adapter/vxe-table';
-import type { AiImageRecordApi } from '#/api/ai/manager/image';
+import type * as AiImageRecordApi from '#/api/v1/ai-image-record';
 import type { SysAdminInfo } from '#/api/v1/sys-admin';
 
 import { onMounted, ref } from 'vue';
@@ -18,7 +18,7 @@ import {
   deleteAiImageRecord,
   getAiImageRecordList,
   updateAiImageRecord,
-} from '#/api/ai/manager/image';
+} from '#/api/v1/ai-image-record';
 import { getSysAdminSelector } from '#/api/v1/sys-admin';
 import { $t } from '#/locales';
 
@@ -38,7 +38,10 @@ async function handleDelete(row: AiImageRecordApi.AiImageRecordInfo) {
     key: 'action_key_msg',
   });
   try {
-    await deleteAiImageRecord(row.id);
+    if (!row.id) {
+      return;
+    }
+    await deleteAiImageRecord({ body: { id: row.id } });
     message.success({
       content: $t('ui.actionMessage.deleteSuccess', [row.id]),
       key: 'action_key_msg',
@@ -57,9 +60,14 @@ const handleUpdatePublicStatusChange = async (
     // 修改状态的二次确认
     const text = row.publicStatus ? '公开' : '私有';
     await confirm(`确认要"${text}"该图片吗?`).then(async () => {
+      if (!row.id) {
+        return;
+      }
       await updateAiImageRecord({
-        ...row,
-        publicStatus: row.publicStatus,
+        body: {
+          ...row,
+          publicStatus: row.publicStatus,
+        } as AiImageRecordApi.UpdateAiImageRecordReq,
       });
       onRefresh();
     });
@@ -80,9 +88,11 @@ const [Grid, gridApi] = useVbenVxeGrid({
       ajax: {
         query: async ({ page }, formValues) => {
           return await getAiImageRecordList({
-            page: page.currentPage,
-            pageSize: page.pageSize,
-            ...formValues,
+            params: {
+              page: page.currentPage,
+              pageSize: page.pageSize,
+              ...formValues,
+            } as AiImageRecordApi.GetAiImageRecordListParams,
           });
         },
       },

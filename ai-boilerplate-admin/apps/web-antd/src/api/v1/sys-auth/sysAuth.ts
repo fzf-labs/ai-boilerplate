@@ -93,7 +93,7 @@ export function sysAuthUpdateAdminInfo({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -114,6 +114,6 @@ export function sysAuthUpdateAdminPassword({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }

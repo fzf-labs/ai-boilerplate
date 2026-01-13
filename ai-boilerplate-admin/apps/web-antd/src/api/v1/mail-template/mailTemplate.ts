@@ -21,7 +21,7 @@ export function createMailTemplate({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -42,7 +42,7 @@ export function deleteMailTemplate({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -99,7 +99,7 @@ export function getMailTemplateSelector({
         ...params,
       },
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -120,7 +120,7 @@ export function updateMailTemplate({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
 
@@ -141,6 +141,6 @@ export function updateMailTemplateStatus({
       },
       data: body,
       ...(options || {}),
-    },
+    }
   );
 }
