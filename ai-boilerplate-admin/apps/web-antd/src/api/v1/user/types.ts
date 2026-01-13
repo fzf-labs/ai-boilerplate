@@ -54,6 +54,27 @@ export type DeleteUserResponses = {
   default: Status;
 };
 
+export type GenerateParentTestTokenReply = {
+  /** token */
+  token?: string;
+};
+
+export type GenerateParentTestTokenReq = {
+  /** id */
+  id: string;
+};
+
+export type GenerateParentTestTokenResponses = {
+  /**
+   * A successful response.
+   */
+  200: GenerateParentTestTokenReply;
+  /**
+   * An unexpected error response.
+   */
+  default: Status;
+};
+
 export type GetUserInfoParams = {
   /** id */
   id: string;

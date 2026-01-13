@@ -96,6 +96,46 @@
         ]
       }
     },
+    "/admin/v1/user/generate_parent_test_token": {
+      "post": {
+        "summary": "用户表-生成测试 Token",
+        "operationId": "User_GenerateParentTestToken",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GenerateParentTestTokenReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GenerateParentTestTokenReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "User"
+        ]
+      }
+    },
     "/admin/v1/user/info": {
       "get": {
         "summary": "用户表-单条数据查询",
@@ -357,6 +397,29 @@
         }
       },
       "title": "请求-用户表-删除一条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "admin.v1.GenerateParentTestTokenReply": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "title": "token"
+        }
+      },
+      "title": "响应-用户表-生成测试 Token"
+    },
+    "admin.v1.GenerateParentTestTokenReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        }
+      },
+      "title": "请求-用户表-生成测试 Token",
       "required": [
         "id"
       ]

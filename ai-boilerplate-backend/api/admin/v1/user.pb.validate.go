@@ -1497,3 +1497,212 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = GetUserListReplyValidationError{}
+
+// Validate checks the field values on GenerateParentTestTokenReq with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GenerateParentTestTokenReq) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GenerateParentTestTokenReq with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GenerateParentTestTokenReqMultiError, or nil if none found.
+func (m *GenerateParentTestTokenReq) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GenerateParentTestTokenReq) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	if len(errors) > 0 {
+		return GenerateParentTestTokenReqMultiError(errors)
+	}
+
+	return nil
+}
+
+// GenerateParentTestTokenReqMultiError is an error wrapping multiple
+// validation errors returned by GenerateParentTestTokenReq.ValidateAll() if
+// the designated constraints aren't met.
+type GenerateParentTestTokenReqMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GenerateParentTestTokenReqMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GenerateParentTestTokenReqMultiError) AllErrors() []error { return m }
+
+// GenerateParentTestTokenReqValidationError is the validation error returned
+// by GenerateParentTestTokenReq.Validate if the designated constraints aren't met.
+type GenerateParentTestTokenReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GenerateParentTestTokenReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GenerateParentTestTokenReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GenerateParentTestTokenReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GenerateParentTestTokenReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GenerateParentTestTokenReqValidationError) ErrorName() string {
+	return "GenerateParentTestTokenReqValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GenerateParentTestTokenReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGenerateParentTestTokenReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GenerateParentTestTokenReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GenerateParentTestTokenReqValidationError{}
+
+// Validate checks the field values on GenerateParentTestTokenReply with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GenerateParentTestTokenReply) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GenerateParentTestTokenReply with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GenerateParentTestTokenReplyMultiError, or nil if none found.
+func (m *GenerateParentTestTokenReply) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GenerateParentTestTokenReply) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Token
+
+	if len(errors) > 0 {
+		return GenerateParentTestTokenReplyMultiError(errors)
+	}
+
+	return nil
+}
+
+// GenerateParentTestTokenReplyMultiError is an error wrapping multiple
+// validation errors returned by GenerateParentTestTokenReply.ValidateAll() if
+// the designated constraints aren't met.
+type GenerateParentTestTokenReplyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GenerateParentTestTokenReplyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GenerateParentTestTokenReplyMultiError) AllErrors() []error { return m }
+
+// GenerateParentTestTokenReplyValidationError is the validation error returned
+// by GenerateParentTestTokenReply.Validate if the designated constraints
+// aren't met.
+type GenerateParentTestTokenReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GenerateParentTestTokenReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GenerateParentTestTokenReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GenerateParentTestTokenReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GenerateParentTestTokenReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GenerateParentTestTokenReplyValidationError) ErrorName() string {
+	return "GenerateParentTestTokenReplyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GenerateParentTestTokenReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGenerateParentTestTokenReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GenerateParentTestTokenReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GenerateParentTestTokenReplyValidationError{}

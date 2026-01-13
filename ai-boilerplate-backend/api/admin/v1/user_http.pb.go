@@ -21,6 +21,7 @@ const _ = http.SupportPackageIsVersion1
 
 const OperationUserCreateUser = "/admin.v1.User/CreateUser"
 const OperationUserDeleteUser = "/admin.v1.User/DeleteUser"
+const OperationUserGenerateParentTestToken = "/admin.v1.User/GenerateParentTestToken"
 const OperationUserGetUserInfo = "/admin.v1.User/GetUserInfo"
 const OperationUserGetUserList = "/admin.v1.User/GetUserList"
 const OperationUserUpdateUser = "/admin.v1.User/UpdateUser"
@@ -29,6 +30,7 @@ const OperationUserUpdateUserStatus = "/admin.v1.User/UpdateUserStatus"
 type UserHTTPServer interface {
 	CreateUser(context.Context, *CreateUserReq) (*CreateUserReply, error)
 	DeleteUser(context.Context, *DeleteUserReq) (*DeleteUserReply, error)
+	GenerateParentTestToken(context.Context, *GenerateParentTestTokenReq) (*GenerateParentTestTokenReply, error)
 	GetUserInfo(context.Context, *GetUserInfoReq) (*GetUserInfoReply, error)
 	GetUserList(context.Context, *GetUserListReq) (*GetUserListReply, error)
 	UpdateUser(context.Context, *UpdateUserReq) (*UpdateUserReply, error)
@@ -43,6 +45,7 @@ func RegisterUserHTTPServer(s *http.Server, srv UserHTTPServer) {
 	r.POST("/admin/v1/user/delete", _User_DeleteUser0_HTTP_Handler(srv))
 	r.GET("/admin/v1/user/info", _User_GetUserInfo1_HTTP_Handler(srv))
 	r.GET("/admin/v1/user/list", _User_GetUserList0_HTTP_Handler(srv))
+	r.POST("/admin/v1/user/generate_parent_test_token", _User_GenerateParentTestToken0_HTTP_Handler(srv))
 }
 
 func _User_CreateUser0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
@@ -159,9 +162,29 @@ func _User_GetUserList0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) 
 	}
 }
 
+func _User_GenerateParentTestToken0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in GenerateParentTestTokenReq
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationUserGenerateParentTestToken)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.GenerateParentTestToken(ctx, req.(*GenerateParentTestTokenReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*GenerateParentTestTokenReply)
+		return ctx.Result(200, reply)
+	}
+}
+
 type UserHTTPClient interface {
 	CreateUser(ctx context.Context, req *CreateUserReq, opts ...http.CallOption) (rsp *CreateUserReply, err error)
 	DeleteUser(ctx context.Context, req *DeleteUserReq, opts ...http.CallOption) (rsp *DeleteUserReply, err error)
+	GenerateParentTestToken(ctx context.Context, req *GenerateParentTestTokenReq, opts ...http.CallOption) (rsp *GenerateParentTestTokenReply, err error)
 	GetUserInfo(ctx context.Context, req *GetUserInfoReq, opts ...http.CallOption) (rsp *GetUserInfoReply, err error)
 	GetUserList(ctx context.Context, req *GetUserListReq, opts ...http.CallOption) (rsp *GetUserListReply, err error)
 	UpdateUser(ctx context.Context, req *UpdateUserReq, opts ...http.CallOption) (rsp *UpdateUserReply, err error)
@@ -194,6 +217,19 @@ func (c *UserHTTPClientImpl) DeleteUser(ctx context.Context, in *DeleteUserReq, 
 	pattern := "/admin/v1/user/delete"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationUserDeleteUser))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *UserHTTPClientImpl) GenerateParentTestToken(ctx context.Context, in *GenerateParentTestTokenReq, opts ...http.CallOption) (*GenerateParentTestTokenReply, error) {
+	var out GenerateParentTestTokenReply
+	pattern := "/admin/v1/user/generate_parent_test_token"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationUserGenerateParentTestToken))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {

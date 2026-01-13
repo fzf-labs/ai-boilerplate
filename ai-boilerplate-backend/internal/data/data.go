@@ -38,6 +38,7 @@ var ProviderSet = wire.NewSet(
 	NewAiProviderPlatformRepo,
 	NewAiVideoRecordRepo,
 	NewAiWriteRecordRepo,
+	NewBannerRepo,
 	NewConfigDatumRepo,
 	NewDeviceRepo,
 	NewDictDatumRepo,
@@ -93,6 +94,7 @@ var ProviderSet = wire.NewSet(
 	ai_boilerplate_repo.NewAiProviderPlatformRepo,
 	ai_boilerplate_repo.NewAiVideoRecordRepo,
 	ai_boilerplate_repo.NewAiWriteRecordRepo,
+	ai_boilerplate_repo.NewBannerRepo,
 	ai_boilerplate_repo.NewConfigDatumRepo,
 	ai_boilerplate_repo.NewDeviceRepo,
 	ai_boilerplate_repo.NewDictDatumRepo,
@@ -139,8 +141,6 @@ var ProviderSet = wire.NewSet(
 	ai_boilerplate_repo.NewWxGzhTagRepo,
 	ai_boilerplate_repo.NewWxGzhUserRepo,
 	ai_boilerplate_repo.NewWxXcxUserRepo,
-	NewBannerRepo,
-	ai_boilerplate_repo.NewBannerRepo,
 )
 
 // Data .

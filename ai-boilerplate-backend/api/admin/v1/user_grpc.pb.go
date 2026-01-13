@@ -34,6 +34,8 @@ type UserClient interface {
 	GetUserInfo(ctx context.Context, in *GetUserInfoReq, opts ...grpc.CallOption) (*GetUserInfoReply, error)
 	// 用户表-列表数据查询
 	GetUserList(ctx context.Context, in *GetUserListReq, opts ...grpc.CallOption) (*GetUserListReply, error)
+	// 用户表-生成测试 Token
+	GenerateParentTestToken(ctx context.Context, in *GenerateParentTestTokenReq, opts ...grpc.CallOption) (*GenerateParentTestTokenReply, error)
 }
 
 type userClient struct {
@@ -98,6 +100,15 @@ func (c *userClient) GetUserList(ctx context.Context, in *GetUserListReq, opts .
 	return out, nil
 }
 
+func (c *userClient) GenerateParentTestToken(ctx context.Context, in *GenerateParentTestTokenReq, opts ...grpc.CallOption) (*GenerateParentTestTokenReply, error) {
+	out := new(GenerateParentTestTokenReply)
+	err := c.cc.Invoke(ctx, "/admin.v1.User/GenerateParentTestToken", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -114,6 +125,8 @@ type UserServer interface {
 	GetUserInfo(context.Context, *GetUserInfoReq) (*GetUserInfoReply, error)
 	// 用户表-列表数据查询
 	GetUserList(context.Context, *GetUserListReq) (*GetUserListReply, error)
+	// 用户表-生成测试 Token
+	GenerateParentTestToken(context.Context, *GenerateParentTestTokenReq) (*GenerateParentTestTokenReply, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -138,6 +151,9 @@ func (UnimplementedUserServer) GetUserInfo(context.Context, *GetUserInfoReq) (*G
 }
 func (UnimplementedUserServer) GetUserList(context.Context, *GetUserListReq) (*GetUserListReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserList not implemented")
+}
+func (UnimplementedUserServer) GenerateParentTestToken(context.Context, *GenerateParentTestTokenReq) (*GenerateParentTestTokenReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GenerateParentTestToken not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -260,6 +276,24 @@ func _User_GetUserList_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_GenerateParentTestToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GenerateParentTestTokenReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).GenerateParentTestToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/admin.v1.User/GenerateParentTestToken",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).GenerateParentTestToken(ctx, req.(*GenerateParentTestTokenReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -290,6 +324,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUserList",
 			Handler:    _User_GetUserList_Handler,
+		},
+		{
+			MethodName: "GenerateParentTestToken",
+			Handler:    _User_GenerateParentTestToken_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

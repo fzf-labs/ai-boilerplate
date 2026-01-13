@@ -6,7 +6,7 @@ import { Copy } from '@vben/icons';
 
 import { Button, Card, Input, message } from 'ant-design-vue';
 
-import { testToken } from '#/api/v1/user';
+import { generateParentTestToken } from '#/api/v1/user';
 
 const token = ref('');
 const loading = ref(false);
@@ -26,8 +26,8 @@ const [Modal, modalApi] = useVbenModal({
 
     loading.value = true;
     try {
-      const res = await testToken({ params: { id: data.id } });
-      token.value = res.token;
+      const res = await generateParentTestToken({ body: { id: data.id } });
+      token.value = res.token || '';
     } catch (error) {
       console.error('生成测试Token失败:', error);
       message.error('生成测试Token失败');

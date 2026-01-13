@@ -15,9 +15,9 @@ import { Button, message } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
-  deleteMemberMembership,
-  getMemberMembershipList,
-  updateMemberMembershipStatus,
+  deleteMembership,
+  getMembershipList,
+  updateMembershipStatus,
 } from '#/api/v1/membership';
 import { $t } from '#/locales';
 
@@ -65,7 +65,7 @@ async function onDelete(row: MembershipInfo) {
     key: 'action_process_msg',
   });
   try {
-    await deleteMemberMembership({ body: { id: row.id! } });
+    await deleteMembership({ body: { id: row.id! } });
     message.success({
       content: $t('ui.actionMessage.deleteSuccess', [row.name]),
       key: 'action_process_msg',
@@ -79,7 +79,7 @@ async function onDelete(row: MembershipInfo) {
 /** 状态变更 */
 async function onStatusChange(newStatus: number, row: MembershipInfo) {
   try {
-    await updateMemberMembershipStatus({
+    await updateMembershipStatus({
       body: {
         id: row.id!,
         status: newStatus,
@@ -125,7 +125,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
     proxyConfig: {
       ajax: {
         query: async ({ page }, formValues) => {
-          return await getMemberMembershipList({
+          return await getMembershipList({
             params: {
               page: page.currentPage,
               pageSize: page.pageSize,

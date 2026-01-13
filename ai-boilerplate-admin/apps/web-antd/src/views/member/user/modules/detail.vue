@@ -45,10 +45,10 @@ const [Modal, modalApi] = useVbenModal({
 
     modalApi.lock();
     try {
-      const res = await getUserInfo(data.id);
+      const res = await getUserInfo({ params: { id: data.id } });
       userInfo.value = res.info;
       // 从用户信息中直接获取会员信息
-      membershipInfo.value = res.info.userMembershipInfo || null;
+      membershipInfo.value = res.info?.userMembershipInfo || null;
     } finally {
       modalApi.lock(false);
     }
@@ -64,7 +64,7 @@ const loadGzhUserInfo = async () => {
   gzhLoading.value = true;
   gzhError.value = false;
   try {
-    const res = await getWxGzhUserInfo(userInfo.value.wxGzhUserId);
+    const res = await getWxGzhUserInfo({ params: { id: userInfo.value.wxGzhUserId } });
     gzhUserInfo.value = res.info;
   } catch (error) {
     console.error('Failed to load WeChat Official Account user info:', error);
@@ -83,7 +83,7 @@ const loadXcxUserInfo = async () => {
   xcxLoading.value = true;
   xcxError.value = false;
   try {
-    const res = await getWxXcxUserInfo(userInfo.value.wxGzhXcxId);
+    const res = await getWxXcxUserInfo({ params: { id: userInfo.value.wxGzhXcxId } });
     xcxUserInfo.value = res.info;
   } catch (error) {
     console.error('Failed to load WeChat Mini Program user info:', error);
@@ -566,8 +566,8 @@ const membershipExpiredText = computed(() => {
                       <span class="font-medium text-gray-600">头像</span>
                       <div>
                         <Image
-                          v-if="gzhUserInfo.headImageURL"
-                          :src="gzhUserInfo.headImageURL"
+                          v-if="gzhUserInfo.avatarUrl"
+                          :src="gzhUserInfo.avatarUrl"
                           :width="40"
                           :height="40"
                           :preview="true"

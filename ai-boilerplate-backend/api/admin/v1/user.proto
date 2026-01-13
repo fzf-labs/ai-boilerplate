@@ -107,6 +107,23 @@ service User {
       }
     };
   }
+  //用户表-生成测试 Token
+  rpc GenerateParentTestToken(GenerateParentTestTokenReq) returns (GenerateParentTestTokenReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/user/generate_parent_test_token"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
 }
 
 //用户表信息
@@ -266,4 +283,22 @@ message GetUserListReq {
 message GetUserListReply {
   int32 total = 1; //总数
   repeated UserInfo list = 2; // 列表数据
+}
+
+//请求-用户表-生成测试 Token
+message GenerateParentTestTokenReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // id
+}
+
+//响应-用户表-生成测试 Token
+message GenerateParentTestTokenReply {
+  string token = 1; // token
 }

@@ -45,8 +45,8 @@ const [Modal, modalApi] = useVbenModal({
       // 提交表单
       const formValues = await formApi.getValues();
       await (formData.value?.id
-        ? updateMembershipBenefit(formValues)
-        : createMembershipBenefit(formValues));
+        ? updateMembershipBenefit({ body: formValues as any })
+        : createMembershipBenefit({ body: formValues as any }));
 
       // 关闭并提示
       await modalApi.close();
@@ -66,7 +66,7 @@ const [Modal, modalApi] = useVbenModal({
     }
 
     // 加载数据
-    const data = modalApi.getData<>();
+    const data = modalApi.getData();
     if (!data) {
       return;
     }

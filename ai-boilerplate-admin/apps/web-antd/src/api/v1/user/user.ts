@@ -40,6 +40,27 @@ export function deleteUser({
   });
 }
 
+/** 用户表-生成测试 Token 返回值: An unexpected error response. POST /admin/v1/user/generate_parent_test_token */
+export function generateParentTestToken({
+  body,
+  options,
+}: {
+  body: API.GenerateParentTestTokenReq;
+  options?: { [key: string]: unknown };
+}) {
+  return request<API.GenerateParentTestTokenReply>(
+    '/admin/v1/user/generate_parent_test_token',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: body,
+      ...(options || {}),
+    }
+  );
+}
+
 /** 用户表-单条数据查询 返回值: An unexpected error response. GET /admin/v1/user/info */
 export function getUserInfo({
   params,

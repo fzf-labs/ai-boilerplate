@@ -13,9 +13,9 @@ import { message } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
 import {
-  createMemberMembership,
+  createMembership,
   getMembershipInfo,
-  updateMemberMembership,
+  updateMembership,
 } from '#/api/v1/membership';
 import { $t } from '#/locales';
 
@@ -47,8 +47,8 @@ const [Modal, modalApi] = useVbenModal({
       UpdateMembershipReq;
     try {
       await (formData.value?.id
-        ? updateMemberMembership({ body: data as UpdateMembershipReq })
-        : createMemberMembership({ body: data as CreateMembershipReq }));
+        ? updateMembership({ body: data as UpdateMembershipReq })
+        : createMembership({ body: data as CreateMembershipReq }));
       // 关闭并提示
       await modalApi.close();
       emit('success');
