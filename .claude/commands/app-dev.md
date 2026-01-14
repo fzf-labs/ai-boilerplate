@@ -6,12 +6,10 @@ description: App 移动端前端开发完整流程编排。自动编排执行：
 flowchart TD
     start_node_default([开始])
     end_node_default([结束])
-    skill_1768095891986[[Skill: interview]]
     skill_1768095903165[[Skill: app-api-gen]]
     skill_1768095911507[[Skill: app-codeing]]
 
-    start_node_default --> skill_1768095891986
-    skill_1768095891986 --> skill_1768095903165
+    start_node_default  --> skill_1768095903165
     skill_1768095903165 --> skill_1768095911507
     skill_1768095911507 --> end_node_default
 ```
@@ -28,18 +26,6 @@ flowchart TD
 - **矩形节点（Prompt节点）**：执行下面详细信息部分中描述的提示
 
 ## Skill Nodes
-
-#### skill_1768095891986(interview)
-
-**Description**: This skill conducts discovery conversations to understand user intent and agree on approach before taking action. It should be used when the user explicitly calls /interview, asks for recommendations, needs exploration, wants to clarify, or when the request could be misunderstood. Prevents building the wrong thing by uncovering WHY behind WHAT.
-
-**Scope**: project
-
-**Validation Status**: valid
-
-**Skill Path**: `.claude/skills/interview/SKILL.md`
-
-This node executes a Claude Code Skill. The Skill definition is stored in the SKILL.md file at the path shown above.
 
 #### skill_1768095903165(app-api-gen)
 

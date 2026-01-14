@@ -15,7 +15,10 @@ import {
 } from '#/api/v1/ai-index-chat';
 
 import ConversationList from './components/conversation/ConversationList.vue';
-import ConversationUpdateForm from './components/conversation/ConversationUpdateForm.vue';
+import KnowledgeSettingForm from './components/conversation/KnowledgeSettingForm.vue';
+import McpSettingForm from './components/conversation/McpSettingForm.vue';
+import ModelSettingForm from './components/conversation/ModelSettingForm.vue';
+import PromptSettingForm from './components/conversation/PromptSettingForm.vue';
 import MessageList from './components/message/MessageList.vue';
 import MessageListEmpty from './components/message/MessageListEmpty.vue';
 import MessageLoading from './components/message/MessageLoading.vue';
@@ -24,8 +27,25 @@ import MessageNewConversation from './components/message/MessageNewConversation.
 defineOptions({ name: 'AiChat' });
 
 const route = useRoute(); // 路由
-const [FormModal, formModalApi] = useVbenModal({
-  connectedComponent: ConversationUpdateForm,
+
+// 四个独立的设置弹窗
+const [PromptModal, promptModalApi] = useVbenModal({
+  connectedComponent: PromptSettingForm,
+  destroyOnClose: true,
+});
+
+const [ModelModal, modelModalApi] = useVbenModal({
+  connectedComponent: ModelSettingForm,
+  destroyOnClose: true,
+});
+
+const [KnowledgeModal, knowledgeModalApi] = useVbenModal({
+  connectedComponent: KnowledgeSettingForm,
+  destroyOnClose: true,
+});
+
+const [McpModal, mcpModalApi] = useVbenModal({
+  connectedComponent: McpSettingForm,
   destroyOnClose: true,
 });
 // 聊天对话
@@ -115,9 +135,27 @@ async function handleConversationClear() {
   activeMessageList.value = [];
 }
 
-async function openChatConversationUpdateForm() {
-  formModalApi.setData({ id: activeConversationId.value }).open();
+// 打开提示词设置
+async function openPromptSetting() {
+  promptModalApi.setData({ id: activeConversationId.value }).open();
 }
+
+// 打开模型设置
+async function openModelSetting() {
+  modelModalApi.setData({ id: activeConversationId.value }).open();
+}
+
+// 打开知识库设置
+async function openKnowledgeSetting() {
+  knowledgeModalApi.setData({ id: activeConversationId.value }).open();
+}
+
+// 打开 MCP 设置
+async function openMcpSetting() {
+  mcpModalApi.setData({ id: activeConversationId.value }).open();
+}
+
+// 处理设置更新成功
 async function handleConversationUpdateSuccess() {
   // 对话更新成功，刷新最新信息
   await getConversation(activeConversationId.value);
@@ -368,30 +406,61 @@ onMounted(async () => {
             </span>
           </div>
 
-          <div class="flex w-72 justify-end" v-if="activeConversation">
+          <div class="flex justify-end gap-2" v-if="activeConversation">
+            <!-- 提示词设置 -->
             <Button
               type="primary"
               ghost
-              class="mr-2 px-2"
+              class="px-3"
               size="small"
-              @click="openChatConversationUpdateForm"
+              @click="openPromptSetting"
             >
-              <span>
-                {{
-                  activeConversation?.modelSetting?.modelType ||
-                  activeConversation?.modelSetting?.modelId ||
-                  '模型'
-                }}
-              </span>
-              <IconifyIcon icon="lucide:settings" class="ml-2 size-4" />
+              <IconifyIcon icon="lucide:message-square" class="mr-1 size-4" />
+              <span>提示词</span>
             </Button>
-            <Button size="small" class="mr-2 px-2" @click="handlerMessageClear">
+            <!-- 模型设置 -->
+            <Button
+              type="primary"
+              ghost
+              class="px-3"
+              size="small"
+              @click="openModelSetting"
+            >
+              <IconifyIcon icon="lucide:brain" class="mr-1 size-4" />
+              <span>模型</span>
+            </Button>
+            <!-- 知识库设置 -->
+            <Button
+              type="primary"
+              ghost
+              class="px-3"
+              size="small"
+              @click="openKnowledgeSetting"
+            >
+              <IconifyIcon icon="lucide:database" class="mr-1 size-4" />
+              <span>知识库</span>
+            </Button>
+            <!-- MCP 设置 -->
+            <Button
+              type="primary"
+              ghost
+              class="px-3"
+              size="small"
+              @click="openMcpSetting"
+            >
+              <IconifyIcon icon="lucide:plug" class="mr-1 size-4" />
+              <span>MCP</span>
+            </Button>
+            <!-- 清空消息 -->
+            <Button size="small" class="px-2" @click="handlerMessageClear">
               <IconifyIcon icon="lucide:trash-2" color="#787878" />
             </Button>
-            <Button size="small" class="mr-2 px-2">
+            <!-- 导出 -->
+            <Button size="small" class="px-2">
               <IconifyIcon icon="lucide:download" color="#787878" />
             </Button>
-            <Button size="small" class="mr-2 px-2" @click="handleGoTopMessage">
+            <!-- 回到顶部 -->
+            <Button size="small" class="px-2" @click="handleGoTopMessage">
               <IconifyIcon icon="lucide:arrow-up" color="#787878" />
             </Button>
           </div>
@@ -471,6 +540,10 @@ onMounted(async () => {
         </Layout.Footer>
       </Layout>
     </Layout>
-    <FormModal @success="handleConversationUpdateSuccess" />
+    <!-- 四个独立的设置弹窗 -->
+    <PromptModal @success="handleConversationUpdateSuccess" />
+    <ModelModal @success="handleConversationUpdateSuccess" />
+    <KnowledgeModal @success="handleConversationUpdateSuccess" />
+    <McpModal @success="handleConversationUpdateSuccess" />
   </Page>
 </template>

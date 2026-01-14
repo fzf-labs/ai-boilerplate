@@ -14,10 +14,14 @@ import {
 } from '#/api/v1/ai-index-chat';
 import { $t } from '#/locales';
 
-import { useFormSchema } from '../../data';
-
 const emit = defineEmits(['success']);
 const formData = ref<AiIndexChatApi.AiIndexChatConversationItem>();
+
+// TODO: 替换为实际的 MCP API
+async function getMcpOptions() {
+  // 临时返回空数组，等待后端 MCP 接口实现
+  return [];
+}
 
 const [Form, formApi] = useVbenForm({
   commonConfig: {
@@ -25,10 +29,33 @@ const [Form, formApi] = useVbenForm({
       class: 'w-full',
     },
     formItemClass: 'col-span-2',
-    labelWidth: 140,
+    labelWidth: 120,
   },
   layout: 'horizontal',
-  schema: useFormSchema(),
+  schema: [
+    {
+      component: 'Input',
+      fieldName: 'id',
+      dependencies: {
+        triggerFields: [''],
+        show: () => false,
+      },
+    },
+    {
+      component: 'ApiSelect',
+      fieldName: 'mcpIds',
+      label: 'MCP 工具',
+      componentProps: {
+        api: getMcpOptions,
+        labelField: 'label',
+        valueField: 'value',
+        mode: 'multiple',
+        allowClear: true,
+        placeholder: '请选择 MCP 工具（支持多选）',
+      },
+      help: '选择对话使用的 MCP (Model Context Protocol) 工具，可多选。MCP 工具可以增强 AI 的能力。',
+    },
+  ],
   showDefaultActions: false,
 });
 
@@ -39,39 +66,26 @@ const [Modal, modalApi] = useVbenModal({
       return;
     }
     modalApi.lock();
-    // 提交表单
     const values = (await formApi.getValues()) as {
       id?: string;
-      systemMessage?: string;
-      modelId?: string;
-      temperature?: number;
-      maxTokens?: number;
-      maxContexts?: number;
+      mcpIds?: string[];
     };
     try {
-      const modelSetting = {
-        ...(formData.value?.modelSetting || {}),
-        modelId: values.modelId || formData.value?.modelSetting?.modelId,
-        temperature:
-          values.temperature ?? formData.value?.modelSetting?.temperature,
-        max_tokens:
-          values.maxTokens ?? formData.value?.modelSetting?.max_tokens,
-        max_contexts:
-          values.maxContexts ?? formData.value?.modelSetting?.max_contexts,
+      const mcpSetting = {
+        mcpIds: values.mcpIds || [],
       };
-      const promptSetting = {
-        ...(formData.value?.promptSetting || {}),
-        prompt: values.systemMessage,
-      };
+
       await updateAiIndexChatConversation({
         body: {
           id: values.id || '',
-          promptSetting,
-          modelSetting,
+          title: formData.value?.title || '',
+          promptSetting: formData.value?.promptSetting,
+          modelSetting: formData.value?.modelSetting,
+          knowledgeSetting: formData.value?.knowledgeSetting,
+          mcpSetting,
         },
       });
 
-      // 关闭并提示
       await modalApi.close();
       emit('success');
       message.success($t('ui.actionMessage.operationSuccess'));
@@ -84,7 +98,6 @@ const [Modal, modalApi] = useVbenModal({
       formData.value = undefined;
       return;
     }
-    // 加载数据
     const data = modalApi.getData<AiIndexChatApi.AiIndexChatConversationItem>();
     if (!data || !data.id) {
       return;
@@ -95,14 +108,9 @@ const [Modal, modalApi] = useVbenModal({
         params: { id: data.id as string },
       });
       formData.value = res.info;
-      // 设置到 values
       await formApi.setValues({
         id: formData.value?.id,
-        systemMessage: formData.value?.promptSetting?.prompt,
-        modelId: formData.value?.modelSetting?.modelId,
-        temperature: formData.value?.modelSetting?.temperature,
-        maxTokens: formData.value?.modelSetting?.max_tokens,
-        maxContexts: formData.value?.modelSetting?.max_contexts,
+        mcpIds: formData.value?.mcpSetting?.mcpIds || [],
       });
     } finally {
       modalApi.unlock();
@@ -112,7 +120,12 @@ const [Modal, modalApi] = useVbenModal({
 </script>
 
 <template>
-  <Modal class="w-2/5" title="设定">
+  <Modal class="w-2/5" title="MCP 设置">
     <Form class="mx-4" />
+    <template #footer>
+      <div class="text-muted-foreground mb-2 text-sm">
+        💡 提示：暂无可用 MCP 工具，等待后端接口实现后即可使用
+      </div>
+    </template>
   </Modal>
 </template>
