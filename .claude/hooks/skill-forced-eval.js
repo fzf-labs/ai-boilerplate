@@ -21,6 +21,22 @@ const CONFIG = {
 const skills = [
   // ============ 后端开发技能 ============
   {
+    name: 'backend-dev',
+    priority: 11,
+    group: 'backend-workflow',
+    keywords: [
+      // 核心触发词 - 完整后端开发流程
+      ['帮我开发后端', 5], ['后端开发流程', 5], ['完整后端', 5],
+      ['从零开发后端', 5], ['后端CRUD开发', 5], ['开发后端功能', 5],
+      ['后端功能开发', 4], ['帮我做后端', 4], ['帮我写后端', 4],
+      // 场景触发
+      ['新功能后端', 3], ['后端全流程', 4], ['整个后端', 3],
+      // 英文支持
+      ['backend development', 4], ['full backend', 4],
+      ['develop backend', 4], ['backend workflow', 4]
+    ]
+  },
+  {
     name: 'backend-audit',
     priority: 10,
     group: 'backend-init',
@@ -152,6 +168,23 @@ const skills = [
 
   // ============ 前端开发技能 ============
   {
+    name: 'admin-dev',
+    priority: 11,
+    group: 'frontend-admin-workflow',
+    keywords: [
+      // 核心触发词 - 完整管理后台开发流程
+      ['帮我开发管理后台', 5], ['开发Admin页面', 5], ['完整前端开发', 5],
+      ['前端CRUD开发', 5], ['帮我开发后台', 5], ['开发后台功能', 5],
+      ['管理后台开发', 4], ['帮我做后台页面', 4], ['帮我写后台', 4],
+      // 场景触发
+      ['新功能前端', 3], ['前端全流程', 4], ['整个后台', 3],
+      ['后台开发流程', 4], ['管理端开发', 4],
+      // 英文支持
+      ['admin development', 4], ['full admin', 4],
+      ['develop admin', 4], ['admin workflow', 4]
+    ]
+  },
+  {
     name: 'admin-codeing',
     priority: 6,
     group: 'frontend-admin',
@@ -180,6 +213,24 @@ const skills = [
       // 场景
       ['后台API同步', 3], ['管理端API', 3],
       ['Swagger同步', 2], ['接口类型生成', 2]
+    ]
+  },
+  {
+    name: 'app-dev',
+    priority: 11,
+    group: 'frontend-app-workflow',
+    keywords: [
+      // 核心触发词 - 完整移动端开发流程
+      ['帮我开发App', 5], ['帮我开发移动端', 5], ['完整移动端开发', 5],
+      ['移动端开发流程', 5], ['帮我做App', 5], ['开发App功能', 5],
+      ['uni-app开发', 4], ['开发小程序', 4], ['帮我写App', 4],
+      // 场景触发
+      ['新功能App', 3], ['App全流程', 4], ['整个App', 3],
+      ['移动端全流程', 4], ['手机端开发', 3],
+      // 英文支持
+      ['app development', 4], ['full app', 4],
+      ['develop app', 4], ['app workflow', 4],
+      ['mobile development', 4], ['full mobile', 4]
     ]
   },
   {
