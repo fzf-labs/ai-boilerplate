@@ -96,7 +96,7 @@ Usage notes:
 
 <skill>
 <name>backend-codeing</name>
-<description>Backend development skill for this repo. Use when implementing backend features, generating CRUD code, or writing service/data business logic (including after table schema changes).</description>
+<description>后端业务逻辑开发技能。触发场景：(1) 实现 Service 业务逻辑 (2) 定义业务错误码 (3) 注册 HTTP Server (4) 编写 Data 层代码 (5) 表结构变更后实现逻辑 (6) 后端 CRUD 功能开发</description>
 <location>project</location>
 </skill>
 
@@ -120,7 +120,7 @@ Usage notes:
 
 <skill>
 <name>backend-proto-edit</name>
-<description>后端 Protobuf API 编辑技能。用于修改生成的 Proto 文件，添加过滤器、验证规则或业务 RPC。触发场景：(1) 需要添加列表过滤条件 (2) 调整验证规则 (3) 添加/删除 RPC 方法</description>
+<description>后端 Protobuf API 编辑技能。用于修改生成的 Proto 文件，添加过滤器、验证规则或业务 RPC。触发场景：(1) 删除不需要的 RPC 方法 (2) 需要添加列表过滤条件 (3) 调整验证规则 (4) 添加业务 RPC</description>
 <location>project</location>
 </skill>
 
