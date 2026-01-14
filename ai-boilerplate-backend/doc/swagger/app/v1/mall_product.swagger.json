@@ -117,46 +117,6 @@
           "MallProduct"
         ]
       }
-    },
-    "/app/v1/mall_product/purchase": {
-      "post": {
-        "summary": "购买商品",
-        "operationId": "MallProduct_PurchaseProduct",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/app.v1.PurchaseProductReply"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/google.rpc.Status"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/app.v1.PurchaseProductReq"
-            }
-          },
-          {
-            "name": "Authorization",
-            "description": "Bearer Token",
-            "in": "header",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "MallProduct"
-        ]
-      }
     }
   },
   "definitions": {
@@ -259,68 +219,6 @@
         }
       },
       "title": "商品信息"
-    },
-    "app.v1.PurchaseProductReply": {
-      "type": "object",
-      "properties": {
-        "orderId": {
-          "type": "string",
-          "title": "订单ID"
-        },
-        "transactionId": {
-          "type": "string",
-          "title": "交易流水号"
-        },
-        "amount": {
-          "type": "number",
-          "format": "double",
-          "title": "实付金额"
-        },
-        "paymentData": {
-          "type": "string",
-          "title": "支付数据(JSON格式,包含调起支付所需的参数)"
-        },
-        "status": {
-          "type": "string",
-          "title": "订单状态"
-        },
-        "createdAt": {
-          "type": "string",
-          "title": "创建时间"
-        }
-      },
-      "title": "响应-购买商品"
-    },
-    "app.v1.PurchaseProductReq": {
-      "type": "object",
-      "properties": {
-        "productId": {
-          "type": "string",
-          "title": "商品ID"
-        },
-        "paymentChannel": {
-          "type": "string",
-          "title": "支付渠道(wechat:微信,alipay:支付宝)"
-        },
-        "paymentMethod": {
-          "type": "string",
-          "title": "支付方式(mini_program:小程序,h5:H5,native:扫码,jsapi:公众号)"
-        },
-        "discountCode": {
-          "type": "string",
-          "title": "优惠码(可选)"
-        },
-        "remark": {
-          "type": "string",
-          "title": "备注(可选)"
-        }
-      },
-      "title": "请求-购买商品",
-      "required": [
-        "productId",
-        "paymentChannel",
-        "paymentMethod"
-      ]
     },
     "google.protobuf.Any": {
       "type": "object",

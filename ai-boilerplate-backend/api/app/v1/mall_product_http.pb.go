@@ -21,19 +21,16 @@ const _ = http.SupportPackageIsVersion1
 
 const OperationMallProductGetMallProductInfo = "/app.v1.MallProduct/GetMallProductInfo"
 const OperationMallProductGetMallProductList = "/app.v1.MallProduct/GetMallProductList"
-const OperationMallProductPurchaseProduct = "/app.v1.MallProduct/PurchaseProduct"
 
 type MallProductHTTPServer interface {
 	GetMallProductInfo(context.Context, *GetMallProductInfoReq) (*GetMallProductInfoReply, error)
 	GetMallProductList(context.Context, *GetMallProductListReq) (*GetMallProductListReply, error)
-	PurchaseProduct(context.Context, *PurchaseProductReq) (*PurchaseProductReply, error)
 }
 
 func RegisterMallProductHTTPServer(s *http.Server, srv MallProductHTTPServer) {
 	r := s.Route("/")
 	r.GET("/app/v1/mall_product/info", _MallProduct_GetMallProductInfo0_HTTP_Handler(srv))
 	r.GET("/app/v1/mall_product/list", _MallProduct_GetMallProductList0_HTTP_Handler(srv))
-	r.POST("/app/v1/mall_product/purchase", _MallProduct_PurchaseProduct0_HTTP_Handler(srv))
 }
 
 func _MallProduct_GetMallProductInfo0_HTTP_Handler(srv MallProductHTTPServer) func(ctx http.Context) error {
@@ -74,29 +71,9 @@ func _MallProduct_GetMallProductList0_HTTP_Handler(srv MallProductHTTPServer) fu
 	}
 }
 
-func _MallProduct_PurchaseProduct0_HTTP_Handler(srv MallProductHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in PurchaseProductReq
-		if err := ctx.Bind(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, OperationMallProductPurchaseProduct)
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.PurchaseProduct(ctx, req.(*PurchaseProductReq))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*PurchaseProductReply)
-		return ctx.Result(200, reply)
-	}
-}
-
 type MallProductHTTPClient interface {
 	GetMallProductInfo(ctx context.Context, req *GetMallProductInfoReq, opts ...http.CallOption) (rsp *GetMallProductInfoReply, err error)
 	GetMallProductList(ctx context.Context, req *GetMallProductListReq, opts ...http.CallOption) (rsp *GetMallProductListReply, err error)
-	PurchaseProduct(ctx context.Context, req *PurchaseProductReq, opts ...http.CallOption) (rsp *PurchaseProductReply, err error)
 }
 
 type MallProductHTTPClientImpl struct {
@@ -127,19 +104,6 @@ func (c *MallProductHTTPClientImpl) GetMallProductList(ctx context.Context, in *
 	opts = append(opts, http.Operation(OperationMallProductGetMallProductList))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, err
-}
-
-func (c *MallProductHTTPClientImpl) PurchaseProduct(ctx context.Context, in *PurchaseProductReq, opts ...http.CallOption) (*PurchaseProductReply, error) {
-	var out PurchaseProductReply
-	pattern := "/app/v1/mall_product/purchase"
-	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationMallProductPurchaseProduct))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
 		return nil, err
 	}

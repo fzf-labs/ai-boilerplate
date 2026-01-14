@@ -26,8 +26,6 @@ type MallProductClient interface {
 	GetMallProductInfo(ctx context.Context, in *GetMallProductInfoReq, opts ...grpc.CallOption) (*GetMallProductInfoReply, error)
 	// 获取商品列表
 	GetMallProductList(ctx context.Context, in *GetMallProductListReq, opts ...grpc.CallOption) (*GetMallProductListReply, error)
-	// 购买商品
-	PurchaseProduct(ctx context.Context, in *PurchaseProductReq, opts ...grpc.CallOption) (*PurchaseProductReply, error)
 }
 
 type mallProductClient struct {
@@ -56,15 +54,6 @@ func (c *mallProductClient) GetMallProductList(ctx context.Context, in *GetMallP
 	return out, nil
 }
 
-func (c *mallProductClient) PurchaseProduct(ctx context.Context, in *PurchaseProductReq, opts ...grpc.CallOption) (*PurchaseProductReply, error) {
-	out := new(PurchaseProductReply)
-	err := c.cc.Invoke(ctx, "/app.v1.MallProduct/PurchaseProduct", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // MallProductServer is the server API for MallProduct service.
 // All implementations must embed UnimplementedMallProductServer
 // for forward compatibility
@@ -73,8 +62,6 @@ type MallProductServer interface {
 	GetMallProductInfo(context.Context, *GetMallProductInfoReq) (*GetMallProductInfoReply, error)
 	// 获取商品列表
 	GetMallProductList(context.Context, *GetMallProductListReq) (*GetMallProductListReply, error)
-	// 购买商品
-	PurchaseProduct(context.Context, *PurchaseProductReq) (*PurchaseProductReply, error)
 	mustEmbedUnimplementedMallProductServer()
 }
 
@@ -87,9 +74,6 @@ func (UnimplementedMallProductServer) GetMallProductInfo(context.Context, *GetMa
 }
 func (UnimplementedMallProductServer) GetMallProductList(context.Context, *GetMallProductListReq) (*GetMallProductListReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMallProductList not implemented")
-}
-func (UnimplementedMallProductServer) PurchaseProduct(context.Context, *PurchaseProductReq) (*PurchaseProductReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method PurchaseProduct not implemented")
 }
 func (UnimplementedMallProductServer) mustEmbedUnimplementedMallProductServer() {}
 
@@ -140,24 +124,6 @@ func _MallProduct_GetMallProductList_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
-func _MallProduct_PurchaseProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(PurchaseProductReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MallProductServer).PurchaseProduct(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/app.v1.MallProduct/PurchaseProduct",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MallProductServer).PurchaseProduct(ctx, req.(*PurchaseProductReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // MallProduct_ServiceDesc is the grpc.ServiceDesc for MallProduct service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -172,10 +138,6 @@ var MallProduct_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetMallProductList",
 			Handler:    _MallProduct_GetMallProductList_Handler,
-		},
-		{
-			MethodName: "PurchaseProduct",
-			Handler:    _MallProduct_PurchaseProduct_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

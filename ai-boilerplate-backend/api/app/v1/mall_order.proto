@@ -1,0 +1,238 @@
+syntax = "proto3";
+
+package app.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/app/v1;v1";
+
+//订单信息表
+service MallOrder {
+  //下单接口-创建订单
+  rpc PlaceOrder(PlaceOrderReq) returns (PlaceOrderReply) {
+    option (google.api.http) = {
+      post: "/app/v1/mall_order/place"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //获取支付信息接口-选择支付方式并获取支付信息
+  rpc GetPaymentInfo(GetPaymentInfoReq) returns (GetPaymentInfoReply) {
+    option (google.api.http) = {
+      post: "/app/v1/mall_order/payment/info"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //支付回调接口
+  rpc PaymentCallback(PaymentCallbackReq) returns (PaymentCallbackReply) {
+    option (google.api.http) = {
+      post: "/app/v1/mall_order/payment/callback"
+      body: "*"
+    };
+  }
+  //查询订单接口-单条订单查询
+  rpc GetOrderInfo(GetOrderInfoReq) returns (GetOrderInfoReply) {
+    option (google.api.http) = {get: "/app/v1/mall_order/order/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //查询订单接口-用户订单列表
+  rpc GetUserOrderList(GetUserOrderListReq) returns (GetUserOrderListReply) {
+    option (google.api.http) = {get: "/app/v1/mall_order/user/orders"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+//订单信息表信息
+message MallOrderInfo {
+  string id = 1; // id
+  string userId = 2; // 用户ID
+  string productType = 3; // 商品类型(membership:会员,service:服务,goods:商品)
+  string productId = 4; // 商品ID
+  double originalAmount = 5; // 原价
+  double discountAmount = 6; // 优惠金额
+  double actualAmount = 7; // 实付金额
+  double refundAmount = 8; // 退款金额
+  string currency = 9; // 币种
+  string paymentMethod = 10; // 支付方式(微信,支付宝)
+  int32 paymentStatus = 11; // 支付状态(0待支付,1已支付,2支付失败,3已退款)
+  string paymentTime = 12; // 支付时间
+  string deliveryTime = 13; // 确认时间
+  string expiredTime = 14; // 订单过期时间
+  string remark = 15; // 备注
+  string status = 16; // 状态(待付款pendingPayment,待发货pendingDelivery,待收货pendingReceipt,已完成completed,已取消canceled,已退款refunded)
+  string createdAt = 17; // 创建时间
+  string updatedAt = 18; // 更新时间
+}
+
+//请求-下单接口
+message PlaceOrderReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "productType",
+        "productId"
+      ]
+    }
+  };
+  string productType = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 20
+  }]; // 商品类型(membership:会员,service:服务,goods:商品)
+  string productId = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }]; // 商品ID
+  string paymentMethod = 3 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 50
+    }
+  ]; // 支付方式(wechat:微信,alipay:支付宝)
+  string remark = 4 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {max_len: 500}
+  ]; // 备注
+}
+
+//响应-下单接口
+message PlaceOrderReply {
+  string orderId = 1; // 订单ID
+  double actualAmount = 2; // 实付金额
+  string paymentInfo = 3; // 支付信息(预留,如支付二维码、支付链接等)
+}
+
+//请求-获取支付信息接口
+message GetPaymentInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "orderId",
+        "paymentMethod"
+      ]
+    }
+  };
+  string orderId = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 订单ID
+  string paymentMethod = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 50
+  }]; // 支付方式(wechat:微信,alipay:支付宝)
+}
+
+//响应-获取支付信息接口
+message GetPaymentInfoReply {
+  string orderId = 1; // 订单ID
+  string paymentMethod = 2; // 支付方式
+  double actualAmount = 3; // 实付金额
+  string paymentUrl = 4; // 支付跳转链接(H5/APP支付)
+  string qrCodeUrl = 5; // 支付二维码链接(扫码支付)
+  string prepayId = 6; // 预支付交易会话标识(微信小程序/APP支付)
+  string expiredTime = 7; // 支付过期时间
+  string appId = 8; // 应用ID(微信支付需要)
+  string timeStamp = 9; // 时间戳(微信支付需要)
+  string nonceStr = 10; // 随机字符串(微信支付需要)
+  string signType = 11; // 签名类型(微信支付需要)
+  string paySign = 12; // 签名(微信支付需要)
+}
+
+//请求-支付回调接口
+message PaymentCallbackReq {
+  string orderId = 1; // 订单ID
+  string paymentMethod = 2; // 支付方式(wechat:微信,alipay:支付宝)
+  string transactionId = 3; // 第三方支付交易ID
+  int32 paymentStatus = 4; // 支付状态(1已支付,2支付失败)
+  string callbackData = 5; // 回调原始数据(JSON字符串)
+}
+
+//响应-支付回调接口
+message PaymentCallbackReply {
+  bool success = 1; // 是否处理成功
+  string message = 2; // 处理消息
+}
+
+//请求-查询订单信息
+message GetOrderInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["orderId"]
+    }
+  };
+  string orderId = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 订单ID
+}
+
+//响应-查询订单信息
+message GetOrderInfoReply {
+  MallOrderInfo info = 1; // 订单信息
+}
+
+//请求-查询用户订单列表
+message GetUserOrderListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1 [(buf.validate.field).int32 = {gte: 1}]; //页码
+  int32 pageSize = 2 [(buf.validate.field).int32 = {
+    gte: 1
+    lte: 1000
+  }]; //页数
+  string status = 3 [(buf.validate.field).ignore = IGNORE_IF_UNPOPULATED]; // 订单状态过滤(可选)
+  int32 paymentStatus = 4 [(buf.validate.field).ignore = IGNORE_IF_UNPOPULATED]; // 支付状态过滤(可选)
+}
+
+//响应-查询用户订单列表
+message GetUserOrderListReply {
+  int32 total = 1; //总数
+  repeated MallOrderInfo list = 2; // 订单列表
+}

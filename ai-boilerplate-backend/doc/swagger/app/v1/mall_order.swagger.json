@@ -1,0 +1,536 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "app/v1/mall_order.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "MallOrder"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/app/v1/mall_order/order/info": {
+      "get": {
+        "summary": "查询订单接口-单条订单查询",
+        "operationId": "MallOrder_GetOrderInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.GetOrderInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "orderId",
+            "description": "订单ID",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MallOrder"
+        ]
+      }
+    },
+    "/app/v1/mall_order/payment/callback": {
+      "post": {
+        "summary": "支付回调接口",
+        "operationId": "MallOrder_PaymentCallback",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.PaymentCallbackReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/app.v1.PaymentCallbackReq"
+            }
+          }
+        ],
+        "tags": [
+          "MallOrder"
+        ]
+      }
+    },
+    "/app/v1/mall_order/payment/info": {
+      "post": {
+        "summary": "获取支付信息接口-选择支付方式并获取支付信息",
+        "operationId": "MallOrder_GetPaymentInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.GetPaymentInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/app.v1.GetPaymentInfoReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MallOrder"
+        ]
+      }
+    },
+    "/app/v1/mall_order/place": {
+      "post": {
+        "summary": "下单接口-创建订单",
+        "operationId": "MallOrder_PlaceOrder",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.PlaceOrderReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/app.v1.PlaceOrderReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MallOrder"
+        ]
+      }
+    },
+    "/app/v1/mall_order/user/orders": {
+      "get": {
+        "summary": "查询订单接口-用户订单列表",
+        "operationId": "MallOrder_GetUserOrderList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.GetUserOrderListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "status",
+            "description": "订单状态过滤(可选)",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "paymentStatus",
+            "description": "支付状态过滤(可选)",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MallOrder"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "app.v1.GetOrderInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/app.v1.MallOrderInfo",
+          "title": "订单信息"
+        }
+      },
+      "title": "响应-查询订单信息"
+    },
+    "app.v1.GetPaymentInfoReply": {
+      "type": "object",
+      "properties": {
+        "orderId": {
+          "type": "string",
+          "title": "订单ID"
+        },
+        "paymentMethod": {
+          "type": "string",
+          "title": "支付方式"
+        },
+        "actualAmount": {
+          "type": "number",
+          "format": "double",
+          "title": "实付金额"
+        },
+        "paymentUrl": {
+          "type": "string",
+          "title": "支付跳转链接(H5/APP支付)"
+        },
+        "qrCodeUrl": {
+          "type": "string",
+          "title": "支付二维码链接(扫码支付)"
+        },
+        "prepayId": {
+          "type": "string",
+          "title": "预支付交易会话标识(微信小程序/APP支付)"
+        },
+        "expiredTime": {
+          "type": "string",
+          "title": "支付过期时间"
+        },
+        "appId": {
+          "type": "string",
+          "title": "应用ID(微信支付需要)"
+        },
+        "timeStamp": {
+          "type": "string",
+          "title": "时间戳(微信支付需要)"
+        },
+        "nonceStr": {
+          "type": "string",
+          "title": "随机字符串(微信支付需要)"
+        },
+        "signType": {
+          "type": "string",
+          "title": "签名类型(微信支付需要)"
+        },
+        "paySign": {
+          "type": "string",
+          "title": "签名(微信支付需要)"
+        }
+      },
+      "title": "响应-获取支付信息接口"
+    },
+    "app.v1.GetPaymentInfoReq": {
+      "type": "object",
+      "properties": {
+        "orderId": {
+          "type": "string",
+          "title": "订单ID"
+        },
+        "paymentMethod": {
+          "type": "string",
+          "title": "支付方式(wechat:微信,alipay:支付宝)"
+        }
+      },
+      "title": "请求-获取支付信息接口",
+      "required": [
+        "orderId",
+        "paymentMethod"
+      ]
+    },
+    "app.v1.GetUserOrderListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/app.v1.MallOrderInfo"
+          },
+          "title": "订单列表"
+        }
+      },
+      "title": "响应-查询用户订单列表"
+    },
+    "app.v1.MallOrderInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "userId": {
+          "type": "string",
+          "title": "用户ID"
+        },
+        "productType": {
+          "type": "string",
+          "title": "商品类型(membership:会员,service:服务,goods:商品)"
+        },
+        "productId": {
+          "type": "string",
+          "title": "商品ID"
+        },
+        "originalAmount": {
+          "type": "number",
+          "format": "double",
+          "title": "原价"
+        },
+        "discountAmount": {
+          "type": "number",
+          "format": "double",
+          "title": "优惠金额"
+        },
+        "actualAmount": {
+          "type": "number",
+          "format": "double",
+          "title": "实付金额"
+        },
+        "refundAmount": {
+          "type": "number",
+          "format": "double",
+          "title": "退款金额"
+        },
+        "currency": {
+          "type": "string",
+          "title": "币种"
+        },
+        "paymentMethod": {
+          "type": "string",
+          "title": "支付方式(微信,支付宝)"
+        },
+        "paymentStatus": {
+          "type": "integer",
+          "format": "int32",
+          "title": "支付状态(0待支付,1已支付,2支付失败,3已退款)"
+        },
+        "paymentTime": {
+          "type": "string",
+          "title": "支付时间"
+        },
+        "deliveryTime": {
+          "type": "string",
+          "title": "确认时间"
+        },
+        "expiredTime": {
+          "type": "string",
+          "title": "订单过期时间"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "status": {
+          "type": "string",
+          "title": "状态(待付款pendingPayment,待发货pendingDelivery,待收货pendingReceipt,已完成completed,已取消canceled,已退款refunded)"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "订单信息表信息"
+    },
+    "app.v1.PaymentCallbackReply": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "title": "是否处理成功"
+        },
+        "message": {
+          "type": "string",
+          "title": "处理消息"
+        }
+      },
+      "title": "响应-支付回调接口"
+    },
+    "app.v1.PaymentCallbackReq": {
+      "type": "object",
+      "properties": {
+        "orderId": {
+          "type": "string",
+          "title": "订单ID"
+        },
+        "paymentMethod": {
+          "type": "string",
+          "title": "支付方式(wechat:微信,alipay:支付宝)"
+        },
+        "transactionId": {
+          "type": "string",
+          "title": "第三方支付交易ID"
+        },
+        "paymentStatus": {
+          "type": "integer",
+          "format": "int32",
+          "title": "支付状态(1已支付,2支付失败)"
+        },
+        "callbackData": {
+          "type": "string",
+          "title": "回调原始数据(JSON字符串)"
+        }
+      },
+      "title": "请求-支付回调接口"
+    },
+    "app.v1.PlaceOrderReply": {
+      "type": "object",
+      "properties": {
+        "orderId": {
+          "type": "string",
+          "title": "订单ID"
+        },
+        "actualAmount": {
+          "type": "number",
+          "format": "double",
+          "title": "实付金额"
+        },
+        "paymentInfo": {
+          "type": "string",
+          "title": "支付信息(预留,如支付二维码、支付链接等)"
+        }
+      },
+      "title": "响应-下单接口"
+    },
+    "app.v1.PlaceOrderReq": {
+      "type": "object",
+      "properties": {
+        "productType": {
+          "type": "string",
+          "title": "商品类型(membership:会员,service:服务,goods:商品)"
+        },
+        "productId": {
+          "type": "string",
+          "title": "商品ID"
+        },
+        "paymentMethod": {
+          "type": "string",
+          "title": "支付方式(wechat:微信,alipay:支付宝)"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        }
+      },
+      "title": "请求-下单接口",
+      "required": [
+        "productType",
+        "productId"
+      ]
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}
