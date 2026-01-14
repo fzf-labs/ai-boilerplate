@@ -644,10 +644,6 @@ func (m *CreateMembershipBenefitReq) validate(all bool) error {
 
 	// no validation rules for BenefitKey
 
-	// no validation rules for BenefitName
-
-	// no validation rules for BenefitDesc
-
 	// no validation rules for BenefitValue
 
 	// no validation rules for BenefitNum
@@ -868,10 +864,6 @@ func (m *UpdateMembershipBenefitReq) validate(all bool) error {
 	// no validation rules for MembershipType
 
 	// no validation rules for BenefitKey
-
-	// no validation rules for BenefitName
-
-	// no validation rules for BenefitDesc
 
 	// no validation rules for BenefitValue
 
@@ -1751,8 +1743,6 @@ func (m *GetMembershipBenefitListReq) validate(all bool) error {
 	// no validation rules for MembershipType
 
 	// no validation rules for BenefitKey
-
-	// no validation rules for BenefitName
 
 	if len(errors) > 0 {
 		return GetMembershipBenefitListReqMultiError(errors)

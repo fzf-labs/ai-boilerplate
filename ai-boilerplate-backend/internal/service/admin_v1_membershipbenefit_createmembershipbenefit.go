@@ -12,8 +12,6 @@ func (a *AdminV1MembershipBenefitService) CreateMembershipBenefit(ctx context.Co
 	data := a.membershipBenefitRepo.NewData()
 	data.MembershipType = req.GetMembershipType()
 	data.BenefitKey = req.GetBenefitKey()
-	data.BenefitName = req.GetBenefitName()
-	data.BenefitDesc = req.GetBenefitDesc()
 	data.BenefitValue = req.GetBenefitValue()
 	data.BenefitNum = req.GetBenefitNum()
 	data.Sort = req.GetSort()

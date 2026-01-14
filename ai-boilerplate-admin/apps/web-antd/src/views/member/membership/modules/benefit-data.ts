@@ -31,10 +31,10 @@ export function useBenefitFormSchema(): VbenFormSchema[] {
     },
     {
       fieldName: 'benefitKey',
-      label: '权益标识',
+      label: '权益类型',
       component: 'ApiSelect',
       componentProps: {
-        placeholder: '请选择权益标识',
+        placeholder: '请选择权益类型',
         api: getMembershipBenefitKeySelect,
         resultField: 'list',
         labelField: 'name',
@@ -42,24 +42,7 @@ export function useBenefitFormSchema(): VbenFormSchema[] {
         allowClear: true,
       },
       rules: 'required',
-    },
-    {
-      fieldName: 'benefitName',
-      label: '权益名称',
-      component: 'Input',
-      componentProps: {
-        placeholder: '请输入权益名称',
-      },
-      rules: 'required',
-    },
-    {
-      fieldName: 'benefitDesc',
-      label: '权益描述',
-      component: 'Textarea',
-      componentProps: {
-        placeholder: '请输入权益描述',
-        rows: 3,
-      },
+      help: '权益名称和描述将从权益类型表自动获取',
     },
     {
       fieldName: 'benefitValue',
@@ -109,37 +92,15 @@ export function useBenefitGridFormSchema(): VbenFormSchema[] {
   return [
     {
       fieldName: 'benefitKey',
-      label: '权益标识',
+      label: '权益类型',
       component: 'ApiSelect',
       componentProps: {
-        placeholder: '请选择权益标识',
+        placeholder: '请选择权益类型',
         allowClear: true,
         api: getMembershipBenefitKeySelect,
         resultField: 'list',
         labelField: 'name',
         valueField: 'key',
-      },
-    },
-    {
-      fieldName: 'benefitName',
-      label: '权益名称',
-      component: 'Input',
-      componentProps: {
-        placeholder: '请输入权益名称',
-        allowClear: true,
-      },
-    },
-    {
-      fieldName: 'status',
-      label: '状态',
-      component: 'Select',
-      componentProps: {
-        placeholder: '请选择状态',
-        allowClear: true,
-        options: [
-          { label: '启用', value: CommonStatusEnum.ENABLE },
-          { label: '禁用', value: CommonStatusEnum.DISABLE },
-        ],
       },
     },
   ];

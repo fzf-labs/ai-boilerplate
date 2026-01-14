@@ -30,8 +30,6 @@ func newMembershipBenefit(db *gorm.DB, opts ...gen.DOOption) membershipBenefit {
 	_membershipBenefit.ID = field.NewString(tableName, "id")
 	_membershipBenefit.MembershipType = field.NewString(tableName, "membership_type")
 	_membershipBenefit.BenefitKey = field.NewString(tableName, "benefit_key")
-	_membershipBenefit.BenefitName = field.NewString(tableName, "benefit_name")
-	_membershipBenefit.BenefitDesc = field.NewString(tableName, "benefit_desc")
 	_membershipBenefit.BenefitValue = field.NewString(tableName, "benefit_value")
 	_membershipBenefit.BenefitNum = field.NewString(tableName, "benefit_num")
 	_membershipBenefit.Sort = field.NewInt32(tableName, "sort")
@@ -52,8 +50,6 @@ type membershipBenefit struct {
 	ID             field.String // id
 	MembershipType field.String // 会员类型编码(normal,vip,svip)
 	BenefitKey     field.String // 权益标识
-	BenefitName    field.String // 权益名称
-	BenefitDesc    field.String // 权益描述
 	BenefitValue   field.String // 权益值
 	BenefitNum     field.String // 权益次数
 	Sort           field.Int32  // 排序
@@ -80,8 +76,6 @@ func (m *membershipBenefit) updateTableName(table string) *membershipBenefit {
 	m.ID = field.NewString(table, "id")
 	m.MembershipType = field.NewString(table, "membership_type")
 	m.BenefitKey = field.NewString(table, "benefit_key")
-	m.BenefitName = field.NewString(table, "benefit_name")
-	m.BenefitDesc = field.NewString(table, "benefit_desc")
 	m.BenefitValue = field.NewString(table, "benefit_value")
 	m.BenefitNum = field.NewString(table, "benefit_num")
 	m.Sort = field.NewInt32(table, "sort")
@@ -117,12 +111,10 @@ func (m *membershipBenefit) GetFieldByName(fieldName string) (field.OrderExpr, b
 }
 
 func (m *membershipBenefit) fillFieldMap() {
-	m.fieldMap = make(map[string]field.Expr, 12)
+	m.fieldMap = make(map[string]field.Expr, 10)
 	m.fieldMap["id"] = m.ID
 	m.fieldMap["membership_type"] = m.MembershipType
 	m.fieldMap["benefit_key"] = m.BenefitKey
-	m.fieldMap["benefit_name"] = m.BenefitName
-	m.fieldMap["benefit_desc"] = m.BenefitDesc
 	m.fieldMap["benefit_value"] = m.BenefitValue
 	m.fieldMap["benefit_num"] = m.BenefitNum
 	m.fieldMap["sort"] = m.Sort

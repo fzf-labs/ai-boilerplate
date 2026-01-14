@@ -53,6 +53,7 @@ func NewHTTPServer(
 	adminV1UserMembershipService *service.AdminV1UserMembershipService,
 	adminV1MembershipService *service.AdminV1MembershipService,
 	adminV1MembershipBenefitService *service.AdminV1MembershipBenefitService,
+	adminV1MembershipBenefitTypeService *service.AdminV1MembershipBenefitTypeService,
 	adminV1SelfAppService *service.AdminV1SelfAppService,
 	adminV1SelfAppReleaseService *service.AdminV1SelfAppReleaseService,
 	adminV1MallActivationCodeService *service.AdminV1MallActivationCodeService,
@@ -130,6 +131,7 @@ func NewHTTPServer(
 	adminv1.RegisterUserMembershipHTTPServer(srv, adminV1UserMembershipService)
 	adminv1.RegisterMembershipHTTPServer(srv, adminV1MembershipService)
 	adminv1.RegisterMembershipBenefitHTTPServer(srv, adminV1MembershipBenefitService)
+	adminv1.RegisterMembershipBenefitTypeHTTPServer(srv, adminV1MembershipBenefitTypeService)
 	adminv1.RegisterSelfAppHTTPServer(srv, adminV1SelfAppService)
 	adminv1.RegisterSelfAppReleaseHTTPServer(srv, adminV1SelfAppReleaseService)
 	adminv1.RegisterAiProviderPlatformHTTPServer(srv, adminV1AiProviderPlatformService)

@@ -29,6 +29,7 @@ export * as MallPaymentRecord from './mall-payment-record';
 export * as MallProduct from './mall-product';
 export * as Membership from './membership';
 export * as MembershipBenefit from './membership-benefit';
+export * as MembershipBenefitType from './membership-benefit-type';
 export * as SelfApp from './self-app';
 export * as SelfAppRelease from './self-app-release';
 export * as SensitiveWord from './sensitive-word';

@@ -13,12 +13,8 @@ export type CreateMembershipBenefitReply = {
 export type CreateMembershipBenefitReq = {
   /** 会员类型编码(normal,vip,svip) */
   membershipType: string;
-  /** 权益标识 */
+  /** 权益标识(关联membership_benefit_type.benefit_key) */
   benefitKey: string;
-  /** 权益名称 */
-  benefitName: string;
-  /** 权益描述 */
-  benefitDesc?: string;
   /** 权益值 */
   benefitValue?: string;
   /** 权益次数 */
@@ -103,8 +99,6 @@ export type GetMembershipBenefitListParams = {
   membershipType: string;
   /** 权益标识 */
   benefitKey?: string;
-  /** 权益名称 */
-  benefitName?: string;
 };
 
 export type GetMembershipBenefitListReply = {
@@ -130,11 +124,11 @@ export type MembershipBenefitInfo = {
   id?: string;
   /** 会员类型编码(normal,vip,svip) */
   membershipType?: string;
-  /** 权益标识 */
+  /** 权益标识(关联membership_benefit_type) */
   benefitKey?: string;
-  /** 权益名称 */
+  /** 权益名称(从membership_benefit_type获取) */
   benefitName?: string;
-  /** 权益描述 */
+  /** 权益描述(从membership_benefit_type获取) */
   benefitDesc?: string;
   /** 权益值 */
   benefitValue?: string;
@@ -170,12 +164,8 @@ export type UpdateMembershipBenefitReq = {
   id: string;
   /** 会员类型编码(normal,vip,svip) */
   membershipType: string;
-  /** 权益标识 */
+  /** 权益标识(关联membership_benefit_type.benefit_key) */
   benefitKey: string;
-  /** 权益名称 */
-  benefitName: string;
-  /** 权益描述 */
-  benefitDesc?: string;
   /** 权益值 */
   benefitValue?: string;
   /** 权益次数 */

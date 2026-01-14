@@ -17,8 +17,6 @@ type MembershipBenefit struct {
 	ID             string         `gorm:"column:id;type:uuid;primaryKey;default:gen_random_uuid();comment:id" json:"id"`                                    // id
 	MembershipType string         `gorm:"column:membership_type;type:character varying(20);not null;comment:会员类型编码(normal,vip,svip)" json:"membershipType"` // 会员类型编码(normal,vip,svip)
 	BenefitKey     string         `gorm:"column:benefit_key;type:character varying(100);not null;comment:权益标识" json:"benefitKey"`                           // 权益标识
-	BenefitName    string         `gorm:"column:benefit_name;type:character varying(255);not null;comment:权益名称" json:"benefitName"`                         // 权益名称
-	BenefitDesc    string         `gorm:"column:benefit_desc;type:character varying(500);comment:权益描述" json:"benefitDesc"`                                  // 权益描述
 	BenefitValue   string         `gorm:"column:benefit_value;type:character varying(100);comment:权益值" json:"benefitValue"`                                 // 权益值
 	BenefitNum     string         `gorm:"column:benefit_num;type:character varying(100);comment:权益次数" json:"benefitNum"`                                    // 权益次数
 	Sort           int32          `gorm:"column:sort;type:integer;comment:排序" json:"sort"`                                                                  // 排序

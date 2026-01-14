@@ -24,13 +24,13 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1CreateMembershipBenefitReply"
+              "$ref": "#/definitions/admin.v1.CreateMembershipBenefitReply"
             }
           },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/google.rpc.Status"
             }
           }
         },
@@ -40,7 +40,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1CreateMembershipBenefitReq"
+              "$ref": "#/definitions/admin.v1.CreateMembershipBenefitReq"
             }
           },
           {
@@ -58,19 +58,19 @@
     },
     "/admin/v1/membership_benefit/delete": {
       "post": {
-        "summary": "会员权益配置表-删除多条数据",
+        "summary": "会员权益配置表-删除一条数据",
         "operationId": "MembershipBenefit_DeleteMembershipBenefit",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1DeleteMembershipBenefitReply"
+              "$ref": "#/definitions/admin.v1.DeleteMembershipBenefitReply"
             }
           },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/google.rpc.Status"
             }
           }
         },
@@ -80,7 +80,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1DeleteMembershipBenefitReq"
+              "$ref": "#/definitions/admin.v1.DeleteMembershipBenefitReq"
             }
           },
           {
@@ -104,13 +104,13 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1GetMembershipBenefitInfoReply"
+              "$ref": "#/definitions/admin.v1.GetMembershipBenefitInfoReply"
             }
           },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/google.rpc.Status"
             }
           }
         },
@@ -143,13 +143,13 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1GetMembershipBenefitKeySelectReply"
+              "$ref": "#/definitions/admin.v1.GetMembershipBenefitKeySelectReply"
             }
           },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/google.rpc.Status"
             }
           }
         },
@@ -175,13 +175,13 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1GetMembershipBenefitListReply"
+              "$ref": "#/definitions/admin.v1.GetMembershipBenefitListReply"
             }
           },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/google.rpc.Status"
             }
           }
         },
@@ -206,19 +206,12 @@
             "name": "membershipType",
             "description": "会员类型编码(normal,vip,svip)",
             "in": "query",
-            "required": false,
+            "required": true,
             "type": "string"
           },
           {
             "name": "benefitKey",
             "description": "权益标识",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "benefitName",
-            "description": "权益名称",
             "in": "query",
             "required": false,
             "type": "string"
@@ -244,13 +237,13 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1UpdateMembershipBenefitReply"
+              "$ref": "#/definitions/admin.v1.UpdateMembershipBenefitReply"
             }
           },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/google.rpc.Status"
             }
           }
         },
@@ -260,7 +253,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1UpdateMembershipBenefitReq"
+              "$ref": "#/definitions/admin.v1.UpdateMembershipBenefitReq"
             }
           },
           {
@@ -284,13 +277,13 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1UpdateMembershipBenefitStatusReply"
+              "$ref": "#/definitions/admin.v1.UpdateMembershipBenefitStatusReply"
             }
           },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/google.rpc.Status"
             }
           }
         },
@@ -300,7 +293,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1UpdateMembershipBenefitStatusReq"
+              "$ref": "#/definitions/admin.v1.UpdateMembershipBenefitStatusReq"
             }
           },
           {
@@ -318,35 +311,7 @@
     }
   },
   "definitions": {
-    "protobufAny": {
-      "type": "object",
-      "properties": {
-        "@type": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": {}
-    },
-    "rpcStatus": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "message": {
-          "type": "string"
-        },
-        "details": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/protobufAny"
-          }
-        }
-      }
-    },
-    "v1CreateMembershipBenefitReply": {
+    "admin.v1.CreateMembershipBenefitReply": {
       "type": "object",
       "properties": {
         "id": {
@@ -356,7 +321,7 @@
       },
       "title": "响应-会员权益配置表-创建一条数据"
     },
-    "v1CreateMembershipBenefitReq": {
+    "admin.v1.CreateMembershipBenefitReq": {
       "type": "object",
       "properties": {
         "membershipType": {
@@ -365,15 +330,7 @@
         },
         "benefitKey": {
           "type": "string",
-          "title": "权益标识"
-        },
-        "benefitName": {
-          "type": "string",
-          "title": "权益名称"
-        },
-        "benefitDesc": {
-          "type": "string",
-          "title": "权益描述"
+          "title": "权益标识(关联membership_benefit_type.benefit_key)"
         },
         "benefitValue": {
           "type": "string",
@@ -398,15 +355,14 @@
       "required": [
         "membershipType",
         "benefitKey",
-        "benefitName",
         "status"
       ]
     },
-    "v1DeleteMembershipBenefitReply": {
+    "admin.v1.DeleteMembershipBenefitReply": {
       "type": "object",
-      "title": "响应-会员权益配置表-删除多条数据"
+      "title": "响应-会员权益配置表-删除一条数据"
     },
-    "v1DeleteMembershipBenefitReq": {
+    "admin.v1.DeleteMembershipBenefitReq": {
       "type": "object",
       "properties": {
         "id": {
@@ -414,35 +370,35 @@
           "title": "id"
         }
       },
-      "title": "请求-会员权益配置表-删除多条数据",
+      "title": "请求-会员权益配置表-删除一条数据",
       "required": [
         "id"
       ]
     },
-    "v1GetMembershipBenefitInfoReply": {
+    "admin.v1.GetMembershipBenefitInfoReply": {
       "type": "object",
       "properties": {
         "info": {
-          "$ref": "#/definitions/v1MembershipBenefitInfo"
+          "$ref": "#/definitions/admin.v1.MembershipBenefitInfo"
         }
       },
       "title": "响应-会员权益配置表-单条数据查询"
     },
-    "v1GetMembershipBenefitKeySelectReply": {
+    "admin.v1.GetMembershipBenefitKeySelectReply": {
       "type": "object",
       "properties": {
         "list": {
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/v1MembershipBenefitKeySelect"
+            "$ref": "#/definitions/admin.v1.MembershipBenefitKeySelect"
           },
           "title": "列表数据"
         }
       },
       "title": "响应-会员权益配置表-获取权益标识选择器"
     },
-    "v1GetMembershipBenefitListReply": {
+    "admin.v1.GetMembershipBenefitListReply": {
       "type": "object",
       "properties": {
         "total": {
@@ -454,14 +410,14 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/v1MembershipBenefitInfo"
+            "$ref": "#/definitions/admin.v1.MembershipBenefitInfo"
           },
           "title": "列表数据"
         }
       },
       "title": "响应-会员权益配置表-列表数据查询"
     },
-    "v1MembershipBenefitInfo": {
+    "admin.v1.MembershipBenefitInfo": {
       "type": "object",
       "properties": {
         "id": {
@@ -474,15 +430,15 @@
         },
         "benefitKey": {
           "type": "string",
-          "title": "权益标识"
+          "title": "权益标识(关联membership_benefit_type)"
         },
         "benefitName": {
           "type": "string",
-          "title": "权益名称"
+          "title": "权益名称(从membership_benefit_type获取)"
         },
         "benefitDesc": {
           "type": "string",
-          "title": "权益描述"
+          "title": "权益描述(从membership_benefit_type获取)"
         },
         "benefitValue": {
           "type": "string",
@@ -513,7 +469,7 @@
       },
       "title": "会员权益配置表信息"
     },
-    "v1MembershipBenefitKeySelect": {
+    "admin.v1.MembershipBenefitKeySelect": {
       "type": "object",
       "properties": {
         "key": {
@@ -527,11 +483,11 @@
       },
       "title": "会员权益配置表-权益标识选择器"
     },
-    "v1UpdateMembershipBenefitReply": {
+    "admin.v1.UpdateMembershipBenefitReply": {
       "type": "object",
       "title": "响应-会员权益配置表-更新一条数据"
     },
-    "v1UpdateMembershipBenefitReq": {
+    "admin.v1.UpdateMembershipBenefitReq": {
       "type": "object",
       "properties": {
         "id": {
@@ -544,15 +500,7 @@
         },
         "benefitKey": {
           "type": "string",
-          "title": "权益标识"
-        },
-        "benefitName": {
-          "type": "string",
-          "title": "权益名称"
-        },
-        "benefitDesc": {
-          "type": "string",
-          "title": "权益描述"
+          "title": "权益标识(关联membership_benefit_type.benefit_key)"
         },
         "benefitValue": {
           "type": "string",
@@ -578,15 +526,14 @@
         "id",
         "membershipType",
         "benefitKey",
-        "benefitName",
         "status"
       ]
     },
-    "v1UpdateMembershipBenefitStatusReply": {
+    "admin.v1.UpdateMembershipBenefitStatusReply": {
       "type": "object",
       "title": "响应-会员权益配置表-更新状态"
     },
-    "v1UpdateMembershipBenefitStatusReq": {
+    "admin.v1.UpdateMembershipBenefitStatusReq": {
       "type": "object",
       "properties": {
         "id": {
@@ -604,6 +551,34 @@
         "id",
         "status"
       ]
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
     }
   }
 }

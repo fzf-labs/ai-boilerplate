@@ -217,13 +217,6 @@
             "type": "string"
           },
           {
-            "name": "benefitName",
-            "description": "权益名称",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
             "name": "Authorization",
             "description": "Bearer Token",
             "in": "header",
@@ -337,15 +330,7 @@
         },
         "benefitKey": {
           "type": "string",
-          "title": "权益标识"
-        },
-        "benefitName": {
-          "type": "string",
-          "title": "权益名称"
-        },
-        "benefitDesc": {
-          "type": "string",
-          "title": "权益描述"
+          "title": "权益标识(关联membership_benefit_type.benefit_key)"
         },
         "benefitValue": {
           "type": "string",
@@ -370,7 +355,6 @@
       "required": [
         "membershipType",
         "benefitKey",
-        "benefitName",
         "status"
       ]
     },
@@ -446,15 +430,15 @@
         },
         "benefitKey": {
           "type": "string",
-          "title": "权益标识"
+          "title": "权益标识(关联membership_benefit_type)"
         },
         "benefitName": {
           "type": "string",
-          "title": "权益名称"
+          "title": "权益名称(从membership_benefit_type获取)"
         },
         "benefitDesc": {
           "type": "string",
-          "title": "权益描述"
+          "title": "权益描述(从membership_benefit_type获取)"
         },
         "benefitValue": {
           "type": "string",
@@ -516,15 +500,7 @@
         },
         "benefitKey": {
           "type": "string",
-          "title": "权益标识"
-        },
-        "benefitName": {
-          "type": "string",
-          "title": "权益名称"
-        },
-        "benefitDesc": {
-          "type": "string",
-          "title": "权益描述"
+          "title": "权益标识(关联membership_benefit_type.benefit_key)"
         },
         "benefitValue": {
           "type": "string",
@@ -550,7 +526,6 @@
         "id",
         "membershipType",
         "benefitKey",
-        "benefitName",
         "status"
       ]
     },

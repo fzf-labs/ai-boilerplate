@@ -126,9 +126,9 @@ service MembershipBenefit {
 message MembershipBenefitInfo {
   string id = 1; // id
   string membershipType = 2; // 会员类型编码(normal,vip,svip)
-  string benefitKey = 3; // 权益标识
-  string benefitName = 4; // 权益名称
-  string benefitDesc = 5; // 权益描述
+  string benefitKey = 3; // 权益标识(关联membership_benefit_type)
+  string benefitName = 4; // 权益名称(从membership_benefit_type获取)
+  string benefitDesc = 5; // 权益描述(从membership_benefit_type获取)
   string benefitValue = 6; // 权益值
   string benefitNum = 7; // 权益次数
   int32 sort = 8; // 排序
@@ -164,7 +164,6 @@ message CreateMembershipBenefitReq {
       required: [
         "membershipType",
         "benefitKey",
-        "benefitName",
         "status"
       ]
     }
@@ -176,34 +175,23 @@ message CreateMembershipBenefitReq {
   string benefitKey = 2 [(buf.validate.field).string = {
     min_len: 1
     max_len: 100
-  }]; // 权益标识
-  string benefitName = 3 [(buf.validate.field).string = {
-    min_len: 1
-    max_len: 255
-  }]; // 权益名称
-  string benefitDesc = 4 [
-    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
-    (buf.validate.field).string = {
-      min_len: 1
-      max_len: 500
-    }
-  ]; // 权益描述
-  string benefitValue = 5 [
+  }]; // 权益标识(关联membership_benefit_type.benefit_key)
+  string benefitValue = 3 [
     (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
     (buf.validate.field).string = {
       min_len: 1
       max_len: 100
     }
   ]; // 权益值
-  string benefitNum = 6 [
+  string benefitNum = 4 [
     (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
     (buf.validate.field).string = {
       min_len: 1
       max_len: 100
     }
   ]; // 权益次数
-  int32 sort = 7 [(buf.validate.field).ignore = IGNORE_IF_UNPOPULATED]; // 排序
-  int32 status = 8; // 状态(-1禁用,1启用)
+  int32 sort = 5 [(buf.validate.field).ignore = IGNORE_IF_UNPOPULATED]; // 排序
+  int32 status = 6; // 状态(-1禁用,1启用)
 }
 
 //响应-会员权益配置表-创建一条数据
@@ -219,7 +207,6 @@ message UpdateMembershipBenefitReq {
         "id",
         "membershipType",
         "benefitKey",
-        "benefitName",
         "status"
       ]
     }
@@ -235,34 +222,23 @@ message UpdateMembershipBenefitReq {
   string benefitKey = 3 [(buf.validate.field).string = {
     min_len: 1
     max_len: 100
-  }]; // 权益标识
-  string benefitName = 4 [(buf.validate.field).string = {
-    min_len: 1
-    max_len: 255
-  }]; // 权益名称
-  string benefitDesc = 5 [
-    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
-    (buf.validate.field).string = {
-      min_len: 1
-      max_len: 500
-    }
-  ]; // 权益描述
-  string benefitValue = 6 [
+  }]; // 权益标识(关联membership_benefit_type.benefit_key)
+  string benefitValue = 4 [
     (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
     (buf.validate.field).string = {
       min_len: 1
       max_len: 100
     }
   ]; // 权益值
-  string benefitNum = 7 [
+  string benefitNum = 5 [
     (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
     (buf.validate.field).string = {
       min_len: 1
       max_len: 100
     }
   ]; // 权益次数
-  int32 sort = 8 [(buf.validate.field).ignore = IGNORE_IF_UNPOPULATED]; // 排序
-  int32 status = 9; // 状态(-1禁用,1启用)
+  int32 sort = 6 [(buf.validate.field).ignore = IGNORE_IF_UNPOPULATED]; // 排序
+  int32 status = 7; // 状态(-1禁用,1启用)
 }
 
 //响应-会员权益配置表-更新一条数据
@@ -343,7 +319,6 @@ message GetMembershipBenefitListReq {
     max_len: 20
   }]; // 会员类型编码(normal,vip,svip)
   string benefitKey = 4; // 权益标识
-  string benefitName = 5; // 权益名称
 }
 
 //响应-会员权益配置表-列表数据查询

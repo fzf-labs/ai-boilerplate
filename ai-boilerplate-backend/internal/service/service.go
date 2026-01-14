@@ -33,6 +33,7 @@ var ProviderSet = wire.NewSet(
 	NewAdminV1MallPaymentRecordService,
 	NewAdminV1MallProductService,
 	NewAdminV1MembershipBenefitService,
+	NewAdminV1MembershipBenefitTypeService,
 	NewAdminV1MembershipService,
 	NewAdminV1SelfAppReleaseService,
 	NewAdminV1SelfAppService,

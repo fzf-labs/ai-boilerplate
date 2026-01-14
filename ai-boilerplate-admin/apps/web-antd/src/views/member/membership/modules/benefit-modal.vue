@@ -40,8 +40,10 @@ const [BenefitFormModal, benefitFormModalApi] = useVbenModal({
 async function onStatusChange(newStatus: number, row: any) {
   try {
     await updateMembershipBenefitStatus({
-      id: row.id,
-      status: newStatus,
+      body: {
+        id: row.id,
+        status: newStatus,
+      },
     });
     message.success({
       content: $t('ui.actionMessage.operationSuccess'),
@@ -66,7 +68,7 @@ async function onDelete(row: any) {
     key: 'action_process_msg',
   });
   try {
-    await deleteMembershipBenefit({ id: row.id });
+    await deleteMembershipBenefit({ body: { id: row.id } });
     message.success({
       content: $t('ui.actionMessage.deleteSuccess', [row.benefitName]),
       key: 'action_process_msg',
@@ -74,6 +76,10 @@ async function onDelete(row: any) {
   } catch {
     hideLoading();
   }
+  // 延迟刷新权益列表，确保表格已经渲染
+  setTimeout(() => {
+    onRefresh();
+  }, 100);
 }
 
 /** 表格操作按钮的回调函数 */
@@ -103,10 +109,12 @@ const [Grid, gridApi] = useVbenVxeGrid({
         query: async ({ page }, formValues) => {
           if (!membershipData.value?.type) return { list: [], total: 0 };
           return await getMembershipBenefitList({
-            page: page.currentPage,
-            pageSize: page.pageSize,
-            membershipType: membershipData.value.type,
-            ...formValues,
+            params: {
+              page: page.currentPage,
+              pageSize: page.pageSize,
+              membershipType: membershipData.value.type,
+              ...formValues,
+            },
           });
         },
       },

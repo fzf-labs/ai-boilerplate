@@ -2,8 +2,6 @@ CREATE TABLE public.membership_benefit (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     membership_type character varying(20) NOT NULL,
     benefit_key character varying(100) NOT NULL,
-    benefit_name character varying(255) NOT NULL,
-    benefit_desc character varying(500),
     benefit_value character varying(100),
     benefit_num character varying(100),
     sort integer DEFAULT 0,
@@ -15,9 +13,7 @@ CREATE TABLE public.membership_benefit (
 COMMENT ON TABLE public.membership_benefit IS '会员权益配置表';
 COMMENT ON COLUMN public.membership_benefit.id IS 'id';
 COMMENT ON COLUMN public.membership_benefit.membership_type IS '会员类型编码(normal,vip,svip)';
-COMMENT ON COLUMN public.membership_benefit.benefit_key IS '权益标识';
-COMMENT ON COLUMN public.membership_benefit.benefit_name IS '权益名称';
-COMMENT ON COLUMN public.membership_benefit.benefit_desc IS '权益描述';
+COMMENT ON COLUMN public.membership_benefit.benefit_key IS '权益标识(关联membership_benefit_type.benefit_key)';
 COMMENT ON COLUMN public.membership_benefit.benefit_value IS '权益值';
 COMMENT ON COLUMN public.membership_benefit.benefit_num IS '权益次数';
 COMMENT ON COLUMN public.membership_benefit.sort IS '排序';

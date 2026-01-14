@@ -27,6 +27,10 @@ func (a *AdminV1MembershipBenefitService) GetMembershipBenefitList(ctx context.C
 		},
 		Order: []*condition.OrderParam{
 			{
+				Field: "sort",
+				Order: condition.ASC,
+			},
+			{
 				Field: "created_at",
 				Order: condition.DESC,
 			},
@@ -40,34 +44,64 @@ func (a *AdminV1MembershipBenefitService) GetMembershipBenefitList(ctx context.C
 			Logic: condition.AND,
 		})
 	}
-	if req.GetBenefitName() != "" {
-		param.Query = append(param.Query, &condition.QueryParam{
-			Field: "benefit_name",
-			Value: "%" + req.GetBenefitName() + "%",
-			Exp:   condition.LIKE,
-			Logic: condition.AND,
-		})
-	}
 	list, p, err := a.membershipBenefitRepo.FindMultiCacheByCondition(ctx, param)
 	if err != nil {
 		return nil, pb.ErrorReasonDataSQLError(pb.WithError(err))
 	}
 	resp.Total = p.Total
+
+	// 获取权益类型映射表
+	benefitTypeMap := make(map[string]struct {
+		Name string
+		Desc string
+	})
 	if len(list) > 0 {
+		// 收集所有 benefit_key
+		keys := make([]string, 0, len(list))
 		for _, v := range list {
-			resp.List = append(resp.List, &pb.MembershipBenefitInfo{
+			keys = append(keys, v.BenefitKey)
+		}
+		// 查询权益类型表
+		typeParam := &condition.Req{
+			Page:     1,
+			PageSize: 1000,
+			Query: []*condition.QueryParam{
+				{
+					Field: "benefit_key",
+					Value: keys,
+					Exp:   condition.IN,
+					Logic: condition.AND,
+				},
+			},
+		}
+		typeList, _, err := a.membershipBenefitTypeRepo.FindMultiCacheByCondition(ctx, typeParam)
+		if err == nil {
+			for _, t := range typeList {
+				benefitTypeMap[t.BenefitKey] = struct {
+					Name string
+					Desc string
+				}{Name: t.BenefitName, Desc: t.BenefitDesc}
+			}
+		}
+
+		for _, v := range list {
+			info := &pb.MembershipBenefitInfo{
 				Id:             v.ID,
 				MembershipType: v.MembershipType,
 				BenefitKey:     v.BenefitKey,
-				BenefitName:    v.BenefitName,
-				BenefitDesc:    v.BenefitDesc,
 				BenefitValue:   v.BenefitValue,
 				BenefitNum:     v.BenefitNum,
 				Sort:           v.Sort,
 				Status:         v.Status,
 				CreatedAt:      v.CreatedAt.Format(time.RFC3339),
 				UpdatedAt:      v.UpdatedAt.Format(time.RFC3339),
-			})
+			}
+			// 从权益类型表获取名称和描述
+			if typeInfo, ok := benefitTypeMap[v.BenefitKey]; ok {
+				info.BenefitName = typeInfo.Name
+				info.BenefitDesc = typeInfo.Desc
+			}
+			resp.List = append(resp.List, info)
 		}
 	}
 	return resp, nil

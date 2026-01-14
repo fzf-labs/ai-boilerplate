@@ -46,6 +46,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		MallProduct:             newMallProduct(db, opts...),
 		Membership:              newMembership(db, opts...),
 		MembershipBenefit:       newMembershipBenefit(db, opts...),
+		MembershipBenefitType:   newMembershipBenefitType(db, opts...),
 		SelfApp:                 newSelfApp(db, opts...),
 		SelfAppRelease:          newSelfAppRelease(db, opts...),
 		SensitiveWord:           newSensitiveWord(db, opts...),
@@ -108,6 +109,7 @@ type Query struct {
 	MallProduct             mallProduct
 	Membership              membership
 	MembershipBenefit       membershipBenefit
+	MembershipBenefitType   membershipBenefitType
 	SelfApp                 selfApp
 	SelfAppRelease          selfAppRelease
 	SensitiveWord           sensitiveWord
@@ -171,6 +173,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		MallProduct:             q.MallProduct.clone(db),
 		Membership:              q.Membership.clone(db),
 		MembershipBenefit:       q.MembershipBenefit.clone(db),
+		MembershipBenefitType:   q.MembershipBenefitType.clone(db),
 		SelfApp:                 q.SelfApp.clone(db),
 		SelfAppRelease:          q.SelfAppRelease.clone(db),
 		SensitiveWord:           q.SensitiveWord.clone(db),
@@ -241,6 +244,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		MallProduct:             q.MallProduct.replaceDB(db),
 		Membership:              q.Membership.replaceDB(db),
 		MembershipBenefit:       q.MembershipBenefit.replaceDB(db),
+		MembershipBenefitType:   q.MembershipBenefitType.replaceDB(db),
 		SelfApp:                 q.SelfApp.replaceDB(db),
 		SelfAppRelease:          q.SelfAppRelease.replaceDB(db),
 		SensitiveWord:           q.SensitiveWord.replaceDB(db),
@@ -301,6 +305,7 @@ type queryCtx struct {
 	MallProduct             *mallProductDo
 	Membership              *membershipDo
 	MembershipBenefit       *membershipBenefitDo
+	MembershipBenefitType   *membershipBenefitTypeDo
 	SelfApp                 *selfAppDo
 	SelfAppRelease          *selfAppReleaseDo
 	SensitiveWord           *sensitiveWordDo
@@ -361,6 +366,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		MallProduct:             q.MallProduct.WithContext(ctx),
 		Membership:              q.Membership.WithContext(ctx),
 		MembershipBenefit:       q.MembershipBenefit.WithContext(ctx),
+		MembershipBenefitType:   q.MembershipBenefitType.WithContext(ctx),
 		SelfApp:                 q.SelfApp.WithContext(ctx),
 		SelfAppRelease:          q.SelfAppRelease.WithContext(ctx),
 		SensitiveWord:           q.SensitiveWord.WithContext(ctx),

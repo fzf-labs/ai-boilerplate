@@ -24,16 +24,14 @@ import (
 var _ IMembershipBenefitRepo = (*MembershipBenefitRepo)(nil)
 
 var (
-	CacheMembershipBenefitByConditionPrefix                        = "DBCache:ai_boilerplate:MembershipBenefitByCondition"
-	CacheMembershipBenefitUnscopedByConditionPrefix                = "DBCache:ai_boilerplate:MembershipBenefitUnscopedByCondition"
-	CacheMembershipBenefitByIDPrefix                               = "DBCache:ai_boilerplate:MembershipBenefitByID"
-	CacheMembershipBenefitUnscopedByIDPrefix                       = "DBCache:ai_boilerplate:MembershipBenefitUnscopedByID"
-	CacheMembershipBenefitByMembershipTypeBenefitKeyPrefix         = "DBCache:ai_boilerplate:MembershipBenefitByMembershipTypeBenefitKey"
-	CacheMembershipBenefitUnscopedByMembershipTypeBenefitKeyPrefix = "DBCache:ai_boilerplate:MembershipBenefitUnscopedByMembershipTypeBenefitKey"
-	CacheMembershipBenefitByMembershipTypePrefix                   = "DBCache:ai_boilerplate:MembershipBenefitByMembershipType"
-	CacheMembershipBenefitUnscopedByMembershipTypePrefix           = "DBCache:ai_boilerplate:MembershipBenefitUnscopedByMembershipType"
-	CacheMembershipBenefitBySortPrefix                             = "DBCache:ai_boilerplate:MembershipBenefitBySort"
-	CacheMembershipBenefitUnscopedBySortPrefix                     = "DBCache:ai_boilerplate:MembershipBenefitUnscopedBySort"
+	CacheMembershipBenefitByConditionPrefix              = "DBCache:ai_boilerplate:MembershipBenefitByCondition"
+	CacheMembershipBenefitUnscopedByConditionPrefix      = "DBCache:ai_boilerplate:MembershipBenefitUnscopedByCondition"
+	CacheMembershipBenefitByIDPrefix                     = "DBCache:ai_boilerplate:MembershipBenefitByID"
+	CacheMembershipBenefitUnscopedByIDPrefix             = "DBCache:ai_boilerplate:MembershipBenefitUnscopedByID"
+	CacheMembershipBenefitByMembershipTypePrefix         = "DBCache:ai_boilerplate:MembershipBenefitByMembershipType"
+	CacheMembershipBenefitUnscopedByMembershipTypePrefix = "DBCache:ai_boilerplate:MembershipBenefitUnscopedByMembershipType"
+	CacheMembershipBenefitBySortPrefix                   = "DBCache:ai_boilerplate:MembershipBenefitBySort"
+	CacheMembershipBenefitUnscopedBySortPrefix           = "DBCache:ai_boilerplate:MembershipBenefitUnscopedBySort"
 )
 
 type (
@@ -122,14 +120,6 @@ type (
 		UpdateBatchByIDSTx(ctx context.Context, tx *ai_boilerplate_dao.Query, IDS []string, data map[string]interface{}) error
 		// UpdateBatchUnscopedByIDSTx 根据字段IDS批量更新(事务),零值会被更新（包括软删除）
 		UpdateBatchUnscopedByIDSTx(ctx context.Context, tx *ai_boilerplate_dao.Query, IDS []string, data map[string]interface{}) error
-		// UpdateBatchByMembershipTypeBenefitKey 根据字段MembershipTypeBenefitKey批量更新,零值会被更新
-		UpdateBatchByMembershipTypeBenefitKey(ctx context.Context, membershipType string, benefitKey string, data map[string]interface{}) error
-		// UpdateBatchUnscopedByMembershipTypeBenefitKey 根据字段MembershipTypeBenefitKey批量更新,零值会被更新（包括软删除）
-		UpdateBatchUnscopedByMembershipTypeBenefitKey(ctx context.Context, membershipType string, benefitKey string, data map[string]interface{}) error
-		// UpdateBatchByMembershipTypeBenefitKeyTx 根据主键MembershipTypeBenefitKey批量更新(事务),零值会被更新
-		UpdateBatchByMembershipTypeBenefitKeyTx(ctx context.Context, tx *ai_boilerplate_dao.Query, membershipType string, benefitKey string, data map[string]interface{}) error
-		// UpdateBatchUnscopedByMembershipTypeBenefitKeyTx 根据主键MembershipTypeBenefitKey批量更新(事务),零值会被更新（包括软删除）
-		UpdateBatchUnscopedByMembershipTypeBenefitKeyTx(ctx context.Context, tx *ai_boilerplate_dao.Query, membershipType string, benefitKey string, data map[string]interface{}) error
 		// UpdateBatchByMembershipType 根据字段MembershipType批量更新,零值会被更新
 		UpdateBatchByMembershipType(ctx context.Context, membershipType string, data map[string]interface{}) error
 		// UpdateBatchUnscopedByMembershipType 根据字段MembershipType批量更新,零值会被更新（包括软删除）
@@ -178,14 +168,6 @@ type (
 		FindMultiCacheByIDS(ctx context.Context, IDS []string) ([]*ai_boilerplate_model.MembershipBenefit, error)
 		// FindMultiUnscopedCacheByIDS 根据IDS查询多条数据（包括软删除），并设置缓存
 		FindMultiUnscopedCacheByIDS(ctx context.Context, IDS []string) ([]*ai_boilerplate_model.MembershipBenefit, error)
-		// FindOneByMembershipTypeBenefitKey 根据MembershipTypeBenefitKey查询一条数据
-		FindOneByMembershipTypeBenefitKey(ctx context.Context, membershipType string, benefitKey string) (*ai_boilerplate_model.MembershipBenefit, error)
-		// FindOneUnscopedByMembershipTypeBenefitKey 根据MembershipTypeBenefitKey查询一条数据（包括软删除）
-		FindOneUnscopedByMembershipTypeBenefitKey(ctx context.Context, membershipType string, benefitKey string) (*ai_boilerplate_model.MembershipBenefit, error)
-		// FindOneCacheByMembershipTypeBenefitKey 根据MembershipTypeBenefitKey查询一条数据，并设置缓存
-		FindOneCacheByMembershipTypeBenefitKey(ctx context.Context, membershipType string, benefitKey string) (*ai_boilerplate_model.MembershipBenefit, error)
-		// FindOneUnscopedCacheByMembershipTypeBenefitKey 根据MembershipTypeBenefitKey查询一条数据（包括软删除），并设置缓存
-		FindOneUnscopedCacheByMembershipTypeBenefitKey(ctx context.Context, membershipType string, benefitKey string) (*ai_boilerplate_model.MembershipBenefit, error)
 		// FindMultiByMembershipType 根据membershipType查询多条数据
 		FindMultiByMembershipType(ctx context.Context, membershipType string) ([]*ai_boilerplate_model.MembershipBenefit, error)
 		// FindMultiUnscopedByMembershipType 根据membershipType查询多条数据（包括软删除）
@@ -258,22 +240,6 @@ type (
 		DeleteMultiCacheByIDSTx(ctx context.Context, tx *ai_boilerplate_dao.Query, IDS []string) error
 		// DeleteMultiUnscopedCacheByIDSTx 根据IDS删除多条数据，并删除缓存(事务)
 		DeleteMultiUnscopedCacheByIDSTx(ctx context.Context, tx *ai_boilerplate_dao.Query, IDS []string) error
-		// DeleteOneByMembershipTypeBenefitKey 根据MembershipTypeBenefitKey删除一条数据
-		DeleteOneByMembershipTypeBenefitKey(ctx context.Context, membershipType string, benefitKey string) error
-		// DeleteOneUnscopedByMembershipTypeBenefitKey 根据MembershipTypeBenefitKey删除一条数据
-		DeleteOneUnscopedByMembershipTypeBenefitKey(ctx context.Context, membershipType string, benefitKey string) error
-		// DeleteOneCacheByMembershipTypeBenefitKey 根据MembershipTypeBenefitKey删除一条数据，并删除缓存
-		DeleteOneCacheByMembershipTypeBenefitKey(ctx context.Context, membershipType string, benefitKey string) error
-		// DeleteOneUnscopedCacheByMembershipTypeBenefitKey 根据MembershipTypeBenefitKey删除一条数据，并删除缓存
-		DeleteOneUnscopedCacheByMembershipTypeBenefitKey(ctx context.Context, membershipType string, benefitKey string) error
-		// DeleteOneByMembershipTypeBenefitKeyTx 根据MembershipTypeBenefitKey删除一条数据(事务)
-		DeleteOneByMembershipTypeBenefitKeyTx(ctx context.Context, tx *ai_boilerplate_dao.Query, membershipType string, benefitKey string) error
-		// DeleteOneUnscopedByMembershipTypeBenefitKeyTx 根据MembershipTypeBenefitKey删除一条数据(事务)
-		DeleteOneUnscopedByMembershipTypeBenefitKeyTx(ctx context.Context, tx *ai_boilerplate_dao.Query, membershipType string, benefitKey string) error
-		// DeleteOneCacheByMembershipTypeBenefitKeyTx 根据MembershipTypeBenefitKey删除一条数据，并删除缓存(事务)
-		DeleteOneCacheByMembershipTypeBenefitKeyTx(ctx context.Context, tx *ai_boilerplate_dao.Query, membershipType string, benefitKey string) error
-		// DeleteOneUnscopedCacheByMembershipTypeBenefitKeyTx 根据MembershipTypeBenefitKey删除一条数据，并删除缓存(事务)
-		DeleteOneUnscopedCacheByMembershipTypeBenefitKeyTx(ctx context.Context, tx *ai_boilerplate_dao.Query, membershipType string, benefitKey string) error
 		// DeleteMultiByMembershipType 根据MembershipType删除多条数据
 		DeleteMultiByMembershipType(ctx context.Context, membershipType string) error
 		// DeleteMultiUnscopedByMembershipType 根据MembershipType删除多条数据
@@ -958,46 +924,6 @@ func (m *MembershipBenefitRepo) UpdateBatchUnscopedByIDSTx(ctx context.Context, 
 	return nil
 }
 
-// UpdateBatchByMembershipTypeBenefitKey 根据字段MembershipTypeBenefitKey批量更新,零值会被更新
-func (m *MembershipBenefitRepo) UpdateBatchByMembershipTypeBenefitKey(ctx context.Context, membershipType string, benefitKey string, data map[string]interface{}) error {
-	dao := ai_boilerplate_dao.Use(m.db).MembershipBenefit
-	_, err := dao.WithContext(ctx).Where(dao.MembershipType.Eq(membershipType), dao.BenefitKey.Eq(benefitKey)).Updates(data)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// UpdateBatchUnscopedByMembershipTypeBenefitKey 根据字段MembershipTypeBenefitKey批量更新,零值会被更新（包括软删除）
-func (m *MembershipBenefitRepo) UpdateBatchUnscopedByMembershipTypeBenefitKey(ctx context.Context, membershipType string, benefitKey string, data map[string]interface{}) error {
-	dao := ai_boilerplate_dao.Use(m.db).MembershipBenefit
-	_, err := dao.WithContext(ctx).Unscoped().Where(dao.MembershipType.Eq(membershipType), dao.BenefitKey.Eq(benefitKey)).Updates(data)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// UpdateBatchByMembershipTypeBenefitKeyTx 根据字段MembershipTypeBenefitKey批量更新(事务),零值会被更新
-func (m *MembershipBenefitRepo) UpdateBatchByMembershipTypeBenefitKeyTx(ctx context.Context, tx *ai_boilerplate_dao.Query, membershipType string, benefitKey string, data map[string]interface{}) error {
-	dao := tx.MembershipBenefit
-	_, err := dao.WithContext(ctx).Where(dao.MembershipType.Eq(membershipType), dao.BenefitKey.Eq(benefitKey)).Updates(data)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// UpdateBatchUnscopedByMembershipTypeBenefitKeyTx 根据字段MembershipTypeBenefitKey批量更新(事务),零值会被更新（包括软删除）
-func (m *MembershipBenefitRepo) UpdateBatchUnscopedByMembershipTypeBenefitKeyTx(ctx context.Context, tx *ai_boilerplate_dao.Query, membershipType string, benefitKey string, data map[string]interface{}) error {
-	dao := tx.MembershipBenefit
-	_, err := dao.WithContext(ctx).Unscoped().Where(dao.MembershipType.Eq(membershipType), dao.BenefitKey.Eq(benefitKey)).Updates(data)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
 // UpdateBatchByMembershipType 根据字段MembershipType批量更新,零值会被更新
 func (m *MembershipBenefitRepo) UpdateBatchByMembershipType(ctx context.Context, membershipType string, data map[string]interface{}) error {
 	dao := ai_boilerplate_dao.Use(m.db).MembershipBenefit
@@ -1343,82 +1269,6 @@ func (m *MembershipBenefitRepo) FindMultiUnscopedCacheByIDS(ctx context.Context,
 				return nil, err
 			}
 			resp = append(resp, tmp)
-		}
-	}
-	return resp, nil
-}
-
-// FindOneByMembershipTypeBenefitKey 根据MembershipTypeBenefitKey查询一条数据
-func (m *MembershipBenefitRepo) FindOneByMembershipTypeBenefitKey(ctx context.Context, membershipType string, benefitKey string) (*ai_boilerplate_model.MembershipBenefit, error) {
-	dao := ai_boilerplate_dao.Use(m.db).MembershipBenefit
-	result, err := dao.WithContext(ctx).Where(dao.MembershipType.Eq(membershipType), dao.BenefitKey.Eq(benefitKey)).First()
-	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, err
-	}
-	return result, nil
-}
-
-// FindOneUnscopedByMembershipTypeBenefitKey 根据MembershipTypeBenefitKey查询一条数据（包括软删除）
-func (m *MembershipBenefitRepo) FindOneUnscopedByMembershipTypeBenefitKey(ctx context.Context, membershipType string, benefitKey string) (*ai_boilerplate_model.MembershipBenefit, error) {
-	dao := ai_boilerplate_dao.Use(m.db).MembershipBenefit
-	result, err := dao.WithContext(ctx).Unscoped().Where(dao.MembershipType.Eq(membershipType), dao.BenefitKey.Eq(benefitKey)).First()
-	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, err
-	}
-	return result, nil
-}
-
-// FindOneCacheByMembershipTypeBenefitKey 根据MembershipTypeBenefitKey查询一条数据，并设置缓存
-func (m *MembershipBenefitRepo) FindOneCacheByMembershipTypeBenefitKey(ctx context.Context, membershipType string, benefitKey string) (*ai_boilerplate_model.MembershipBenefit, error) {
-	resp := new(ai_boilerplate_model.MembershipBenefit)
-	cacheKey := m.cache.Key(CacheMembershipBenefitByMembershipTypeBenefitKeyPrefix, membershipType, benefitKey)
-	cacheValue, err := m.cache.Fetch(ctx, cacheKey, func() (string, error) {
-		dao := ai_boilerplate_dao.Use(m.db).MembershipBenefit
-		result, err := dao.WithContext(ctx).Where(dao.MembershipType.Eq(membershipType), dao.BenefitKey.Eq(benefitKey)).First()
-		if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-			return "", err
-		}
-		marshal, err := m.encoding.Marshal(result)
-		if err != nil {
-			return "", err
-		}
-		return string(marshal), nil
-	}, m.cache.TTL())
-	if err != nil {
-		return nil, err
-	}
-	if cacheValue != "" {
-		err = m.encoding.Unmarshal([]byte(cacheValue), resp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	return resp, nil
-}
-
-// FindOneUnscopedCacheByMembershipTypeBenefitKey 根据MembershipTypeBenefitKey查询一条数据（包括软删除），并设置缓存
-func (m *MembershipBenefitRepo) FindOneUnscopedCacheByMembershipTypeBenefitKey(ctx context.Context, membershipType string, benefitKey string) (*ai_boilerplate_model.MembershipBenefit, error) {
-	resp := new(ai_boilerplate_model.MembershipBenefit)
-	cacheKey := m.cache.Key(CacheMembershipBenefitUnscopedByMembershipTypeBenefitKeyPrefix, membershipType, benefitKey)
-	cacheValue, err := m.cache.Fetch(ctx, cacheKey, func() (string, error) {
-		dao := ai_boilerplate_dao.Use(m.db).MembershipBenefit
-		result, err := dao.WithContext(ctx).Unscoped().Where(dao.MembershipType.Eq(membershipType), dao.BenefitKey.Eq(benefitKey)).First()
-		if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-			return "", err
-		}
-		marshal, err := m.encoding.Marshal(result)
-		if err != nil {
-			return "", err
-		}
-		return string(marshal), nil
-	}, m.cache.TTL())
-	if err != nil {
-		return nil, err
-	}
-	if cacheValue != "" {
-		err = m.encoding.Unmarshal([]byte(cacheValue), resp)
-		if err != nil {
-			return nil, err
 		}
 	}
 	return resp, nil
@@ -2250,130 +2100,6 @@ func (m *MembershipBenefitRepo) DeleteMultiUnscopedCacheByIDSTx(ctx context.Cont
 	return nil
 }
 
-// DeleteOneByMembershipTypeBenefitKey 根据membershipType删除一条数据
-func (m *MembershipBenefitRepo) DeleteOneByMembershipTypeBenefitKey(ctx context.Context, membershipType string, benefitKey string) error {
-	dao := ai_boilerplate_dao.Use(m.db).MembershipBenefit
-	_, err := dao.WithContext(ctx).Where(dao.MembershipType.Eq(membershipType), dao.BenefitKey.Eq(benefitKey)).Delete()
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// DeleteOneUnscopedByMembershipTypeBenefitKey 根据membershipType删除一条数据
-func (m *MembershipBenefitRepo) DeleteOneUnscopedByMembershipTypeBenefitKey(ctx context.Context, membershipType string, benefitKey string) error {
-	dao := ai_boilerplate_dao.Use(m.db).MembershipBenefit
-	_, err := dao.WithContext(ctx).Unscoped().Where(dao.MembershipType.Eq(membershipType), dao.BenefitKey.Eq(benefitKey)).Delete()
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// DeleteOneCacheByMembershipTypeBenefitKey 根据membershipType删除一条数据，并删除缓存
-func (m *MembershipBenefitRepo) DeleteOneCacheByMembershipTypeBenefitKey(ctx context.Context, membershipType string, benefitKey string) error {
-	dao := ai_boilerplate_dao.Use(m.db).MembershipBenefit
-	result, err := dao.WithContext(ctx).Where(dao.MembershipType.Eq(membershipType), dao.BenefitKey.Eq(benefitKey)).First()
-	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-		return err
-	}
-	if result == nil {
-		return nil
-	}
-	_, err = dao.WithContext(ctx).Where(dao.MembershipType.Eq(membershipType), dao.BenefitKey.Eq(benefitKey)).Delete()
-	if err != nil {
-		return err
-	}
-	err = m.DeleteIndexCache(ctx, result)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// DeleteOneUnscopedCacheByMembershipTypeBenefitKey 根据membershipType删除一条数据，并删除缓存
-func (m *MembershipBenefitRepo) DeleteOneUnscopedCacheByMembershipTypeBenefitKey(ctx context.Context, membershipType string, benefitKey string) error {
-	dao := ai_boilerplate_dao.Use(m.db).MembershipBenefit
-	result, err := dao.WithContext(ctx).Unscoped().Where(dao.MembershipType.Eq(membershipType), dao.BenefitKey.Eq(benefitKey)).First()
-	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-		return err
-	}
-	if result == nil {
-		return nil
-	}
-	_, err = dao.WithContext(ctx).Unscoped().Where(dao.MembershipType.Eq(membershipType), dao.BenefitKey.Eq(benefitKey)).Delete()
-	if err != nil {
-		return err
-	}
-	err = m.DeleteIndexCache(ctx, result)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// DeleteOneByMembershipTypeBenefitKeyTx 根据membershipType删除一条数据
-func (m *MembershipBenefitRepo) DeleteOneByMembershipTypeBenefitKeyTx(ctx context.Context, tx *ai_boilerplate_dao.Query, membershipType string, benefitKey string) error {
-	dao := tx.MembershipBenefit
-	_, err := dao.WithContext(ctx).Where(dao.MembershipType.Eq(membershipType), dao.BenefitKey.Eq(benefitKey)).Delete()
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// DeleteOneUnscopedByMembershipTypeBenefitKeyTx 根据membershipType删除一条数据
-func (m *MembershipBenefitRepo) DeleteOneUnscopedByMembershipTypeBenefitKeyTx(ctx context.Context, tx *ai_boilerplate_dao.Query, membershipType string, benefitKey string) error {
-	dao := tx.MembershipBenefit
-	_, err := dao.WithContext(ctx).Unscoped().Where(dao.MembershipType.Eq(membershipType), dao.BenefitKey.Eq(benefitKey)).Delete()
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// DeleteOneCacheByMembershipTypeBenefitKeyTx 根据membershipType删除一条数据，并删除缓存
-func (m *MembershipBenefitRepo) DeleteOneCacheByMembershipTypeBenefitKeyTx(ctx context.Context, tx *ai_boilerplate_dao.Query, membershipType string, benefitKey string) error {
-	dao := tx.MembershipBenefit
-	result, err := dao.WithContext(ctx).Where(dao.MembershipType.Eq(membershipType), dao.BenefitKey.Eq(benefitKey)).First()
-	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-		return err
-	}
-	if result == nil {
-		return nil
-	}
-	_, err = dao.WithContext(ctx).Where(dao.MembershipType.Eq(membershipType), dao.BenefitKey.Eq(benefitKey)).Delete()
-	if err != nil {
-		return err
-	}
-	err = m.DeleteIndexCache(ctx, result)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// DeleteOneUnscopedCacheByMembershipTypeBenefitKeyTx 根据membershipType删除一条数据，并删除缓存
-func (m *MembershipBenefitRepo) DeleteOneUnscopedCacheByMembershipTypeBenefitKeyTx(ctx context.Context, tx *ai_boilerplate_dao.Query, membershipType string, benefitKey string) error {
-	dao := tx.MembershipBenefit
-	result, err := dao.WithContext(ctx).Unscoped().Where(dao.MembershipType.Eq(membershipType), dao.BenefitKey.Eq(benefitKey)).First()
-	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-		return err
-	}
-	if result == nil {
-		return nil
-	}
-	_, err = dao.WithContext(ctx).Unscoped().Where(dao.MembershipType.Eq(membershipType), dao.BenefitKey.Eq(benefitKey)).Delete()
-	if err != nil {
-		return err
-	}
-	err = m.DeleteIndexCache(ctx, result)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
 // DeleteMultiByMembershipType 根据MembershipType删除多条数据
 func (m *MembershipBenefitRepo) DeleteMultiByMembershipType(ctx context.Context, membershipType string) error {
 	dao := ai_boilerplate_dao.Use(m.db).MembershipBenefit
@@ -2880,8 +2606,6 @@ func (m *MembershipBenefitRepo) DeleteIndexCache(ctx context.Context, data ...*a
 		if item != nil {
 			KeyMap[m.cache.Key(CacheMembershipBenefitByIDPrefix, item.ID)] = struct{}{}
 			KeyMap[m.cache.Key(CacheMembershipBenefitUnscopedByIDPrefix, item.ID)] = struct{}{}
-			KeyMap[m.cache.Key(CacheMembershipBenefitByMembershipTypeBenefitKeyPrefix, item.MembershipType, item.BenefitKey)] = struct{}{}
-			KeyMap[m.cache.Key(CacheMembershipBenefitUnscopedByMembershipTypeBenefitKeyPrefix, item.MembershipType, item.BenefitKey)] = struct{}{}
 			KeyMap[m.cache.Key(CacheMembershipBenefitByMembershipTypePrefix, item.MembershipType)] = struct{}{}
 			KeyMap[m.cache.Key(CacheMembershipBenefitUnscopedByMembershipTypePrefix, item.MembershipType)] = struct{}{}
 			KeyMap[m.cache.Key(CacheMembershipBenefitBySortPrefix, item.Sort)] = struct{}{}

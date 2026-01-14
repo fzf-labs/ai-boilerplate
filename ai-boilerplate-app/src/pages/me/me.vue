@@ -22,6 +22,70 @@ const userProfile = ref<UserInfo | null>(null)
 // 会员信息
 const membershipInfo = ref<GetUserMembershipInfoReply | null>(null)
 
+// 会员类型主题配置 - 以绿色为主色调
+const membershipTheme = computed(() => {
+  const type = membershipInfo.value?.membershipType || 'normal'
+  switch (type) {
+    case 'svip':
+      // 深翠绿 + 金色点缀 - 尊贵感
+      return {
+        icon: '👑',
+        gradient: 'linear-gradient(135deg, #065f46 0%, #047857 50%, #059669 100%)',
+        shadow: 'rgba(6, 95, 70, 0.35)',
+        shadowAlt: 'rgba(4, 120, 87, 0.25)',
+      }
+    case 'vip':
+      // 翠绿色 - 经典VIP
+      return {
+        icon: '💎',
+        gradient: 'linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%)',
+        shadow: 'rgba(16, 185, 129, 0.3)',
+        shadowAlt: 'rgba(5, 150, 105, 0.2)',
+      }
+    default:
+      // 浅绿灰色 - 普通会员
+      return {
+        icon: '⭐',
+        gradient: 'linear-gradient(135deg, #6ee7b7 0%, #34d399 50%, #10b981 100%)',
+        shadow: 'rgba(110, 231, 183, 0.3)',
+        shadowAlt: 'rgba(52, 211, 153, 0.2)',
+      }
+  }
+})
+
+// 会员按钮文案
+const membershipActionText = computed(() => {
+  const type = membershipInfo.value?.membershipType || 'normal'
+  if (type === 'normal') {
+    return '开通VIP'
+  }
+  if (type === 'svip') {
+    return '续费'
+  }
+  return '续费/升级'
+})
+
+// 会员描述文案
+const membershipDescText = computed(() => {
+  const info = membershipInfo.value
+  if (!info)
+    return '升级VIP解锁更多权益'
+
+  const type = info.membershipType || 'normal'
+
+  if (type === 'normal') {
+    return info.membershipDescription || '升级VIP解锁更多权益'
+  }
+
+  // VIP/SVIP 会员显示到期时间
+  if (info.expiredAt) {
+    const expireDate = info.expiredAt.split('T')[0]
+    return `有效期至 ${expireDate}`
+  }
+
+  return info.membershipDescription || '尊享专属会员权益'
+})
+
 const displayName = computed(() => userProfile.value?.nickname || userProfile.value?.phone || '用户')
 const displayAvatar = computed(() => userProfile.value?.avatar || '/static/images/default-avatar.png')
 const displayPhone = computed(() => userProfile.value?.phone || '')
@@ -32,14 +96,14 @@ const menuList = [
     title: '个人信息',
     icon: 'edit',
     label: '完善头像昵称',
-    path: '/pages-fg/profile/edit',
+    path: '/pages/profile/edit',
     needLogin: true,
   },
   {
     title: '账号管理',
     icon: 'user',
     label: '密码/手机号/退出登录',
-    path: '/pages-fg/security/index',
+    path: '/pages/security/index',
     needLogin: true,
   },
   {
@@ -53,7 +117,7 @@ const menuList = [
     title: '通用设置',
     icon: 'setting',
     label: '语言/缓存/关于',
-    path: '/pages-fg/settings/index',
+    path: '/pages/settings/index',
     needLogin: false,
   },
 ]
@@ -122,11 +186,20 @@ function handleMenuClick(item: typeof menuList[0]) {
 }
 
 /**
+ * 进入VIP中心
+ */
+function handleGoVipCenter() {
+  uni.navigateTo({
+    url: '/pages/vip/index',
+  })
+}
+
+/**
  * 查看会员详情
  */
 function handleViewMembershipDetail() {
   uni.navigateTo({
-    url: '/pages-fg/membership/detail',
+    url: '/pages/membership/detail',
   })
 }
 
@@ -169,7 +242,15 @@ onShow(() => {
 
     <view class="panel">
       <!-- 会员信息卡片 - Liquid Glass 风格 -->
-      <wd-card v-if="tokenStore.hasLogin && membershipInfo" type="rectangle" custom-class="membership-card" @click="handleViewMembershipDetail">
+      <view
+        v-if="tokenStore.hasLogin"
+        class="membership-card"
+        :style="{
+          background: membershipTheme.gradient,
+          boxShadow: `0 20rpx 60rpx ${membershipTheme.shadow}, 0 8rpx 16rpx ${membershipTheme.shadowAlt}`,
+        }"
+        @click="handleGoVipCenter"
+      >
         <!-- 背景装饰层 -->
         <view class="membership-bg-decoration">
           <view class="decoration-circle circle-1" />
@@ -183,25 +264,28 @@ onShow(() => {
             <view class="membership-title-row">
               <view class="membership-icon-wrapper">
                 <view class="membership-icon">
-                  <text class="icon-text">{{ membershipInfo.membershipType === 'svip' ? '👑' : membershipInfo.membershipType === 'vip' ? '💎' : '⭐' }}</text>
+                  <text class="icon-text">{{ membershipTheme.icon }}</text>
                 </view>
               </view>
               <view class="membership-title-content">
                 <view class="title-main">
-                  <text class="membership-name">{{ membershipInfo.membershipName || '普通会员' }}</text>
+                  <text class="membership-name">{{ membershipInfo?.membershipName || '普通会员' }}</text>
                 </view>
                 <view class="title-sub">
-                  <text class="membership-type-code">{{ membershipInfo.membershipType?.toUpperCase() || 'NORMAL' }}</text>
+                  <text class="membership-type-code">{{ (membershipInfo?.membershipType || 'normal').toUpperCase() }}</text>
                 </view>
               </view>
-              <view class="membership-arrow">
-                <wd-icon name="arrow-right" size="40rpx" color="rgba(255, 255, 255, 0.6)" />
+              <!-- VIP 操作按钮 -->
+              <view class="membership-action">
+                <view class="action-btn" @click.stop="handleGoVipCenter">
+                  <text class="action-text">{{ membershipActionText }}</text>
+                </view>
               </view>
             </view>
-            <text class="membership-desc">{{ membershipInfo.membershipDescription || '享受基础服务' }}</text>
+            <text class="membership-desc">{{ membershipDescText }}</text>
           </view>
         </view>
-      </wd-card>
+      </view>
 
       <wd-card type="rectangle" custom-class="menu-card">
         <wd-cell-group>
@@ -296,28 +380,23 @@ onShow(() => {
 }
 
 /* 会员信息卡片样式 - Liquid Glass 风格 */
-.wd-card.membership-card.is-rectangle {
+.membership-card {
   position: relative;
   border-radius: 32rpx;
   overflow: hidden;
-  background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
   border: none;
-  box-shadow:
-    0 20rpx 60rpx rgba(16, 185, 129, 0.3),
-    0 8rpx 16rpx rgba(5, 150, 105, 0.2);
   margin-bottom: 18rpx;
+  padding: 40rpx 32rpx;
   transition: all 0.3s ease-out;
   cursor: pointer;
 }
 
-.wd-card.membership-card.is-rectangle:active {
+.membership-card:active {
   transform: scale(0.98);
-  box-shadow:
-    0 12rpx 40rpx rgba(16, 185, 129, 0.25),
-    0 4rpx 12rpx rgba(5, 150, 105, 0.15);
+  opacity: 0.95;
 }
 
-.wd-card.membership-card.is-rectangle::before {
+.membership-card::before {
   content: '';
   position: absolute;
   top: 0;
@@ -326,12 +405,6 @@ onShow(() => {
   bottom: 0;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
   pointer-events: none;
-}
-
-:deep(.membership-card .wd-card__content) {
-  position: relative;
-  padding: 40rpx 32rpx;
-  z-index: 1;
 }
 
 .membership-content {
@@ -396,15 +469,30 @@ onShow(() => {
   gap: 20rpx;
 }
 
-/* 箭头图标 */
-.membership-arrow {
+/* VIP 操作按钮 */
+.membership-action {
   flex-shrink: 0;
-  margin-top: 8rpx;
-  transition: transform 0.3s ease;
 }
 
-.wd-card.membership-card.is-rectangle:active .membership-arrow {
-  transform: translateX(8rpx);
+.action-btn {
+  padding: 12rpx 24rpx;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 32rpx;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10rpx);
+  transition: all 0.2s ease;
+}
+
+.action-btn:active {
+  background: rgba(255, 255, 255, 0.35);
+  transform: scale(0.95);
+}
+
+.action-text {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
 }
 
 /* 会员图标 */

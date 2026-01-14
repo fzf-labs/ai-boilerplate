@@ -9,16 +9,19 @@ import (
 func NewAdminV1MembershipBenefitService(
 	logger log.Logger,
 	membershipBenefitRepo *data.MembershipBenefitRepo,
+	membershipBenefitTypeRepo *data.MembershipBenefitTypeRepo,
 ) *AdminV1MembershipBenefitService {
 	l := log.NewHelper(log.With(logger, "module", "service/membershipBenefit"))
 	return &AdminV1MembershipBenefitService{
-		log:                   l,
-		membershipBenefitRepo: membershipBenefitRepo,
+		log:                       l,
+		membershipBenefitRepo:     membershipBenefitRepo,
+		membershipBenefitTypeRepo: membershipBenefitTypeRepo,
 	}
 }
 
 type AdminV1MembershipBenefitService struct {
 	pb.UnimplementedMembershipBenefitServer
-	log                   *log.Helper
-	membershipBenefitRepo *data.MembershipBenefitRepo
+	log                       *log.Helper
+	membershipBenefitRepo     *data.MembershipBenefitRepo
+	membershipBenefitTypeRepo *data.MembershipBenefitTypeRepo
 }

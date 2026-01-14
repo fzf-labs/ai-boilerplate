@@ -20,28 +20,40 @@ func (s *AppV1MembershipService) GetUserMembershipInfo(ctx context.Context, req 
 		return nil, pb.ErrorReasonDataSQLError(pb.WithError(err))
 	}
 
-	// 查询会员类型信息
-	membership, err := s.membershipRepo.FindOneCacheByType(ctx, userMembership.MembershipType)
+	// 判断当前实际的会员类型（过期后降为普通会员）
+	currentMembershipType := userMembership.MembershipType
+	isExpired := false
+
+	// 如果不是普通会员，检查是否已过期
+	if userMembership.MembershipType != constant.MembershipTypeNormal.String() {
+		if userMembership.ExpiredAt.Valid && userMembership.ExpiredAt.Time.Before(time.Now()) {
+			// 会员已过期，降级为普通会员
+			currentMembershipType = constant.MembershipTypeNormal.String()
+			isExpired = true
+		}
+	}
+
+	// 查询当前实际会员类型信息
+	membership, err := s.membershipRepo.FindOneCacheByType(ctx, currentMembershipType)
 	if err != nil {
 		return nil, pb.ErrorReasonDataSQLError(pb.WithError(err))
 	}
 
 	// 构建响应
 	reply := &pb.GetUserMembershipInfoReply{
-		MembershipType:        userMembership.MembershipType,
+		MembershipType:        currentMembershipType,
 		MembershipName:        membership.Name,
 		MembershipDescription: membership.Description,
 		Status:                userMembership.Status,
 		AutoRenew:             userMembership.AutoRenew,
 		AutoRenewDays:         userMembership.AutoRenewDays,
 		CreatedAt:             userMembership.CreatedAt.Format(time.RFC3339),
+		IsExpired:             isExpired,
 	}
 
-	// 处理到期时间
+	// 处理到期时间（仅在非普通会员时显示原到期时间）
 	if userMembership.ExpiredAt.Valid {
 		reply.ExpiredAt = userMembership.ExpiredAt.Time.Format(time.RFC3339)
-		// 判断是否已过期
-		reply.IsExpired = userMembership.ExpiredAt.Time.Before(time.Now())
 	}
 
 	return reply, nil

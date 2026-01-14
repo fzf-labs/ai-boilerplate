@@ -19,8 +19,6 @@ func (a *AdminV1MembershipBenefitService) UpdateMembershipBenefit(ctx context.Co
 	oldData := a.membershipBenefitRepo.DeepCopy(data)
 	data.MembershipType = req.GetMembershipType()
 	data.BenefitKey = req.GetBenefitKey()
-	data.BenefitName = req.GetBenefitName()
-	data.BenefitDesc = req.GetBenefitDesc()
 	data.BenefitValue = req.GetBenefitValue()
 	data.BenefitNum = req.GetBenefitNum()
 	data.Sort = req.GetSort()
