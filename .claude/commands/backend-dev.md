@@ -6,7 +6,6 @@ description: 后端开发完整流程编排技能。自动编排执行 Step 0-7 
 flowchart TD
     start_node_default([开始])
     end_node_default([结束])
-    skill_1768063691168[[Skill: interview]]
     skill_1768063700993[[Skill: backend-audit]]
     skill_1768063714742[[Skill: backend-database]]
     skill_1768063741057[[Skill: backend-gorm]]
@@ -16,8 +15,7 @@ flowchart TD
     skill_1768064050985[[Skill: backend-codeing]]
     skill_1768064214932[[Skill: backend-quality]]
 
-    start_node_default --> skill_1768063691168
-    skill_1768063691168 --> skill_1768063700993
+    start_node_default  --> skill_1768063700993
     skill_1768063700993 --> skill_1768063714742
     skill_1768063714742 --> skill_1768063741057
     skill_1768063741057 --> skill_1768063756758
@@ -40,18 +38,6 @@ flowchart TD
 - **矩形节点（Prompt节点）**：执行下面详细信息部分中描述的提示
 
 ## Skill Nodes
-
-#### skill_1768063691168(interview)
-
-**Description**: This skill conducts discovery conversations to understand user intent and agree on approach before taking action. It should be used when the user explicitly calls /interview, asks for recommendations, needs exploration, wants to clarify, or when the request could be misunderstood. Prevents building the wrong thing by uncovering WHY behind WHAT.
-
-**Scope**: project
-
-**Validation Status**: valid
-
-**Skill Path**: `.claude/skills/interview/SKILL.md`
-
-This node executes a Claude Code Skill. The Skill definition is stored in the SKILL.md file at the path shown above.
 
 #### skill_1768063700993(backend-audit)
 

@@ -1,0 +1,354 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "app/v1/mall_product.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "MallProduct"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/app/v1/mall_product/info": {
+      "get": {
+        "summary": "获取商品详情",
+        "operationId": "MallProduct_GetMallProductInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.GetMallProductInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "id",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MallProduct"
+        ]
+      }
+    },
+    "/app/v1/mall_product/list": {
+      "get": {
+        "summary": "获取商品列表",
+        "operationId": "MallProduct_GetMallProductList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.GetMallProductListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "productType",
+            "description": "商品类型(membership:会员,service:增值服务,goods:商品)",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "description": "状态(-1下架,0待上架,1在售,2售罄)",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MallProduct"
+        ]
+      }
+    },
+    "/app/v1/mall_product/purchase": {
+      "post": {
+        "summary": "购买商品",
+        "operationId": "MallProduct_PurchaseProduct",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.PurchaseProductReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/app.v1.PurchaseProductReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MallProduct"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "app.v1.GetMallProductInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/app.v1.MallProductInfo"
+        }
+      },
+      "title": "响应-获取商品详情"
+    },
+    "app.v1.GetMallProductListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/app.v1.MallProductInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-获取商品列表"
+    },
+    "app.v1.MallProductInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "productType": {
+          "type": "string",
+          "title": "商品类型(membership:会员,service:增值服务,goods:商品)"
+        },
+        "productName": {
+          "type": "string",
+          "title": "商品名称"
+        },
+        "productDesc": {
+          "type": "string",
+          "title": "商品描述"
+        },
+        "productImages": {
+          "type": "string",
+          "title": "商品图片(多个用逗号分隔)"
+        },
+        "productDetail": {
+          "type": "string",
+          "title": "商品详情(JSON格式,包含特色功能等)"
+        },
+        "productConfig": {
+          "type": "string",
+          "title": "商品配置(JSON格式)"
+        },
+        "originalPrice": {
+          "type": "number",
+          "format": "double",
+          "title": "原价"
+        },
+        "currentPrice": {
+          "type": "number",
+          "format": "double",
+          "title": "现价"
+        },
+        "stockQuantity": {
+          "type": "integer",
+          "format": "int32",
+          "title": "库存数量(-1表示无限库存)"
+        },
+        "soldQuantity": {
+          "type": "integer",
+          "format": "int32",
+          "title": "已售数量"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "排序"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1下架,0待上架,1在售,2售罄)"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "商品信息"
+    },
+    "app.v1.PurchaseProductReply": {
+      "type": "object",
+      "properties": {
+        "orderId": {
+          "type": "string",
+          "title": "订单ID"
+        },
+        "transactionId": {
+          "type": "string",
+          "title": "交易流水号"
+        },
+        "amount": {
+          "type": "number",
+          "format": "double",
+          "title": "实付金额"
+        },
+        "paymentData": {
+          "type": "string",
+          "title": "支付数据(JSON格式,包含调起支付所需的参数)"
+        },
+        "status": {
+          "type": "string",
+          "title": "订单状态"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        }
+      },
+      "title": "响应-购买商品"
+    },
+    "app.v1.PurchaseProductReq": {
+      "type": "object",
+      "properties": {
+        "productId": {
+          "type": "string",
+          "title": "商品ID"
+        },
+        "paymentChannel": {
+          "type": "string",
+          "title": "支付渠道(wechat:微信,alipay:支付宝)"
+        },
+        "paymentMethod": {
+          "type": "string",
+          "title": "支付方式(mini_program:小程序,h5:H5,native:扫码,jsapi:公众号)"
+        },
+        "discountCode": {
+          "type": "string",
+          "title": "优惠码(可选)"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注(可选)"
+        }
+      },
+      "title": "请求-购买商品",
+      "required": [
+        "productId",
+        "paymentChannel",
+        "paymentMethod"
+      ]
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

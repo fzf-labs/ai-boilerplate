@@ -1,0 +1,105 @@
+syntax = "proto3";
+
+package app.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/app/v1;v1";
+
+//商品服务
+service MallProduct {
+  //获取商品详情
+  rpc GetMallProductInfo(GetMallProductInfoReq) returns (GetMallProductInfoReply) {
+    option (google.api.http) = {get: "/app/v1/mall_product/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //获取商品列表
+  rpc GetMallProductList(GetMallProductListReq) returns (GetMallProductListReply) {
+    option (google.api.http) = {get: "/app/v1/mall_product/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+//商品信息
+message MallProductInfo {
+  string id = 1; // id
+  string productType = 2; // 商品类型(membership:会员,service:增值服务,goods:商品)
+  string productName = 3; // 商品名称
+  string productDesc = 4; // 商品描述
+  string productImages = 5; // 商品图片(多个用逗号分隔)
+  string productDetail = 6; // 商品详情(JSON格式,包含特色功能等)
+  string productConfig = 7; // 商品配置(JSON格式)
+  double originalPrice = 8; // 原价
+  double currentPrice = 9; // 现价
+  int32 stockQuantity = 10; // 库存数量(-1表示无限库存)
+  int32 soldQuantity = 11; // 已售数量
+  int32 sort = 12; // 排序
+  int32 status = 13; // 状态(-1下架,0待上架,1在售,2售罄)
+  string createdAt = 14; // 创建时间
+  string updatedAt = 15; // 更新时间
+}
+
+//请求-获取商品详情
+message GetMallProductInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // id
+}
+
+//响应-获取商品详情
+message GetMallProductInfoReply {
+  MallProductInfo info = 1;
+}
+
+//请求-获取商品列表
+message GetMallProductListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1 [(buf.validate.field).int32 = {gte: 1}]; //页码
+  int32 pageSize = 2 [(buf.validate.field).int32 = {
+    gte: 1
+    lte: 1000
+  }]; //页数
+  string productType = 3; // 商品类型(membership:会员,service:增值服务,goods:商品)
+  int32 status = 4; // 状态(-1下架,0待上架,1在售,2售罄)
+}
+
+//响应-获取商品列表
+message GetMallProductListReply {
+  int32 total = 1; //总数
+  repeated MallProductInfo list = 2; // 列表数据
+}
