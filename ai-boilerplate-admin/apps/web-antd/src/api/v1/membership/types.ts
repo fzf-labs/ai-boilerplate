@@ -17,8 +17,8 @@ export type CreateMembershipReq = {
   type: string;
   /** 会员类型描述 */
   description?: string;
-  /** 排序 */
-  sort?: number;
+  /** 等级 */
+  level?: number;
   /** 状态(-1禁用,1启用) */
   status: number;
 };
@@ -114,8 +114,8 @@ export type MembershipInfo = {
   type?: string;
   /** 会员类型描述 */
   description?: string;
-  /** 排序 */
-  sort?: number;
+  /** 等级 */
+  level?: number;
   /** 状态(-1禁用,1启用) */
   status?: number;
   /** 创建时间 */
@@ -141,8 +141,8 @@ export type UpdateMembershipReq = {
   type: string;
   /** 会员类型描述 */
   description?: string;
-  /** 排序 */
-  sort?: number;
+  /** 等级 */
+  level?: number;
   /** 状态(-1禁用,1启用) */
   status: number;
 };

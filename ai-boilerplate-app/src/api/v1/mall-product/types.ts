@@ -25,29 +25,16 @@ export type GetMallProductInfoResponses = {
   default: Status;
 };
 
-export type GetMallProductListParams = {
-  /** 页码 */
-  page: number;
-  /** 页数 */
-  pageSize: number;
-  /** 商品类型(membership:会员,service:增值服务,goods:商品) */
-  productType?: string;
-  /** 状态(-1下架,0待上架,1在售,2售罄) */
-  status?: number;
-};
-
-export type GetMallProductListReply = {
-  /** 总数 */
-  total?: number;
+export type GetMembershipProductListReply = {
   /** 列表数据 */
   list?: MallProductInfo[];
 };
 
-export type GetMallProductListResponses = {
+export type GetMembershipProductListResponses = {
   /**
    * A successful response.
    */
-  200: GetMallProductListReply;
+  200: GetMembershipProductListReply;
   /**
    * An unexpected error response.
    */
@@ -64,11 +51,10 @@ export type MallProductInfo = {
   /** 商品描述 */
   productDesc?: string;
   /** 商品图片(多个用逗号分隔) */
-  productImages?: string;
+  productImages?: string[];
   /** 商品详情(JSON格式,包含特色功能等) */
-  productDetail?: string;
-  /** 商品配置(JSON格式) */
-  productConfig?: string;
+  productDetail?: string[];
+  productConfig?: ProductConfig;
   /** 原价 */
   originalPrice?: number;
   /** 现价 */
@@ -85,6 +71,17 @@ export type MallProductInfo = {
   createdAt?: string;
   /** 更新时间 */
   updatedAt?: string;
+};
+
+export type MembershipConfig = {
+  /** 会员类型编码(normal,vip,svip) */
+  membershipType?: string;
+  /** 时长天数 */
+  durationDays?: number;
+};
+
+export type ProductConfig = {
+  membership?: MembershipConfig;
 };
 
 export type Status = {

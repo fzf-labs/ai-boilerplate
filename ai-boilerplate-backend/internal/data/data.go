@@ -75,6 +75,7 @@ var ProviderSet = wire.NewSet(
 	NewSysRoleRepo,
 	NewSysTenantRepo,
 	NewUserBindDeviceRepo,
+	NewUserMembershipChangeRepo,
 	NewUserMembershipRepo,
 	NewUserNotificationSettingRepo,
 	NewUserRepo,
@@ -132,6 +133,7 @@ var ProviderSet = wire.NewSet(
 	ai_boilerplate_repo.NewSysRoleRepo,
 	ai_boilerplate_repo.NewSysTenantRepo,
 	ai_boilerplate_repo.NewUserBindDeviceRepo,
+	ai_boilerplate_repo.NewUserMembershipChangeRepo,
 	ai_boilerplate_repo.NewUserMembershipRepo,
 	ai_boilerplate_repo.NewUserNotificationSettingRepo,
 	ai_boilerplate_repo.NewUserRepo,
@@ -143,8 +145,6 @@ var ProviderSet = wire.NewSet(
 	ai_boilerplate_repo.NewWxGzhTagRepo,
 	ai_boilerplate_repo.NewWxGzhUserRepo,
 	ai_boilerplate_repo.NewWxXcxUserRepo,
-	NewUserMembershipChangeRepo,
-	ai_boilerplate_repo.NewUserMembershipChangeRepo,
 )
 
 // Data .

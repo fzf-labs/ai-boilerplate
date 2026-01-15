@@ -44,7 +44,7 @@ func RegisterMallProductHTTPServer(s *http.Server, srv MallProductHTTPServer) {
 	r.POST("/admin/v1/mall_product/update/status", _MallProduct_UpdateMallProductStatus0_HTTP_Handler(srv))
 	r.POST("/admin/v1/mall_product/delete", _MallProduct_DeleteMallProduct0_HTTP_Handler(srv))
 	r.GET("/admin/v1/mall_product/info", _MallProduct_GetMallProductInfo1_HTTP_Handler(srv))
-	r.GET("/admin/v1/mall_product/list", _MallProduct_GetMallProductList1_HTTP_Handler(srv))
+	r.GET("/admin/v1/mall_product/list", _MallProduct_GetMallProductList0_HTTP_Handler(srv))
 	r.GET("/admin/v1/mall_product/selector", _MallProduct_GetMallProductSelector0_HTTP_Handler(srv))
 }
 
@@ -143,7 +143,7 @@ func _MallProduct_GetMallProductInfo1_HTTP_Handler(srv MallProductHTTPServer) fu
 	}
 }
 
-func _MallProduct_GetMallProductList1_HTTP_Handler(srv MallProductHTTPServer) func(ctx http.Context) error {
+func _MallProduct_GetMallProductList0_HTTP_Handler(srv MallProductHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in GetMallProductListReq
 		if err := ctx.BindQuery(&in); err != nil {

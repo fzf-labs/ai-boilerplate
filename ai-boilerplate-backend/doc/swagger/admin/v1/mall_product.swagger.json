@@ -559,7 +559,7 @@
           "type": "string",
           "title": "会员类型编码(normal,vip,svip)"
         },
-        "duration_days": {
+        "durationDays": {
           "type": "integer",
           "format": "int32",
           "title": "时长天数"

@@ -57,7 +57,7 @@ function formatPrice(p?: number) {
  */
 function handleViewMembership() {
   uni.redirectTo({
-    url: '/pages-fg/membership/detail',
+    url: '/pages/membership/detail',
   })
 }
 

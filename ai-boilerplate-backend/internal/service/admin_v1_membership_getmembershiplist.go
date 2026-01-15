@@ -77,7 +77,7 @@ func (a *AdminV1MembershipService) GetMembershipList(ctx context.Context, req *p
 				Name:        v.Name,
 				Type:        v.Type,
 				Description: v.Description,
-				Sort:        v.Sort,
+				Level:       v.Level,
 				Status:      v.Status,
 				CreatedAt:   v.CreatedAt.Format(time.RFC3339),
 				UpdatedAt:   v.UpdatedAt.Format(time.RFC3339),

@@ -9,16 +9,22 @@ import (
 func NewAppV1MallProductService(
 	logger log.Logger,
 	mallProductRepo *data.MallProductRepo,
+	userMembershipRepo *data.UserMembershipRepo,
+	membershipRepo *data.MembershipRepo,
 ) *AppV1MallProductService {
 	l := log.NewHelper(log.With(logger, "module", "service/mallProduct"))
 	return &AppV1MallProductService{
-		log:             l,
-		mallProductRepo: mallProductRepo,
+		log:                l,
+		mallProductRepo:    mallProductRepo,
+		userMembershipRepo: userMembershipRepo,
+		membershipRepo:     membershipRepo,
 	}
 }
 
 type AppV1MallProductService struct {
 	pb.UnimplementedMallProductServer
-	log             *log.Helper
-	mallProductRepo *data.MallProductRepo
+	log                *log.Helper
+	mallProductRepo    *data.MallProductRepo
+	userMembershipRepo *data.UserMembershipRepo
+	membershipRepo     *data.MembershipRepo
 }

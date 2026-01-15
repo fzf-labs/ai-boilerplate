@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"encoding/json"
 	"time"
 
 	pb "github.com/fzf-labs/ai-boilerplate-backend/api/app/v1"
@@ -14,14 +15,35 @@ func (a *AppV1MallProductService) GetMallProductInfo(ctx context.Context, req *p
 	if err != nil {
 		return nil, pb.ErrorReasonDataSQLError(pb.WithError(err))
 	}
+	productImages := make([]string, 0)
+	if data.ProductImages.String() != "" {
+		err = json.Unmarshal(data.ProductImages, &productImages)
+		if err != nil {
+			return nil, pb.ErrorReasonDataSQLError(pb.WithError(err))
+		}
+	}
+	productDetail := make([]string, 0)
+	if data.ProductDetail.String() != "" {
+		err = json.Unmarshal(data.ProductDetail, &productDetail)
+		if err != nil {
+			return nil, pb.ErrorReasonDataSQLError(pb.WithError(err))
+		}
+	}
+	productConfig := &pb.ProductConfig{}
+	if data.ProductConfig.String() != "" {
+		err = json.Unmarshal(data.ProductConfig, productConfig)
+		if err != nil {
+			return nil, pb.ErrorReasonDataSQLError(pb.WithError(err))
+		}
+	}
 	resp.Info = &pb.MallProductInfo{
 		Id:            data.ID,
 		ProductType:   data.ProductType,
 		ProductName:   data.ProductName,
 		ProductDesc:   data.ProductDesc,
-		ProductImages: string(data.ProductImages),
-		ProductDetail: string(data.ProductDetail),
-		ProductConfig: string(data.ProductConfig),
+		ProductImages: productImages,
+		ProductDetail: productDetail,
+		ProductConfig: productConfig,
 		OriginalPrice: data.OriginalPrice,
 		CurrentPrice:  data.CurrentPrice,
 		StockQuantity: data.StockQuantity,

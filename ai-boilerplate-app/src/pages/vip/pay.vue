@@ -145,7 +145,7 @@ async function handlePay() {
 
       // 支付成功
       uni.redirectTo({
-        url: `/pages-fg/vip/result?status=success&orderId=${orderInfo.value.orderId}`,
+        url: `/pages/vip/result?status=success&orderId=${orderInfo.value.orderId}`,
       })
     }
     // #endif
@@ -164,7 +164,7 @@ async function handlePay() {
       setTimeout(() => {
         toast.close()
         uni.redirectTo({
-          url: `/pages-fg/vip/result?status=success&orderId=${orderInfo.value?.orderId}`,
+          url: `/pages/vip/result?status=success&orderId=${orderInfo.value?.orderId}`,
         })
       }, 1500)
     }
@@ -177,7 +177,7 @@ async function handlePay() {
     else {
       console.error('支付失败:', error)
       uni.redirectTo({
-        url: `/pages-fg/vip/result?status=fail&orderId=${orderInfo.value?.orderId}`,
+        url: `/pages/vip/result?status=fail&orderId=${orderInfo.value?.orderId}`,
       })
     }
   }

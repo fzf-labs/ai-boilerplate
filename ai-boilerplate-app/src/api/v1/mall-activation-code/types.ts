@@ -29,12 +29,6 @@ export type ActivationCodeRedemptionInfo = {
   code?: string;
   /** 激活时间 */
   activatedAt?: string;
-  /** 会员类型编码(normal,vip,svip) */
-  membershipType?: string;
-  /** 到期时间(普通会员为空,表示永不过期) */
-  expiredAt?: string;
-  /** 有效时长(天) */
-  durationDays?: number;
 };
 
 export type Any = {

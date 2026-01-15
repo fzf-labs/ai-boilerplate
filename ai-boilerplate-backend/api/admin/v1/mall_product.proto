@@ -127,7 +127,7 @@ service MallProduct {
 //会员配置
 message MembershipConfig {
   string membershipType = 1; // 会员类型编码(normal,vip,svip)
-  int32 duration_days = 2; // 时长天数
+  int32 durationDays = 2; // 时长天数
 }
 
 //商品配置

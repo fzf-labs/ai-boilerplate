@@ -323,10 +323,10 @@
           "type": "string",
           "title": "会员类型描述"
         },
-        "sort": {
+        "level": {
           "type": "integer",
           "format": "int32",
-          "title": "排序"
+          "title": "等级"
         },
         "status": {
           "type": "integer",
@@ -405,10 +405,10 @@
           "type": "string",
           "title": "会员类型描述"
         },
-        "sort": {
+        "level": {
           "type": "integer",
           "format": "int32",
-          "title": "排序"
+          "title": "等级"
         },
         "status": {
           "type": "integer",
@@ -449,10 +449,10 @@
           "type": "string",
           "title": "会员类型描述"
         },
-        "sort": {
+        "level": {
           "type": "integer",
           "format": "int32",
-          "title": "排序"
+          "title": "等级"
         },
         "status": {
           "type": "integer",

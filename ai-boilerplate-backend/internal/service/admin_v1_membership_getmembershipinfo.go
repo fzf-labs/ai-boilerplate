@@ -19,7 +19,7 @@ func (a *AdminV1MembershipService) GetMembershipInfo(ctx context.Context, req *p
 		Name:        data.Name,
 		Type:        data.Type,
 		Description: data.Description,
-		Sort:        data.Sort,
+		Level:       data.Level,
 		Status:      data.Status,
 		CreatedAt:   data.CreatedAt.Format(time.RFC3339),
 		UpdatedAt:   data.UpdatedAt.Format(time.RFC3339),

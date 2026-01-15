@@ -18,7 +18,7 @@ type Membership struct {
 	Name        string         `gorm:"column:name;type:character varying(50);not null;comment:会员类型名称" json:"name"`                  // 会员类型名称
 	Type        string         `gorm:"column:type;type:character varying(20);not null;comment:会员类型编码(normal,vip,svip)" json:"type"` // 会员类型编码(normal,vip,svip)
 	Description string         `gorm:"column:description;type:character varying(255);comment:会员类型描述" json:"description"`            // 会员类型描述
-	Sort        int32          `gorm:"column:sort;type:integer;comment:排序" json:"sort"`                                             // 排序
+	Level       int32          `gorm:"column:level;type:integer;comment:等级" json:"level"`                                           // 等级
 	Status      int32          `gorm:"column:status;type:integer;not null;comment:状态(-1禁用,1启用)" json:"status"`                      // 状态(-1禁用,1启用)
 	CreatedAt   time.Time      `gorm:"column:created_at;type:timestamp with time zone;not null;comment:创建时间" json:"createdAt"`      // 创建时间
 	UpdatedAt   time.Time      `gorm:"column:updated_at;type:timestamp with time zone;not null;comment:更新时间" json:"updatedAt"`      // 更新时间

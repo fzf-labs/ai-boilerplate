@@ -2,7 +2,7 @@
 import type { MallProductInfo } from '@/api/v1/mall-product/types'
 import type { GetUserMembershipInfoReply, MembershipBenefitCompareItem, MembershipBenefitValue } from '@/api/v1/membership/types'
 import { useToast } from 'wot-design-uni'
-import { getMallProductList } from '@/api/v1/mall-product/mallProduct'
+import { getMembershipProductList } from '@/api/v1/mall-product/mallProduct'
 import { getMembershipBenefitsCompare, getUserMembershipInfo } from '@/api/v1/membership/membership'
 import { useTokenStore } from '@/store/token'
 
@@ -37,6 +37,19 @@ const toast = useToast()
 
 // 当前会员信息
 const membershipInfo = ref<GetUserMembershipInfoReply | null>(null)
+
+const isActiveMember = computed(() => {
+  const info = membershipInfo.value
+  if (!info)
+    return false
+  if (info.status !== 1)
+    return false
+  if (info.isExpired)
+    return false
+  return (info.membershipType || 'normal') !== 'normal'
+})
+
+const subscribeButtonText = computed(() => (isActiveMember.value ? '续费' : '立即开通'))
 
 // 会员类型主题配置 - 清新薄荷为主色调（与 me.vue 保持一致）
 const membershipTheme = computed(() => {
@@ -121,15 +134,7 @@ async function fetchMembershipInfo() {
 async function fetchProductList() {
   try {
     loading.value = true
-    const res = await getMallProductList({
-      params: {
-        page: 1,
-        pageSize: 20,
-        productType: 'membership',
-        status: 1, // 在售
-      },
-      options: {},
-    })
+    const res = await getMembershipProductList({ options: {} })
     productList.value = res.list || []
     // 默认选中第一个套餐
     if (productList.value.length > 0 && !selectedProduct.value) {
@@ -232,7 +237,7 @@ function handleSubscribe() {
 
   // 跳转到支付页面
   uni.navigateTo({
-    url: `/pages-fg/vip/pay?productId=${selectedProduct.value.id}&productName=${encodeURIComponent(selectedProduct.value.productName || '')}&price=${selectedProduct.value.currentPrice}`,
+    url: `/pages/vip/pay?productId=${selectedProduct.value.id}&productName=${encodeURIComponent(selectedProduct.value.productName || '')}&price=${selectedProduct.value.currentPrice}`,
   })
 }
 
@@ -423,7 +428,7 @@ onLoad(() => {
           custom-class="subscribe-btn"
           @click="handleSubscribe"
         >
-          立即开通
+          {{ subscribeButtonText }}
         </wd-button>
       </view>
     </view>

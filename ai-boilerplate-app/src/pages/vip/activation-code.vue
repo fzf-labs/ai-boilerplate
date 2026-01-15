@@ -180,7 +180,9 @@ onReachBottom(() => {
         </view>
 
         <view class="history-section">
-          <view class="history-title">兑换记录</view>
+          <view class="history-title">
+            兑换记录
+          </view>
 
           <view v-if="historyLoading && records.length === 0" class="loading-container">
             <wd-loading />

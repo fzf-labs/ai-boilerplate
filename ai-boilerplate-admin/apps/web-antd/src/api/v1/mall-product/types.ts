@@ -178,7 +178,7 @@ export type MembershipConfig = {
   /** 会员类型编码(normal,vip,svip) */
   membershipType?: string;
   /** 时长天数 */
-  duration_days?: number;
+  durationDays?: number;
 };
 
 export type ProductConfig = {

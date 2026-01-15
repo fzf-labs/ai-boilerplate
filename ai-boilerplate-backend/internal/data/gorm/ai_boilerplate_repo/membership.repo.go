@@ -30,8 +30,8 @@ var (
 	CacheMembershipUnscopedByIDPrefix        = "DBCache:ai_boilerplate:MembershipUnscopedByID"
 	CacheMembershipByTypePrefix              = "DBCache:ai_boilerplate:MembershipByType"
 	CacheMembershipUnscopedByTypePrefix      = "DBCache:ai_boilerplate:MembershipUnscopedByType"
-	CacheMembershipBySortPrefix              = "DBCache:ai_boilerplate:MembershipBySort"
-	CacheMembershipUnscopedBySortPrefix      = "DBCache:ai_boilerplate:MembershipUnscopedBySort"
+	CacheMembershipByLevelPrefix             = "DBCache:ai_boilerplate:MembershipByLevel"
+	CacheMembershipUnscopedByLevelPrefix     = "DBCache:ai_boilerplate:MembershipUnscopedByLevel"
 )
 
 type (
@@ -136,22 +136,22 @@ type (
 		UpdateBatchByTypesTx(ctx context.Context, tx *ai_boilerplate_dao.Query, _types []string, data map[string]interface{}) error
 		// UpdateBatchUnscopedByTypesTx 根据字段Types批量更新(事务),零值会被更新（包括软删除）
 		UpdateBatchUnscopedByTypesTx(ctx context.Context, tx *ai_boilerplate_dao.Query, _types []string, data map[string]interface{}) error
-		// UpdateBatchBySort 根据字段Sort批量更新,零值会被更新
-		UpdateBatchBySort(ctx context.Context, sort int32, data map[string]interface{}) error
-		// UpdateBatchUnscopedBySort 根据字段Sort批量更新,零值会被更新（包括软删除）
-		UpdateBatchUnscopedBySort(ctx context.Context, sort int32, data map[string]interface{}) error
-		// UpdateBatchBySortTx 根据主键Sort批量更新(事务),零值会被更新
-		UpdateBatchBySortTx(ctx context.Context, tx *ai_boilerplate_dao.Query, sort int32, data map[string]interface{}) error
-		// UpdateBatchUnscopedBySortTx 根据主键Sort批量更新(事务),零值会被更新（包括软删除）
-		UpdateBatchUnscopedBySortTx(ctx context.Context, tx *ai_boilerplate_dao.Query, sort int32, data map[string]interface{}) error
-		// UpdateBatchBySorts 根据字段Sorts批量更新,零值会被更新
-		UpdateBatchBySorts(ctx context.Context, sorts []int32, data map[string]interface{}) error
-		// UpdateBatchUnscopedBySorts 根据字段Sorts批量更新,零值会被更新（包括软删除）
-		UpdateBatchUnscopedBySorts(ctx context.Context, sorts []int32, data map[string]interface{}) error
-		// UpdateBatchBySortsTx 根据字段Sorts批量更新(事务),零值会被更新
-		UpdateBatchBySortsTx(ctx context.Context, tx *ai_boilerplate_dao.Query, sorts []int32, data map[string]interface{}) error
-		// UpdateBatchUnscopedBySortsTx 根据字段Sorts批量更新(事务),零值会被更新（包括软删除）
-		UpdateBatchUnscopedBySortsTx(ctx context.Context, tx *ai_boilerplate_dao.Query, sorts []int32, data map[string]interface{}) error
+		// UpdateBatchByLevel 根据字段Level批量更新,零值会被更新
+		UpdateBatchByLevel(ctx context.Context, level int32, data map[string]interface{}) error
+		// UpdateBatchUnscopedByLevel 根据字段Level批量更新,零值会被更新（包括软删除）
+		UpdateBatchUnscopedByLevel(ctx context.Context, level int32, data map[string]interface{}) error
+		// UpdateBatchByLevelTx 根据主键Level批量更新(事务),零值会被更新
+		UpdateBatchByLevelTx(ctx context.Context, tx *ai_boilerplate_dao.Query, level int32, data map[string]interface{}) error
+		// UpdateBatchUnscopedByLevelTx 根据主键Level批量更新(事务),零值会被更新（包括软删除）
+		UpdateBatchUnscopedByLevelTx(ctx context.Context, tx *ai_boilerplate_dao.Query, level int32, data map[string]interface{}) error
+		// UpdateBatchByLevels 根据字段Levels批量更新,零值会被更新
+		UpdateBatchByLevels(ctx context.Context, levels []int32, data map[string]interface{}) error
+		// UpdateBatchUnscopedByLevels 根据字段Levels批量更新,零值会被更新（包括软删除）
+		UpdateBatchUnscopedByLevels(ctx context.Context, levels []int32, data map[string]interface{}) error
+		// UpdateBatchByLevelsTx 根据字段Levels批量更新(事务),零值会被更新
+		UpdateBatchByLevelsTx(ctx context.Context, tx *ai_boilerplate_dao.Query, levels []int32, data map[string]interface{}) error
+		// UpdateBatchUnscopedByLevelsTx 根据字段Levels批量更新(事务),零值会被更新（包括软删除）
+		UpdateBatchUnscopedByLevelsTx(ctx context.Context, tx *ai_boilerplate_dao.Query, levels []int32, data map[string]interface{}) error
 		// FindOneByID 根据ID查询一条数据
 		FindOneByID(ctx context.Context, ID string) (*ai_boilerplate_model.Membership, error)
 		// FindOneUnscopedByID 根据ID查询一条数据（包括软删除）
@@ -184,22 +184,22 @@ type (
 		FindMultiCacheByTypes(ctx context.Context, _types []string) ([]*ai_boilerplate_model.Membership, error)
 		// FindMultiUnscopedCacheByTypes 根据_types查询多条数据（包括软删除），并设置缓存
 		FindMultiUnscopedCacheByTypes(ctx context.Context, _types []string) ([]*ai_boilerplate_model.Membership, error)
-		// FindMultiBySort 根据sort查询多条数据
-		FindMultiBySort(ctx context.Context, sort int32) ([]*ai_boilerplate_model.Membership, error)
-		// FindMultiUnscopedBySort 根据sort查询多条数据（包括软删除）
-		FindMultiUnscopedBySort(ctx context.Context, sort int32) ([]*ai_boilerplate_model.Membership, error)
-		// FindMultiCacheBySort 根据sort查询多条数据并设置缓存
-		FindMultiCacheBySort(ctx context.Context, sort int32) ([]*ai_boilerplate_model.Membership, error)
-		// FindMultiUnscopedCacheBySort 根据sort查询多条数据（包括软删除）并设置缓存
-		FindMultiUnscopedCacheBySort(ctx context.Context, sort int32) ([]*ai_boilerplate_model.Membership, error)
-		// FindMultiBySorts 根据sorts查询多条数据
-		FindMultiBySorts(ctx context.Context, sorts []int32) ([]*ai_boilerplate_model.Membership, error)
-		// FindMultiUnscopedBySorts 根据sorts查询多条数据（包括软删除）
-		FindMultiUnscopedBySorts(ctx context.Context, sorts []int32) ([]*ai_boilerplate_model.Membership, error)
-		// FindMultiCacheBySorts 根据sorts查询多条数据，并设置缓存
-		FindMultiCacheBySorts(ctx context.Context, sorts []int32) ([]*ai_boilerplate_model.Membership, error)
-		// FindMultiUnscopedCacheBySorts 根据sorts查询多条数据（包括软删除），并设置缓存
-		FindMultiUnscopedCacheBySorts(ctx context.Context, sorts []int32) ([]*ai_boilerplate_model.Membership, error)
+		// FindMultiByLevel 根据level查询多条数据
+		FindMultiByLevel(ctx context.Context, level int32) ([]*ai_boilerplate_model.Membership, error)
+		// FindMultiUnscopedByLevel 根据level查询多条数据（包括软删除）
+		FindMultiUnscopedByLevel(ctx context.Context, level int32) ([]*ai_boilerplate_model.Membership, error)
+		// FindMultiCacheByLevel 根据level查询多条数据并设置缓存
+		FindMultiCacheByLevel(ctx context.Context, level int32) ([]*ai_boilerplate_model.Membership, error)
+		// FindMultiUnscopedCacheByLevel 根据level查询多条数据（包括软删除）并设置缓存
+		FindMultiUnscopedCacheByLevel(ctx context.Context, level int32) ([]*ai_boilerplate_model.Membership, error)
+		// FindMultiByLevels 根据levels查询多条数据
+		FindMultiByLevels(ctx context.Context, levels []int32) ([]*ai_boilerplate_model.Membership, error)
+		// FindMultiUnscopedByLevels 根据levels查询多条数据（包括软删除）
+		FindMultiUnscopedByLevels(ctx context.Context, levels []int32) ([]*ai_boilerplate_model.Membership, error)
+		// FindMultiCacheByLevels 根据levels查询多条数据，并设置缓存
+		FindMultiCacheByLevels(ctx context.Context, levels []int32) ([]*ai_boilerplate_model.Membership, error)
+		// FindMultiUnscopedCacheByLevels 根据levels查询多条数据（包括软删除），并设置缓存
+		FindMultiUnscopedCacheByLevels(ctx context.Context, levels []int32) ([]*ai_boilerplate_model.Membership, error)
 		// FindMultiByCondition 自定义查询数据(通用)
 		FindMultiByCondition(ctx context.Context, conditionReq *condition.Req) ([]*ai_boilerplate_model.Membership, *condition.Reply, error)
 		// FindMultiUnscopedByCondition 自定义查询数据(通用)（包括软删除）
@@ -272,38 +272,38 @@ type (
 		DeleteMultiCacheByTypesTx(ctx context.Context, tx *ai_boilerplate_dao.Query, _types []string) error
 		// DeleteMultiUnscopedCacheByTypesTx 根据Types删除多条数据，并删除缓存(事务)
 		DeleteMultiUnscopedCacheByTypesTx(ctx context.Context, tx *ai_boilerplate_dao.Query, _types []string) error
-		// DeleteMultiBySort 根据Sort删除多条数据
-		DeleteMultiBySort(ctx context.Context, sort int32) error
-		// DeleteMultiUnscopedBySort 根据Sort删除多条数据
-		DeleteMultiUnscopedBySort(ctx context.Context, sort int32) error
-		// DeleteMultiCacheBySort 根据sort删除多条数据，并删除缓存
-		DeleteMultiCacheBySort(ctx context.Context, sort int32) error
-		// DeleteMultiUnscopedCacheBySort 根据sort删除多条数据，并删除缓存
-		DeleteMultiUnscopedCacheBySort(ctx context.Context, sort int32) error
-		// DeleteMultiBySortTx 根据sort删除多条数据
-		DeleteMultiBySortTx(ctx context.Context, tx *ai_boilerplate_dao.Query, sort int32) error
-		// DeleteMultiUnscopedBySortTx 根据sort删除多条数据
-		DeleteMultiUnscopedBySortTx(ctx context.Context, tx *ai_boilerplate_dao.Query, sort int32) error
-		// DeleteMultiCacheBySortTx 根据sort删除多条数据，并删除缓存
-		DeleteMultiCacheBySortTx(ctx context.Context, tx *ai_boilerplate_dao.Query, sort int32) error
-		// DeleteMultiUnscopedCacheBySortTx 根据sort删除多条数据，并删除缓存
-		DeleteMultiUnscopedCacheBySortTx(ctx context.Context, tx *ai_boilerplate_dao.Query, sort int32) error
-		// DeleteMultiBySorts 根据Sorts删除多条数据
-		DeleteMultiBySorts(ctx context.Context, sorts []int32) error
-		// DeleteMultiUnscopedBySorts 根据Sorts删除多条数据
-		DeleteMultiUnscopedBySorts(ctx context.Context, sorts []int32) error
-		// DeleteMultiCacheBySorts 根据Sorts删除多条数据，并删除缓存
-		DeleteMultiCacheBySorts(ctx context.Context, sorts []int32) error
-		// DeleteMultiUnscopedCacheBySorts 根据Sorts删除多条数据，并删除缓存
-		DeleteMultiUnscopedCacheBySorts(ctx context.Context, sorts []int32) error
-		// DeleteMultiBySortsTx 根据Sorts删除多条数据(事务)
-		DeleteMultiBySortsTx(ctx context.Context, tx *ai_boilerplate_dao.Query, sorts []int32) error
-		// DeleteMultiUnscopedBySortsTx 根据Sorts删除多条数据(事务)
-		DeleteMultiUnscopedBySortsTx(ctx context.Context, tx *ai_boilerplate_dao.Query, sorts []int32) error
-		// DeleteMultiCacheBySortsTx 根据Sorts删除多条数据，并删除缓存(事务)
-		DeleteMultiCacheBySortsTx(ctx context.Context, tx *ai_boilerplate_dao.Query, sorts []int32) error
-		// DeleteMultiUnscopedCacheBySortsTx 根据Sorts删除多条数据，并删除缓存(事务)
-		DeleteMultiUnscopedCacheBySortsTx(ctx context.Context, tx *ai_boilerplate_dao.Query, sorts []int32) error
+		// DeleteMultiByLevel 根据Level删除多条数据
+		DeleteMultiByLevel(ctx context.Context, level int32) error
+		// DeleteMultiUnscopedByLevel 根据Level删除多条数据
+		DeleteMultiUnscopedByLevel(ctx context.Context, level int32) error
+		// DeleteMultiCacheByLevel 根据level删除多条数据，并删除缓存
+		DeleteMultiCacheByLevel(ctx context.Context, level int32) error
+		// DeleteMultiUnscopedCacheByLevel 根据level删除多条数据，并删除缓存
+		DeleteMultiUnscopedCacheByLevel(ctx context.Context, level int32) error
+		// DeleteMultiByLevelTx 根据level删除多条数据
+		DeleteMultiByLevelTx(ctx context.Context, tx *ai_boilerplate_dao.Query, level int32) error
+		// DeleteMultiUnscopedByLevelTx 根据level删除多条数据
+		DeleteMultiUnscopedByLevelTx(ctx context.Context, tx *ai_boilerplate_dao.Query, level int32) error
+		// DeleteMultiCacheByLevelTx 根据level删除多条数据，并删除缓存
+		DeleteMultiCacheByLevelTx(ctx context.Context, tx *ai_boilerplate_dao.Query, level int32) error
+		// DeleteMultiUnscopedCacheByLevelTx 根据level删除多条数据，并删除缓存
+		DeleteMultiUnscopedCacheByLevelTx(ctx context.Context, tx *ai_boilerplate_dao.Query, level int32) error
+		// DeleteMultiByLevels 根据Levels删除多条数据
+		DeleteMultiByLevels(ctx context.Context, levels []int32) error
+		// DeleteMultiUnscopedByLevels 根据Levels删除多条数据
+		DeleteMultiUnscopedByLevels(ctx context.Context, levels []int32) error
+		// DeleteMultiCacheByLevels 根据Levels删除多条数据，并删除缓存
+		DeleteMultiCacheByLevels(ctx context.Context, levels []int32) error
+		// DeleteMultiUnscopedCacheByLevels 根据Levels删除多条数据，并删除缓存
+		DeleteMultiUnscopedCacheByLevels(ctx context.Context, levels []int32) error
+		// DeleteMultiByLevelsTx 根据Levels删除多条数据(事务)
+		DeleteMultiByLevelsTx(ctx context.Context, tx *ai_boilerplate_dao.Query, levels []int32) error
+		// DeleteMultiUnscopedByLevelsTx 根据Levels删除多条数据(事务)
+		DeleteMultiUnscopedByLevelsTx(ctx context.Context, tx *ai_boilerplate_dao.Query, levels []int32) error
+		// DeleteMultiCacheByLevelsTx 根据Levels删除多条数据，并删除缓存(事务)
+		DeleteMultiCacheByLevelsTx(ctx context.Context, tx *ai_boilerplate_dao.Query, levels []int32) error
+		// DeleteMultiUnscopedCacheByLevelsTx 根据Levels删除多条数据，并删除缓存(事务)
+		DeleteMultiUnscopedCacheByLevelsTx(ctx context.Context, tx *ai_boilerplate_dao.Query, levels []int32) error
 		// DeleteIndexCache 删除索引存在的缓存
 		DeleteIndexCache(ctx context.Context, data ...*ai_boilerplate_model.Membership) error
 	}
@@ -1004,80 +1004,80 @@ func (m *MembershipRepo) UpdateBatchUnscopedByTypesTx(ctx context.Context, tx *a
 	return nil
 }
 
-// UpdateBatchBySort 根据字段Sort批量更新,零值会被更新
-func (m *MembershipRepo) UpdateBatchBySort(ctx context.Context, sort int32, data map[string]interface{}) error {
+// UpdateBatchByLevel 根据字段Level批量更新,零值会被更新
+func (m *MembershipRepo) UpdateBatchByLevel(ctx context.Context, level int32, data map[string]interface{}) error {
 	dao := ai_boilerplate_dao.Use(m.db).Membership
-	_, err := dao.WithContext(ctx).Where(dao.Sort.Eq(sort)).Updates(data)
+	_, err := dao.WithContext(ctx).Where(dao.Level.Eq(level)).Updates(data)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-// UpdateBatchUnscopedBySort 根据字段Sort批量更新,零值会被更新（包括软删除）
-func (m *MembershipRepo) UpdateBatchUnscopedBySort(ctx context.Context, sort int32, data map[string]interface{}) error {
+// UpdateBatchUnscopedByLevel 根据字段Level批量更新,零值会被更新（包括软删除）
+func (m *MembershipRepo) UpdateBatchUnscopedByLevel(ctx context.Context, level int32, data map[string]interface{}) error {
 	dao := ai_boilerplate_dao.Use(m.db).Membership
-	_, err := dao.WithContext(ctx).Unscoped().Where(dao.Sort.Eq(sort)).Updates(data)
+	_, err := dao.WithContext(ctx).Unscoped().Where(dao.Level.Eq(level)).Updates(data)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-// UpdateBatchBySortTx 根据字段Sort批量更新(事务),零值会被更新
-func (m *MembershipRepo) UpdateBatchBySortTx(ctx context.Context, tx *ai_boilerplate_dao.Query, sort int32, data map[string]interface{}) error {
+// UpdateBatchByLevelTx 根据字段Level批量更新(事务),零值会被更新
+func (m *MembershipRepo) UpdateBatchByLevelTx(ctx context.Context, tx *ai_boilerplate_dao.Query, level int32, data map[string]interface{}) error {
 	dao := tx.Membership
-	_, err := dao.WithContext(ctx).Where(dao.Sort.Eq(sort)).Updates(data)
+	_, err := dao.WithContext(ctx).Where(dao.Level.Eq(level)).Updates(data)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-// UpdateBatchUnscopedBySortTx 根据字段Sort批量更新(事务),零值会被更新（包括软删除）
-func (m *MembershipRepo) UpdateBatchUnscopedBySortTx(ctx context.Context, tx *ai_boilerplate_dao.Query, sort int32, data map[string]interface{}) error {
+// UpdateBatchUnscopedByLevelTx 根据字段Level批量更新(事务),零值会被更新（包括软删除）
+func (m *MembershipRepo) UpdateBatchUnscopedByLevelTx(ctx context.Context, tx *ai_boilerplate_dao.Query, level int32, data map[string]interface{}) error {
 	dao := tx.Membership
-	_, err := dao.WithContext(ctx).Unscoped().Where(dao.Sort.Eq(sort)).Updates(data)
+	_, err := dao.WithContext(ctx).Unscoped().Where(dao.Level.Eq(level)).Updates(data)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-// UpdateBatchBySorts 根据字段Sorts批量更新,零值会被更新
-func (m *MembershipRepo) UpdateBatchBySorts(ctx context.Context, sorts []int32, data map[string]interface{}) error {
+// UpdateBatchByLevels 根据字段Levels批量更新,零值会被更新
+func (m *MembershipRepo) UpdateBatchByLevels(ctx context.Context, levels []int32, data map[string]interface{}) error {
 	dao := ai_boilerplate_dao.Use(m.db).Membership
-	_, err := dao.WithContext(ctx).Where(dao.Sort.In(sorts...)).Updates(data)
+	_, err := dao.WithContext(ctx).Where(dao.Level.In(levels...)).Updates(data)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-// UpdateBatchUnscopedBySorts 根据字段Sorts批量更新,零值会被更新（包括软删除）
-func (m *MembershipRepo) UpdateBatchUnscopedBySorts(ctx context.Context, sorts []int32, data map[string]interface{}) error {
+// UpdateBatchUnscopedByLevels 根据字段Levels批量更新,零值会被更新（包括软删除）
+func (m *MembershipRepo) UpdateBatchUnscopedByLevels(ctx context.Context, levels []int32, data map[string]interface{}) error {
 	dao := ai_boilerplate_dao.Use(m.db).Membership
-	_, err := dao.WithContext(ctx).Unscoped().Where(dao.Sort.In(sorts...)).Updates(data)
+	_, err := dao.WithContext(ctx).Unscoped().Where(dao.Level.In(levels...)).Updates(data)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-// UpdateBatchBySortsTx 根据字段Sorts批量更新(事务),零值会被更新
-func (m *MembershipRepo) UpdateBatchBySortsTx(ctx context.Context, tx *ai_boilerplate_dao.Query, sorts []int32, data map[string]interface{}) error {
+// UpdateBatchByLevelsTx 根据字段Levels批量更新(事务),零值会被更新
+func (m *MembershipRepo) UpdateBatchByLevelsTx(ctx context.Context, tx *ai_boilerplate_dao.Query, levels []int32, data map[string]interface{}) error {
 	dao := tx.Membership
-	_, err := dao.WithContext(ctx).Where(dao.Sort.In(sorts...)).Updates(data)
+	_, err := dao.WithContext(ctx).Where(dao.Level.In(levels...)).Updates(data)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-// UpdateBatchUnscopedBySortsTx 根据字段Sorts批量更新(事务),零值会被更新（包括软删除）
-func (m *MembershipRepo) UpdateBatchUnscopedBySortsTx(ctx context.Context, tx *ai_boilerplate_dao.Query, sorts []int32, data map[string]interface{}) error {
+// UpdateBatchUnscopedByLevelsTx 根据字段Levels批量更新(事务),零值会被更新（包括软删除）
+func (m *MembershipRepo) UpdateBatchUnscopedByLevelsTx(ctx context.Context, tx *ai_boilerplate_dao.Query, levels []int32, data map[string]interface{}) error {
 	dao := tx.Membership
-	_, err := dao.WithContext(ctx).Unscoped().Where(dao.Sort.In(sorts...)).Updates(data)
+	_, err := dao.WithContext(ctx).Unscoped().Where(dao.Level.In(levels...)).Updates(data)
 	if err != nil {
 		return err
 	}
@@ -1464,33 +1464,33 @@ func (m *MembershipRepo) FindMultiUnscopedCacheByTypes(ctx context.Context, _typ
 	return resp, nil
 }
 
-// FindMultiBySort 根据sort查询多条数据
-func (m *MembershipRepo) FindMultiBySort(ctx context.Context, sort int32) ([]*ai_boilerplate_model.Membership, error) {
+// FindMultiByLevel 根据level查询多条数据
+func (m *MembershipRepo) FindMultiByLevel(ctx context.Context, level int32) ([]*ai_boilerplate_model.Membership, error) {
 	dao := ai_boilerplate_dao.Use(m.db).Membership
-	result, err := dao.WithContext(ctx).Where(dao.Sort.Eq(sort)).Find()
+	result, err := dao.WithContext(ctx).Where(dao.Level.Eq(level)).Find()
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// FindMultiUnscopedBySort 根据sort查询多条数据（包括软删除）
-func (m *MembershipRepo) FindMultiUnscopedBySort(ctx context.Context, sort int32) ([]*ai_boilerplate_model.Membership, error) {
+// FindMultiUnscopedByLevel 根据level查询多条数据（包括软删除）
+func (m *MembershipRepo) FindMultiUnscopedByLevel(ctx context.Context, level int32) ([]*ai_boilerplate_model.Membership, error) {
 	dao := ai_boilerplate_dao.Use(m.db).Membership
-	result, err := dao.WithContext(ctx).Unscoped().Where(dao.Sort.Eq(sort)).Find()
+	result, err := dao.WithContext(ctx).Unscoped().Where(dao.Level.Eq(level)).Find()
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// FindMultiCacheBySort 根据sort查询多条数据，并设置缓存
-func (m *MembershipRepo) FindMultiCacheBySort(ctx context.Context, sort int32) ([]*ai_boilerplate_model.Membership, error) {
+// FindMultiCacheByLevel 根据level查询多条数据，并设置缓存
+func (m *MembershipRepo) FindMultiCacheByLevel(ctx context.Context, level int32) ([]*ai_boilerplate_model.Membership, error) {
 	resp := make([]*ai_boilerplate_model.Membership, 0)
-	cacheKey := m.cache.Key(CacheMembershipBySortPrefix, sort)
+	cacheKey := m.cache.Key(CacheMembershipByLevelPrefix, level)
 	cacheValue, err := m.cache.Fetch(ctx, cacheKey, func() (string, error) {
 		dao := ai_boilerplate_dao.Use(m.db).Membership
-		result, err := dao.WithContext(ctx).Where(dao.Sort.Eq(sort)).Find()
+		result, err := dao.WithContext(ctx).Where(dao.Level.Eq(level)).Find()
 		if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 			return "", err
 		}
@@ -1512,13 +1512,13 @@ func (m *MembershipRepo) FindMultiCacheBySort(ctx context.Context, sort int32) (
 	return resp, nil
 }
 
-// FindMultiUnscopedCacheBySort 根据sort查询多条数据（包括软删除），并设置缓存
-func (m *MembershipRepo) FindMultiUnscopedCacheBySort(ctx context.Context, sort int32) ([]*ai_boilerplate_model.Membership, error) {
+// FindMultiUnscopedCacheByLevel 根据level查询多条数据（包括软删除），并设置缓存
+func (m *MembershipRepo) FindMultiUnscopedCacheByLevel(ctx context.Context, level int32) ([]*ai_boilerplate_model.Membership, error) {
 	resp := make([]*ai_boilerplate_model.Membership, 0)
-	cacheKey := m.cache.Key(CacheMembershipUnscopedBySortPrefix, sort)
+	cacheKey := m.cache.Key(CacheMembershipUnscopedByLevelPrefix, level)
 	cacheValue, err := m.cache.Fetch(ctx, cacheKey, func() (string, error) {
 		dao := ai_boilerplate_dao.Use(m.db).Membership
-		result, err := dao.WithContext(ctx).Unscoped().Where(dao.Sort.Eq(sort)).Find()
+		result, err := dao.WithContext(ctx).Unscoped().Where(dao.Level.Eq(level)).Find()
 		if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 			return "", err
 		}
@@ -1540,33 +1540,33 @@ func (m *MembershipRepo) FindMultiUnscopedCacheBySort(ctx context.Context, sort 
 	return resp, nil
 }
 
-// FindMultiBySorts 根据sorts查询多条数据
-func (m *MembershipRepo) FindMultiBySorts(ctx context.Context, sorts []int32) ([]*ai_boilerplate_model.Membership, error) {
+// FindMultiByLevels 根据levels查询多条数据
+func (m *MembershipRepo) FindMultiByLevels(ctx context.Context, levels []int32) ([]*ai_boilerplate_model.Membership, error) {
 	dao := ai_boilerplate_dao.Use(m.db).Membership
-	result, err := dao.WithContext(ctx).Where(dao.Sort.In(sorts...)).Find()
+	result, err := dao.WithContext(ctx).Where(dao.Level.In(levels...)).Find()
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// FindMultiUnscopedBySorts 根据sorts查询多条数据（包括软删除）
-func (m *MembershipRepo) FindMultiUnscopedBySorts(ctx context.Context, sorts []int32) ([]*ai_boilerplate_model.Membership, error) {
+// FindMultiUnscopedByLevels 根据levels查询多条数据（包括软删除）
+func (m *MembershipRepo) FindMultiUnscopedByLevels(ctx context.Context, levels []int32) ([]*ai_boilerplate_model.Membership, error) {
 	dao := ai_boilerplate_dao.Use(m.db).Membership
-	result, err := dao.WithContext(ctx).Unscoped().Where(dao.Sort.In(sorts...)).Find()
+	result, err := dao.WithContext(ctx).Unscoped().Where(dao.Level.In(levels...)).Find()
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// FindMultiCacheBySorts 根据sorts查询多条数据，并设置缓存
-func (m *MembershipRepo) FindMultiCacheBySorts(ctx context.Context, sorts []int32) ([]*ai_boilerplate_model.Membership, error) {
+// FindMultiCacheByLevels 根据levels查询多条数据，并设置缓存
+func (m *MembershipRepo) FindMultiCacheByLevels(ctx context.Context, levels []int32) ([]*ai_boilerplate_model.Membership, error) {
 	resp := make([]*ai_boilerplate_model.Membership, 0)
 	cacheKeys := make([]string, 0)
 	keyToParam := make(map[string]int32)
-	for _, item := range sorts {
-		cacheKey := m.cache.Key(CacheMembershipBySortPrefix, item)
+	for _, item := range levels {
+		cacheKey := m.cache.Key(CacheMembershipByLevelPrefix, item)
 		cacheKeys = append(cacheKeys, cacheKey)
 		keyToParam[cacheKey] = item
 	}
@@ -1578,13 +1578,13 @@ func (m *MembershipRepo) FindMultiCacheBySorts(ctx context.Context, sorts []int3
 			params = append(params, keyToParam[item])
 		}
 		dao := ai_boilerplate_dao.Use(m.db).Membership
-		result, err := dao.WithContext(ctx).Where(dao.Sort.In(params...)).Find()
+		result, err := dao.WithContext(ctx).Where(dao.Level.In(params...)).Find()
 		if err != nil {
 			return nil, err
 		}
 		keyToValues := make(map[string][]*ai_boilerplate_model.Membership)
 		for _, item := range result {
-			key := m.cache.Key(CacheMembershipBySortPrefix, item.Sort)
+			key := m.cache.Key(CacheMembershipByLevelPrefix, item.Level)
 			if keyToValues[key] == nil {
 				keyToValues[key] = make([]*ai_boilerplate_model.Membership, 0)
 			}
@@ -1617,13 +1617,13 @@ func (m *MembershipRepo) FindMultiCacheBySorts(ctx context.Context, sorts []int3
 	return resp, nil
 }
 
-// FindMultiUnscopedCacheBySorts 根据sorts查询多条数据（包括软删除），并设置缓存
-func (m *MembershipRepo) FindMultiUnscopedCacheBySorts(ctx context.Context, sorts []int32) ([]*ai_boilerplate_model.Membership, error) {
+// FindMultiUnscopedCacheByLevels 根据levels查询多条数据（包括软删除），并设置缓存
+func (m *MembershipRepo) FindMultiUnscopedCacheByLevels(ctx context.Context, levels []int32) ([]*ai_boilerplate_model.Membership, error) {
 	resp := make([]*ai_boilerplate_model.Membership, 0)
 	cacheKeys := make([]string, 0)
 	keyToParam := make(map[string]int32)
-	for _, item := range sorts {
-		cacheKey := m.cache.Key(CacheMembershipUnscopedBySortPrefix, item)
+	for _, item := range levels {
+		cacheKey := m.cache.Key(CacheMembershipUnscopedByLevelPrefix, item)
 		cacheKeys = append(cacheKeys, cacheKey)
 		keyToParam[cacheKey] = item
 	}
@@ -1635,13 +1635,13 @@ func (m *MembershipRepo) FindMultiUnscopedCacheBySorts(ctx context.Context, sort
 			params = append(params, keyToParam[item])
 		}
 		dao := ai_boilerplate_dao.Use(m.db).Membership
-		result, err := dao.WithContext(ctx).Unscoped().Where(dao.Sort.In(params...)).Find()
+		result, err := dao.WithContext(ctx).Unscoped().Where(dao.Level.In(params...)).Find()
 		if err != nil {
 			return nil, err
 		}
 		keyToValues := make(map[string][]*ai_boilerplate_model.Membership)
 		for _, item := range result {
-			key := m.cache.Key(CacheMembershipUnscopedBySortPrefix, item.Sort)
+			key := m.cache.Key(CacheMembershipUnscopedByLevelPrefix, item.Level)
 			if keyToValues[key] == nil {
 				keyToValues[key] = make([]*ai_boilerplate_model.Membership, 0)
 			}
@@ -2328,37 +2328,37 @@ func (m *MembershipRepo) DeleteMultiUnscopedCacheByTypesTx(ctx context.Context, 
 	return nil
 }
 
-// DeleteMultiBySort 根据Sort删除多条数据
-func (m *MembershipRepo) DeleteMultiBySort(ctx context.Context, sort int32) error {
+// DeleteMultiByLevel 根据Level删除多条数据
+func (m *MembershipRepo) DeleteMultiByLevel(ctx context.Context, level int32) error {
 	dao := ai_boilerplate_dao.Use(m.db).Membership
-	_, err := dao.WithContext(ctx).Where(dao.Sort.Eq(sort)).Delete()
+	_, err := dao.WithContext(ctx).Where(dao.Level.Eq(level)).Delete()
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-// DeleteMultiUnscopedBySort 根据Sort删除多条数据
-func (m *MembershipRepo) DeleteMultiUnscopedBySort(ctx context.Context, sort int32) error {
+// DeleteMultiUnscopedByLevel 根据Level删除多条数据
+func (m *MembershipRepo) DeleteMultiUnscopedByLevel(ctx context.Context, level int32) error {
 	dao := ai_boilerplate_dao.Use(m.db).Membership
-	_, err := dao.WithContext(ctx).Unscoped().Where(dao.Sort.Eq(sort)).Delete()
+	_, err := dao.WithContext(ctx).Unscoped().Where(dao.Level.Eq(level)).Delete()
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-// DeleteMultiCacheBySort 根据sort删除多条数据，并删除缓存
-func (m *MembershipRepo) DeleteMultiCacheBySort(ctx context.Context, sort int32) error {
+// DeleteMultiCacheByLevel 根据level删除多条数据，并删除缓存
+func (m *MembershipRepo) DeleteMultiCacheByLevel(ctx context.Context, level int32) error {
 	dao := ai_boilerplate_dao.Use(m.db).Membership
-	result, err := dao.WithContext(ctx).Where(dao.Sort.Eq(sort)).Find()
+	result, err := dao.WithContext(ctx).Where(dao.Level.Eq(level)).Find()
 	if err != nil {
 		return err
 	}
 	if len(result) == 0 {
 		return nil
 	}
-	_, err = dao.WithContext(ctx).Where(dao.Sort.Eq(sort)).Delete()
+	_, err = dao.WithContext(ctx).Where(dao.Level.Eq(level)).Delete()
 	if err != nil {
 		return err
 	}
@@ -2369,17 +2369,17 @@ func (m *MembershipRepo) DeleteMultiCacheBySort(ctx context.Context, sort int32)
 	return nil
 }
 
-// DeleteMultiUnscopedCacheBySort 根据sort删除多条数据，并删除缓存
-func (m *MembershipRepo) DeleteMultiUnscopedCacheBySort(ctx context.Context, sort int32) error {
+// DeleteMultiUnscopedCacheByLevel 根据level删除多条数据，并删除缓存
+func (m *MembershipRepo) DeleteMultiUnscopedCacheByLevel(ctx context.Context, level int32) error {
 	dao := ai_boilerplate_dao.Use(m.db).Membership
-	result, err := dao.WithContext(ctx).Unscoped().Where(dao.Sort.Eq(sort)).Find()
+	result, err := dao.WithContext(ctx).Unscoped().Where(dao.Level.Eq(level)).Find()
 	if err != nil {
 		return err
 	}
 	if len(result) == 0 {
 		return nil
 	}
-	_, err = dao.WithContext(ctx).Unscoped().Where(dao.Sort.Eq(sort)).Delete()
+	_, err = dao.WithContext(ctx).Unscoped().Where(dao.Level.Eq(level)).Delete()
 	if err != nil {
 		return err
 	}
@@ -2390,37 +2390,37 @@ func (m *MembershipRepo) DeleteMultiUnscopedCacheBySort(ctx context.Context, sor
 	return nil
 }
 
-// DeleteMultiBySortTx 根据sort删除多条数据
-func (m *MembershipRepo) DeleteMultiBySortTx(ctx context.Context, tx *ai_boilerplate_dao.Query, sort int32) error {
+// DeleteMultiByLevelTx 根据level删除多条数据
+func (m *MembershipRepo) DeleteMultiByLevelTx(ctx context.Context, tx *ai_boilerplate_dao.Query, level int32) error {
 	dao := tx.Membership
-	_, err := dao.WithContext(ctx).Where(dao.Sort.Eq(sort)).Delete()
+	_, err := dao.WithContext(ctx).Where(dao.Level.Eq(level)).Delete()
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-// DeleteMultiUnscopedBySortTx 根据sort删除多条数据
-func (m *MembershipRepo) DeleteMultiUnscopedBySortTx(ctx context.Context, tx *ai_boilerplate_dao.Query, sort int32) error {
+// DeleteMultiUnscopedByLevelTx 根据level删除多条数据
+func (m *MembershipRepo) DeleteMultiUnscopedByLevelTx(ctx context.Context, tx *ai_boilerplate_dao.Query, level int32) error {
 	dao := tx.Membership
-	_, err := dao.WithContext(ctx).Unscoped().Where(dao.Sort.Eq(sort)).Delete()
+	_, err := dao.WithContext(ctx).Unscoped().Where(dao.Level.Eq(level)).Delete()
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-// DeleteMultiCacheBySortTx 根据sort删除多条数据，并删除缓存
-func (m *MembershipRepo) DeleteMultiCacheBySortTx(ctx context.Context, tx *ai_boilerplate_dao.Query, sort int32) error {
+// DeleteMultiCacheByLevelTx 根据level删除多条数据，并删除缓存
+func (m *MembershipRepo) DeleteMultiCacheByLevelTx(ctx context.Context, tx *ai_boilerplate_dao.Query, level int32) error {
 	dao := tx.Membership
-	result, err := dao.WithContext(ctx).Where(dao.Sort.Eq(sort)).Find()
+	result, err := dao.WithContext(ctx).Where(dao.Level.Eq(level)).Find()
 	if err != nil {
 		return err
 	}
 	if len(result) == 0 {
 		return nil
 	}
-	_, err = dao.WithContext(ctx).Where(dao.Sort.Eq(sort)).Delete()
+	_, err = dao.WithContext(ctx).Where(dao.Level.Eq(level)).Delete()
 	if err != nil {
 		return err
 	}
@@ -2431,17 +2431,17 @@ func (m *MembershipRepo) DeleteMultiCacheBySortTx(ctx context.Context, tx *ai_bo
 	return nil
 }
 
-// DeleteMultiUnscopedCacheBySortTx 根据sort删除多条数据，并删除缓存
-func (m *MembershipRepo) DeleteMultiUnscopedCacheBySortTx(ctx context.Context, tx *ai_boilerplate_dao.Query, sort int32) error {
+// DeleteMultiUnscopedCacheByLevelTx 根据level删除多条数据，并删除缓存
+func (m *MembershipRepo) DeleteMultiUnscopedCacheByLevelTx(ctx context.Context, tx *ai_boilerplate_dao.Query, level int32) error {
 	dao := tx.Membership
-	result, err := dao.WithContext(ctx).Unscoped().Where(dao.Sort.Eq(sort)).Find()
+	result, err := dao.WithContext(ctx).Unscoped().Where(dao.Level.Eq(level)).Find()
 	if err != nil {
 		return err
 	}
 	if len(result) == 0 {
 		return nil
 	}
-	_, err = dao.WithContext(ctx).Unscoped().Where(dao.Sort.Eq(sort)).Delete()
+	_, err = dao.WithContext(ctx).Unscoped().Where(dao.Level.Eq(level)).Delete()
 	if err != nil {
 		return err
 	}
@@ -2452,37 +2452,37 @@ func (m *MembershipRepo) DeleteMultiUnscopedCacheBySortTx(ctx context.Context, t
 	return nil
 }
 
-// DeleteMultiBySorts 根据sorts删除多条数据
-func (m *MembershipRepo) DeleteMultiBySorts(ctx context.Context, sorts []int32) error {
+// DeleteMultiByLevels 根据levels删除多条数据
+func (m *MembershipRepo) DeleteMultiByLevels(ctx context.Context, levels []int32) error {
 	dao := ai_boilerplate_dao.Use(m.db).Membership
-	_, err := dao.WithContext(ctx).Where(dao.Sort.In(sorts...)).Delete()
+	_, err := dao.WithContext(ctx).Where(dao.Level.In(levels...)).Delete()
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-// DeleteMultiUnscopedBySorts 根据sorts删除多条数据
-func (m *MembershipRepo) DeleteMultiUnscopedBySorts(ctx context.Context, sorts []int32) error {
+// DeleteMultiUnscopedByLevels 根据levels删除多条数据
+func (m *MembershipRepo) DeleteMultiUnscopedByLevels(ctx context.Context, levels []int32) error {
 	dao := ai_boilerplate_dao.Use(m.db).Membership
-	_, err := dao.WithContext(ctx).Unscoped().Where(dao.Sort.In(sorts...)).Delete()
+	_, err := dao.WithContext(ctx).Unscoped().Where(dao.Level.In(levels...)).Delete()
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-// DeleteMultiCacheBySorts 根据sorts删除多条数据，并删除缓存
-func (m *MembershipRepo) DeleteMultiCacheBySorts(ctx context.Context, sorts []int32) error {
+// DeleteMultiCacheByLevels 根据levels删除多条数据，并删除缓存
+func (m *MembershipRepo) DeleteMultiCacheByLevels(ctx context.Context, levels []int32) error {
 	dao := ai_boilerplate_dao.Use(m.db).Membership
-	result, err := dao.WithContext(ctx).Where(dao.Sort.In(sorts...)).Find()
+	result, err := dao.WithContext(ctx).Where(dao.Level.In(levels...)).Find()
 	if err != nil {
 		return err
 	}
 	if len(result) == 0 {
 		return nil
 	}
-	_, err = dao.WithContext(ctx).Where(dao.Sort.In(sorts...)).Delete()
+	_, err = dao.WithContext(ctx).Where(dao.Level.In(levels...)).Delete()
 	if err != nil {
 		return err
 	}
@@ -2493,17 +2493,17 @@ func (m *MembershipRepo) DeleteMultiCacheBySorts(ctx context.Context, sorts []in
 	return nil
 }
 
-// DeleteMultiUnscopedCacheBySorts 根据sorts删除多条数据，并删除缓存
-func (m *MembershipRepo) DeleteMultiUnscopedCacheBySorts(ctx context.Context, sorts []int32) error {
+// DeleteMultiUnscopedCacheByLevels 根据levels删除多条数据，并删除缓存
+func (m *MembershipRepo) DeleteMultiUnscopedCacheByLevels(ctx context.Context, levels []int32) error {
 	dao := ai_boilerplate_dao.Use(m.db).Membership
-	result, err := dao.WithContext(ctx).Unscoped().Where(dao.Sort.In(sorts...)).Find()
+	result, err := dao.WithContext(ctx).Unscoped().Where(dao.Level.In(levels...)).Find()
 	if err != nil {
 		return err
 	}
 	if len(result) == 0 {
 		return nil
 	}
-	_, err = dao.WithContext(ctx).Unscoped().Where(dao.Sort.In(sorts...)).Delete()
+	_, err = dao.WithContext(ctx).Unscoped().Where(dao.Level.In(levels...)).Delete()
 	if err != nil {
 		return err
 	}
@@ -2514,37 +2514,37 @@ func (m *MembershipRepo) DeleteMultiUnscopedCacheBySorts(ctx context.Context, so
 	return nil
 }
 
-// DeleteMultiBySortsTx 根据sorts删除多条数据
-func (m *MembershipRepo) DeleteMultiBySortsTx(ctx context.Context, tx *ai_boilerplate_dao.Query, sorts []int32) error {
+// DeleteMultiByLevelsTx 根据levels删除多条数据
+func (m *MembershipRepo) DeleteMultiByLevelsTx(ctx context.Context, tx *ai_boilerplate_dao.Query, levels []int32) error {
 	dao := tx.Membership
-	_, err := dao.WithContext(ctx).Where(dao.Sort.In(sorts...)).Delete()
+	_, err := dao.WithContext(ctx).Where(dao.Level.In(levels...)).Delete()
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-// DeleteMultiUnscopedBySortsTx 根据sorts删除多条数据
-func (m *MembershipRepo) DeleteMultiUnscopedBySortsTx(ctx context.Context, tx *ai_boilerplate_dao.Query, sorts []int32) error {
+// DeleteMultiUnscopedByLevelsTx 根据levels删除多条数据
+func (m *MembershipRepo) DeleteMultiUnscopedByLevelsTx(ctx context.Context, tx *ai_boilerplate_dao.Query, levels []int32) error {
 	dao := tx.Membership
-	_, err := dao.WithContext(ctx).Unscoped().Where(dao.Sort.In(sorts...)).Delete()
+	_, err := dao.WithContext(ctx).Unscoped().Where(dao.Level.In(levels...)).Delete()
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-// DeleteMultiCacheBySortsTx 根据sorts删除多条数据，并删除缓存
-func (m *MembershipRepo) DeleteMultiCacheBySortsTx(ctx context.Context, tx *ai_boilerplate_dao.Query, sorts []int32) error {
+// DeleteMultiCacheByLevelsTx 根据levels删除多条数据，并删除缓存
+func (m *MembershipRepo) DeleteMultiCacheByLevelsTx(ctx context.Context, tx *ai_boilerplate_dao.Query, levels []int32) error {
 	dao := tx.Membership
-	result, err := dao.WithContext(ctx).Where(dao.Sort.In(sorts...)).Find()
+	result, err := dao.WithContext(ctx).Where(dao.Level.In(levels...)).Find()
 	if err != nil {
 		return err
 	}
 	if len(result) == 0 {
 		return nil
 	}
-	_, err = dao.WithContext(ctx).Where(dao.Sort.In(sorts...)).Delete()
+	_, err = dao.WithContext(ctx).Where(dao.Level.In(levels...)).Delete()
 	if err != nil {
 		return err
 	}
@@ -2555,17 +2555,17 @@ func (m *MembershipRepo) DeleteMultiCacheBySortsTx(ctx context.Context, tx *ai_b
 	return nil
 }
 
-// DeleteMultiUnscopedCacheBySortsTx 根据sorts删除多条数据，并删除缓存
-func (m *MembershipRepo) DeleteMultiUnscopedCacheBySortsTx(ctx context.Context, tx *ai_boilerplate_dao.Query, sorts []int32) error {
+// DeleteMultiUnscopedCacheByLevelsTx 根据levels删除多条数据，并删除缓存
+func (m *MembershipRepo) DeleteMultiUnscopedCacheByLevelsTx(ctx context.Context, tx *ai_boilerplate_dao.Query, levels []int32) error {
 	dao := tx.Membership
-	result, err := dao.WithContext(ctx).Unscoped().Where(dao.Sort.In(sorts...)).Find()
+	result, err := dao.WithContext(ctx).Unscoped().Where(dao.Level.In(levels...)).Find()
 	if err != nil {
 		return err
 	}
 	if len(result) == 0 {
 		return nil
 	}
-	_, err = dao.WithContext(ctx).Unscoped().Where(dao.Sort.In(sorts...)).Delete()
+	_, err = dao.WithContext(ctx).Unscoped().Where(dao.Level.In(levels...)).Delete()
 	if err != nil {
 		return err
 	}
@@ -2588,8 +2588,8 @@ func (m *MembershipRepo) DeleteIndexCache(ctx context.Context, data ...*ai_boile
 			KeyMap[m.cache.Key(CacheMembershipUnscopedByIDPrefix, item.ID)] = struct{}{}
 			KeyMap[m.cache.Key(CacheMembershipByTypePrefix, item.Type)] = struct{}{}
 			KeyMap[m.cache.Key(CacheMembershipUnscopedByTypePrefix, item.Type)] = struct{}{}
-			KeyMap[m.cache.Key(CacheMembershipBySortPrefix, item.Sort)] = struct{}{}
-			KeyMap[m.cache.Key(CacheMembershipUnscopedBySortPrefix, item.Sort)] = struct{}{}
+			KeyMap[m.cache.Key(CacheMembershipByLevelPrefix, item.Level)] = struct{}{}
+			KeyMap[m.cache.Key(CacheMembershipUnscopedByLevelPrefix, item.Level)] = struct{}{}
 		}
 	}
 	for item := range KeyMap {

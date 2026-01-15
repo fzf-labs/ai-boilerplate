@@ -13,7 +13,7 @@ func (a *AdminV1MembershipService) CreateMembership(ctx context.Context, req *pb
 	data.Name = req.GetName()
 	data.Type = req.GetType()
 	data.Description = req.GetDescription()
-	data.Sort = req.GetSort()
+	data.Level = req.GetLevel()
 	data.Status = req.GetStatus()
 	err := a.membershipRepo.CreateOneCache(ctx, data)
 	if err != nil {

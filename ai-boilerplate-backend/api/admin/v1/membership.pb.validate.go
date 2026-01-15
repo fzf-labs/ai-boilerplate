@@ -65,7 +65,7 @@ func (m *MembershipInfo) validate(all bool) error {
 
 	// no validation rules for Description
 
-	// no validation rules for Sort
+	// no validation rules for Level
 
 	// no validation rules for Status
 
@@ -179,7 +179,7 @@ func (m *CreateMembershipReq) validate(all bool) error {
 
 	// no validation rules for Description
 
-	// no validation rules for Sort
+	// no validation rules for Level
 
 	// no validation rules for Status
 
@@ -397,7 +397,7 @@ func (m *UpdateMembershipReq) validate(all bool) error {
 
 	// no validation rules for Description
 
-	// no validation rules for Sort
+	// no validation rules for Level
 
 	// no validation rules for Status
 

@@ -20,17 +20,17 @@ var _ = binding.EncodeURL
 const _ = http.SupportPackageIsVersion1
 
 const OperationMallProductGetMallProductInfo = "/app.v1.MallProduct/GetMallProductInfo"
-const OperationMallProductGetMallProductList = "/app.v1.MallProduct/GetMallProductList"
+const OperationMallProductGetMembershipProductList = "/app.v1.MallProduct/GetMembershipProductList"
 
 type MallProductHTTPServer interface {
 	GetMallProductInfo(context.Context, *GetMallProductInfoReq) (*GetMallProductInfoReply, error)
-	GetMallProductList(context.Context, *GetMallProductListReq) (*GetMallProductListReply, error)
+	GetMembershipProductList(context.Context, *GetMembershipProductListReq) (*GetMembershipProductListReply, error)
 }
 
 func RegisterMallProductHTTPServer(s *http.Server, srv MallProductHTTPServer) {
 	r := s.Route("/")
 	r.GET("/app/v1/mall_product/info", _MallProduct_GetMallProductInfo0_HTTP_Handler(srv))
-	r.GET("/app/v1/mall_product/list", _MallProduct_GetMallProductList0_HTTP_Handler(srv))
+	r.GET("/app/v1/mall_product/membership/list", _MallProduct_GetMembershipProductList0_HTTP_Handler(srv))
 }
 
 func _MallProduct_GetMallProductInfo0_HTTP_Handler(srv MallProductHTTPServer) func(ctx http.Context) error {
@@ -52,28 +52,28 @@ func _MallProduct_GetMallProductInfo0_HTTP_Handler(srv MallProductHTTPServer) fu
 	}
 }
 
-func _MallProduct_GetMallProductList0_HTTP_Handler(srv MallProductHTTPServer) func(ctx http.Context) error {
+func _MallProduct_GetMembershipProductList0_HTTP_Handler(srv MallProductHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in GetMallProductListReq
+		var in GetMembershipProductListReq
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationMallProductGetMallProductList)
+		http.SetOperation(ctx, OperationMallProductGetMembershipProductList)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetMallProductList(ctx, req.(*GetMallProductListReq))
+			return srv.GetMembershipProductList(ctx, req.(*GetMembershipProductListReq))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*GetMallProductListReply)
+		reply := out.(*GetMembershipProductListReply)
 		return ctx.Result(200, reply)
 	}
 }
 
 type MallProductHTTPClient interface {
 	GetMallProductInfo(ctx context.Context, req *GetMallProductInfoReq, opts ...http.CallOption) (rsp *GetMallProductInfoReply, err error)
-	GetMallProductList(ctx context.Context, req *GetMallProductListReq, opts ...http.CallOption) (rsp *GetMallProductListReply, err error)
+	GetMembershipProductList(ctx context.Context, req *GetMembershipProductListReq, opts ...http.CallOption) (rsp *GetMembershipProductListReply, err error)
 }
 
 type MallProductHTTPClientImpl struct {
@@ -97,11 +97,11 @@ func (c *MallProductHTTPClientImpl) GetMallProductInfo(ctx context.Context, in *
 	return &out, err
 }
 
-func (c *MallProductHTTPClientImpl) GetMallProductList(ctx context.Context, in *GetMallProductListReq, opts ...http.CallOption) (*GetMallProductListReply, error) {
-	var out GetMallProductListReply
-	pattern := "/app/v1/mall_product/list"
+func (c *MallProductHTTPClientImpl) GetMembershipProductList(ctx context.Context, in *GetMembershipProductListReq, opts ...http.CallOption) (*GetMembershipProductListReply, error) {
+	var out GetMembershipProductListReply
+	pattern := "/app/v1/mall_product/membership/list"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationMallProductGetMallProductList))
+	opts = append(opts, http.Operation(OperationMallProductGetMembershipProductList))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {

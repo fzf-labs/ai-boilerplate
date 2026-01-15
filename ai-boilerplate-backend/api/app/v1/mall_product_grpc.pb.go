@@ -24,8 +24,8 @@ const _ = grpc.SupportPackageIsVersion7
 type MallProductClient interface {
 	// 获取商品详情
 	GetMallProductInfo(ctx context.Context, in *GetMallProductInfoReq, opts ...grpc.CallOption) (*GetMallProductInfoReply, error)
-	// 获取商品列表
-	GetMallProductList(ctx context.Context, in *GetMallProductListReq, opts ...grpc.CallOption) (*GetMallProductListReply, error)
+	// 获取会员商品列表
+	GetMembershipProductList(ctx context.Context, in *GetMembershipProductListReq, opts ...grpc.CallOption) (*GetMembershipProductListReply, error)
 }
 
 type mallProductClient struct {
@@ -45,9 +45,9 @@ func (c *mallProductClient) GetMallProductInfo(ctx context.Context, in *GetMallP
 	return out, nil
 }
 
-func (c *mallProductClient) GetMallProductList(ctx context.Context, in *GetMallProductListReq, opts ...grpc.CallOption) (*GetMallProductListReply, error) {
-	out := new(GetMallProductListReply)
-	err := c.cc.Invoke(ctx, "/app.v1.MallProduct/GetMallProductList", in, out, opts...)
+func (c *mallProductClient) GetMembershipProductList(ctx context.Context, in *GetMembershipProductListReq, opts ...grpc.CallOption) (*GetMembershipProductListReply, error) {
+	out := new(GetMembershipProductListReply)
+	err := c.cc.Invoke(ctx, "/app.v1.MallProduct/GetMembershipProductList", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -60,8 +60,8 @@ func (c *mallProductClient) GetMallProductList(ctx context.Context, in *GetMallP
 type MallProductServer interface {
 	// 获取商品详情
 	GetMallProductInfo(context.Context, *GetMallProductInfoReq) (*GetMallProductInfoReply, error)
-	// 获取商品列表
-	GetMallProductList(context.Context, *GetMallProductListReq) (*GetMallProductListReply, error)
+	// 获取会员商品列表
+	GetMembershipProductList(context.Context, *GetMembershipProductListReq) (*GetMembershipProductListReply, error)
 	mustEmbedUnimplementedMallProductServer()
 }
 
@@ -72,8 +72,8 @@ type UnimplementedMallProductServer struct {
 func (UnimplementedMallProductServer) GetMallProductInfo(context.Context, *GetMallProductInfoReq) (*GetMallProductInfoReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMallProductInfo not implemented")
 }
-func (UnimplementedMallProductServer) GetMallProductList(context.Context, *GetMallProductListReq) (*GetMallProductListReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetMallProductList not implemented")
+func (UnimplementedMallProductServer) GetMembershipProductList(context.Context, *GetMembershipProductListReq) (*GetMembershipProductListReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMembershipProductList not implemented")
 }
 func (UnimplementedMallProductServer) mustEmbedUnimplementedMallProductServer() {}
 
@@ -106,20 +106,20 @@ func _MallProduct_GetMallProductInfo_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
-func _MallProduct_GetMallProductList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetMallProductListReq)
+func _MallProduct_GetMembershipProductList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMembershipProductListReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MallProductServer).GetMallProductList(ctx, in)
+		return srv.(MallProductServer).GetMembershipProductList(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/app.v1.MallProduct/GetMallProductList",
+		FullMethod: "/app.v1.MallProduct/GetMembershipProductList",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MallProductServer).GetMallProductList(ctx, req.(*GetMallProductListReq))
+		return srv.(MallProductServer).GetMembershipProductList(ctx, req.(*GetMembershipProductListReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -136,8 +136,8 @@ var MallProduct_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _MallProduct_GetMallProductInfo_Handler,
 		},
 		{
-			MethodName: "GetMallProductList",
-			Handler:    _MallProduct_GetMallProductList_Handler,
+			MethodName: "GetMembershipProductList",
+			Handler:    _MallProduct_GetMembershipProductList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

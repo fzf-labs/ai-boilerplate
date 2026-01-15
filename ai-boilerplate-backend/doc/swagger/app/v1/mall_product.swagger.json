@@ -55,15 +55,15 @@
         ]
       }
     },
-    "/app/v1/mall_product/list": {
+    "/app/v1/mall_product/membership/list": {
       "get": {
-        "summary": "获取商品列表",
-        "operationId": "MallProduct_GetMallProductList",
+        "summary": "获取会员商品列表",
+        "operationId": "MallProduct_GetMembershipProductList",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/app.v1.GetMallProductListReply"
+              "$ref": "#/definitions/app.v1.GetMembershipProductListReply"
             }
           },
           "default": {
@@ -74,37 +74,6 @@
           }
         },
         "parameters": [
-          {
-            "name": "page",
-            "description": "页码",
-            "in": "query",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "pageSize",
-            "description": "页数",
-            "in": "query",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "productType",
-            "description": "商品类型(membership:会员,service:增值服务,goods:商品)",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "description": "状态(-1下架,0待上架,1在售,2售罄)",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
           {
             "name": "Authorization",
             "description": "Bearer Token",
@@ -129,14 +98,9 @@
       },
       "title": "响应-获取商品详情"
     },
-    "app.v1.GetMallProductListReply": {
+    "app.v1.GetMembershipProductListReply": {
       "type": "object",
       "properties": {
-        "total": {
-          "type": "integer",
-          "format": "int32",
-          "title": "总数"
-        },
         "list": {
           "type": "array",
           "items": {
@@ -168,15 +132,21 @@
           "title": "商品描述"
         },
         "productImages": {
-          "type": "string",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
           "title": "商品图片(多个用逗号分隔)"
         },
         "productDetail": {
-          "type": "string",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
           "title": "商品详情(JSON格式,包含特色功能等)"
         },
         "productConfig": {
-          "type": "string",
+          "$ref": "#/definitions/app.v1.ProductConfig",
           "title": "商品配置(JSON格式)"
         },
         "originalPrice": {
@@ -219,6 +189,31 @@
         }
       },
       "title": "商品信息"
+    },
+    "app.v1.MembershipConfig": {
+      "type": "object",
+      "properties": {
+        "membershipType": {
+          "type": "string",
+          "title": "会员类型编码(normal,vip,svip)"
+        },
+        "durationDays": {
+          "type": "integer",
+          "format": "int32",
+          "title": "时长天数"
+        }
+      },
+      "title": "会员配置"
+    },
+    "app.v1.ProductConfig": {
+      "type": "object",
+      "properties": {
+        "membership": {
+          "$ref": "#/definitions/app.v1.MembershipConfig",
+          "title": "会员配置"
+        }
+      },
+      "title": "商品配置"
     },
     "google.protobuf.Any": {
       "type": "object",

@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/constant"
+	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/gorm/ai_boilerplate_model"
 	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/gorm/ai_boilerplate_repo"
 	"github.com/go-kratos/kratos/v2/log"
 )
@@ -126,4 +127,31 @@ func (r *UserMembershipRepo) CalcMembershipChange(ctx context.Context, oldMember
 	newExpiredAt := now.AddDate(0, 0, totalDays)
 
 	return addMembershipType, newExpiredAt, nil
+}
+
+// GetUserActualMembershipInfo 获取用户的实际会员信息
+func (r *UserMembershipRepo) GetUserActualMembershipInfo(ctx context.Context, userID string) (*ai_boilerplate_model.UserMembership, error) {
+	defaultMembership := &ai_boilerplate_model.UserMembership{
+		UserID:         userID,
+		MembershipType: constant.MembershipTypeNormal.String(),
+		Status:         int32(constant.StatusEnable),
+	}
+	userMembership, err := r.FindOneCacheByUserID(ctx, userID)
+	if err != nil {
+		return nil, err
+	}
+	// 如果用户会员信息不存在，则创建普通会员
+	if userMembership == nil || userMembership.ID == "" {
+		err = r.CreateOneCache(ctx, defaultMembership)
+		if err != nil {
+			return nil, err
+		}
+		return defaultMembership, nil
+	}
+	// 计算用户的实际会员信息
+	// 如果不是普通会员，检查是否已过期
+	if userMembership.MembershipType != constant.MembershipTypeNormal.String() && userMembership.ExpiredAt.Valid && userMembership.ExpiredAt.Time.Before(time.Now()) {
+		return defaultMembership, nil
+	}
+	return userMembership, nil
 }

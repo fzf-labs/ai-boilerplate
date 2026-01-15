@@ -31,7 +31,7 @@ func newMembership(db *gorm.DB, opts ...gen.DOOption) membership {
 	_membership.Name = field.NewString(tableName, "name")
 	_membership.Type = field.NewString(tableName, "type")
 	_membership.Description = field.NewString(tableName, "description")
-	_membership.Sort = field.NewInt32(tableName, "sort")
+	_membership.Level = field.NewInt32(tableName, "level")
 	_membership.Status = field.NewInt32(tableName, "status")
 	_membership.CreatedAt = field.NewTime(tableName, "created_at")
 	_membership.UpdatedAt = field.NewTime(tableName, "updated_at")
@@ -50,7 +50,7 @@ type membership struct {
 	Name        field.String // 会员类型名称
 	Type        field.String // 会员类型编码(normal,vip,svip)
 	Description field.String // 会员类型描述
-	Sort        field.Int32  // 排序
+	Level       field.Int32  // 等级
 	Status      field.Int32  // 状态(-1禁用,1启用)
 	CreatedAt   field.Time   // 创建时间
 	UpdatedAt   field.Time   // 更新时间
@@ -75,7 +75,7 @@ func (m *membership) updateTableName(table string) *membership {
 	m.Name = field.NewString(table, "name")
 	m.Type = field.NewString(table, "type")
 	m.Description = field.NewString(table, "description")
-	m.Sort = field.NewInt32(table, "sort")
+	m.Level = field.NewInt32(table, "level")
 	m.Status = field.NewInt32(table, "status")
 	m.CreatedAt = field.NewTime(table, "created_at")
 	m.UpdatedAt = field.NewTime(table, "updated_at")
@@ -111,7 +111,7 @@ func (m *membership) fillFieldMap() {
 	m.fieldMap["name"] = m.Name
 	m.fieldMap["type"] = m.Type
 	m.fieldMap["description"] = m.Description
-	m.fieldMap["sort"] = m.Sort
+	m.fieldMap["level"] = m.Level
 	m.fieldMap["status"] = m.Status
 	m.fieldMap["created_at"] = m.CreatedAt
 	m.fieldMap["updated_at"] = m.UpdatedAt

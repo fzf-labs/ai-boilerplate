@@ -21,7 +21,7 @@ func (a *AdminV1MallProductService) GetMallProductList(ctx context.Context, req 
 		Query:    []*condition.QueryParam{},
 		Order: []*condition.OrderParam{
 			{
-				Field: "created_at",
+				Field: "sort",
 				Order: condition.DESC,
 			},
 		},
