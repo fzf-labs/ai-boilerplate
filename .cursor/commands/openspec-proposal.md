@@ -1,8 +1,8 @@
 ---
-name: OpenSpec: Proposal
-description: Scaffold a new OpenSpec change and validate strictly.
+name: /openspec-proposal
+id: openspec-proposal
 category: OpenSpec
-tags: [openspec, change]
+description: Scaffold a new OpenSpec change and validate strictly.
 ---
 <!-- OPENSPEC:START -->
 **Guardrails**

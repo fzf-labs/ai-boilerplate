@@ -1,31 +1,60 @@
 # Project Context
 
 ## Purpose
-[Describe your project's purpose and goals]
+AI boilerplate monorepo providing a backend API plus admin web and mobile app
+clients for an AI-enabled product (chat/image/audio/video, prompts), with
+membership and e-commerce features, and integrations like WeChat and messaging.
 
 ## Tech Stack
-- [List your primary technologies]
-- [e.g., TypeScript, React, Node.js]
+- Backend: Go 1.24, Kratos v2, gRPC + grpc-gateway, Protobuf + OpenAPI/Swagger
+- Data: PostgreSQL (primary), Redis (cache/queues), GORM + gorm/gen
+- Infra: OpenTelemetry, Asynq, optional service registry (etcd/consul/nacos)
+- Admin web: Vue 3 + TypeScript, Vite, Ant Design Vue (vben admin monorepo)
+- Mobile app: uni-app (Vue 3), Vite, Pinia, wot-design-uni, alova, z-paging
+- Tooling: pnpm workspaces, ESLint/Prettier, Vitest (admin)
 
 ## Project Conventions
 
 ### Code Style
-[Describe your code style preferences, formatting rules, and naming conventions]
+- Go: gofmt, idiomatic Go; keep API handlers in `internal/service` and data
+  access in `internal/data`; generated files keep `admin_v1_*` / `app_v1_*`
+  naming.
+- Frontend: follow repo lint configs (ESLint/Prettier in admin, ESLint in app);
+  use Vue 3 composition API and TypeScript.
 
 ### Architecture Patterns
-[Document your architectural decisions and patterns]
+- Monorepo with git subtrees for `ai-boilerplate-backend`, `ai-boilerplate-admin`,
+  and `ai-boilerplate-app`.
+- Backend follows Kratos layering: service (transport handlers) and data (DB,
+  repos, external integrations). GORM repos live under
+  `internal/data/gorm/...` and are generated.
+- API definitions live in Protobuf and are published as Swagger in
+  `ai-boilerplate-backend/doc/swagger`.
 
 ### Testing Strategy
-[Explain your testing approach and requirements]
+- Backend: `go test ./...` for unit/integration tests as needed.
+- Admin web: Vitest unit tests (`pnpm test:unit`).
+- App: lint + type checks (`pnpm lint`, `pnpm type-check`) before release.
 
 ### Git Workflow
-[Describe your branching strategy and commit conventions]
+- Subtrees are synced via `make subtree-pull-*` / `make subtree-push-*`.
+- Default branch is `master` for subtree remotes.
+- Prefer Conventional Commits when working in the admin frontend (commitlint).
 
 ## Domain Context
-[Add domain-specific knowledge that AI assistants need to understand]
+Core domains include users/admins/roles/menus, tenants, notices, notifications,
+membership and activation codes, mall products/orders/payments, AI providers and
+models, AI content records (chat/image/audio/video/write), and WeChat (GZH/mini
+program) operations plus SMS/email services.
 
 ## Important Constraints
-[List any technical, business, or regulatory constraints]
+- Requires PostgreSQL and Redis (see `docker-compose.example.yml`).
+- Config is managed via `ai-boilerplate-backend/configs/config.yaml` (example in
+  `configs/config.example.yaml`).
+- Node >= 20 and pnpm >= 9 for the app; Go 1.24 for the backend.
 
 ## External Dependencies
-[Document key external services, APIs, or systems]
+- PostgreSQL, Redis, optional etcd/consul/nacos registry
+- OpenTelemetry collector (OTLP)
+- WeChat Official Account / Mini Program (PowerWeChat)
+- SMS/email providers and Baidu Push

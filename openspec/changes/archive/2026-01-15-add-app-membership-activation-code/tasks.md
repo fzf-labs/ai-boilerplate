@@ -7,4 +7,4 @@
 
 ## 2. Verification
 - [x] Run make api (or equivalent) to regenerate pb/swagger.
-- [ ] Run targeted tests if available (or document manual verification).
+- [x] Run targeted tests if available (or document manual verification). Manual verification: redeem a valid code via `/app/v1/mall_activation_code/activate` and confirm activation code status/user fields plus membership expiration updates.
