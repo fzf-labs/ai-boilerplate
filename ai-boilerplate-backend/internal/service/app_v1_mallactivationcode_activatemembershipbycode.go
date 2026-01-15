@@ -14,6 +14,7 @@ import (
 	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/gorm/ai_boilerplate_model"
 	"github.com/fzf-labs/kratos-contrib/meta"
 	kerrors "github.com/go-kratos/kratos/v2/errors"
+	"gorm.io/datatypes"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -47,7 +48,7 @@ func (s *AppV1MallActivationCodeService) ActivateMembershipByCode(ctx context.Co
 		return nil, pb.ErrorReasonActivationCodeNotFound()
 	}
 	if activationCode.ProductType != constant.MallProductTypeMembership.String() {
-		return nil, pb.ErrorReasonActivationCodeProductConfigInvalid()
+		return nil, pb.ErrorReasonActivationCodeProductConfigInvalid(pb.WithError(errors.New("product type not supported")))
 	}
 
 	product, err := s.mallProductRepo.FindOneCacheByID(ctx, activationCode.ProductID)
@@ -55,15 +56,15 @@ func (s *AppV1MallActivationCodeService) ActivateMembershipByCode(ctx context.Co
 		return nil, pb.ErrorReasonDataSQLError(pb.WithError(err))
 	}
 	if product == nil || product.ID == "" || product.ProductType != constant.MallProductTypeMembership.String() {
-		return nil, pb.ErrorReasonActivationCodeProductConfigInvalid()
+		return nil, pb.ErrorReasonActivationCodeProductConfigInvalid(pb.WithError(errors.New("product not supported")))
 	}
 
 	membershipType, durationDays, err := parseMembershipProductConfig(product.ProductConfig)
 	if err != nil {
-		return nil, pb.ErrorReasonActivationCodeProductConfigInvalid()
+		return nil, pb.ErrorReasonActivationCodeProductConfigInvalid(pb.WithError(err))
 	}
 	if _, err := constant.ParseMembershipType(membershipType); err != nil {
-		return nil, pb.ErrorReasonActivationCodeProductConfigInvalid()
+		return nil, pb.ErrorReasonActivationCodeProductConfigInvalid(pb.WithError(err))
 	}
 
 	var expiredAt time.Time
@@ -107,6 +108,12 @@ func (s *AppV1MallActivationCodeService) ActivateMembershipByCode(ctx context.Co
 			baseTime = membershipData.ExpiredAt.Time
 		}
 		expiredAt = baseTime.AddDate(0, 0, int(durationDays))
+
+		userChange, err := buildActivationCodeUserChange(membershipData, membershipType, expiredAt, durationDays)
+		if err != nil {
+			return pb.ErrorReasonDataFormattingError(pb.WithError(err))
+		}
+		codeData.UserChange = datatypes.JSON(userChange)
 		membershipData.MembershipType = membershipType
 		membershipData.ExpiredAt = sql.NullTime{Time: expiredAt, Valid: true}
 		membershipData.Status = 1
@@ -141,6 +148,48 @@ func parseMembershipProductConfig(raw []byte) (string, int32, error) {
 		return "", 0, errors.New("invalid membership config")
 	}
 	return cfg.Membership.MembershipType, cfg.Membership.DurationDays, nil
+}
+
+type activationCodeMembershipChangeItem struct {
+	MembershipType string `json:"membershipType,omitempty"`
+	ExpiredAt      string `json:"expiredAt,omitempty"`
+	Status         int32  `json:"status,omitempty"`
+	DurationDays   int32  `json:"durationDays,omitempty"`
+}
+
+type activationCodeMembershipChange struct {
+	Before *activationCodeMembershipChangeItem `json:"before,omitempty"`
+	After  *activationCodeMembershipChangeItem `json:"after,omitempty"`
+}
+
+type activationCodeUserChange struct {
+	UserMembershipChange *activationCodeMembershipChange `json:"userMembershipChange,omitempty"`
+}
+
+func buildActivationCodeUserChange(membershipData *ai_boilerplate_model.UserMembership, membershipType string, expiredAt time.Time, durationDays int32) ([]byte, error) {
+	before := &activationCodeMembershipChangeItem{}
+	if membershipData != nil {
+		before.MembershipType = membershipData.MembershipType
+		before.Status = membershipData.Status
+		if membershipData.ExpiredAt.Valid {
+			before.ExpiredAt = membershipData.ExpiredAt.Time.Format(time.RFC3339)
+		}
+	}
+
+	after := &activationCodeMembershipChangeItem{
+		MembershipType: membershipType,
+		ExpiredAt:      expiredAt.Format(time.RFC3339),
+		Status:         1,
+		DurationDays:   durationDays,
+	}
+
+	userChange := &activationCodeUserChange{
+		UserMembershipChange: &activationCodeMembershipChange{
+			Before: before,
+			After:  after,
+		},
+	}
+	return json.Marshal(userChange)
 }
 
 func isActivationCodeRedeemable(data *ai_boilerplate_model.MallActivationCode, now time.Time) bool {

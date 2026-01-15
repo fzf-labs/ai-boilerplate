@@ -20,14 +20,17 @@ var _ = binding.EncodeURL
 const _ = http.SupportPackageIsVersion1
 
 const OperationMallActivationCodeActivateMembershipByCode = "/app.v1.MallActivationCode/ActivateMembershipByCode"
+const OperationMallActivationCodeListActivationCodeRedemptions = "/app.v1.MallActivationCode/ListActivationCodeRedemptions"
 
 type MallActivationCodeHTTPServer interface {
 	ActivateMembershipByCode(context.Context, *ActivateMembershipByCodeReq) (*ActivateMembershipByCodeReply, error)
+	ListActivationCodeRedemptions(context.Context, *ListActivationCodeRedemptionsReq) (*ListActivationCodeRedemptionsReply, error)
 }
 
 func RegisterMallActivationCodeHTTPServer(s *http.Server, srv MallActivationCodeHTTPServer) {
 	r := s.Route("/")
 	r.POST("/app/v1/mall_activation_code/activate", _MallActivationCode_ActivateMembershipByCode0_HTTP_Handler(srv))
+	r.GET("/app/v1/mall_activation_code/redemptions", _MallActivationCode_ListActivationCodeRedemptions0_HTTP_Handler(srv))
 }
 
 func _MallActivationCode_ActivateMembershipByCode0_HTTP_Handler(srv MallActivationCodeHTTPServer) func(ctx http.Context) error {
@@ -49,8 +52,28 @@ func _MallActivationCode_ActivateMembershipByCode0_HTTP_Handler(srv MallActivati
 	}
 }
 
+func _MallActivationCode_ListActivationCodeRedemptions0_HTTP_Handler(srv MallActivationCodeHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in ListActivationCodeRedemptionsReq
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationMallActivationCodeListActivationCodeRedemptions)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.ListActivationCodeRedemptions(ctx, req.(*ListActivationCodeRedemptionsReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*ListActivationCodeRedemptionsReply)
+		return ctx.Result(200, reply)
+	}
+}
+
 type MallActivationCodeHTTPClient interface {
 	ActivateMembershipByCode(ctx context.Context, req *ActivateMembershipByCodeReq, opts ...http.CallOption) (rsp *ActivateMembershipByCodeReply, err error)
+	ListActivationCodeRedemptions(ctx context.Context, req *ListActivationCodeRedemptionsReq, opts ...http.CallOption) (rsp *ListActivationCodeRedemptionsReply, err error)
 }
 
 type MallActivationCodeHTTPClientImpl struct {
@@ -68,6 +91,19 @@ func (c *MallActivationCodeHTTPClientImpl) ActivateMembershipByCode(ctx context.
 	opts = append(opts, http.Operation(OperationMallActivationCodeActivateMembershipByCode))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *MallActivationCodeHTTPClientImpl) ListActivationCodeRedemptions(ctx context.Context, in *ListActivationCodeRedemptionsReq, opts ...http.CallOption) (*ListActivationCodeRedemptionsReply, error) {
+	var out ListActivationCodeRedemptionsReply
+	pattern := "/app/v1/mall_activation_code/redemptions"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationMallActivationCodeListActivationCodeRedemptions))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
 		return nil, err
 	}

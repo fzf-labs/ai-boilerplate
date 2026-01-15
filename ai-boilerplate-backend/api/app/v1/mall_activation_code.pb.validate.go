@@ -246,3 +246,366 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ActivateMembershipByCodeReplyValidationError{}
+
+// Validate checks the field values on ActivationCodeRedemptionInfo with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ActivationCodeRedemptionInfo) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ActivationCodeRedemptionInfo with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ActivationCodeRedemptionInfoMultiError, or nil if none found.
+func (m *ActivationCodeRedemptionInfo) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ActivationCodeRedemptionInfo) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Code
+
+	// no validation rules for ActivatedAt
+
+	// no validation rules for MembershipType
+
+	// no validation rules for ExpiredAt
+
+	// no validation rules for DurationDays
+
+	if len(errors) > 0 {
+		return ActivationCodeRedemptionInfoMultiError(errors)
+	}
+
+	return nil
+}
+
+// ActivationCodeRedemptionInfoMultiError is an error wrapping multiple
+// validation errors returned by ActivationCodeRedemptionInfo.ValidateAll() if
+// the designated constraints aren't met.
+type ActivationCodeRedemptionInfoMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ActivationCodeRedemptionInfoMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ActivationCodeRedemptionInfoMultiError) AllErrors() []error { return m }
+
+// ActivationCodeRedemptionInfoValidationError is the validation error returned
+// by ActivationCodeRedemptionInfo.Validate if the designated constraints
+// aren't met.
+type ActivationCodeRedemptionInfoValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ActivationCodeRedemptionInfoValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ActivationCodeRedemptionInfoValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ActivationCodeRedemptionInfoValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ActivationCodeRedemptionInfoValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ActivationCodeRedemptionInfoValidationError) ErrorName() string {
+	return "ActivationCodeRedemptionInfoValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ActivationCodeRedemptionInfoValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sActivationCodeRedemptionInfo.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ActivationCodeRedemptionInfoValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ActivationCodeRedemptionInfoValidationError{}
+
+// Validate checks the field values on ListActivationCodeRedemptionsReq with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *ListActivationCodeRedemptionsReq) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListActivationCodeRedemptionsReq with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// ListActivationCodeRedemptionsReqMultiError, or nil if none found.
+func (m *ListActivationCodeRedemptionsReq) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListActivationCodeRedemptionsReq) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Page
+
+	// no validation rules for PageSize
+
+	if len(errors) > 0 {
+		return ListActivationCodeRedemptionsReqMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListActivationCodeRedemptionsReqMultiError is an error wrapping multiple
+// validation errors returned by
+// ListActivationCodeRedemptionsReq.ValidateAll() if the designated
+// constraints aren't met.
+type ListActivationCodeRedemptionsReqMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListActivationCodeRedemptionsReqMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListActivationCodeRedemptionsReqMultiError) AllErrors() []error { return m }
+
+// ListActivationCodeRedemptionsReqValidationError is the validation error
+// returned by ListActivationCodeRedemptionsReq.Validate if the designated
+// constraints aren't met.
+type ListActivationCodeRedemptionsReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListActivationCodeRedemptionsReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListActivationCodeRedemptionsReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListActivationCodeRedemptionsReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListActivationCodeRedemptionsReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListActivationCodeRedemptionsReqValidationError) ErrorName() string {
+	return "ListActivationCodeRedemptionsReqValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListActivationCodeRedemptionsReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListActivationCodeRedemptionsReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListActivationCodeRedemptionsReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListActivationCodeRedemptionsReqValidationError{}
+
+// Validate checks the field values on ListActivationCodeRedemptionsReply with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *ListActivationCodeRedemptionsReply) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListActivationCodeRedemptionsReply
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// ListActivationCodeRedemptionsReplyMultiError, or nil if none found.
+func (m *ListActivationCodeRedemptionsReply) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListActivationCodeRedemptionsReply) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Total
+
+	for idx, item := range m.GetList() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ListActivationCodeRedemptionsReplyValidationError{
+						field:  fmt.Sprintf("List[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ListActivationCodeRedemptionsReplyValidationError{
+						field:  fmt.Sprintf("List[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ListActivationCodeRedemptionsReplyValidationError{
+					field:  fmt.Sprintf("List[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return ListActivationCodeRedemptionsReplyMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListActivationCodeRedemptionsReplyMultiError is an error wrapping multiple
+// validation errors returned by
+// ListActivationCodeRedemptionsReply.ValidateAll() if the designated
+// constraints aren't met.
+type ListActivationCodeRedemptionsReplyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListActivationCodeRedemptionsReplyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListActivationCodeRedemptionsReplyMultiError) AllErrors() []error { return m }
+
+// ListActivationCodeRedemptionsReplyValidationError is the validation error
+// returned by ListActivationCodeRedemptionsReply.Validate if the designated
+// constraints aren't met.
+type ListActivationCodeRedemptionsReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListActivationCodeRedemptionsReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListActivationCodeRedemptionsReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListActivationCodeRedemptionsReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListActivationCodeRedemptionsReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListActivationCodeRedemptionsReplyValidationError) ErrorName() string {
+	return "ListActivationCodeRedemptionsReplyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListActivationCodeRedemptionsReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListActivationCodeRedemptionsReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListActivationCodeRedemptionsReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListActivationCodeRedemptionsReplyValidationError{}

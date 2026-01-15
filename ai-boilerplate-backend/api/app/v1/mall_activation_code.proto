@@ -27,6 +27,20 @@ service MallActivationCode {
       }
     };
   }
+  // 会员激活码兑换记录
+  rpc ListActivationCodeRedemptions(ListActivationCodeRedemptionsReq) returns (ListActivationCodeRedemptionsReply) {
+    option (google.api.http) = {get: "/app/v1/mall_activation_code/redemptions"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
 }
 
 // 请求-会员激活码激活
@@ -46,4 +60,36 @@ message ActivateMembershipByCodeReq {
 message ActivateMembershipByCodeReply {
   string membershipType = 1; // 会员类型编码(normal,vip,svip)
   string expiredAt = 2; // 到期时间(普通会员为空,表示永不过期)
+}
+
+// 兑换记录信息
+message ActivationCodeRedemptionInfo {
+  string code = 1; // 激活码
+  string activatedAt = 2; // 激活时间
+  string membershipType = 3; // 会员类型编码(normal,vip,svip)
+  string expiredAt = 4; // 到期时间(普通会员为空,表示永不过期)
+  int32 durationDays = 5; // 有效时长(天)
+}
+
+// 请求-兑换记录列表
+message ListActivationCodeRedemptionsReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1 [(buf.validate.field).int32 = {gte: 1}]; //页码
+  int32 pageSize = 2 [(buf.validate.field).int32 = {
+    gte: 1
+    lte: 1000
+  }]; //页数
+}
+
+// 响应-兑换记录列表
+message ListActivationCodeRedemptionsReply {
+  int32 total = 1; // 总数
+  repeated ActivationCodeRedemptionInfo list = 2; // 兑换记录
 }

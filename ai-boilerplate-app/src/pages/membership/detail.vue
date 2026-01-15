@@ -19,6 +19,51 @@ const membershipInfo = ref<GetUserMembershipInfoReply | null>(null)
 const membershipBenefits = ref<MembershipBenefit[]>([])
 const loading = ref(false)
 
+const membershipTheme = computed(() => {
+  const type = membershipInfo.value?.membershipType || 'normal'
+  switch (type) {
+    case 'svip':
+      return {
+        icon: '👑',
+        gradient: 'linear-gradient(135deg, #065f46 0%, #047857 50%, #059669 100%)',
+        shadow: 'rgba(6, 95, 70, 0.35)',
+        shadowAlt: 'rgba(4, 120, 87, 0.25)',
+      }
+    case 'vip':
+      return {
+        icon: '💎',
+        gradient: 'linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%)',
+        shadow: 'rgba(16, 185, 129, 0.3)',
+        shadowAlt: 'rgba(5, 150, 105, 0.2)',
+      }
+    default:
+      return {
+        icon: '⭐',
+        gradient: 'linear-gradient(135deg, #6ee7b7 0%, #34d399 50%, #10b981 100%)',
+        shadow: 'rgba(110, 231, 183, 0.3)',
+        shadowAlt: 'rgba(52, 211, 153, 0.2)',
+      }
+  }
+})
+
+const expiredText = computed(() => {
+  const info = membershipInfo.value
+  if (!info?.expiredAt)
+    return '永久有效'
+  return formatDate(info.expiredAt)
+})
+
+const benefitCount = computed(() => membershipBenefits.value.length)
+
+const autoRenewText = computed(() => {
+  const info = membershipInfo.value
+  if (!info || info.autoRenew !== 1)
+    return '关'
+  if (info.autoRenewDays)
+    return `开（每${info.autoRenewDays}天）`
+  return '开'
+})
+
 /**
  * 获取用户会员信息
  */
@@ -62,6 +107,8 @@ async function fetchMembershipBenefits() {
 function formatDate(dateStr?: string) {
   if (!dateStr)
     return '-'
+  if (dateStr.includes('T'))
+    return dateStr.split('T')[0]
   return dateStr.split(' ')[0]
 }
 
@@ -78,9 +125,15 @@ onLoad(() => {
   <view class="membership-detail-page">
     <view class="top-bg" />
 
-    <!-- 会员卡片 -->
-    <view class="membership-card-wrapper">
-      <view class="membership-card">
+    <view class="content">
+      <!-- 会员卡片 -->
+      <view
+        class="membership-card"
+        :style="{
+          background: membershipTheme.gradient,
+          boxShadow: `0 18rpx 48rpx ${membershipTheme.shadow}, 0 8rpx 16rpx ${membershipTheme.shadowAlt}`,
+        }"
+      >
         <!-- 背景装饰 -->
         <view class="card-decoration">
           <view class="decoration-circle circle-1" />
@@ -92,7 +145,7 @@ onLoad(() => {
         <view v-if="membershipInfo" class="card-content">
           <view class="card-header">
             <view class="member-icon">
-              <text class="icon-text">{{ membershipInfo.membershipType === 'svip' ? '👑' : membershipInfo.membershipType === 'vip' ? '💎' : '⭐' }}</text>
+              <text class="icon-text">{{ membershipTheme.icon }}</text>
             </view>
             <view class="member-info">
               <text class="member-name">{{ membershipInfo.membershipName || '普通会员' }}</text>
@@ -100,66 +153,28 @@ onLoad(() => {
             </view>
           </view>
           <text class="member-desc">{{ membershipInfo.membershipDescription || '享受基础服务' }}</text>
+          <view class="meta-grid">
+            <view class="meta-item">
+              <text class="meta-label">到期时间</text>
+              <text class="meta-value">{{ expiredText }}</text>
+            </view>
+            <view class="meta-item">
+              <text class="meta-label">权益数量</text>
+              <text class="meta-value">{{ benefitCount || '-' }}</text>
+            </view>
+            <view class="meta-item">
+              <text class="meta-label">自动续费</text>
+              <text class="meta-value">{{ autoRenewText }}</text>
+            </view>
+          </view>
         </view>
       </view>
-    </view>
 
-    <!-- 会员详细信息 -->
-    <view class="detail-section">
-      <view class="section-title">
-        会员信息
-      </view>
-
-      <view class="info-list">
-        <view class="info-item">
-          <view class="item-label">
-            <wd-icon name="user" size="36rpx" />
-            <text>会员类型</text>
-          </view>
-          <text class="item-value">{{ membershipInfo?.membershipName || '-' }}</text>
+      <!-- 会员权益 -->
+      <view v-if="membershipBenefits.length > 0" class="detail-section">
+        <view class="section-title">
+          会员权益
         </view>
-
-        <view class="info-item">
-          <view class="item-label">
-            <wd-icon name="clock" size="36rpx" />
-            <text>会员状态</text>
-          </view>
-          <text v-if="membershipInfo?.status === -1" class="item-value status-disabled">已禁用</text>
-          <text v-else-if="membershipInfo?.isExpired" class="item-value status-expired">已过期</text>
-          <text v-else class="item-value status-active">正常</text>
-        </view>
-
-        <view class="info-item">
-          <view class="item-label">
-            <wd-icon name="calendar" size="36rpx" />
-            <text>到期时间</text>
-          </view>
-          <text class="item-value">{{ membershipInfo?.expiredAt ? formatDate(membershipInfo.expiredAt) : '永久有效' }}</text>
-        </view>
-
-        <view class="info-item">
-          <view class="item-label">
-            <wd-icon name="time" size="36rpx" />
-            <text>开通时间</text>
-          </view>
-          <text class="item-value">{{ formatDate(membershipInfo?.createdAt) }}</text>
-        </view>
-
-        <view v-if="membershipInfo?.autoRenew === 1" class="info-item highlight">
-          <view class="item-label">
-            <wd-icon name="refresh" size="36rpx" />
-            <text>自动续费</text>
-          </view>
-          <text class="item-value">每 {{ membershipInfo.autoRenewDays }} 天自动续费</text>
-        </view>
-      </view>
-    </view>
-
-    <!-- 会员权益 -->
-    <view v-if="membershipBenefits.length > 0" class="detail-section">
-      <view class="section-title">
-        会员权益
-      </view>
 
       <view class="benefits-grid">
         <view v-for="benefit in membershipBenefits" :key="benefit.benefitKey" class="benefit-card">
@@ -168,6 +183,7 @@ onLoad(() => {
             <text v-if="benefit.benefitNum" class="benefit-num">{{ benefit.benefitNum }}次</text>
           </view>
           <text v-if="benefit.benefitDesc" class="benefit-desc">{{ benefit.benefitDesc }}</text>
+        </view>
         </view>
       </view>
     </view>
@@ -193,9 +209,9 @@ onLoad(() => {
   z-index: 0;
 }
 
-.membership-card-wrapper {
+.content {
   position: relative;
-  padding: 32rpx var(--fg-page-x);
+  padding: 32rpx var(--fg-page-x) 40rpx;
   z-index: 1;
 }
 
@@ -203,8 +219,7 @@ onLoad(() => {
   position: relative;
   border-radius: 32rpx;
   overflow: hidden;
-  background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
-  box-shadow: 0 20rpx 60rpx rgba(16, 185, 129, 0.3);
+  margin-bottom: 24rpx;
 }
 
 .card-decoration {
@@ -255,7 +270,7 @@ onLoad(() => {
 
 .card-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 24rpx;
   margin-bottom: 24rpx;
 }
@@ -308,10 +323,37 @@ onLoad(() => {
   letter-spacing: 0.3rpx;
 }
 
+.meta-grid {
+  margin-top: 28rpx;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16rpx;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+  padding: 16rpx 18rpx;
+  border-radius: 16rpx;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+.meta-label {
+  font-size: 22rpx;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.meta-value {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #ffffff;
+}
+
 .detail-section {
   position: relative;
-  padding: 0 var(--fg-page-x);
-  margin-top: 32rpx;
+  margin-top: 28rpx;
   z-index: 1;
 }
 
@@ -321,62 +363,6 @@ onLoad(() => {
   color: var(--fg-text);
   margin-bottom: 24rpx;
   padding-left: 8rpx;
-}
-
-.info-list {
-  background: var(--fg-surface);
-  border-radius: 28rpx;
-  overflow: hidden;
-  border: 1px solid var(--fg-border);
-  box-shadow: var(--fg-shadow-card);
-}
-
-.info-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 32rpx 28rpx;
-  border-bottom: 1px solid var(--fg-border);
-  transition: background-color 0.2s ease;
-}
-
-.info-item:last-child {
-  border-bottom: none;
-}
-
-.info-item:active {
-  background-color: var(--fg-bg-alt);
-}
-
-.info-item.highlight {
-  background: linear-gradient(90deg, rgba(255, 215, 0, 0.05) 0%, transparent 100%);
-}
-
-.item-label {
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-  font-size: 28rpx;
-  font-weight: 500;
-  color: var(--fg-text-secondary);
-}
-
-.item-value {
-  font-size: 28rpx;
-  font-weight: 600;
-  color: var(--fg-text);
-}
-
-.status-active {
-  color: #10b981;
-}
-
-.status-expired {
-  color: #ef4444;
-}
-
-.status-disabled {
-  color: #6b7280;
 }
 
 /* 会员权益网格 */

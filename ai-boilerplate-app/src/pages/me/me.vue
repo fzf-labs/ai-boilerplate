@@ -204,6 +204,23 @@ function handleViewMembershipDetail() {
 }
 
 /**
+ * 兑换激活码
+ */
+function handleRedeemCode() {
+  if (!tokenStore.hasLogin) {
+    toast.warning('请先登录')
+    setTimeout(() => {
+      handleLogin()
+    }, 1500)
+    return
+  }
+
+  uni.navigateTo({
+    url: '/pages/vip/activation-code',
+  })
+}
+
+/**
  * 页面展示时刷新用户信息（登录后返回会触发）
  */
 onShow(() => {
@@ -249,7 +266,7 @@ onShow(() => {
           background: membershipTheme.gradient,
           boxShadow: `0 20rpx 60rpx ${membershipTheme.shadow}, 0 8rpx 16rpx ${membershipTheme.shadowAlt}`,
         }"
-        @click="handleGoVipCenter"
+        @click="handleViewMembershipDetail"
       >
         <!-- 背景装饰层 -->
         <view class="membership-bg-decoration">
@@ -279,6 +296,9 @@ onShow(() => {
               <view class="membership-action">
                 <view class="action-btn" @click.stop="handleGoVipCenter">
                   <text class="action-text">{{ membershipActionText }}</text>
+                </view>
+                <view class="activation-btn" @click.stop="handleRedeemCode">
+                  <text class="activation-text">激活码</text>
                 </view>
               </view>
             </view>
@@ -472,15 +492,29 @@ onShow(() => {
 /* VIP 操作按钮 */
 .membership-action {
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12rpx;
 }
 
-.action-btn {
-  padding: 12rpx 24rpx;
-  background: rgba(255, 255, 255, 0.25);
+.action-btn,
+.activation-btn {
+  min-width: 140rpx;
+  height: 56rpx;
+  padding: 0 24rpx;
   border-radius: 32rpx;
   border: 1px solid rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(10rpx);
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.action-btn {
+  background: rgba(255, 255, 255, 0.25);
 }
 
 .action-btn:active {
@@ -493,6 +527,21 @@ onShow(() => {
   font-weight: 600;
   color: #fff;
   white-space: nowrap;
+}
+
+.activation-btn {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.activation-btn:active {
+  background: rgba(255, 255, 255, 0.22);
+  transform: scale(0.96);
+}
+
+.activation-text {
+  font-size: 22rpx;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 /* 会员图标 */

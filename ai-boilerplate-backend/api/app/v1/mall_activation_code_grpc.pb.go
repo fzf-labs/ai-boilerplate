@@ -24,6 +24,8 @@ const _ = grpc.SupportPackageIsVersion7
 type MallActivationCodeClient interface {
 	// 会员激活码激活
 	ActivateMembershipByCode(ctx context.Context, in *ActivateMembershipByCodeReq, opts ...grpc.CallOption) (*ActivateMembershipByCodeReply, error)
+	// 会员激活码兑换记录
+	ListActivationCodeRedemptions(ctx context.Context, in *ListActivationCodeRedemptionsReq, opts ...grpc.CallOption) (*ListActivationCodeRedemptionsReply, error)
 }
 
 type mallActivationCodeClient struct {
@@ -43,12 +45,23 @@ func (c *mallActivationCodeClient) ActivateMembershipByCode(ctx context.Context,
 	return out, nil
 }
 
+func (c *mallActivationCodeClient) ListActivationCodeRedemptions(ctx context.Context, in *ListActivationCodeRedemptionsReq, opts ...grpc.CallOption) (*ListActivationCodeRedemptionsReply, error) {
+	out := new(ListActivationCodeRedemptionsReply)
+	err := c.cc.Invoke(ctx, "/app.v1.MallActivationCode/ListActivationCodeRedemptions", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MallActivationCodeServer is the server API for MallActivationCode service.
 // All implementations must embed UnimplementedMallActivationCodeServer
 // for forward compatibility
 type MallActivationCodeServer interface {
 	// 会员激活码激活
 	ActivateMembershipByCode(context.Context, *ActivateMembershipByCodeReq) (*ActivateMembershipByCodeReply, error)
+	// 会员激活码兑换记录
+	ListActivationCodeRedemptions(context.Context, *ListActivationCodeRedemptionsReq) (*ListActivationCodeRedemptionsReply, error)
 	mustEmbedUnimplementedMallActivationCodeServer()
 }
 
@@ -58,6 +71,9 @@ type UnimplementedMallActivationCodeServer struct {
 
 func (UnimplementedMallActivationCodeServer) ActivateMembershipByCode(context.Context, *ActivateMembershipByCodeReq) (*ActivateMembershipByCodeReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ActivateMembershipByCode not implemented")
+}
+func (UnimplementedMallActivationCodeServer) ListActivationCodeRedemptions(context.Context, *ListActivationCodeRedemptionsReq) (*ListActivationCodeRedemptionsReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListActivationCodeRedemptions not implemented")
 }
 func (UnimplementedMallActivationCodeServer) mustEmbedUnimplementedMallActivationCodeServer() {}
 
@@ -90,6 +106,24 @@ func _MallActivationCode_ActivateMembershipByCode_Handler(srv interface{}, ctx c
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MallActivationCode_ListActivationCodeRedemptions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListActivationCodeRedemptionsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MallActivationCodeServer).ListActivationCodeRedemptions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/app.v1.MallActivationCode/ListActivationCodeRedemptions",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MallActivationCodeServer).ListActivationCodeRedemptions(ctx, req.(*ListActivationCodeRedemptionsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MallActivationCode_ServiceDesc is the grpc.ServiceDesc for MallActivationCode service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -100,6 +134,10 @@ var MallActivationCode_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ActivateMembershipByCode",
 			Handler:    _MallActivationCode_ActivateMembershipByCode_Handler,
+		},
+		{
+			MethodName: "ListActivationCodeRedemptions",
+			Handler:    _MallActivationCode_ListActivationCodeRedemptions_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
