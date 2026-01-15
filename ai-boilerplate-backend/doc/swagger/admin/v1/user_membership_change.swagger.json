@@ -1,0 +1,221 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/user_membership_change.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "UserMembershipChangeRecord"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/user_membership_change/list": {
+      "get": {
+        "summary": "用户会员变更记录表-列表数据查询",
+        "operationId": "UserMembershipChangeRecord_GetUserMembershipChangeList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetUserMembershipChangeListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "userId",
+            "description": "用户ID",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "sourceType",
+            "description": "来源类型(order,activation_code,admin)",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "sourceId",
+            "description": "来源ID(订单ID/激活码)",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UserMembershipChangeRecord"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "admin.v1.GetUserMembershipChangeListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.UserMembershipChangeInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-用户会员变更记录表-列表数据查询"
+    },
+    "admin.v1.UserMembershipChangeInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "userId": {
+          "type": "string",
+          "title": "用户ID"
+        },
+        "sourceType": {
+          "type": "string",
+          "title": "来源类型(order,activation_code,admin)"
+        },
+        "sourceId": {
+          "type": "string",
+          "title": "来源ID(订单ID/激活码)"
+        },
+        "before": {
+          "$ref": "#/definitions/admin.v1.UserMembershipChangeItem",
+          "title": "变更前会员类型"
+        },
+        "after": {
+          "$ref": "#/definitions/admin.v1.UserMembershipChangeItem",
+          "title": "变更后会员类型"
+        },
+        "remark": {
+          "type": "string",
+          "title": "备注"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "用户会员变更记录表信息"
+    },
+    "admin.v1.UserMembershipChangeItem": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "title": "用户ID"
+        },
+        "membershipType": {
+          "type": "string",
+          "title": "会员类型编码(normal,vip,svip)"
+        },
+        "expiredAt": {
+          "type": "string",
+          "title": "到期时间(普通会员为NULL,表示永不过期)"
+        },
+        "autoRenew": {
+          "type": "integer",
+          "format": "int32",
+          "title": "是否自动续费(0否,1是)"
+        },
+        "autoRenewDays": {
+          "type": "integer",
+          "format": "int32",
+          "title": "自动续费天数"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1禁用,1正常)"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "用户会员关系表信息"
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

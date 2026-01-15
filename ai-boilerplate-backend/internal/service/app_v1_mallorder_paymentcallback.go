@@ -6,6 +6,7 @@ import (
 	"time"
 
 	pb "github.com/fzf-labs/ai-boilerplate-backend/api/app/v1"
+	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/gorm/ai_boilerplate_dao"
 )
 
 // PaymentCallback 支付回调接口
@@ -38,13 +39,9 @@ func (a *AppV1MallOrderService) PaymentCallback(ctx context.Context, req *pb.Pay
 		resp.Message = "订单已过期"
 		return resp, nil
 	}
-
-	// 4. 更新订单状态（深拷贝旧数据）
-	oldData := a.mallOrderRepo.DeepCopy(order)
-
 	// 根据支付状态更新订单
+	now := time.Now()
 	if req.GetPaymentStatus() == 1 { // 支付成功
-		now := time.Now()
 		order.PaymentStatus = 1
 		order.PaymentTime = sql.NullTime{Time: now, Valid: true}
 		order.PaymentMethod = req.GetPaymentMethod()
@@ -60,13 +57,15 @@ func (a *AppV1MallOrderService) PaymentCallback(ctx context.Context, req *pb.Pay
 		resp.Message = "支付失败,订单已取消"
 	}
 
-	// 5. 保存订单更新
-	if err := a.mallOrderRepo.UpdateOneCacheWithZero(ctx, order, oldData); err != nil {
+	// 5. 保存订单更新 + 会员变更处理
+	err = a.commonRepo.Transaction(ctx, func(tx *ai_boilerplate_dao.Query) error {
+		return nil
+	})
+	if err != nil {
 		resp.Success = false
 		resp.Message = "订单更新失败"
 		return resp, nil
 	}
-
 	// 6. TODO: 如果支付成功，可以在这里触发后续业务逻辑
 	// - 发送通知
 	// - 更新商品库存

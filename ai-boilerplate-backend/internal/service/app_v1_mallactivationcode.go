@@ -10,24 +10,27 @@ func NewAppV1MallActivationCodeService(
 	logger log.Logger,
 	commonRepo *data.CommonRepo,
 	userMembershipRepo *data.UserMembershipRepo,
+	userMembershipChangeRepo *data.UserMembershipChangeRepo,
 	mallActivationCodeRepo *data.MallActivationCodeRepo,
 	mallProductRepo *data.MallProductRepo,
 ) *AppV1MallActivationCodeService {
 	l := log.NewHelper(log.With(logger, "module", "service/app_v1_mallactivationcode"))
 	return &AppV1MallActivationCodeService{
-		log:                    l,
-		commonRepo:             commonRepo,
-		userMembershipRepo:     userMembershipRepo,
-		mallActivationCodeRepo: mallActivationCodeRepo,
-		mallProductRepo:        mallProductRepo,
+		log:                      l,
+		commonRepo:               commonRepo,
+		userMembershipRepo:       userMembershipRepo,
+		userMembershipChangeRepo: userMembershipChangeRepo,
+		mallActivationCodeRepo:   mallActivationCodeRepo,
+		mallProductRepo:          mallProductRepo,
 	}
 }
 
 type AppV1MallActivationCodeService struct {
 	pb.UnimplementedMallActivationCodeServer
-	log                    *log.Helper
-	commonRepo             *data.CommonRepo
-	userMembershipRepo     *data.UserMembershipRepo
-	mallActivationCodeRepo *data.MallActivationCodeRepo
-	mallProductRepo        *data.MallProductRepo
+	log                      *log.Helper
+	commonRepo               *data.CommonRepo
+	userMembershipRepo       *data.UserMembershipRepo
+	userMembershipChangeRepo *data.UserMembershipChangeRepo
+	mallActivationCodeRepo   *data.MallActivationCodeRepo
+	mallProductRepo          *data.MallProductRepo
 }

@@ -2,7 +2,10 @@ package data
 
 import (
 	"context"
+	"encoding/json"
 
+	v1 "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1"
+	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/gorm/ai_boilerplate_model"
 	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/gorm/ai_boilerplate_repo"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/samber/lo"
@@ -45,4 +48,15 @@ func (m *MallProductRepo) ProductIDToProductName(ctx context.Context, productIDs
 		resp[v.ID] = v.ProductName
 	}
 	return resp, nil
+}
+
+// GetMembershipProductConfig 解析会员产品配置
+func (m *MallProductRepo) GetMembershipProductConfig(product *ai_boilerplate_model.MallProduct) (*v1.ProductConfig, error) {
+	var cfg v1.ProductConfig
+	if product.ProductConfig.String() != "" {
+		if err := json.Unmarshal(product.ProductConfig, &cfg); err != nil {
+			return nil, err
+		}
+	}
+	return &cfg, nil
 }

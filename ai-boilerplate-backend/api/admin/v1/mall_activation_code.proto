@@ -110,24 +110,6 @@ service MallActivationCode {
   }
 }
 
-//用户权益变化项
-message UserMembershipChangeItem {
-  string membershipType = 1; // 会员类型编码(normal,vip,svip)
-  string expiredAt = 2; // 到期时间(普通会员为NULL,表示永不过期)
-  int32 status = 3; // 状态(-1禁用,1正常)
-}
-
-//用户权益变化
-message UserMembershipChange {
-  UserMembershipChangeItem before = 1; // 变更前
-  UserMembershipChangeItem after = 2; // 变更后
-}
-
-//用户属性变化
-message UserChange {
-  UserMembershipChange userMembershipChange = 1; // 用户权益变化
-}
-
 //激活码管理表信息
 message MallActivationCodeInfo {
   string id = 1; // id
@@ -139,18 +121,17 @@ message MallActivationCodeInfo {
   string validEd = 7; // 激活码有效期截止时间
   string activatedAt = 8; // 激活时间
   string userId = 9; // 用户ID
-  UserChange userChange = 10; // 用户权益变化
-  string platform = 11; // 平台
-  string platformSoldAt = 12; // 平台售出时间
-  string platformOrderNo = 13; // 平台订单号
-  string platformBuyerId = 14; // 平台买家ID
-  string platformBuyerName = 15; // 平台买家昵称
-  string remark = 16; // 备注
-  int32 status = 17; // 状态(-2已退款,-1禁用,0库存,1已售出,2已激活,3已过期)
-  string createdAt = 18; // 创建时间
-  string updatedAt = 19; // 更新时间
-  string productName = 20; // 商品名称
-  string userNickname = 21; // 用户昵称
+  string platform = 10; // 平台
+  string platformSoldAt = 11; // 平台售出时间
+  string platformOrderNo = 12; // 平台订单号
+  string platformBuyerId = 13; // 平台买家ID
+  string platformBuyerName = 14; // 平台买家昵称
+  string remark = 15; // 备注
+  int32 status = 16; // 状态(-2已退款,-1禁用,0库存,1已售出,2已激活,3已过期)
+  string createdAt = 17; // 创建时间
+  string updatedAt = 18; // 更新时间
+  string productName = 19; // 商品名称
+  string userNickname = 20; // 用户昵称
 }
 
 //请求-激活码管理表-批量生成激活码

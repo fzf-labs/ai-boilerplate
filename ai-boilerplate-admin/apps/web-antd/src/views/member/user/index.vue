@@ -17,6 +17,7 @@ import { $t } from '#/locales';
 import { useGridColumns, useGridFormSchema } from './data';
 import DetailModal from './modules/detail.vue';
 import Form from './modules/form.vue';
+import MembershipChangeRecordModal from './modules/membership-change-record.vue';
 import TokenModal from './modules/token.vue';
 
 const [FormModal, formModalApi] = useVbenModal({
@@ -34,6 +35,13 @@ const [TokenModalComponent, tokenModalApi] = useVbenModal({
   destroyOnClose: true,
   showConfirmButton: false,
 });
+
+const [MembershipChangeRecordModalComponent, membershipChangeRecordModalApi] =
+  useVbenModal({
+    connectedComponent: MembershipChangeRecordModal,
+    destroyOnClose: true,
+    showConfirmButton: false,
+  });
 
 /** 刷新表格 */
 function onRefresh() {
@@ -101,6 +109,13 @@ function onGenerateToken(row: UserInfo) {
   tokenModalApi.setData({ id: row.id, nickname: row.nickname }).open();
 }
 
+/** 查看会员变更记录 */
+function onViewMembershipChangeRecords(row: UserInfo) {
+  membershipChangeRecordModalApi
+    .setData({ id: row.id, nickname: row.nickname, phone: row.phone })
+    .open();
+}
+
 /** 表格操作按钮的回调函数 */
 function onActionClick({ code, row }: OnActionClickParams<UserInfo>) {
   switch (code) {
@@ -118,6 +133,10 @@ function onActionClick({ code, row }: OnActionClickParams<UserInfo>) {
     }
     case 'view': {
       onView(row);
+      break;
+    }
+    case 'membershipChangeRecords': {
+      onViewMembershipChangeRecords(row);
       break;
     }
   }
@@ -164,6 +183,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
     <FormModal @success="onRefresh" />
     <DetailModalComponent />
     <TokenModalComponent />
+    <MembershipChangeRecordModalComponent />
 
     <Grid table-title="用户列表">
       <template #toolbar-tools>

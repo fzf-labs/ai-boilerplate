@@ -7,7 +7,6 @@ import (
 	pb "github.com/fzf-labs/ai-boilerplate-backend/api/app/v1"
 	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/constant"
 	"github.com/fzf-labs/godb/orm/condition"
-	"github.com/fzf-labs/goutil/jsonutil"
 	"github.com/fzf-labs/kratos-contrib/meta"
 )
 
@@ -57,17 +56,6 @@ func (a *AppV1MallActivationCodeService) ListActivationCodeRedemptions(ctx conte
 		}
 		if item.ActivatedAt.Valid {
 			info.ActivatedAt = item.ActivatedAt.Time.Format(time.RFC3339)
-		}
-
-		userChange := &activationCodeUserChange{}
-		if item.UserChange.String() != "" {
-			if err := jsonutil.Unmarshal(item.UserChange, userChange); err == nil {
-				if userChange.UserMembershipChange != nil && userChange.UserMembershipChange.After != nil {
-					info.MembershipType = userChange.UserMembershipChange.After.MembershipType
-					info.ExpiredAt = userChange.UserMembershipChange.After.ExpiredAt
-					info.DurationDays = userChange.UserMembershipChange.After.DurationDays
-				}
-			}
 		}
 		resp.List = append(resp.List, info)
 	}

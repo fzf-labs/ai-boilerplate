@@ -66,6 +66,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		User:                    newUser(db, opts...),
 		UserBindDevice:          newUserBindDevice(db, opts...),
 		UserMembership:          newUserMembership(db, opts...),
+		UserMembershipChange:    newUserMembershipChange(db, opts...),
 		UserNotificationSetting: newUserNotificationSetting(db, opts...),
 		WxGzhAccount:            newWxGzhAccount(db, opts...),
 		WxGzhAutoReply:          newWxGzhAutoReply(db, opts...),
@@ -129,6 +130,7 @@ type Query struct {
 	User                    user
 	UserBindDevice          userBindDevice
 	UserMembership          userMembership
+	UserMembershipChange    userMembershipChange
 	UserNotificationSetting userNotificationSetting
 	WxGzhAccount            wxGzhAccount
 	WxGzhAutoReply          wxGzhAutoReply
@@ -193,6 +195,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		User:                    q.User.clone(db),
 		UserBindDevice:          q.UserBindDevice.clone(db),
 		UserMembership:          q.UserMembership.clone(db),
+		UserMembershipChange:    q.UserMembershipChange.clone(db),
 		UserNotificationSetting: q.UserNotificationSetting.clone(db),
 		WxGzhAccount:            q.WxGzhAccount.clone(db),
 		WxGzhAutoReply:          q.WxGzhAutoReply.clone(db),
@@ -264,6 +267,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		User:                    q.User.replaceDB(db),
 		UserBindDevice:          q.UserBindDevice.replaceDB(db),
 		UserMembership:          q.UserMembership.replaceDB(db),
+		UserMembershipChange:    q.UserMembershipChange.replaceDB(db),
 		UserNotificationSetting: q.UserNotificationSetting.replaceDB(db),
 		WxGzhAccount:            q.WxGzhAccount.replaceDB(db),
 		WxGzhAutoReply:          q.WxGzhAutoReply.replaceDB(db),
@@ -325,6 +329,7 @@ type queryCtx struct {
 	User                    *userDo
 	UserBindDevice          *userBindDeviceDo
 	UserMembership          *userMembershipDo
+	UserMembershipChange    *userMembershipChangeDo
 	UserNotificationSetting *userNotificationSettingDo
 	WxGzhAccount            *wxGzhAccountDo
 	WxGzhAutoReply          *wxGzhAutoReplyDo
@@ -386,6 +391,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		User:                    q.User.WithContext(ctx),
 		UserBindDevice:          q.UserBindDevice.WithContext(ctx),
 		UserMembership:          q.UserMembership.WithContext(ctx),
+		UserMembershipChange:    q.UserMembershipChange.WithContext(ctx),
 		UserNotificationSetting: q.UserNotificationSetting.WithContext(ctx),
 		WxGzhAccount:            q.WxGzhAccount.WithContext(ctx),
 		WxGzhAutoReply:          q.WxGzhAutoReply.WithContext(ctx),

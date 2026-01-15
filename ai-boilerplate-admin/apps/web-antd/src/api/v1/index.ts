@@ -49,6 +49,7 @@ export * as SysRole from './sys-role';
 export * as SysTenant from './sys-tenant';
 export * as User from './user';
 export * as UserMembership from './user-membership';
+export * as UserMembershipChange from './user-membership-change';
 export * as WxGzhAccount from './wx-gzh-account';
 export * as WxGzhAutoReply from './wx-gzh-auto-reply';
 export * as WxGzhMaterial from './wx-gzh-material';

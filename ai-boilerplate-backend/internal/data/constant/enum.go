@@ -116,3 +116,12 @@ goods // 商品
 )
 */
 type MallProductType string
+
+/*
+ENUM(
+order // 订单
+activation_code // 激活码
+admin // 管理员
+)
+*/
+type MembershipChangeSource string

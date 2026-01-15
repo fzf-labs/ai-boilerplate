@@ -528,6 +528,101 @@ func (x *MembershipBenefitKey) Type() string {
 }
 
 const (
+	// 订单
+	MembershipChangeSourceOrder MembershipChangeSource = "order"
+	// 激活码
+	MembershipChangeSourceActivationCode MembershipChangeSource = "activation_code"
+	// 管理员
+	MembershipChangeSourceAdmin MembershipChangeSource = "admin"
+)
+
+var ErrInvalidMembershipChangeSource = fmt.Errorf("not a valid MembershipChangeSource, try [%s]", strings.Join(_MembershipChangeSourceNames, ", "))
+
+var _MembershipChangeSourceNames = []string{
+	string(MembershipChangeSourceOrder),
+	string(MembershipChangeSourceActivationCode),
+	string(MembershipChangeSourceAdmin),
+}
+
+// MembershipChangeSourceNames returns a list of possible string values of MembershipChangeSource.
+func MembershipChangeSourceNames() []string {
+	tmp := make([]string, len(_MembershipChangeSourceNames))
+	copy(tmp, _MembershipChangeSourceNames)
+	return tmp
+}
+
+// MembershipChangeSourceValues returns a list of the values for MembershipChangeSource
+func MembershipChangeSourceValues() []MembershipChangeSource {
+	return []MembershipChangeSource{
+		MembershipChangeSourceOrder,
+		MembershipChangeSourceActivationCode,
+		MembershipChangeSourceAdmin,
+	}
+}
+
+// String implements the Stringer interface.
+func (x MembershipChangeSource) String() string {
+	return string(x)
+}
+
+// IsValid provides a quick way to determine if the typed value is
+// part of the allowed enumerated values
+func (x MembershipChangeSource) IsValid() bool {
+	_, err := ParseMembershipChangeSource(string(x))
+	return err == nil
+}
+
+var _MembershipChangeSourceValue = map[string]MembershipChangeSource{
+	"order":           MembershipChangeSourceOrder,
+	"activation_code": MembershipChangeSourceActivationCode,
+	"admin":           MembershipChangeSourceAdmin,
+}
+
+// ParseMembershipChangeSource attempts to convert a string to a MembershipChangeSource.
+func ParseMembershipChangeSource(name string) (MembershipChangeSource, error) {
+	if x, ok := _MembershipChangeSourceValue[name]; ok {
+		return x, nil
+	}
+	return MembershipChangeSource(""), fmt.Errorf("%s is %w", name, ErrInvalidMembershipChangeSource)
+}
+
+func (x MembershipChangeSource) Ptr() *MembershipChangeSource {
+	return &x
+}
+
+// MarshalText implements the text marshaller method.
+func (x MembershipChangeSource) MarshalText() ([]byte, error) {
+	return []byte(string(x)), nil
+}
+
+// UnmarshalText implements the text unmarshaller method.
+func (x *MembershipChangeSource) UnmarshalText(text []byte) error {
+	tmp, err := ParseMembershipChangeSource(string(text))
+	if err != nil {
+		return err
+	}
+	*x = tmp
+	return nil
+}
+
+// Set implements the Golang flag.Value interface func.
+func (x *MembershipChangeSource) Set(val string) error {
+	v, err := ParseMembershipChangeSource(val)
+	*x = v
+	return err
+}
+
+// Get implements the Golang flag.Getter interface func.
+func (x *MembershipChangeSource) Get() interface{} {
+	return *x
+}
+
+// Type implements the github.com/spf13/pFlag Value interface.
+func (x *MembershipChangeSource) Type() string {
+	return "MembershipChangeSource"
+}
+
+const (
 	// 普通会员
 	MembershipTypeNormal MembershipType = "normal"
 	// 会员

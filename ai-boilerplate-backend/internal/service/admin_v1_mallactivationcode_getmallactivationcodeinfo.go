@@ -5,7 +5,6 @@ import (
 	"time"
 
 	pb "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1"
-	"github.com/fzf-labs/goutil/jsonutil"
 	"github.com/fzf-labs/goutil/timeutil"
 )
 
@@ -19,13 +18,6 @@ func (a *AdminV1MallActivationCodeService) GetMallActivationCodeInfo(ctx context
 	if data == nil || data.ID == "" {
 		return nil, pb.ErrorReasonDataRecordNotFound()
 	}
-	userChange := &pb.UserChange{}
-	if data.UserChange.String() != "" {
-		err = jsonutil.Unmarshal(data.UserChange, userChange)
-		if err != nil {
-			return nil, pb.ErrorReasonDataFormattingError(pb.WithError(err))
-		}
-	}
 	resp.Info = &pb.MallActivationCodeInfo{
 		Id:                data.ID,
 		BatchNo:           data.BatchNo,
@@ -36,7 +28,6 @@ func (a *AdminV1MallActivationCodeService) GetMallActivationCodeInfo(ctx context
 		ValidEd:           timeutil.RFC3339(data.ValidEd),
 		ActivatedAt:       timeutil.RFC3339(data.ActivatedAt.Time),
 		UserId:            data.UserID,
-		UserChange:        userChange,
 		Platform:          data.Platform,
 		PlatformSoldAt:    timeutil.RFC3339(data.PlatformSoldAt.Time),
 		PlatformOrderNo:   data.PlatformOrderNo,

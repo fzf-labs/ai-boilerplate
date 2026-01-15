@@ -8,7 +8,6 @@ import (
 	"database/sql"
 	"time"
 
-	"gorm.io/datatypes"
 	"gorm.io/gorm"
 )
 
@@ -25,7 +24,6 @@ type MallActivationCode struct {
 	ValidEd           time.Time      `gorm:"column:valid_ed;type:timestamp with time zone;not null;comment:激活码有效期截止时间" json:"validEd"`                          // 激活码有效期截止时间
 	ActivatedAt       sql.NullTime   `gorm:"column:activated_at;type:timestamp with time zone;comment:激活时间" json:"activatedAt"`                                 // 激活时间
 	UserID            string         `gorm:"column:user_id;type:character varying(64);comment:用户ID" json:"userId"`                                              // 用户ID
-	UserChange        datatypes.JSON `gorm:"column:user_change;type:jsonb;comment:用户属性变化" json:"userChange"`                                                    // 用户属性变化
 	Platform          string         `gorm:"column:platform;type:character varying(20);comment:平台" json:"platform"`                                             // 平台
 	PlatformSoldAt    sql.NullTime   `gorm:"column:platform_sold_at;type:timestamp with time zone;comment:平台售出时间" json:"platformSoldAt"`                        // 平台售出时间
 	PlatformOrderNo   string         `gorm:"column:platform_order_no;type:character varying(100);comment:平台订单号" json:"platformOrderNo"`                         // 平台订单号

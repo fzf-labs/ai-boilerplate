@@ -315,4 +315,24 @@ enum ErrorReason {
       en_US: "Product membership config invalid"
     }
   ];
+  // 用户会员不存在
+  UserMembershipNotFound = 32 [
+    (errors.code) = 409,
+    (errors.message) = "UserMembershipNotFound",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "用户会员不存在"
+      en_US: "User membership not found"
+    }
+  ];
+  // 用户会员状态无效
+  UserMembershipStatusInvalid = 33 [
+    (errors.code) = 409,
+    (errors.message) = "UserMembershipStatusInvalid",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "用户会员状态无效"
+      en_US: "User membership status invalid"
+    }
+  ];
 }

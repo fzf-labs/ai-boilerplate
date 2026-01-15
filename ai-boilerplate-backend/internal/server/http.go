@@ -51,6 +51,7 @@ func NewHTTPServer(
 	adminV1SensitiveWordService *service.AdminV1SensitiveWordService,
 	adminV1UserService *service.AdminV1UserService,
 	adminV1UserMembershipService *service.AdminV1UserMembershipService,
+	adminV1UserMembershipChangeRecordService *service.AdminV1UserMembershipChangeRecordService,
 	adminV1MembershipService *service.AdminV1MembershipService,
 	adminV1MembershipBenefitService *service.AdminV1MembershipBenefitService,
 	adminV1MembershipBenefitTypeService *service.AdminV1MembershipBenefitTypeService,
@@ -130,6 +131,7 @@ func NewHTTPServer(
 	adminv1.RegisterSensitiveWordHTTPServer(srv, adminV1SensitiveWordService)
 	adminv1.RegisterUserHTTPServer(srv, adminV1UserService)
 	adminv1.RegisterUserMembershipHTTPServer(srv, adminV1UserMembershipService)
+	adminv1.RegisterUserMembershipChangeRecordHTTPServer(srv, adminV1UserMembershipChangeRecordService)
 	adminv1.RegisterMembershipHTTPServer(srv, adminV1MembershipService)
 	adminv1.RegisterMembershipBenefitHTTPServer(srv, adminV1MembershipBenefitService)
 	adminv1.RegisterMembershipBenefitTypeHTTPServer(srv, adminV1MembershipBenefitTypeService)

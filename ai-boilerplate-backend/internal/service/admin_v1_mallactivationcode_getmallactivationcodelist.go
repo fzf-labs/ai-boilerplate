@@ -6,7 +6,6 @@ import (
 
 	pb "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1"
 	"github.com/fzf-labs/godb/orm/condition"
-	"github.com/fzf-labs/goutil/jsonutil"
 	"github.com/fzf-labs/goutil/timeutil"
 )
 
@@ -136,13 +135,6 @@ func (a *AdminV1MallActivationCodeService) GetMallActivationCodeList(ctx context
 			return nil, pb.ErrorReasonDataSQLError(pb.WithError(err))
 		}
 		for _, v := range list {
-			userChange := &pb.UserChange{}
-			if v.UserChange.String() != "" {
-				err = jsonutil.Unmarshal(v.UserChange, userChange)
-				if err != nil {
-					return nil, pb.ErrorReasonDataFormattingError(pb.WithError(err))
-				}
-			}
 			resp.List = append(resp.List, &pb.MallActivationCodeInfo{
 				Id:                v.ID,
 				ProductType:       v.ProductType,
@@ -153,7 +145,6 @@ func (a *AdminV1MallActivationCodeService) GetMallActivationCodeList(ctx context
 				ValidEd:           timeutil.RFC3339(v.ValidEd),
 				ActivatedAt:       timeutil.RFC3339(v.ActivatedAt.Time),
 				UserId:            v.UserID,
-				UserChange:        userChange,
 				Platform:          v.Platform,
 				PlatformSoldAt:    timeutil.RFC3339(v.PlatformSoldAt.Time),
 				PlatformOrderNo:   v.PlatformOrderNo,

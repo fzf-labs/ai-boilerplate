@@ -1044,3 +1044,67 @@ func ErrorReasonActivationCodeProductConfigInvalid(opts ...Option) *errors.Error
 	}
 	return e.Error()
 }
+
+// 用户会员不存在
+func IsUserMembershipNotFound(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == ErrorReason_UserMembershipNotFound.String() && e.Code == 409
+}
+
+// 用户会员不存在
+func ErrorUserMembershipNotFound(format string, args ...interface{}) *errors.Error {
+	return errors.New(409, ErrorReason_UserMembershipNotFound.String(), fmt.Sprintf(format, args...))
+}
+
+// 用户会员不存在
+func ErrorReasonUserMembershipNotFound(opts ...Option) *errors.Error {
+	e := &ErrorReasonErrors{
+		code:    409,
+		reason:  ErrorReason_UserMembershipNotFound.String(),
+		message: "UserMembershipNotFound",
+		lang:    "zh_CN",
+		i18n: map[string]string{
+			"en_US": "User membership not found",
+			"zh_CN": "用户会员不存在",
+		},
+	}
+	for _, o := range opts {
+		o(e)
+	}
+	return e.Error()
+}
+
+// 用户会员状态无效
+func IsUserMembershipStatusInvalid(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == ErrorReason_UserMembershipStatusInvalid.String() && e.Code == 409
+}
+
+// 用户会员状态无效
+func ErrorUserMembershipStatusInvalid(format string, args ...interface{}) *errors.Error {
+	return errors.New(409, ErrorReason_UserMembershipStatusInvalid.String(), fmt.Sprintf(format, args...))
+}
+
+// 用户会员状态无效
+func ErrorReasonUserMembershipStatusInvalid(opts ...Option) *errors.Error {
+	e := &ErrorReasonErrors{
+		code:    409,
+		reason:  ErrorReason_UserMembershipStatusInvalid.String(),
+		message: "UserMembershipStatusInvalid",
+		lang:    "zh_CN",
+		i18n: map[string]string{
+			"en_US": "User membership status invalid",
+			"zh_CN": "用户会员状态无效",
+		},
+	}
+	for _, o := range opts {
+		o(e)
+	}
+	return e.Error()
+}

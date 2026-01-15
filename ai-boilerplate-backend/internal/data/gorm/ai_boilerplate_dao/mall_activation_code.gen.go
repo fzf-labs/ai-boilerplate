@@ -36,7 +36,6 @@ func newMallActivationCode(db *gorm.DB, opts ...gen.DOOption) mallActivationCode
 	_mallActivationCode.ValidEd = field.NewTime(tableName, "valid_ed")
 	_mallActivationCode.ActivatedAt = field.NewField(tableName, "activated_at")
 	_mallActivationCode.UserID = field.NewString(tableName, "user_id")
-	_mallActivationCode.UserChange = field.NewField(tableName, "user_change")
 	_mallActivationCode.Platform = field.NewString(tableName, "platform")
 	_mallActivationCode.PlatformSoldAt = field.NewField(tableName, "platform_sold_at")
 	_mallActivationCode.PlatformOrderNo = field.NewString(tableName, "platform_order_no")
@@ -66,7 +65,6 @@ type mallActivationCode struct {
 	ValidEd           field.Time   // 激活码有效期截止时间
 	ActivatedAt       field.Field  // 激活时间
 	UserID            field.String // 用户ID
-	UserChange        field.Field  // 用户属性变化
 	Platform          field.String // 平台
 	PlatformSoldAt    field.Field  // 平台售出时间
 	PlatformOrderNo   field.String // 平台订单号
@@ -102,7 +100,6 @@ func (m *mallActivationCode) updateTableName(table string) *mallActivationCode {
 	m.ValidEd = field.NewTime(table, "valid_ed")
 	m.ActivatedAt = field.NewField(table, "activated_at")
 	m.UserID = field.NewString(table, "user_id")
-	m.UserChange = field.NewField(table, "user_change")
 	m.Platform = field.NewString(table, "platform")
 	m.PlatformSoldAt = field.NewField(table, "platform_sold_at")
 	m.PlatformOrderNo = field.NewString(table, "platform_order_no")
@@ -141,7 +138,7 @@ func (m *mallActivationCode) GetFieldByName(fieldName string) (field.OrderExpr, 
 }
 
 func (m *mallActivationCode) fillFieldMap() {
-	m.fieldMap = make(map[string]field.Expr, 20)
+	m.fieldMap = make(map[string]field.Expr, 19)
 	m.fieldMap["id"] = m.ID
 	m.fieldMap["product_type"] = m.ProductType
 	m.fieldMap["product_id"] = m.ProductID
@@ -151,7 +148,6 @@ func (m *mallActivationCode) fillFieldMap() {
 	m.fieldMap["valid_ed"] = m.ValidEd
 	m.fieldMap["activated_at"] = m.ActivatedAt
 	m.fieldMap["user_id"] = m.UserID
-	m.fieldMap["user_change"] = m.UserChange
 	m.fieldMap["platform"] = m.Platform
 	m.fieldMap["platform_sold_at"] = m.PlatformSoldAt
 	m.fieldMap["platform_order_no"] = m.PlatformOrderNo

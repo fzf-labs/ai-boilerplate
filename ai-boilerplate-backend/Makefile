@@ -136,9 +136,9 @@ sqltopb:
 	@:
 
 .PHONY: gorm
-# 生成 GORM 数据库代码
+# 生成 GORM 数据库代码 DB_TABLES参数可以为空，表示生成所有表的GORM代码
 gorm:
-	@godb ormgen --db "$(DB_TYPE)" --dsn "$(DB_DSN)" --tables "$(DB_TABLES)"
+	@godb ormgen --db "$(DB_TYPE)" --dsn "$(DB_DSN)" --tables "$(DB_TABLES)" 
 
 .PHONY: pbtocode
 # pb转为代码

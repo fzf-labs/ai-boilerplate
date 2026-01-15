@@ -8,6 +8,7 @@ import (
 
 	"github.com/dromara/carbon/v2"
 	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/constant"
+	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/gorm/ai_boilerplate_model"
 	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/gorm/ai_boilerplate_repo"
 	"github.com/go-kratos/kratos/v2/log"
 )
@@ -68,4 +69,21 @@ func (m *MallActivationCodeRepo) GenerateCode(ctx context.Context, num int32) ([
 		}
 	}
 	return codes, nil
+}
+
+// IsActivationCodeRedeemable 判断激活码是否可兑换
+func (m *MallActivationCodeRepo) IsActivationCodeRedeemable(data *ai_boilerplate_model.MallActivationCode) bool {
+	switch constant.ActivationCodeStatus(data.Status) {
+	case constant.ActivationCodeStatusDisable,
+		constant.ActivationCodeStatusRefunded,
+		constant.ActivationCodeStatusActivated,
+		constant.ActivationCodeStatusExpired:
+		return false
+	default:
+	}
+	now := time.Now()
+	if now.Before(data.ValidSt) || now.After(data.ValidEd) {
+		return false
+	}
+	return true
 }

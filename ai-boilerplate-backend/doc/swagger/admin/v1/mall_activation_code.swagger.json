@@ -480,10 +480,6 @@
           "type": "string",
           "title": "用户ID"
         },
-        "userChange": {
-          "$ref": "#/definitions/admin.v1.UserChange",
-          "title": "用户权益变化"
-        },
         "platform": {
           "type": "string",
           "title": "平台"
@@ -595,49 +591,6 @@
         "id",
         "status"
       ]
-    },
-    "admin.v1.UserChange": {
-      "type": "object",
-      "properties": {
-        "userMembershipChange": {
-          "$ref": "#/definitions/admin.v1.UserMembershipChange",
-          "title": "用户权益变化"
-        }
-      },
-      "title": "用户属性变化"
-    },
-    "admin.v1.UserMembershipChange": {
-      "type": "object",
-      "properties": {
-        "before": {
-          "$ref": "#/definitions/admin.v1.UserMembershipChangeItem",
-          "title": "变更前"
-        },
-        "after": {
-          "$ref": "#/definitions/admin.v1.UserMembershipChangeItem",
-          "title": "变更后"
-        }
-      },
-      "title": "用户权益变化"
-    },
-    "admin.v1.UserMembershipChangeItem": {
-      "type": "object",
-      "properties": {
-        "membershipType": {
-          "type": "string",
-          "title": "会员类型编码(normal,vip,svip)"
-        },
-        "expiredAt": {
-          "type": "string",
-          "title": "到期时间(普通会员为NULL,表示永不过期)"
-        },
-        "status": {
-          "type": "integer",
-          "format": "int32",
-          "title": "状态(-1禁用,1正常)"
-        }
-      },
-      "title": "用户权益变化项"
     },
     "google.protobuf.Any": {
       "type": "object",
