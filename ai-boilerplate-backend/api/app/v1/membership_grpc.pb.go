@@ -26,6 +26,8 @@ type MembershipClient interface {
 	GetUserMembershipInfo(ctx context.Context, in *GetUserMembershipInfoReq, opts ...grpc.CallOption) (*GetUserMembershipInfoReply, error)
 	// 获取会员权益列表
 	GetMembershipBenefits(ctx context.Context, in *GetMembershipBenefitsReq, opts ...grpc.CallOption) (*GetMembershipBenefitsReply, error)
+	// 获取会员权益对比（一次返回所有会员类型的权益）
+	GetMembershipBenefitsCompare(ctx context.Context, in *GetMembershipBenefitsCompareReq, opts ...grpc.CallOption) (*GetMembershipBenefitsCompareReply, error)
 }
 
 type membershipClient struct {
@@ -54,6 +56,15 @@ func (c *membershipClient) GetMembershipBenefits(ctx context.Context, in *GetMem
 	return out, nil
 }
 
+func (c *membershipClient) GetMembershipBenefitsCompare(ctx context.Context, in *GetMembershipBenefitsCompareReq, opts ...grpc.CallOption) (*GetMembershipBenefitsCompareReply, error) {
+	out := new(GetMembershipBenefitsCompareReply)
+	err := c.cc.Invoke(ctx, "/app.v1.Membership/GetMembershipBenefitsCompare", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MembershipServer is the server API for Membership service.
 // All implementations must embed UnimplementedMembershipServer
 // for forward compatibility
@@ -62,6 +73,8 @@ type MembershipServer interface {
 	GetUserMembershipInfo(context.Context, *GetUserMembershipInfoReq) (*GetUserMembershipInfoReply, error)
 	// 获取会员权益列表
 	GetMembershipBenefits(context.Context, *GetMembershipBenefitsReq) (*GetMembershipBenefitsReply, error)
+	// 获取会员权益对比（一次返回所有会员类型的权益）
+	GetMembershipBenefitsCompare(context.Context, *GetMembershipBenefitsCompareReq) (*GetMembershipBenefitsCompareReply, error)
 	mustEmbedUnimplementedMembershipServer()
 }
 
@@ -74,6 +87,9 @@ func (UnimplementedMembershipServer) GetUserMembershipInfo(context.Context, *Get
 }
 func (UnimplementedMembershipServer) GetMembershipBenefits(context.Context, *GetMembershipBenefitsReq) (*GetMembershipBenefitsReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMembershipBenefits not implemented")
+}
+func (UnimplementedMembershipServer) GetMembershipBenefitsCompare(context.Context, *GetMembershipBenefitsCompareReq) (*GetMembershipBenefitsCompareReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMembershipBenefitsCompare not implemented")
 }
 func (UnimplementedMembershipServer) mustEmbedUnimplementedMembershipServer() {}
 
@@ -124,6 +140,24 @@ func _Membership_GetMembershipBenefits_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Membership_GetMembershipBenefitsCompare_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMembershipBenefitsCompareReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipServer).GetMembershipBenefitsCompare(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/app.v1.Membership/GetMembershipBenefitsCompare",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipServer).GetMembershipBenefitsCompare(ctx, req.(*GetMembershipBenefitsCompareReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Membership_ServiceDesc is the grpc.ServiceDesc for Membership service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -138,6 +172,10 @@ var Membership_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetMembershipBenefits",
 			Handler:    _Membership_GetMembershipBenefits_Handler,
+		},
+		{
+			MethodName: "GetMembershipBenefitsCompare",
+			Handler:    _Membership_GetMembershipBenefitsCompare_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

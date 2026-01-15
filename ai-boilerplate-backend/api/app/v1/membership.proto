@@ -39,6 +39,11 @@ service Membership {
       }
     };
   }
+
+  // 获取会员权益对比（一次返回所有会员类型的权益）
+  rpc GetMembershipBenefitsCompare(GetMembershipBenefitsCompareReq) returns (GetMembershipBenefitsCompareReply) {
+    option (google.api.http) = {get: "/app/v1/membership/benefits/compare"};
+  }
 }
 
 // 请求-获取用户会员基础信息
@@ -75,4 +80,30 @@ message MembershipBenefit {
   string benefitValue = 4; // 权益值
   string benefitNum = 5; // 权益次数
   int32 sort = 6; // 排序
+}
+
+// 请求-获取会员权益对比
+message GetMembershipBenefitsCompareReq {}
+
+// 响应-获取会员权益对比
+message GetMembershipBenefitsCompareReply {
+  repeated MembershipBenefitCompareItem items = 1; // 权益对比列表
+}
+
+// 会员权益对比项
+message MembershipBenefitCompareItem {
+  string benefitKey = 1; // 权益标识
+  string benefitName = 2; // 权益名称
+  string benefitDesc = 3; // 权益描述
+  int32 sort = 4; // 排序
+  MembershipBenefitValue normal = 5; // 普通会员权益值
+  MembershipBenefitValue vip = 6; // VIP会员权益值
+  MembershipBenefitValue svip = 7; // SVIP会员权益值
+}
+
+// 会员权益值
+message MembershipBenefitValue {
+  bool supported = 1; // 是否支持该权益
+  string value = 2; // 权益值
+  string num = 3; // 权益次数
 }

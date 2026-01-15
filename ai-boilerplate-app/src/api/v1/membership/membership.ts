@@ -26,6 +26,21 @@ export function getMembershipBenefits({
   );
 }
 
+/** 获取会员权益对比（一次返回所有会员类型的权益） 返回值: An unexpected error response. GET /app/v1/membership/benefits/compare */
+export function getMembershipBenefitsCompare({
+  options,
+}: {
+  options?: CustomRequestOptions_;
+}) {
+  return request<API.GetMembershipBenefitsCompareReply>(
+    '/app/v1/membership/benefits/compare',
+    {
+      method: 'GET',
+      ...(options || {}),
+    }
+  );
+}
+
 /** 获取用户会员基础信息 返回值: An unexpected error response. GET /app/v1/membership/info */
 export function getUserMembershipInfo({
   options,

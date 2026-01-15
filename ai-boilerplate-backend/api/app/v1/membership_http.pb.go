@@ -20,10 +20,12 @@ var _ = binding.EncodeURL
 const _ = http.SupportPackageIsVersion1
 
 const OperationMembershipGetMembershipBenefits = "/app.v1.Membership/GetMembershipBenefits"
+const OperationMembershipGetMembershipBenefitsCompare = "/app.v1.Membership/GetMembershipBenefitsCompare"
 const OperationMembershipGetUserMembershipInfo = "/app.v1.Membership/GetUserMembershipInfo"
 
 type MembershipHTTPServer interface {
 	GetMembershipBenefits(context.Context, *GetMembershipBenefitsReq) (*GetMembershipBenefitsReply, error)
+	GetMembershipBenefitsCompare(context.Context, *GetMembershipBenefitsCompareReq) (*GetMembershipBenefitsCompareReply, error)
 	GetUserMembershipInfo(context.Context, *GetUserMembershipInfoReq) (*GetUserMembershipInfoReply, error)
 }
 
@@ -31,6 +33,7 @@ func RegisterMembershipHTTPServer(s *http.Server, srv MembershipHTTPServer) {
 	r := s.Route("/")
 	r.GET("/app/v1/membership/info", _Membership_GetUserMembershipInfo0_HTTP_Handler(srv))
 	r.GET("/app/v1/membership/benefits", _Membership_GetMembershipBenefits0_HTTP_Handler(srv))
+	r.GET("/app/v1/membership/benefits/compare", _Membership_GetMembershipBenefitsCompare0_HTTP_Handler(srv))
 }
 
 func _Membership_GetUserMembershipInfo0_HTTP_Handler(srv MembershipHTTPServer) func(ctx http.Context) error {
@@ -71,8 +74,28 @@ func _Membership_GetMembershipBenefits0_HTTP_Handler(srv MembershipHTTPServer) f
 	}
 }
 
+func _Membership_GetMembershipBenefitsCompare0_HTTP_Handler(srv MembershipHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in GetMembershipBenefitsCompareReq
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationMembershipGetMembershipBenefitsCompare)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.GetMembershipBenefitsCompare(ctx, req.(*GetMembershipBenefitsCompareReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*GetMembershipBenefitsCompareReply)
+		return ctx.Result(200, reply)
+	}
+}
+
 type MembershipHTTPClient interface {
 	GetMembershipBenefits(ctx context.Context, req *GetMembershipBenefitsReq, opts ...http.CallOption) (rsp *GetMembershipBenefitsReply, err error)
+	GetMembershipBenefitsCompare(ctx context.Context, req *GetMembershipBenefitsCompareReq, opts ...http.CallOption) (rsp *GetMembershipBenefitsCompareReply, err error)
 	GetUserMembershipInfo(ctx context.Context, req *GetUserMembershipInfoReq, opts ...http.CallOption) (rsp *GetUserMembershipInfoReply, err error)
 }
 
@@ -89,6 +112,19 @@ func (c *MembershipHTTPClientImpl) GetMembershipBenefits(ctx context.Context, in
 	pattern := "/app/v1/membership/benefits"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationMembershipGetMembershipBenefits))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *MembershipHTTPClientImpl) GetMembershipBenefitsCompare(ctx context.Context, in *GetMembershipBenefitsCompareReq, opts ...http.CallOption) (*GetMembershipBenefitsCompareReply, error) {
+	var out GetMembershipBenefitsCompareReply
+	pattern := "/app/v1/membership/benefits/compare"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationMembershipGetMembershipBenefitsCompare))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {

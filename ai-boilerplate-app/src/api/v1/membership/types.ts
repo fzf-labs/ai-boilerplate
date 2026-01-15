@@ -5,6 +5,22 @@ export type Any = {
   '@type'?: string;
 };
 
+export type GetMembershipBenefitsCompareReply = {
+  /** 权益对比列表 */
+  items?: MembershipBenefitCompareItem[];
+};
+
+export type GetMembershipBenefitsCompareResponses = {
+  /**
+   * A successful response.
+   */
+  200: GetMembershipBenefitsCompareReply;
+  /**
+   * An unexpected error response.
+   */
+  default: Status;
+};
+
 export type GetMembershipBenefitsParams = {
   /** 会员类型编码(可选,不传则返回当前用户会员等级的权益) */
   membershipType?: string;
@@ -71,6 +87,29 @@ export type MembershipBenefit = {
   benefitNum?: string;
   /** 排序 */
   sort?: number;
+};
+
+export type MembershipBenefitCompareItem = {
+  /** 权益标识 */
+  benefitKey?: string;
+  /** 权益名称 */
+  benefitName?: string;
+  /** 权益描述 */
+  benefitDesc?: string;
+  /** 排序 */
+  sort?: number;
+  normal?: MembershipBenefitValue;
+  vip?: MembershipBenefitValue;
+  svip?: MembershipBenefitValue;
+};
+
+export type MembershipBenefitValue = {
+  /** 是否支持该权益 */
+  supported?: boolean;
+  /** 权益值 */
+  value?: string;
+  /** 权益次数 */
+  num?: string;
 };
 
 export type Status = {

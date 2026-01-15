@@ -55,6 +55,29 @@
         ]
       }
     },
+    "/app/v1/membership/benefits/compare": {
+      "get": {
+        "summary": "获取会员权益对比（一次返回所有会员类型的权益）",
+        "operationId": "Membership_GetMembershipBenefitsCompare",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.GetMembershipBenefitsCompareReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "tags": [
+          "Membership"
+        ]
+      }
+    },
     "/app/v1/membership/info": {
       "get": {
         "summary": "获取用户会员基础信息",
@@ -89,6 +112,20 @@
     }
   },
   "definitions": {
+    "app.v1.GetMembershipBenefitsCompareReply": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/app.v1.MembershipBenefitCompareItem"
+          },
+          "title": "权益对比列表"
+        }
+      },
+      "title": "响应-获取会员权益对比"
+    },
     "app.v1.GetMembershipBenefitsReply": {
       "type": "object",
       "properties": {
@@ -178,6 +215,59 @@
         }
       },
       "title": "会员权益信息"
+    },
+    "app.v1.MembershipBenefitCompareItem": {
+      "type": "object",
+      "properties": {
+        "benefitKey": {
+          "type": "string",
+          "title": "权益标识"
+        },
+        "benefitName": {
+          "type": "string",
+          "title": "权益名称"
+        },
+        "benefitDesc": {
+          "type": "string",
+          "title": "权益描述"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "title": "排序"
+        },
+        "normal": {
+          "$ref": "#/definitions/app.v1.MembershipBenefitValue",
+          "title": "普通会员权益值"
+        },
+        "vip": {
+          "$ref": "#/definitions/app.v1.MembershipBenefitValue",
+          "title": "VIP会员权益值"
+        },
+        "svip": {
+          "$ref": "#/definitions/app.v1.MembershipBenefitValue",
+          "title": "SVIP会员权益值"
+        }
+      },
+      "title": "会员权益对比项"
+    },
+    "app.v1.MembershipBenefitValue": {
+      "type": "object",
+      "properties": {
+        "supported": {
+          "type": "boolean",
+          "title": "是否支持该权益"
+        },
+        "value": {
+          "type": "string",
+          "title": "权益值"
+        },
+        "num": {
+          "type": "string",
+          "title": "权益次数"
+        }
+      },
+      "title": "会员权益值"
     },
     "google.protobuf.Any": {
       "type": "object",

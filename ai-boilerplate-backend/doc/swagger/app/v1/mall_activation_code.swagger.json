@@ -1,0 +1,117 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "app/v1/mall_activation_code.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "MallActivationCode"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/app/v1/mall_activation_code/activate": {
+      "post": {
+        "summary": "会员激活码激活",
+        "operationId": "MallActivationCode_ActivateMembershipByCode",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.ActivateMembershipByCodeReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/app.v1.ActivateMembershipByCodeReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MallActivationCode"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "app.v1.ActivateMembershipByCodeReply": {
+      "type": "object",
+      "properties": {
+        "membershipType": {
+          "type": "string",
+          "title": "会员类型编码(normal,vip,svip)"
+        },
+        "expiredAt": {
+          "type": "string",
+          "title": "到期时间(普通会员为空,表示永不过期)"
+        }
+      },
+      "title": "响应-会员激活码激活"
+    },
+    "app.v1.ActivateMembershipByCodeReq": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "title": "激活码"
+        }
+      },
+      "title": "请求-会员激活码激活",
+      "required": [
+        "code"
+      ]
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}

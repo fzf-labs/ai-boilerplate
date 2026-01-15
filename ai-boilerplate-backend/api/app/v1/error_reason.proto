@@ -285,4 +285,34 @@ enum ErrorReason {
       en_US: "Unauthorized"
     }
   ];
+  // 激活码不存在
+  ActivationCodeNotFound = 29 [
+    (errors.code) = 409,
+    (errors.message) = "ActivationCodeNotFound",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "激活码不存在"
+      en_US: "Activation code not found"
+    }
+  ];
+  // 激活码不可兑换
+  ActivationCodeNotRedeemable = 30 [
+    (errors.code) = 409,
+    (errors.message) = "ActivationCodeNotRedeemable",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "激活码不可兑换"
+      en_US: "Activation code not redeemable"
+    }
+  ];
+  // 商品会员配置无效
+  ActivationCodeProductConfigInvalid = 31 [
+    (errors.code) = 409,
+    (errors.message) = "ActivationCodeProductConfigInvalid",
+    (errors.lang) = "zh_CN",
+    (errors.i18n) = {
+      zh_CN: "商品会员配置无效"
+      en_US: "Product membership config invalid"
+    }
+  ];
 }

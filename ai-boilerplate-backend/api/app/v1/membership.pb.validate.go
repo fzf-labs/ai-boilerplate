@@ -610,3 +610,551 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = MembershipBenefitValidationError{}
+
+// Validate checks the field values on GetMembershipBenefitsCompareReq with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetMembershipBenefitsCompareReq) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetMembershipBenefitsCompareReq with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// GetMembershipBenefitsCompareReqMultiError, or nil if none found.
+func (m *GetMembershipBenefitsCompareReq) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetMembershipBenefitsCompareReq) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return GetMembershipBenefitsCompareReqMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetMembershipBenefitsCompareReqMultiError is an error wrapping multiple
+// validation errors returned by GetMembershipBenefitsCompareReq.ValidateAll()
+// if the designated constraints aren't met.
+type GetMembershipBenefitsCompareReqMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetMembershipBenefitsCompareReqMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetMembershipBenefitsCompareReqMultiError) AllErrors() []error { return m }
+
+// GetMembershipBenefitsCompareReqValidationError is the validation error
+// returned by GetMembershipBenefitsCompareReq.Validate if the designated
+// constraints aren't met.
+type GetMembershipBenefitsCompareReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetMembershipBenefitsCompareReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetMembershipBenefitsCompareReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetMembershipBenefitsCompareReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetMembershipBenefitsCompareReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetMembershipBenefitsCompareReqValidationError) ErrorName() string {
+	return "GetMembershipBenefitsCompareReqValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetMembershipBenefitsCompareReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetMembershipBenefitsCompareReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetMembershipBenefitsCompareReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetMembershipBenefitsCompareReqValidationError{}
+
+// Validate checks the field values on GetMembershipBenefitsCompareReply with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *GetMembershipBenefitsCompareReply) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetMembershipBenefitsCompareReply
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// GetMembershipBenefitsCompareReplyMultiError, or nil if none found.
+func (m *GetMembershipBenefitsCompareReply) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetMembershipBenefitsCompareReply) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetItems() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, GetMembershipBenefitsCompareReplyValidationError{
+						field:  fmt.Sprintf("Items[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, GetMembershipBenefitsCompareReplyValidationError{
+						field:  fmt.Sprintf("Items[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return GetMembershipBenefitsCompareReplyValidationError{
+					field:  fmt.Sprintf("Items[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return GetMembershipBenefitsCompareReplyMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetMembershipBenefitsCompareReplyMultiError is an error wrapping multiple
+// validation errors returned by
+// GetMembershipBenefitsCompareReply.ValidateAll() if the designated
+// constraints aren't met.
+type GetMembershipBenefitsCompareReplyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetMembershipBenefitsCompareReplyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetMembershipBenefitsCompareReplyMultiError) AllErrors() []error { return m }
+
+// GetMembershipBenefitsCompareReplyValidationError is the validation error
+// returned by GetMembershipBenefitsCompareReply.Validate if the designated
+// constraints aren't met.
+type GetMembershipBenefitsCompareReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetMembershipBenefitsCompareReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetMembershipBenefitsCompareReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetMembershipBenefitsCompareReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetMembershipBenefitsCompareReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetMembershipBenefitsCompareReplyValidationError) ErrorName() string {
+	return "GetMembershipBenefitsCompareReplyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetMembershipBenefitsCompareReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetMembershipBenefitsCompareReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetMembershipBenefitsCompareReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetMembershipBenefitsCompareReplyValidationError{}
+
+// Validate checks the field values on MembershipBenefitCompareItem with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *MembershipBenefitCompareItem) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on MembershipBenefitCompareItem with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// MembershipBenefitCompareItemMultiError, or nil if none found.
+func (m *MembershipBenefitCompareItem) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *MembershipBenefitCompareItem) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for BenefitKey
+
+	// no validation rules for BenefitName
+
+	// no validation rules for BenefitDesc
+
+	// no validation rules for Sort
+
+	if all {
+		switch v := interface{}(m.GetNormal()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, MembershipBenefitCompareItemValidationError{
+					field:  "Normal",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, MembershipBenefitCompareItemValidationError{
+					field:  "Normal",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetNormal()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return MembershipBenefitCompareItemValidationError{
+				field:  "Normal",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetVip()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, MembershipBenefitCompareItemValidationError{
+					field:  "Vip",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, MembershipBenefitCompareItemValidationError{
+					field:  "Vip",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetVip()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return MembershipBenefitCompareItemValidationError{
+				field:  "Vip",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetSvip()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, MembershipBenefitCompareItemValidationError{
+					field:  "Svip",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, MembershipBenefitCompareItemValidationError{
+					field:  "Svip",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetSvip()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return MembershipBenefitCompareItemValidationError{
+				field:  "Svip",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return MembershipBenefitCompareItemMultiError(errors)
+	}
+
+	return nil
+}
+
+// MembershipBenefitCompareItemMultiError is an error wrapping multiple
+// validation errors returned by MembershipBenefitCompareItem.ValidateAll() if
+// the designated constraints aren't met.
+type MembershipBenefitCompareItemMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m MembershipBenefitCompareItemMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m MembershipBenefitCompareItemMultiError) AllErrors() []error { return m }
+
+// MembershipBenefitCompareItemValidationError is the validation error returned
+// by MembershipBenefitCompareItem.Validate if the designated constraints
+// aren't met.
+type MembershipBenefitCompareItemValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e MembershipBenefitCompareItemValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e MembershipBenefitCompareItemValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e MembershipBenefitCompareItemValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e MembershipBenefitCompareItemValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e MembershipBenefitCompareItemValidationError) ErrorName() string {
+	return "MembershipBenefitCompareItemValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e MembershipBenefitCompareItemValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sMembershipBenefitCompareItem.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = MembershipBenefitCompareItemValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = MembershipBenefitCompareItemValidationError{}
+
+// Validate checks the field values on MembershipBenefitValue with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *MembershipBenefitValue) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on MembershipBenefitValue with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// MembershipBenefitValueMultiError, or nil if none found.
+func (m *MembershipBenefitValue) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *MembershipBenefitValue) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Supported
+
+	// no validation rules for Value
+
+	// no validation rules for Num
+
+	if len(errors) > 0 {
+		return MembershipBenefitValueMultiError(errors)
+	}
+
+	return nil
+}
+
+// MembershipBenefitValueMultiError is an error wrapping multiple validation
+// errors returned by MembershipBenefitValue.ValidateAll() if the designated
+// constraints aren't met.
+type MembershipBenefitValueMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m MembershipBenefitValueMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m MembershipBenefitValueMultiError) AllErrors() []error { return m }
+
+// MembershipBenefitValueValidationError is the validation error returned by
+// MembershipBenefitValue.Validate if the designated constraints aren't met.
+type MembershipBenefitValueValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e MembershipBenefitValueValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e MembershipBenefitValueValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e MembershipBenefitValueValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e MembershipBenefitValueValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e MembershipBenefitValueValidationError) ErrorName() string {
+	return "MembershipBenefitValueValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e MembershipBenefitValueValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sMembershipBenefitValue.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = MembershipBenefitValueValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = MembershipBenefitValueValidationError{}

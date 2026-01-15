@@ -1,10 +1,30 @@
 <script lang="ts" setup>
 import type { MallProductInfo } from '@/api/v1/mall-product/types'
-import type { GetUserMembershipInfoReply, MembershipBenefit } from '@/api/v1/membership/types'
+import type { GetUserMembershipInfoReply, MembershipBenefitCompareItem, MembershipBenefitValue } from '@/api/v1/membership/types'
 import { useToast } from 'wot-design-uni'
 import { getMallProductList } from '@/api/v1/mall-product/mallProduct'
-import { getMembershipBenefits, getUserMembershipInfo } from '@/api/v1/membership/membership'
+import { getMembershipBenefitsCompare, getUserMembershipInfo } from '@/api/v1/membership/membership'
 import { useTokenStore } from '@/store/token'
+
+// 会员类型定义
+type MembershipType = 'normal' | 'vip' | 'svip'
+
+// 权益对比项（用于展示）
+interface BenefitCompareDisplayItem {
+  benefitKey: string
+  benefitName: string
+  benefitDesc?: string
+  normal: string
+  vip: string
+  svip: string
+}
+
+// 会员等级配置
+const MEMBERSHIP_CONFIG: Record<MembershipType, { name: string, icon: string, color: string, bgColor: string }> = {
+  normal: { name: '普通会员', icon: '⭐', color: '#6b7280', bgColor: 'rgba(107, 114, 128, 0.1)' },
+  vip: { name: 'VIP会员', icon: '💎', color: '#10b981', bgColor: 'rgba(16, 185, 129, 0.1)' },
+  svip: { name: 'SVIP会员', icon: '👑', color: '#065f46', bgColor: 'rgba(6, 95, 70, 0.15)' },
+}
 
 definePage({
   style: {
@@ -74,8 +94,8 @@ const membershipDescText = computed(() => {
 const productList = ref<MallProductInfo[]>([])
 // 当前选中的套餐
 const selectedProduct = ref<MallProductInfo | null>(null)
-// 会员权益列表
-const benefitList = ref<MembershipBenefit[]>([])
+// 权益对比列表
+const benefitCompareList = ref<BenefitCompareDisplayItem[]>([])
 // 加载状态
 const loading = ref(false)
 
@@ -126,20 +146,64 @@ async function fetchProductList() {
 }
 
 /**
- * 获取会员权益列表
+ * 获取会员权益对比列表（单次请求）
  */
-async function fetchBenefitList() {
+async function fetchBenefitCompare() {
   try {
-    // 获取 VIP 权益（不传 membershipType 获取最高等级权益展示）
-    const res = await getMembershipBenefits({
-      params: { membershipType: 'vip' },
-      options: {},
-    })
-    benefitList.value = res.benefits || []
+    const res = await getMembershipBenefitsCompare({ options: {} })
+    const items = res.items || []
+
+    // 转换为展示用的数据结构
+    benefitCompareList.value = items
+      .map((item: MembershipBenefitCompareItem) => ({
+        benefitKey: item.benefitKey || '',
+        benefitName: item.benefitName || '',
+        benefitDesc: item.benefitDesc,
+        normal: formatBenefitValue(item.normal),
+        vip: formatBenefitValue(item.vip),
+        svip: formatBenefitValue(item.svip),
+      }))
+      .sort((a, b) => {
+        const aItem = items.find(i => i.benefitKey === a.benefitKey)
+        const bItem = items.find(i => i.benefitKey === b.benefitKey)
+        return (aItem?.sort || 0) - (bItem?.sort || 0)
+      })
   }
   catch (error) {
-    console.error('获取权益列表失败:', error)
+    console.error('获取权益对比列表失败:', error)
   }
+}
+
+/**
+ * 格式化权益值显示
+ */
+function formatBenefitValue(benefit?: MembershipBenefitValue): string {
+  if (!benefit || !benefit.supported) {
+    return '✗' // 不支持
+  }
+
+  // 如果有次数，显示次数
+  if (benefit.num) {
+    const num = Number.parseInt(benefit.num, 10)
+    if (num === -1 || benefit.num === 'unlimited') {
+      return '无限'
+    }
+    return `${benefit.num}次`
+  }
+
+  // 如果有值，显示值
+  if (benefit.value) {
+    if (benefit.value === 'true' || benefit.value === '1') {
+      return '✓'
+    }
+    if (benefit.value === 'false' || benefit.value === '0') {
+      return '✗'
+    }
+    return benefit.value
+  }
+
+  // 默认表示支持
+  return '✓'
 }
 
 /**
@@ -181,25 +245,11 @@ function formatPrice(price?: number) {
   return price.toFixed(2)
 }
 
-/**
- * 解析商品详情
- */
-function parseProductDetail(detail?: string): { features?: string[], duration?: string } {
-  if (!detail)
-    return {}
-  try {
-    return JSON.parse(detail)
-  }
-  catch {
-    return {}
-  }
-}
-
 // 页面加载
 onLoad(() => {
   fetchMembershipInfo()
   fetchProductList()
-  fetchBenefitList()
+  fetchBenefitCompare()
 })
 </script>
 
@@ -289,27 +339,67 @@ onLoad(() => {
       </view>
     </view>
 
-    <!-- VIP 权益展示 -->
+    <!-- 会员权益对比 -->
     <view class="section">
       <view class="section-title">
-        <text class="title-text">VIP专属权益</text>
+        <text class="title-text">会员权益对比</text>
       </view>
 
-      <view class="benefit-grid">
-        <view v-for="benefit in benefitList" :key="benefit.benefitKey" class="benefit-item">
-          <view class="benefit-icon">
-            <wd-icon name="check-circle" size="40rpx" color="#10b981" />
+      <view class="compare-table">
+        <!-- 表头 - 会员等级 -->
+        <view class="compare-header">
+          <view class="compare-cell header-label">
+            权益
           </view>
-          <view class="benefit-content">
-            <view class="benefit-name">
-              {{ benefit.benefitName }}
+          <view
+            v-for="type in (['normal', 'vip', 'svip'] as MembershipType[])"
+            :key="type"
+            class="compare-cell header-type"
+            :class="[`type-${type}`, { 'is-current': membershipInfo?.membershipType === type }]"
+          >
+            <view class="type-icon">
+              {{ MEMBERSHIP_CONFIG[type].icon }}
             </view>
-            <view v-if="benefit.benefitDesc" class="benefit-desc">
-              {{ benefit.benefitDesc }}
+            <view class="type-name">
+              {{ MEMBERSHIP_CONFIG[type].name }}
+            </view>
+            <view v-if="membershipInfo?.membershipType === type" class="current-tag">
+              当前
             </view>
           </view>
-          <view v-if="benefit.benefitNum" class="benefit-value">
-            {{ benefit.benefitNum }}次
+        </view>
+
+        <!-- 权益行 -->
+        <view
+          v-for="item in benefitCompareList"
+          :key="item.benefitKey"
+          class="compare-row"
+        >
+          <view class="compare-cell row-label">
+            <view class="label-name">
+              {{ item.benefitName }}
+            </view>
+            <view v-if="item.benefitDesc" class="label-desc">
+              {{ item.benefitDesc }}
+            </view>
+          </view>
+          <view
+            v-for="type in (['normal', 'vip', 'svip'] as MembershipType[])"
+            :key="type"
+            class="compare-cell row-value"
+            :class="[`type-${type}`]"
+          >
+            <template v-if="item[type] === '✓'">
+              <wd-icon name="check" size="36rpx" :color="MEMBERSHIP_CONFIG[type].color" />
+            </template>
+            <template v-else-if="item[type] === '✗'">
+              <wd-icon name="close" size="36rpx" color="#d1d5db" />
+            </template>
+            <template v-else>
+              <text class="value-text" :style="{ color: MEMBERSHIP_CONFIG[type].color }">
+                {{ item[type] }}
+              </text>
+            </template>
           </view>
         </view>
       </view>
@@ -608,52 +698,134 @@ onLoad(() => {
   justify-content: center;
 }
 
-/* 权益列表 */
-.benefit-grid {
+/* 权益对比表格 */
+.compare-table {
   background: var(--fg-surface);
   border-radius: 24rpx;
   border: 1px solid var(--fg-border);
   overflow: hidden;
 }
 
-.benefit-item {
+.compare-header {
   display: flex;
-  align-items: center;
-  gap: 20rpx;
-  padding: 28rpx 24rpx;
+  background: linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, var(--fg-surface) 100%);
   border-bottom: 1px solid var(--fg-border);
 }
 
-.benefit-item:last-child {
+.compare-row {
+  display: flex;
+  border-bottom: 1px solid var(--fg-border);
+}
+
+.compare-row:last-child {
   border-bottom: none;
 }
 
-.benefit-icon {
-  flex-shrink: 0;
+.compare-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20rpx 12rpx;
 }
 
-.benefit-content {
-  flex: 1;
-  min-width: 0;
-}
-
-.benefit-name {
-  font-size: 28rpx;
-  font-weight: 600;
-  color: var(--fg-text);
-  margin-bottom: 4rpx;
-}
-
-.benefit-desc {
+.header-label {
+  flex: 1.2;
+  justify-content: flex-start;
+  padding-left: 24rpx;
   font-size: 24rpx;
+  font-weight: 600;
   color: var(--fg-text-muted);
 }
 
-.benefit-value {
-  flex-shrink: 0;
-  font-size: 28rpx;
-  font-weight: 700;
+.header-type {
+  flex: 1;
+  flex-direction: column;
+  gap: 8rpx;
+  padding: 24rpx 12rpx;
+  position: relative;
+}
+
+.header-type.is-current {
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.type-icon {
+  font-size: 32rpx;
+}
+
+.type-name {
+  font-size: 22rpx;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.type-normal .type-name {
+  color: #6b7280;
+}
+
+.type-vip .type-name {
   color: #10b981;
+}
+
+.type-svip .type-name {
+  color: #065f46;
+}
+
+.current-tag {
+  position: absolute;
+  top: 4rpx;
+  right: 4rpx;
+  padding: 2rpx 10rpx;
+  font-size: 18rpx;
+  font-weight: 600;
+  color: #fff;
+  background: #10b981;
+  border-radius: 0 0 0 12rpx;
+}
+
+.row-label {
+  flex: 1.2;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 4rpx;
+  padding: 20rpx 24rpx;
+}
+
+.label-name {
+  font-size: 26rpx;
+  font-weight: 500;
+  color: var(--fg-text);
+}
+
+.label-desc {
+  font-size: 20rpx;
+  color: var(--fg-text-muted);
+  line-height: 1.3;
+}
+
+.row-value {
+  flex: 1;
+  min-height: 80rpx;
+}
+
+.row-value.type-normal {
+  background: rgba(107, 114, 128, 0.03);
+}
+
+.row-value.type-vip {
+  background: rgba(16, 185, 129, 0.03);
+}
+
+.row-value.type-svip {
+  background: rgba(6, 95, 70, 0.05);
+}
+
+.value-text {
+  font-size: 24rpx;
+  font-weight: 600;
+  text-align: center;
 }
 
 /* 底部操作栏 */

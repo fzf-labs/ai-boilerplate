@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package app.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/app/v1;v1";
+
+// 激活码服务
+service MallActivationCode {
+  // 会员激活码激活
+  rpc ActivateMembershipByCode(ActivateMembershipByCodeReq) returns (ActivateMembershipByCodeReply) {
+    option (google.api.http) = {
+      post: "/app/v1/mall_activation_code/activate"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+// 请求-会员激活码激活
+message ActivateMembershipByCodeReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["code"]
+    }
+  };
+  string code = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }]; // 激活码
+}
+
+// 响应-会员激活码激活
+message ActivateMembershipByCodeReply {
+  string membershipType = 1; // 会员类型编码(normal,vip,svip)
+  string expiredAt = 2; // 到期时间(普通会员为空,表示永不过期)
+}

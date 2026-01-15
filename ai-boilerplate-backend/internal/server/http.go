@@ -84,6 +84,7 @@ func NewHTTPServer(
 	appV1HelpFaqService *service.AppV1HelpFaqService,
 	appV1HelpCategoryService *service.AppV1HelpCategoryService,
 	appV1SelfAppReleaseService *service.AppV1SelfAppReleaseService,
+	appV1MallActivationCodeService *service.AppV1MallActivationCodeService,
 	appV1MallProductService *service.AppV1MallProductService,
 	appV1MallOrderService *service.AppV1MallOrderService,
 ) *http.Server {
@@ -161,6 +162,7 @@ func NewHTTPServer(
 	appv1.RegisterHelpFaqHTTPServer(srv, appV1HelpFaqService)
 	appv1.RegisterHelpCategoryHTTPServer(srv, appV1HelpCategoryService)
 	appv1.RegisterSelfAppReleaseHTTPServer(srv, appV1SelfAppReleaseService)
+	appv1.RegisterMallActivationCodeHTTPServer(srv, appV1MallActivationCodeService)
 	appv1.RegisterMallProductHTTPServer(srv, appV1MallProductService)
 	appv1.RegisterMallOrderHTTPServer(srv, appV1MallOrderService)
 	// 自定义路由

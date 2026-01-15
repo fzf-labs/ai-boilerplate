@@ -948,3 +948,99 @@ func ErrorReasonUnauthorized(opts ...Option) *errors.Error {
 	}
 	return e.Error()
 }
+
+// 激活码不存在
+func IsActivationCodeNotFound(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == ErrorReason_ActivationCodeNotFound.String() && e.Code == 409
+}
+
+// 激活码不存在
+func ErrorActivationCodeNotFound(format string, args ...interface{}) *errors.Error {
+	return errors.New(409, ErrorReason_ActivationCodeNotFound.String(), fmt.Sprintf(format, args...))
+}
+
+// 激活码不存在
+func ErrorReasonActivationCodeNotFound(opts ...Option) *errors.Error {
+	e := &ErrorReasonErrors{
+		code:    409,
+		reason:  ErrorReason_ActivationCodeNotFound.String(),
+		message: "ActivationCodeNotFound",
+		lang:    "zh_CN",
+		i18n: map[string]string{
+			"en_US": "Activation code not found",
+			"zh_CN": "激活码不存在",
+		},
+	}
+	for _, o := range opts {
+		o(e)
+	}
+	return e.Error()
+}
+
+// 激活码不可兑换
+func IsActivationCodeNotRedeemable(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == ErrorReason_ActivationCodeNotRedeemable.String() && e.Code == 409
+}
+
+// 激活码不可兑换
+func ErrorActivationCodeNotRedeemable(format string, args ...interface{}) *errors.Error {
+	return errors.New(409, ErrorReason_ActivationCodeNotRedeemable.String(), fmt.Sprintf(format, args...))
+}
+
+// 激活码不可兑换
+func ErrorReasonActivationCodeNotRedeemable(opts ...Option) *errors.Error {
+	e := &ErrorReasonErrors{
+		code:    409,
+		reason:  ErrorReason_ActivationCodeNotRedeemable.String(),
+		message: "ActivationCodeNotRedeemable",
+		lang:    "zh_CN",
+		i18n: map[string]string{
+			"en_US": "Activation code not redeemable",
+			"zh_CN": "激活码不可兑换",
+		},
+	}
+	for _, o := range opts {
+		o(e)
+	}
+	return e.Error()
+}
+
+// 商品会员配置无效
+func IsActivationCodeProductConfigInvalid(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == ErrorReason_ActivationCodeProductConfigInvalid.String() && e.Code == 409
+}
+
+// 商品会员配置无效
+func ErrorActivationCodeProductConfigInvalid(format string, args ...interface{}) *errors.Error {
+	return errors.New(409, ErrorReason_ActivationCodeProductConfigInvalid.String(), fmt.Sprintf(format, args...))
+}
+
+// 商品会员配置无效
+func ErrorReasonActivationCodeProductConfigInvalid(opts ...Option) *errors.Error {
+	e := &ErrorReasonErrors{
+		code:    409,
+		reason:  ErrorReason_ActivationCodeProductConfigInvalid.String(),
+		message: "ActivationCodeProductConfigInvalid",
+		lang:    "zh_CN",
+		i18n: map[string]string{
+			"en_US": "Product membership config invalid",
+			"zh_CN": "商品会员配置无效",
+		},
+	}
+	for _, o := range opts {
+		o(e)
+	}
+	return e.Error()
+}
