@@ -216,13 +216,13 @@ onLoad((options) => {
 }
 
 .result-header.success .result-icon {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  box-shadow: 0 16rpx 40rpx rgba(16, 185, 129, 0.3);
+  background: linear-gradient(135deg, var(--fg-primary-600) 0%, var(--fg-primary) 100%);
+  box-shadow: 0 16rpx 40rpx rgba(var(--fg-primary-rgb), 0.35);
 }
 
 .result-header.fail .result-icon {
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  box-shadow: 0 16rpx 40rpx rgba(239, 68, 68, 0.3);
+  background: linear-gradient(135deg, var(--fg-danger) 0%, #e58a78 100%);
+  box-shadow: 0 16rpx 40rpx rgba(212, 116, 95, 0.32);
 }
 
 .result-title {
@@ -285,7 +285,7 @@ onLoad((options) => {
 
 .order-row .price {
   font-weight: 700;
-  color: #ef4444;
+  color: var(--fg-danger);
 }
 
 /* 操作按钮 */

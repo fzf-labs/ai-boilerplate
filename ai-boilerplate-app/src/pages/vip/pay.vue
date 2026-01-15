@@ -248,7 +248,7 @@ onLoad((options) => {
               class="icon-image"
               mode="aspectFit"
             />
-            <wd-icon v-else name="wallet" size="48rpx" color="#10b981" />
+            <wd-icon v-else name="wallet" size="48rpx" color="var(--fg-primary-600)" />
           </view>
           <view class="payment-info">
             <view class="payment-label">
@@ -262,7 +262,7 @@ onLoad((options) => {
             <wd-icon
               :name="paymentMethod === method.value ? 'check-circle-filled' : 'circle'"
               size="44rpx"
-              :color="paymentMethod === method.value ? '#10b981' : '#d1d5db'"
+              :color="paymentMethod === method.value ? 'var(--fg-primary-600)' : 'var(--fg-text-weak)'"
             />
           </view>
         </view>
@@ -355,7 +355,7 @@ onLoad((options) => {
   width: 80rpx;
   height: 80rpx;
   border-radius: 16rpx;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, var(--fg-primary-600) 0%, var(--fg-primary) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -385,7 +385,7 @@ onLoad((options) => {
 .product-price {
   display: flex;
   align-items: baseline;
-  color: #ef4444;
+  color: var(--fg-danger);
 }
 
 .product-price .symbol {
@@ -424,7 +424,7 @@ onLoad((options) => {
 }
 
 .payment-item.active {
-  background: rgba(16, 185, 129, 0.05);
+  background: rgba(var(--fg-primary-rgb), 0.06);
 }
 
 .payment-icon {
@@ -487,7 +487,7 @@ onLoad((options) => {
 }
 
 .amount-row .discount {
-  color: #10b981;
+  color: var(--fg-primary-600);
 }
 
 .amount-row.total .label {
@@ -505,7 +505,7 @@ onLoad((options) => {
 .total-value {
   display: flex;
   align-items: baseline;
-  color: #ef4444;
+  color: var(--fg-danger);
 }
 
 .total-value .symbol {
@@ -551,7 +551,7 @@ onLoad((options) => {
 .total-price {
   display: flex;
   align-items: baseline;
-  color: #ef4444;
+  color: var(--fg-danger);
 }
 
 .total-price .symbol {

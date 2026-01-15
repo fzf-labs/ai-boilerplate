@@ -21,9 +21,9 @@ interface BenefitCompareDisplayItem {
 
 // 会员等级配置
 const MEMBERSHIP_CONFIG: Record<MembershipType, { name: string, icon: string, color: string, bgColor: string }> = {
-  normal: { name: '普通会员', icon: '⭐', color: '#6b7280', bgColor: 'rgba(107, 114, 128, 0.1)' },
-  vip: { name: 'VIP会员', icon: '💎', color: '#10b981', bgColor: 'rgba(16, 185, 129, 0.1)' },
-  svip: { name: 'SVIP会员', icon: '👑', color: '#065f46', bgColor: 'rgba(6, 95, 70, 0.15)' },
+  normal: { name: '普通会员', icon: '⭐', color: 'var(--fg-text-muted)', bgColor: 'rgba(100, 116, 139, 0.12)' },
+  vip: { name: 'VIP会员', icon: '💎', color: 'var(--fg-primary-600)', bgColor: 'rgba(var(--fg-primary-rgb), 0.14)' },
+  svip: { name: 'SVIP会员', icon: '👑', color: '#064E3B', bgColor: 'rgba(6, 78, 59, 0.12)' },
 }
 
 definePage({
@@ -38,33 +38,33 @@ const toast = useToast()
 // 当前会员信息
 const membershipInfo = ref<GetUserMembershipInfoReply | null>(null)
 
-// 会员类型主题配置 - 以绿色为主色调（与 me.vue 保持一致）
+// 会员类型主题配置 - 清新薄荷为主色调（与 me.vue 保持一致）
 const membershipTheme = computed(() => {
   const type = membershipInfo.value?.membershipType || 'normal'
   switch (type) {
     case 'svip':
-      // 深翠绿 + 金色点缀 - 尊贵感
+      // 深青绿 + 清透薄荷 - 更清爽的尊贵感
       return {
         icon: '👑',
-        gradient: 'linear-gradient(135deg, #065f46 0%, #047857 50%, #059669 100%)',
-        shadow: 'rgba(6, 95, 70, 0.35)',
-        shadowAlt: 'rgba(4, 120, 87, 0.25)',
+        gradient: 'linear-gradient(135deg, #064e3b 0%, #059669 55%, #6ee7b7 100%)',
+        shadow: 'rgba(5, 150, 105, 0.32)',
+        shadowAlt: 'rgba(110, 231, 183, 0.22)',
       }
     case 'vip':
-      // 翠绿色 - 经典VIP
+      // 薄荷渐变 - 清新VIP
       return {
         icon: '💎',
-        gradient: 'linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%)',
+        gradient: 'linear-gradient(135deg, #059669 0%, #10b981 50%, #a7f3d0 100%)',
         shadow: 'rgba(16, 185, 129, 0.3)',
-        shadowAlt: 'rgba(5, 150, 105, 0.2)',
+        shadowAlt: 'rgba(167, 243, 208, 0.24)',
       }
     default:
-      // 浅绿灰色 - 普通会员
+      // 轻白 + 浅薄荷 - 普通会员
       return {
         icon: '⭐',
-        gradient: 'linear-gradient(135deg, #6ee7b7 0%, #34d399 50%, #10b981 100%)',
-        shadow: 'rgba(110, 231, 183, 0.3)',
-        shadowAlt: 'rgba(52, 211, 153, 0.2)',
+        gradient: 'linear-gradient(135deg, #ffffff 0%, #ecfdf5 55%, #d1fae5 100%)',
+        shadow: 'rgba(15, 23, 42, 0.08)',
+        shadowAlt: 'rgba(16, 185, 129, 0.14)',
       }
   }
 })
@@ -393,7 +393,7 @@ onLoad(() => {
               <wd-icon name="check" size="36rpx" :color="MEMBERSHIP_CONFIG[type].color" />
             </template>
             <template v-else-if="item[type] === '✗'">
-              <wd-icon name="close" size="36rpx" color="#d1d5db" />
+              <wd-icon name="close" size="36rpx" color="var(--fg-text-weak)" />
             </template>
             <template v-else>
               <text class="value-text" :style="{ color: MEMBERSHIP_CONFIG[type].color }">
@@ -448,7 +448,7 @@ onLoad(() => {
   top: 0;
   right: 0;
   height: 400rpx;
-  background: linear-gradient(180deg, #10b981 0%, var(--fg-bg) 100%);
+  background: linear-gradient(180deg, var(--fg-primary) 0%, var(--fg-bg) 100%);
   z-index: 0;
 }
 
@@ -632,8 +632,8 @@ onLoad(() => {
 }
 
 .product-card.active {
-  border-color: #10b981;
-  background: linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, var(--fg-surface) 100%);
+  border-color: var(--fg-primary-600);
+  background: linear-gradient(180deg, rgba(var(--fg-primary-rgb), 0.1) 0%, var(--fg-surface) 100%);
 }
 
 .recommend-tag {
@@ -644,7 +644,7 @@ onLoad(() => {
   font-size: 20rpx;
   font-weight: 600;
   color: #fff;
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  background: linear-gradient(135deg, var(--fg-cta) 0%, var(--fg-primary) 100%);
   border-radius: 0 18rpx 0 12rpx;
 }
 
@@ -658,7 +658,7 @@ onLoad(() => {
 .product-price {
   display: flex;
   align-items: baseline;
-  color: #10b981;
+  color: var(--fg-primary-600);
   margin-bottom: 4rpx;
 }
 
@@ -691,7 +691,7 @@ onLoad(() => {
   right: -2px;
   width: 40rpx;
   height: 40rpx;
-  background: #10b981;
+  background: var(--fg-primary-600);
   border-radius: 12rpx 0 18rpx 0;
   display: flex;
   align-items: center;
@@ -708,7 +708,7 @@ onLoad(() => {
 
 .compare-header {
   display: flex;
-  background: linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, var(--fg-surface) 100%);
+  background: linear-gradient(180deg, rgba(var(--fg-primary-rgb), 0.08) 0%, var(--fg-surface) 100%);
   border-bottom: 1px solid var(--fg-border);
 }
 
@@ -746,7 +746,7 @@ onLoad(() => {
 }
 
 .header-type.is-current {
-  background: rgba(16, 185, 129, 0.1);
+  background: rgba(var(--fg-primary-rgb), 0.12);
 }
 
 .type-icon {
@@ -761,15 +761,15 @@ onLoad(() => {
 }
 
 .type-normal .type-name {
-  color: #6b7280;
+  color: var(--fg-text-muted);
 }
 
 .type-vip .type-name {
-  color: #10b981;
+  color: var(--fg-primary-600);
 }
 
 .type-svip .type-name {
-  color: #065f46;
+  color: #064e3b;
 }
 
 .current-tag {
@@ -780,7 +780,7 @@ onLoad(() => {
   font-size: 18rpx;
   font-weight: 600;
   color: #fff;
-  background: #10b981;
+  background: var(--fg-primary-600);
   border-radius: 0 0 0 12rpx;
 }
 
@@ -811,15 +811,15 @@ onLoad(() => {
 }
 
 .row-value.type-normal {
-  background: rgba(107, 114, 128, 0.03);
+  background: rgba(100, 116, 139, 0.06);
 }
 
 .row-value.type-vip {
-  background: rgba(16, 185, 129, 0.03);
+  background: rgba(var(--fg-primary-rgb), 0.06);
 }
 
 .row-value.type-svip {
-  background: rgba(6, 95, 70, 0.05);
+  background: rgba(6, 78, 59, 0.06);
 }
 
 .value-text {
@@ -861,7 +861,7 @@ onLoad(() => {
 .total-price {
   display: flex;
   align-items: baseline;
-  color: #ef4444;
+  color: var(--fg-danger);
 }
 
 .total-price .symbol {

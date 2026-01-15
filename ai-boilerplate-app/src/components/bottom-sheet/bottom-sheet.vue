@@ -271,6 +271,6 @@ function select(index: number) {
 }
 
 .bottom-sheet__confirm--danger:active {
-  background: #dc2626;
+  background: #e58a78;
 }
 </style>

@@ -22,33 +22,33 @@ const userProfile = ref<UserInfo | null>(null)
 // 会员信息
 const membershipInfo = ref<GetUserMembershipInfoReply | null>(null)
 
-// 会员类型主题配置 - 以绿色为主色调
+// 会员类型主题配置 - 清新薄荷为主色调
 const membershipTheme = computed(() => {
   const type = membershipInfo.value?.membershipType || 'normal'
   switch (type) {
     case 'svip':
-      // 深翠绿 + 金色点缀 - 尊贵感
+      // 深绿 + 清透薄荷 - 更清爽的尊贵感
       return {
         icon: '👑',
-        gradient: 'linear-gradient(135deg, #065f46 0%, #047857 50%, #059669 100%)',
-        shadow: 'rgba(6, 95, 70, 0.35)',
-        shadowAlt: 'rgba(4, 120, 87, 0.25)',
+        gradient: 'linear-gradient(135deg, #064e3b 0%, #059669 55%, #6ee7b7 100%)',
+        shadow: 'rgba(5, 150, 105, 0.32)',
+        shadowAlt: 'rgba(110, 231, 183, 0.22)',
       }
     case 'vip':
-      // 翠绿色 - 经典VIP
+      // 薄荷渐变 - 清新VIP
       return {
         icon: '💎',
-        gradient: 'linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%)',
+        gradient: 'linear-gradient(135deg, #059669 0%, #10b981 50%, #a7f3d0 100%)',
         shadow: 'rgba(16, 185, 129, 0.3)',
-        shadowAlt: 'rgba(5, 150, 105, 0.2)',
+        shadowAlt: 'rgba(167, 243, 208, 0.24)',
       }
     default:
-      // 浅绿灰色 - 普通会员
+      // 轻白 + 浅薄荷 - 普通会员
       return {
         icon: '⭐',
-        gradient: 'linear-gradient(135deg, #6ee7b7 0%, #34d399 50%, #10b981 100%)',
-        shadow: 'rgba(110, 231, 183, 0.3)',
-        shadowAlt: 'rgba(52, 211, 153, 0.2)',
+        gradient: 'linear-gradient(135deg, #ffffff 0%, #ecfdf5 55%, #d1fae5 100%)',
+        shadow: 'rgba(15, 23, 42, 0.08)',
+        shadowAlt: 'rgba(16, 185, 129, 0.14)',
       }
   }
 })
@@ -619,15 +619,15 @@ onShow(() => {
 }
 
 .status-inline.active {
-  color: #34d399;
+  color: var(--fg-success);
 }
 
 .status-inline.expired {
-  color: #f87171;
+  color: var(--fg-danger);
 }
 
 .status-inline.disabled {
-  color: #9ca3af;
+  color: var(--fg-text-weak);
 }
 
 .membership-desc {

@@ -508,12 +508,12 @@ onUnload(() => {
 }
 
 :deep(.danger-title) {
-  color: #ef4444;
+  color: var(--fg-danger);
   font-weight: 700;
 }
 
 :deep(.danger-icon) {
-  color: #ef4444;
+  color: var(--fg-danger);
 }
 
 .tips-section {
@@ -530,7 +530,7 @@ onUnload(() => {
   :deep(.wd-button) {
     border-radius: 16rpx;
     font-weight: 600;
-    box-shadow: 0 6rpx 18rpx rgba(239, 68, 68, 0.18);
+    box-shadow: 0 6rpx 18rpx rgba(212, 116, 95, 0.24);
   }
 }
 
