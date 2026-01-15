@@ -66,9 +66,6 @@ message ActivateMembershipByCodeReply {
 message ActivationCodeRedemptionInfo {
   string code = 1; // 激活码
   string activatedAt = 2; // 激活时间
-  string membershipType = 3; // 会员类型编码(normal,vip,svip)
-  string expiredAt = 4; // 到期时间(普通会员为空,表示永不过期)
-  int32 durationDays = 5; // 有效时长(天)
 }
 
 // 请求-兑换记录列表

@@ -143,19 +143,6 @@
         "activatedAt": {
           "type": "string",
           "title": "激活时间"
-        },
-        "membershipType": {
-          "type": "string",
-          "title": "会员类型编码(normal,vip,svip)"
-        },
-        "expiredAt": {
-          "type": "string",
-          "title": "到期时间(普通会员为空,表示永不过期)"
-        },
-        "durationDays": {
-          "type": "integer",
-          "format": "int32",
-          "title": "有效时长(天)"
         }
       },
       "title": "兑换记录信息"

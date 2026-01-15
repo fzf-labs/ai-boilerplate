@@ -2,11 +2,11 @@ package service
 
 import (
 	"context"
-	"time"
 
 	pb "github.com/fzf-labs/ai-boilerplate-backend/api/app/v1"
 	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/constant"
 	"github.com/fzf-labs/godb/orm/condition"
+	"github.com/fzf-labs/goutil/timeutil"
 	"github.com/fzf-labs/kratos-contrib/meta"
 )
 
@@ -52,10 +52,8 @@ func (a *AppV1MallActivationCodeService) ListActivationCodeRedemptions(ctx conte
 
 	for _, item := range list {
 		info := &pb.ActivationCodeRedemptionInfo{
-			Code: item.Code,
-		}
-		if item.ActivatedAt.Valid {
-			info.ActivatedAt = item.ActivatedAt.Time.Format(time.RFC3339)
+			Code:        item.Code,
+			ActivatedAt: timeutil.RFC3339(item.ActivatedAt.Time),
 		}
 		resp.List = append(resp.List, info)
 	}

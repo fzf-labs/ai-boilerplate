@@ -140,7 +140,6 @@ export type MallActivationCodeInfo = {
   activatedAt?: string;
   /** 用户ID */
   userId?: string;
-  userChange?: UserChange;
   /** 平台 */
   platform?: string;
   /** 平台售出时间 */
@@ -219,22 +218,4 @@ export type UpdateMallActivationCodeStatusResponses = {
    * An unexpected error response.
    */
   default: Status;
-};
-
-export type UserChange = {
-  userMembershipChange?: UserMembershipChange;
-};
-
-export type UserMembershipChange = {
-  before?: UserMembershipChangeItem;
-  after?: UserMembershipChangeItem;
-};
-
-export type UserMembershipChangeItem = {
-  /** 会员类型编码(normal,vip,svip) */
-  membershipType?: string;
-  /** 到期时间(普通会员为NULL,表示永不过期) */
-  expiredAt?: string;
-  /** 状态(-1禁用,1正常) */
-  status?: number;
 };

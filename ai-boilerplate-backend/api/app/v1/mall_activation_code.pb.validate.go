@@ -273,12 +273,6 @@ func (m *ActivationCodeRedemptionInfo) validate(all bool) error {
 
 	// no validation rules for ActivatedAt
 
-	// no validation rules for MembershipType
-
-	// no validation rules for ExpiredAt
-
-	// no validation rules for DurationDays
-
 	if len(errors) > 0 {
 		return ActivationCodeRedemptionInfoMultiError(errors)
 	}

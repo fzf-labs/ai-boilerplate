@@ -10,6 +10,8 @@ import (
 	pb "github.com/fzf-labs/ai-boilerplate-backend/api/app/v1"
 	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/constant"
 	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/gorm/ai_boilerplate_dao"
+	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/gorm/ai_boilerplate_model"
+	"github.com/fzf-labs/goutil/jsonutil"
 	"github.com/fzf-labs/goutil/timeutil"
 	"github.com/fzf-labs/kratos-contrib/meta"
 )
@@ -78,18 +80,42 @@ func (s *AppV1MallActivationCodeService) ActivateMembershipByCode(ctx context.Co
 		if err := s.mallActivationCodeRepo.UpdateOneCacheWithZeroByTx(ctx, tx, activationCode, oldActivationCode); err != nil {
 			return err
 		}
+		// 计算会员变更
+		newMembershipType, newExpiredAt, err := s.userMembershipRepo.CalcMembershipChange(ctx, userMembership.MembershipType, userMembership.ExpiredAt.Time, productConfig.Membership.MembershipType, int(productConfig.Membership.DurationDays))
+		if err != nil {
+			return err
+		}
 		// 用户会员信息更新
 		oldUserMembership := s.userMembershipRepo.DeepCopy(userMembership)
-		userMembership.MembershipType = productConfig.Membership.MembershipType
-		userMembership.ExpiredAt = timeutil.TimeToSQLNullTime(carbon.Now().AddDays(int(productConfig.Membership.DurationDays)).StdTime())
+		userMembership.MembershipType = newMembershipType
+		userMembership.ExpiredAt = timeutil.TimeToSQLNullTime(newExpiredAt)
 		if err := s.userMembershipRepo.UpdateOneCacheWithZeroByTx(ctx, tx, userMembership, oldUserMembership); err != nil {
 			return err
 		}
 		// 用户会员变更记录更新
+		before, err := jsonutil.Marshal(oldUserMembership)
+		if err != nil {
+			return err
+		}
+		after, err := jsonutil.Marshal(userMembership)
+		if err != nil {
+			return err
+		}
+		userMembershipChange := &ai_boilerplate_model.UserMembershipChange{
+			UserID:     userMembership.UserID,
+			SourceType: constant.MembershipChangeSourceActivationCode.String(),
+			SourceID:   activationCode.ID,
+			Before:     before,
+			After:      after,
+			Remark:     "会员激活码激活",
+		}
+		if err := s.userMembershipChangeRepo.CreateOneCacheByTx(ctx, tx, userMembershipChange); err != nil {
+			return err
+		}
 		return nil
 	})
 	if err != nil {
-		return nil, err
+		return nil, pb.ErrorReasonDataSQLError(pb.WithError(err))
 	}
 	resp.MembershipType = productConfig.Membership.MembershipType
 	resp.ExpiredAt = userMembership.ExpiredAt.Time.Format(time.RFC3339)
