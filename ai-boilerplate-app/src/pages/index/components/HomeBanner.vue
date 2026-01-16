@@ -50,7 +50,6 @@ const autoplay = computed(() => props.list.length > 1)
         <template #default="{ item }">
           <view class="banner-slide" @click="emit('click', item as BannerDisplayItem)">
             <image class="banner-slide__image" :src="(item as BannerDisplayItem).imageUrl" mode="aspectFill" />
-            <view class="banner-slide__glow" />
             <view class="banner-slide__shade" />
             <view class="banner-slide__content">
               <text class="banner-slide__title">{{ (item as BannerDisplayItem).title || '精选活动' }}</text>
@@ -82,37 +81,13 @@ const autoplay = computed(() => props.list.length > 1)
 <style lang="scss" scoped>
 .banner-section {
   width: 100%;
-  padding: calc(env(safe-area-inset-top) + 12rpx) var(--fg-page-x) var(--fg-section-gap);
+  padding: 12rpx var(--fg-page-x) var(--fg-section-gap);
   box-sizing: border-box;
 }
 
 .banner-shell {
   position: relative;
   z-index: 1;
-}
-
-.banner-shell::before,
-.banner-shell::after {
-  content: '';
-  position: absolute;
-  width: 220rpx;
-  height: 220rpx;
-  border-radius: 50%;
-  filter: blur(30rpx);
-  opacity: 0.7;
-  z-index: 0;
-}
-
-.banner-shell::before {
-  top: -60rpx;
-  left: -30rpx;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 205, 155, 0.9), rgba(255, 205, 155, 0) 70%);
-}
-
-.banner-shell::after {
-  bottom: -50rpx;
-  right: -20rpx;
-  background: radial-gradient(circle at 70% 70%, rgba(145, 198, 255, 0.9), rgba(145, 198, 255, 0) 70%);
 }
 
 :deep(.banner-swiper) {
@@ -124,10 +99,11 @@ const autoplay = computed(() => props.list.length > 1)
   position: relative;
   width: 100%;
   height: 100%;
-  border-radius: 32rpx;
+  border-radius: var(--fg-radius-card-lg);
   overflow: hidden;
-  box-shadow: 0 24rpx 60rpx rgba(11, 18, 32, 0.28);
-  background: #0b1220;
+  box-shadow: var(--fg-shadow-card);
+  background: var(--fg-surface);
+  border: 1px solid var(--fg-border);
   transform: translateZ(0);
 }
 
@@ -137,38 +113,35 @@ const autoplay = computed(() => props.list.length > 1)
   display: block;
 }
 
-.banner-slide__glow {
-  position: absolute;
-  inset: -20% auto auto -15%;
-  width: 60%;
-  height: 60%;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0));
-  opacity: 0.7;
-}
-
 .banner-slide__shade {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(8, 12, 20, 0) 0%, rgba(8, 12, 20, 0.45) 55%, rgba(8, 12, 20, 0.85) 100%);
+  background: linear-gradient(180deg, var(--fg-glass-0) 0%, var(--fg-glass-50) 60%, var(--fg-glass-85) 100%);
 }
 
 .banner-slide__content {
   position: absolute;
-  left: 28rpx;
-  right: 28rpx;
-  bottom: 28rpx;
+  left: 22rpx;
+  right: 22rpx;
+  bottom: 22rpx;
   display: flex;
   flex-direction: column;
-  gap: 16rpx;
+  gap: 12rpx;
+  padding: 18rpx 20rpx;
+  border-radius: var(--fg-radius-card);
+  background: var(--fg-surface-glass);
+  border: 1rpx solid var(--fg-glass-70);
+  box-shadow: var(--fg-shadow-soft);
+  -webkit-backdrop-filter: blur(var(--fg-blur-soft));
+  backdrop-filter: blur(var(--fg-blur-soft));
 }
 
 .banner-slide__title {
-  font-size: 38rpx;
+  font-size: 34rpx;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--fg-text);
   line-height: 1.4;
-  letter-spacing: 0.5rpx;
-  text-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.35);
+  letter-spacing: -0.2rpx;
 }
 
 .banner-slide__meta {
@@ -181,23 +154,23 @@ const autoplay = computed(() => props.list.length > 1)
 .banner-slide__tag {
   padding: 6rpx 16rpx;
   border-radius: 999rpx;
-  background: rgba(255, 255, 255, 0.22);
-  border: 1rpx solid rgba(255, 255, 255, 0.3);
-  color: #ffffff;
+  background: var(--fg-ink-04);
+  border: 1rpx solid var(--fg-border);
+  color: var(--fg-text-secondary);
   font-size: 22rpx;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .banner-slide__cta {
   padding: 10rpx 22rpx;
   border-radius: 999rpx;
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 10rpx 24rpx rgba(13, 20, 34, 0.2);
+  background: var(--fg-primary);
+  box-shadow: 0 8rpx 18rpx rgba(var(--fg-primary-rgb), 0.3);
 }
 
 .banner-slide__cta-text {
   font-size: 24rpx;
-  color: #1f2a44;
+  color: var(--fg-text-inverse);
   font-weight: 600;
 }
 
@@ -210,10 +183,11 @@ const autoplay = computed(() => props.list.length > 1)
   align-items: center;
   padding: 8rpx 14rpx;
   border-radius: 999rpx;
-  background: rgba(8, 12, 20, 0.35);
-  border: 1rpx solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 8rpx 22rpx rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(10rpx);
+  background: var(--fg-glass-70);
+  border: 1rpx solid var(--fg-border);
+  box-shadow: var(--fg-shadow-soft);
+  -webkit-backdrop-filter: blur(var(--fg-blur-soft));
+  backdrop-filter: blur(var(--fg-blur-soft));
 }
 
 .banner-indicator__dots {
@@ -226,13 +200,20 @@ const autoplay = computed(() => props.list.length > 1)
   width: 10rpx;
   height: 10rpx;
   border-radius: 999rpx;
-  background: rgba(255, 255, 255, 0.35);
-  transition: all 0.3s ease;
+  background: var(--fg-text-weak);
+  transition: all 0.25s ease-out;
 }
 
 .banner-indicator__dot.is-active {
-  width: 22rpx;
-  background: #ffffff;
-  box-shadow: 0 4rpx 12rpx rgba(255, 255, 255, 0.35);
+  width: 18rpx;
+  background: var(--fg-primary);
+  box-shadow: 0 4rpx 10rpx rgba(var(--fg-primary-rgb), 0.3);
+}
+
+@supports not ((backdrop-filter: blur(1px))) {
+  .banner-slide__content,
+  .banner-indicator {
+    background: var(--fg-surface);
+  }
 }
 </style>

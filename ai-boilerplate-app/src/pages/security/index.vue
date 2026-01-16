@@ -272,7 +272,7 @@ onUnload(() => {
         <view class="sheet-header">
           <view class="header-left">
             <view class="header-icon">
-              <wd-icon name="user" size="44rpx" color="#fff" />
+              <wd-icon name="user" size="44rpx" color="var(--fg-text-inverse)" />
             </view>
             <view class="header-text">
               <text class="header-title">账号管理</text>
@@ -471,11 +471,11 @@ onUnload(() => {
   width: 88rpx;
   height: 88rpx;
   border-radius: 22rpx;
-  background: linear-gradient(135deg, var(--fg-primary-600) 0%, var(--fg-primary) 100%);
+  background: rgba(var(--fg-primary-rgb), 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 10rpx 26rpx rgba(var(--fg-primary-rgb), 0.22);
+  box-shadow: var(--fg-shadow-soft);
 }
 
 .header-text {

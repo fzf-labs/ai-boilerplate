@@ -97,7 +97,7 @@ onLoad((options) => {
         <wd-icon
           :name="status === 'success' ? 'check' : 'close'"
           size="80rpx"
-          color="#fff"
+          color="var(--fg-text-inverse)"
         />
       </view>
       <view class="result-title">
@@ -216,13 +216,13 @@ onLoad((options) => {
 }
 
 .result-header.success .result-icon {
-  background: linear-gradient(135deg, var(--fg-primary-600) 0%, var(--fg-primary) 100%);
-  box-shadow: 0 16rpx 40rpx rgba(var(--fg-primary-rgb), 0.35);
+  background: rgba(var(--fg-primary-rgb), 0.12);
+  box-shadow: var(--fg-shadow-soft);
 }
 
 .result-header.fail .result-icon {
-  background: linear-gradient(135deg, var(--fg-danger) 0%, #e58a78 100%);
-  box-shadow: 0 16rpx 40rpx rgba(212, 116, 95, 0.32);
+  background: rgba(255, 59, 48, 0.12);
+  box-shadow: 0 12rpx 28rpx rgba(255, 59, 48, 0.2);
 }
 
 .result-title {

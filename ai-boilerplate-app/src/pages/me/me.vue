@@ -22,33 +22,33 @@ const userProfile = ref<UserInfo | null>(null)
 // 会员信息
 const membershipInfo = ref<GetUserMembershipInfoReply | null>(null)
 
-// 会员类型主题配置 - 清新薄荷为主色调
+// 会员类型主题配置 - iOS 轻盈玻璃质感
 const membershipTheme = computed(() => {
   const type = membershipInfo.value?.membershipType || 'normal'
   switch (type) {
     case 'svip':
-      // 深绿 + 清透薄荷 - 更清爽的尊贵感
+      // 轻石墨玻璃 - 稳重克制
       return {
-        icon: '👑',
-        gradient: 'linear-gradient(135deg, #064e3b 0%, #059669 55%, #6ee7b7 100%)',
-        shadow: 'rgba(5, 150, 105, 0.32)',
-        shadowAlt: 'rgba(110, 231, 183, 0.22)',
+        icon: 'SV',
+        gradient: 'linear-gradient(135deg, var(--fg-gold-100) 0%, var(--fg-gold-200) 60%, var(--fg-gold-300) 100%)',
+        shadow: 'var(--fg-ink-08)',
+        shadowAlt: 'var(--fg-ink-05)',
       }
     case 'vip':
-      // 薄荷渐变 - 清新VIP
+      // 淡蓝玻璃 - 轻奢质感
       return {
-        icon: '💎',
-        gradient: 'linear-gradient(135deg, #059669 0%, #10b981 50%, #a7f3d0 100%)',
-        shadow: 'rgba(16, 185, 129, 0.3)',
-        shadowAlt: 'rgba(167, 243, 208, 0.24)',
+        icon: 'V',
+        gradient: 'linear-gradient(135deg, var(--fg-gold-50) 0%, var(--fg-gold-100) 55%, var(--fg-gold-200) 100%)',
+        shadow: 'var(--fg-ink-08)',
+        shadowAlt: 'var(--fg-ink-05)',
       }
     default:
-      // 轻白 + 浅薄荷 - 普通会员
+      // 纯白玻璃 - 简洁中性
       return {
-        icon: '⭐',
-        gradient: 'linear-gradient(135deg, #ffffff 0%, #ecfdf5 55%, #d1fae5 100%)',
-        shadow: 'rgba(15, 23, 42, 0.08)',
-        shadowAlt: 'rgba(16, 185, 129, 0.14)',
+        icon: 'N',
+        gradient: 'linear-gradient(135deg, var(--fg-gold-50) 0%, var(--fg-gold-100) 60%, var(--fg-gold-200) 100%)',
+        shadow: 'var(--fg-ink-08)',
+        shadowAlt: 'var(--fg-ink-05)',
       }
   }
 })
@@ -92,13 +92,6 @@ const displayPhone = computed(() => userProfile.value?.phone || '')
 
 // 菜单列表
 const menuList = [
-  {
-    title: '个人信息',
-    icon: 'edit',
-    label: '完善头像昵称',
-    path: '/pages/profile/edit',
-    needLogin: true,
-  },
   {
     title: '账号管理',
     icon: 'user',
@@ -166,6 +159,23 @@ async function handleLogin() {
     url: `${LOGIN_PAGE}`,
   })
   // #endif
+}
+
+/**
+ * 个人信息卡片点击
+ */
+function handleProfileCardClick() {
+  if (!tokenStore.hasLogin) {
+    toast.warning('请先登录')
+    setTimeout(() => {
+      handleLogin()
+    }, 1500)
+    return
+  }
+
+  uni.navigateTo({
+    url: '/pages/profile/edit',
+  })
 }
 
 /**
@@ -239,7 +249,7 @@ onShow(() => {
   <view class="me-page">
     <view class="top-bg" />
     <view class="hero">
-      <view class="hero-card">
+      <view class="hero-card" @click="handleProfileCardClick">
         <image
           :src="tokenStore.hasLogin ? displayAvatar : '/static/images/default-avatar.png'"
           class="avatar"
@@ -251,7 +261,7 @@ onShow(() => {
           </view>
           <text class="sub">{{ tokenStore.hasLogin ? (displayPhone || '欢迎回来') : '登录后可同步个人信息' }}</text>
         </view>
-        <wd-button v-if="!tokenStore.hasLogin" type="primary" size="small" round @click="handleLogin">
+        <wd-button v-if="!tokenStore.hasLogin" type="primary" size="small" round @click.stop="handleLogin">
           登录/注册
         </wd-button>
       </view>
@@ -402,18 +412,17 @@ onShow(() => {
 /* 会员信息卡片样式 - Liquid Glass 风格 */
 .membership-card {
   position: relative;
-  border-radius: 32rpx;
+  border-radius: var(--fg-radius-card-lg);
   overflow: hidden;
-  border: none;
+  border: 1px solid var(--fg-border);
   margin-bottom: 18rpx;
-  padding: 40rpx 32rpx;
-  transition: all 0.3s ease-out;
+  padding: 36rpx 32rpx;
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
   cursor: pointer;
 }
 
 .membership-card:active {
-  transform: scale(0.98);
-  opacity: 0.95;
+  transform: scale(0.99);
 }
 
 .membership-card::before {
@@ -423,7 +432,7 @@ onShow(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(135deg, var(--fg-glass-50) 0%, var(--fg-glass-0) 100%);
   pointer-events: none;
 }
 
@@ -449,8 +458,8 @@ onShow(() => {
 .decoration-circle {
   position: absolute;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(40rpx);
+  background: var(--fg-ink-04);
+  backdrop-filter: blur(24rpx);
 }
 
 .circle-1 {
@@ -458,7 +467,7 @@ onShow(() => {
   height: 200rpx;
   top: -80rpx;
   right: -60rpx;
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--fg-ink-04);
 }
 
 .circle-2 {
@@ -466,7 +475,7 @@ onShow(() => {
   height: 150rpx;
   bottom: -40rpx;
   left: -40rpx;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--fg-ink-03);
 }
 
 .circle-3 {
@@ -474,7 +483,7 @@ onShow(() => {
   height: 100rpx;
   top: 50%;
   right: 20rpx;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--fg-ink-03);
 }
 
 .membership-header {
@@ -504,8 +513,9 @@ onShow(() => {
   height: 56rpx;
   padding: 0 24rpx;
   border-radius: 32rpx;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(10rpx);
+  border: 1px solid rgba(var(--fg-gold-rgb), 0.25);
+  -webkit-backdrop-filter: blur(12rpx);
+  backdrop-filter: blur(12rpx);
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
@@ -514,34 +524,35 @@ onShow(() => {
 }
 
 .action-btn {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(var(--fg-gold-rgb), 0.14);
 }
 
 .action-btn:active {
-  background: rgba(255, 255, 255, 0.35);
+  background: rgba(var(--fg-gold-rgb), 0.22);
   transform: scale(0.95);
 }
 
 .action-text {
   font-size: 24rpx;
   font-weight: 600;
-  color: #fff;
+  color: var(--fg-gold-600);
   white-space: nowrap;
 }
 
 .activation-btn {
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--fg-glass-70);
+  border: 1px solid var(--fg-border);
 }
 
 .activation-btn:active {
-  background: rgba(255, 255, 255, 0.22);
+  background: var(--fg-glass-85);
   transform: scale(0.96);
 }
 
 .activation-text {
   font-size: 22rpx;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--fg-text-secondary);
 }
 
 /* 会员图标 */
@@ -554,17 +565,21 @@ onShow(() => {
   width: 88rpx;
   height: 88rpx;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(20rpx);
+  background: var(--fg-surface-glass);
+  -webkit-backdrop-filter: blur(var(--fg-blur-soft));
+  backdrop-filter: blur(var(--fg-blur-soft));
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.15);
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: var(--fg-shadow-soft);
+  border: 1px solid var(--fg-border);
 }
 
 .icon-text {
-  font-size: 44rpx;
+  font-size: 32rpx;
+  font-weight: 700;
+  letter-spacing: 1rpx;
+  color: var(--fg-gold-600);
 }
 
 /* 会员标题内容 */
@@ -584,10 +599,9 @@ onShow(() => {
 .membership-name {
   font-size: 40rpx;
   font-weight: 800;
-  color: #ffffff;
+  color: var(--fg-text);
   line-height: 1.2;
-  letter-spacing: 0.5rpx;
-  text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.15);
+  letter-spacing: 0.2rpx;
 }
 
 /* 副标题行 */
@@ -601,21 +615,21 @@ onShow(() => {
 .membership-type-code {
   font-size: 24rpx;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--fg-text-muted);
   letter-spacing: 2rpx;
   text-transform: uppercase;
 }
 
 .separator {
   font-size: 24rpx;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--fg-text-weak);
   font-weight: 300;
 }
 
 .status-inline {
   font-size: 24rpx;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--fg-text-secondary);
 }
 
 .status-inline.active {
@@ -632,16 +646,16 @@ onShow(() => {
 
 .membership-desc {
   font-size: 28rpx;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--fg-text-secondary);
   line-height: 1.6;
   padding-left: 108rpx;
   font-weight: 400;
-  letter-spacing: 0.3rpx;
+  letter-spacing: 0.2rpx;
 }
 
 .wd-card.menu-card.is-rectangle {
   margin-top: 18rpx;
-  border-radius: 28rpx;
+  border-radius: var(--fg-radius-card);
   overflow: hidden;
   background: var(--fg-surface);
   border: 1px solid var(--fg-border);

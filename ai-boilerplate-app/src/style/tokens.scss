@@ -1,74 +1,100 @@
 :root,
 page {
-  /* Brand (Fresh mint palette) */
-  --fg-primary: #10b981;
-  --fg-primary-600: #059669;
-  --fg-primary-100: #d1fae5;
-  --fg-primary-rgb: 16, 185, 129;
+  /* Brand (iOS system palette) */
+  --fg-primary: #007aff;
+  --fg-primary-600: #0062cc;
+  --fg-primary-100: #dbe9ff;
+  --fg-primary-rgb: 0, 122, 255;
 
-  --fg-cta: #22d3ee;
-  --fg-success: #22c55e;
-  --fg-warning: #f59e0b;
-  --fg-danger: #ef4444;
+  --fg-cta: #5ac8fa;
+  --fg-success: #34c759;
+  --fg-warning: #ff9f0a;
+  --fg-danger: #ff3b30;
+
+  /* Base */
+  --fg-white: #ffffff;
+  --fg-text-inverse: #ffffff;
+  --fg-border-light: #eeeeee;
+  --fg-success-strong: #52c41a;
+  --fg-danger-badge: #f56c6c;
+
+  /* Membership gold */
+  --fg-gold: #c9a96a;
+  --fg-gold-rgb: 201, 169, 106;
+  --fg-gold-50: #fdfaf4;
+  --fg-gold-100: #f6f0e2;
+  --fg-gold-200: #efe4cf;
+  --fg-gold-300: #e3d2b1;
+  --fg-gold-600: #b48a40;
 
   /* Surfaces */
-  --fg-bg: #ecfdf5;
-  --fg-bg-alt: #f0fdfa;
-  --fg-surface: #fff;
-  --fg-surface-muted: #f8fafc;
+  --fg-bg: #f5f5f7;
+  --fg-bg-alt: #f2f2f7;
+  --fg-surface: #ffffff;
+  --fg-surface-muted: #f7f7fb;
+  --fg-surface-glass: rgba(255, 255, 255, 0.88);
+  --fg-glass-0: rgba(255, 255, 255, 0);
+  --fg-glass-50: rgba(255, 255, 255, 0.5);
+  --fg-glass-70: rgba(255, 255, 255, 0.7);
+  --fg-glass-85: rgba(255, 255, 255, 0.85);
 
   /* Text */
-  --fg-text: #0f172a;
-  --fg-text-secondary: #334155;
-  --fg-text-muted: #64748b;
-  --fg-text-weak: #94a3b8;
-  --fg-text-disabled: #cbd5e1;
+  --fg-text: #1c1c1e;
+  --fg-text-secondary: #3a3a3c;
+  --fg-text-muted: #8e8e93;
+  --fg-text-weak: #aeaeb2;
+  --fg-text-disabled: #c7c7cc;
 
   /* Border */
-  --fg-border: #e2e8f0;
-  --fg-border-weak: #f1f5f9;
+  --fg-border: #e5e5ea;
+  --fg-border-weak: #f2f2f7;
+  --fg-ink-03: rgba(0, 0, 0, 0.03);
+  --fg-ink-04: rgba(0, 0, 0, 0.04);
+  --fg-ink-05: rgba(0, 0, 0, 0.05);
+  --fg-ink-06: rgba(0, 0, 0, 0.06);
+  --fg-ink-08: rgba(0, 0, 0, 0.08);
 
   /* Radius */
-  --fg-radius-lg: 16rpx;
-  --fg-radius-card: 20rpx;
-  --fg-radius-card-lg: 24rpx;
+  --fg-radius-lg: 20rpx;
+  --fg-radius-card: 32rpx;
+  --fg-radius-card-lg: 40rpx;
   --fg-radius-pill: 999rpx;
 
   /* Shadows (use sparingly in mini-programs) */
-  --fg-shadow-card: 0 8rpx 32rpx rgba(15, 23, 42, 0.08);
-  --fg-shadow-soft: 0 4rpx 16rpx rgba(15, 23, 42, 0.06);
-  --fg-shadow-float: 0 12rpx 30rpx rgba(15, 23, 42, 0.12);
+  --fg-shadow-card: 0 12rpx 30rpx var(--fg-ink-08);
+  --fg-shadow-soft: 0 6rpx 16rpx var(--fg-ink-06);
+  --fg-shadow-float: 0 18rpx 40rpx rgba(0, 0, 0, 0.12);
 
   /* Spacing */
-  --fg-page-x: 24rpx;
-  --fg-page-y: 24rpx;
-  --fg-section-gap: 24rpx;
-  --fg-row-gap: 16rpx;
+  --fg-page-x: 36rpx;
+  --fg-page-y: 36rpx;
+  --fg-section-gap: 32rpx;
+  --fg-row-gap: 24rpx;
 
   /* Typography */
-  --fg-font-h1: 44rpx;
-  --fg-font-h2: 36rpx;
+  --fg-font-title: 64rpx;
+  --fg-font-h1: 56rpx;
+  --fg-font-h2: 40rpx;
   --fg-font-body: 28rpx;
   --fg-font-sub: 24rpx;
 
+  /* Blur */
+  --fg-blur-strong: 24rpx;
+  --fg-blur-soft: 14rpx;
+
   /* Hero gradient */
-  --fg-hero-from: #059669;
-  --fg-hero-mid: #10b981;
-  --fg-hero-to: #a7f3d0;
+  --fg-hero-from: #ffffff;
+  --fg-hero-mid: #f7f7fb;
+  --fg-hero-to: #f2f2f7;
 
   /* Top background (stronger, fades to page bg) */
   --fg-top-bg-gradient-strong:
-    radial-gradient(120% 75% at 20% 0%, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 60%),
-    linear-gradient(
-      135deg,
-      rgba(var(--fg-primary-rgb), 0.92) 0%,
-      rgba(var(--fg-primary-rgb), 0.55) 55%,
-      rgba(var(--fg-primary-rgb), 0) 100%
-    );
+    radial-gradient(120% 75% at 20% 0%, var(--fg-ink-04) 0%, rgba(0, 0, 0, 0) 60%),
+    linear-gradient(180deg, var(--fg-hero-mid) 0%, var(--fg-white) 60%);
 
   --fg-top-bg-gradient-hero:
-    radial-gradient(120% 75% at 20% 0%, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0) 60%),
-    linear-gradient(135deg, var(--fg-hero-from) 0%, var(--fg-hero-mid) 55%, rgba(var(--fg-primary-rgb), 0) 100%);
+    radial-gradient(120% 75% at 20% 0%, var(--fg-ink-03) 0%, rgba(0, 0, 0, 0) 60%),
+    linear-gradient(180deg, var(--fg-hero-mid) 0%, var(--fg-bg) 60%);
 
   --fg-top-bg-gradient: var(--fg-top-bg-gradient-hero);
 

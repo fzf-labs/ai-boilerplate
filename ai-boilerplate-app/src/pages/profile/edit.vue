@@ -223,7 +223,7 @@ onLoad(() => {
             <view class="avatar-wrap" @click="handleChooseAvatar">
               <image :src="avatarSrc" class="avatar" mode="aspectFill" />
               <view class="avatar-badge">
-                <wd-icon name="edit" size="28rpx" color="#fff" />
+                <wd-icon name="edit" size="28rpx" color="var(--fg-text-inverse)" />
               </view>
             </view>
             <view class="header-meta">

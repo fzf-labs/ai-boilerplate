@@ -147,7 +147,7 @@ onLoad(async (options) => {
             <view v-if="isExpanded(faq.id)" class="faq-answer">
               <view class="answer-content">
                 <view class="answer-icon">
-                  <wd-icon name="check-circle" size="32rpx" color="#52c41a" />
+                  <wd-icon name="check-circle" size="32rpx" color="var(--fg-success-strong)" />
                 </view>
                 <text class="answer-text">{{ faq.answer || '（暂无答案）' }}</text>
               </view>
@@ -346,7 +346,7 @@ onLoad(async (options) => {
   padding: 20rpx;
   background: rgba(82, 196, 26, 0.05);
   border-radius: 16rpx;
-  border-left: 4rpx solid #52c41a;
+  border-left: 4rpx solid var(--fg-success-strong);
 }
 
 .answer-icon {

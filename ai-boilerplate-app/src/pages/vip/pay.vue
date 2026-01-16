@@ -355,7 +355,7 @@ onLoad((options) => {
   width: 80rpx;
   height: 80rpx;
   border-radius: 16rpx;
-  background: linear-gradient(135deg, var(--fg-primary-600) 0%, var(--fg-primary) 100%);
+  background: rgba(var(--fg-primary-rgb), 0.12);
   display: flex;
   align-items: center;
   justify-content: center;

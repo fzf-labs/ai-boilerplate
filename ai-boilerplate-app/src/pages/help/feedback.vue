@@ -191,7 +191,7 @@ onLoad(() => {
             >
               <image :src="image" class="image" mode="aspectFill" />
               <view class="image-remove" @click="removeImage(index)">
-                <wd-icon name="close" size="32rpx" color="#fff" />
+                <wd-icon name="close" size="32rpx" color="var(--fg-text-inverse)" />
               </view>
             </view>
             <view
@@ -374,7 +374,7 @@ onLoad(() => {
   height: 200rpx;
   border-radius: 16rpx;
   overflow: hidden;
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4rpx 12rpx var(--fg-ink-08);
 }
 
 .image {
@@ -389,12 +389,12 @@ onLoad(() => {
   right: -10rpx;
   width: 52rpx;
   height: 52rpx;
-  background: linear-gradient(135deg, #ff4d4f 0%, #ff7875 100%);
+  background: var(--fg-danger);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4rpx 12rpx rgba(255, 77, 79, 0.3);
+  box-shadow: 0 4rpx 12rpx rgba(255, 59, 48, 0.25);
   transition: all 0.2s ease;
 
   &:active {

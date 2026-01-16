@@ -112,6 +112,9 @@ function handleBannerClick(item: BannerDisplayItem) {
 
 <template>
   <view class="home-container">
+    <view class="home-header">
+      <text class="home-title fg-large-title">首页</text>
+    </view>
     <!-- 轮播图 -->
     <HomeBanner
       v-if="bannerList.length > 0"
@@ -126,6 +129,14 @@ function handleBannerClick(item: BannerDisplayItem) {
 <style lang="scss" scoped>
 .home-container {
   min-height: 100vh;
-  background: linear-gradient(180deg, var(--fg-bg-alt) 0%, var(--fg-surface-muted) 100%);
+  background: var(--fg-bg);
+}
+
+.home-header {
+  padding: calc(env(safe-area-inset-top) + 24rpx) var(--fg-page-x) 12rpx;
+}
+
+.home-title {
+  line-height: 1.15;
 }
 </style>

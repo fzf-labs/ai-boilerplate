@@ -134,11 +134,19 @@ function select(index: number) {
 <style lang="scss" scoped>
 .bottom-sheet {
   margin: 0 20rpx calc(var(--window-bottom, 0px) + 20rpx) 20rpx;
-  border-radius: 24rpx;
-  background: var(--fg-surface);
+  border-radius: var(--fg-radius-card);
+  background: var(--fg-surface-glass);
   overflow: hidden;
   box-shadow: var(--fg-shadow-card);
   border: 1px solid var(--fg-border);
+  -webkit-backdrop-filter: blur(var(--fg-blur-strong));
+  backdrop-filter: blur(var(--fg-blur-strong));
+}
+
+@supports not ((backdrop-filter: blur(1px))) {
+  .bottom-sheet {
+    background: var(--fg-surface);
+  }
 }
 
 .bottom-sheet__header {
@@ -227,7 +235,7 @@ function select(index: number) {
   height: 96rpx;
   line-height: 96rpx;
   padding: 0;
-  border-radius: 20rpx;
+  border-radius: var(--fg-radius-lg);
   margin: 18rpx auto 0;
 }
 
@@ -238,7 +246,7 @@ function select(index: number) {
   line-height: 96rpx;
   padding: 0;
   text-align: center;
-  border-radius: 20rpx;
+  border-radius: var(--fg-radius-lg);
   border: none;
   background: var(--fg-surface-muted);
   outline: none;
@@ -257,7 +265,7 @@ function select(index: number) {
 }
 
 .bottom-sheet__confirm--primary {
-  color: #fff;
+  color: var(--fg-text-inverse);
   background: var(--fg-primary);
 }
 
@@ -266,7 +274,7 @@ function select(index: number) {
 }
 
 .bottom-sheet__confirm--danger {
-  color: #fff;
+  color: var(--fg-text-inverse);
   background: var(--fg-danger);
 }
 

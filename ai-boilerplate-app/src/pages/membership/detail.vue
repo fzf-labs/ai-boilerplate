@@ -24,24 +24,24 @@ const membershipTheme = computed(() => {
   switch (type) {
     case 'svip':
       return {
-        icon: '👑',
-        gradient: 'linear-gradient(135deg, #064e3b 0%, #059669 55%, #6ee7b7 100%)',
-        shadow: 'rgba(5, 150, 105, 0.32)',
-        shadowAlt: 'rgba(110, 231, 183, 0.22)',
+        icon: 'SV',
+        gradient: 'linear-gradient(135deg, var(--fg-gold-100) 0%, var(--fg-gold-200) 60%, var(--fg-gold-300) 100%)',
+        shadow: 'var(--fg-ink-08)',
+        shadowAlt: 'var(--fg-ink-05)',
       }
     case 'vip':
       return {
-        icon: '💎',
-        gradient: 'linear-gradient(135deg, #059669 0%, #10b981 50%, #a7f3d0 100%)',
-        shadow: 'rgba(16, 185, 129, 0.3)',
-        shadowAlt: 'rgba(167, 243, 208, 0.24)',
+        icon: 'V',
+        gradient: 'linear-gradient(135deg, var(--fg-gold-50) 0%, var(--fg-gold-100) 55%, var(--fg-gold-200) 100%)',
+        shadow: 'var(--fg-ink-08)',
+        shadowAlt: 'var(--fg-ink-05)',
       }
     default:
       return {
-        icon: '⭐',
-        gradient: 'linear-gradient(135deg, #ffffff 0%, #ecfdf5 55%, #d1fae5 100%)',
-        shadow: 'rgba(15, 23, 42, 0.08)',
-        shadowAlt: 'rgba(16, 185, 129, 0.14)',
+        icon: 'N',
+        gradient: 'linear-gradient(135deg, var(--fg-gold-50) 0%, var(--fg-gold-100) 60%, var(--fg-gold-200) 100%)',
+        shadow: 'var(--fg-ink-08)',
+        shadowAlt: 'var(--fg-ink-05)',
       }
   }
 })
@@ -131,7 +131,7 @@ onLoad(() => {
         class="membership-card"
         :style="{
           background: membershipTheme.gradient,
-          boxShadow: `0 18rpx 48rpx ${membershipTheme.shadow}, 0 8rpx 16rpx ${membershipTheme.shadowAlt}`,
+          boxShadow: `0 20rpx 60rpx ${membershipTheme.shadow}, 0 8rpx 16rpx ${membershipTheme.shadowAlt}`,
         }"
       >
         <!-- 背景装饰 -->
@@ -205,7 +205,7 @@ onLoad(() => {
   top: 0;
   right: 0;
   height: 400rpx;
-  background: linear-gradient(180deg, var(--fg-primary) 0%, var(--fg-bg) 100%);
+  background: var(--fg-top-bg-gradient);
   z-index: 0;
 }
 
@@ -217,8 +217,9 @@ onLoad(() => {
 
 .membership-card {
   position: relative;
-  border-radius: 32rpx;
+  border-radius: var(--fg-radius-card-lg);
   overflow: hidden;
+  border: 1px solid var(--fg-border);
   margin-bottom: 24rpx;
 }
 
@@ -234,8 +235,9 @@ onLoad(() => {
 .decoration-circle {
   position: absolute;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(40rpx);
+  background: var(--fg-ink-04);
+  -webkit-backdrop-filter: blur(24rpx);
+  backdrop-filter: blur(24rpx);
 }
 
 .circle-1 {
@@ -243,7 +245,7 @@ onLoad(() => {
   height: 200rpx;
   top: -80rpx;
   right: -60rpx;
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--fg-ink-04);
 }
 
 .circle-2 {
@@ -251,7 +253,7 @@ onLoad(() => {
   height: 150rpx;
   bottom: -40rpx;
   left: -40rpx;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--fg-ink-03);
 }
 
 .circle-3 {
@@ -259,7 +261,7 @@ onLoad(() => {
   height: 100rpx;
   top: 50%;
   right: 20rpx;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--fg-ink-03);
 }
 
 .card-content {
@@ -279,17 +281,21 @@ onLoad(() => {
   width: 96rpx;
   height: 96rpx;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(20rpx);
+  background: var(--fg-surface-glass);
+  -webkit-backdrop-filter: blur(var(--fg-blur-soft));
+  backdrop-filter: blur(var(--fg-blur-soft));
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--fg-border);
+  box-shadow: var(--fg-shadow-soft);
 }
 
 .icon-text {
-  font-size: 48rpx;
+  font-size: 32rpx;
+  font-weight: 700;
+  letter-spacing: 1rpx;
+  color: var(--fg-gold-600);
 }
 
 .member-info {
@@ -302,25 +308,24 @@ onLoad(() => {
 .member-name {
   font-size: 44rpx;
   font-weight: 800;
-  color: #ffffff;
+  color: var(--fg-text);
   line-height: 1.2;
-  letter-spacing: 0.5rpx;
-  text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.15);
+  letter-spacing: 0.2rpx;
 }
 
 .member-type {
   font-size: 26rpx;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--fg-text-muted);
   letter-spacing: 2rpx;
 }
 
 .member-desc {
   font-size: 28rpx;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--fg-text-secondary);
   line-height: 1.6;
   font-weight: 400;
-  letter-spacing: 0.3rpx;
+  letter-spacing: 0.2rpx;
 }
 
 .meta-grid {
@@ -336,19 +341,21 @@ onLoad(() => {
   gap: 6rpx;
   padding: 16rpx 18rpx;
   border-radius: 16rpx;
-  background: rgba(255, 255, 255, 0.16);
-  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: var(--fg-glass-70);
+  border: 1px solid var(--fg-border);
+  -webkit-backdrop-filter: blur(var(--fg-blur-soft));
+  backdrop-filter: blur(var(--fg-blur-soft));
 }
 
 .meta-label {
   font-size: 22rpx;
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--fg-text-muted);
 }
 
 .meta-value {
   font-size: 24rpx;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--fg-text);
 }
 
 .detail-section {
@@ -377,7 +384,7 @@ onLoad(() => {
   flex-direction: column;
   gap: 12rpx;
   padding: 28rpx 24rpx;
-  border-radius: 20rpx;
+  border-radius: var(--fg-radius-card);
   background: var(--fg-surface);
   border: 1px solid var(--fg-border);
   box-shadow: var(--fg-shadow-card);
@@ -386,7 +393,7 @@ onLoad(() => {
 
 .benefit-card:active {
   transform: translateY(-4rpx);
-  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8rpx 24rpx var(--fg-ink-08);
 }
 
 .benefit-header {

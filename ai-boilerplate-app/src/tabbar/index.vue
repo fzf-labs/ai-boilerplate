@@ -122,10 +122,10 @@ function getImageByIndex(index: number, item: CustomTabBarItem) {
             <!-- 角标显示 -->
             <view v-if="item.badge">
               <template v-if="item.badge === 'dot'">
-                <view class="absolute right-0 top-0 h-2 w-2 rounded-full bg-#f56c6c" />
+                <view class="absolute right-0 top-0 h-2 w-2 rounded-full tabbar-badge-dot" />
               </template>
               <template v-else>
-                <view class="absolute top-0 box-border h-5 min-w-5 center rounded-full bg-#f56c6c px-1 text-center text-xs text-white -right-3">
+                <view class="absolute top-0 box-border h-5 min-w-5 center rounded-full tabbar-badge-count px-1 text-center text-xs text-white -right-3">
                   {{ item.badge > 99 ? '99+' : item.badge }}
                 </view>
               </template>
@@ -148,8 +148,18 @@ function getImageByIndex(index: number, item: CustomTabBarItem) {
   right: 0;
   z-index: 1000;
 
-  border-top: 1px solid var(--fg-border, #eee);
+  border-top: 1px solid var(--fg-border, var(--fg-border-light));
+  background: var(--fg-surface-glass, var(--fg-white));
+  box-shadow: 0 -8rpx 20rpx var(--fg-ink-06);
+  -webkit-backdrop-filter: blur(var(--fg-blur-soft, 12rpx));
+  backdrop-filter: blur(var(--fg-blur-soft, 12rpx));
   box-sizing: border-box;
+}
+
+@supports not ((backdrop-filter: blur(1px))) {
+  .border-and-fixed {
+    background: var(--fg-surface, var(--fg-white));
+  }
 }
 // 中间鼓包的样式
 .bulge {
@@ -164,11 +174,17 @@ function getImageByIndex(index: number, item: CustomTabBarItem) {
   width: 250rpx;
   height: 250rpx;
   border-radius: 50%;
-  background-color: var(--fg-surface, #fff);
-  box-shadow: inset 0 0 0 1px #fefefe;
+  background-color: var(--fg-surface-glass, var(--fg-white));
+  border: 1px solid var(--fg-border, var(--fg-border-light));
+  box-shadow: var(--fg-shadow-soft, 0 4rpx 12rpx var(--fg-ink-08));
 
   &:active {
     // opacity: 0.8;
   }
+}
+
+.tabbar-badge-dot,
+.tabbar-badge-count {
+  background: var(--fg-danger-badge);
 }
 </style>

@@ -6,8 +6,8 @@ page {
   background-color: var(--fg-bg);
   font-size: var(--fg-font-body);
   font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'PingFang SC', 'Hiragino Sans GB',
-    'Microsoft YaHei', sans-serif;
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
 }
 
 .fg-link {
@@ -17,6 +17,31 @@ page {
 
 .fg-muted {
   color: var(--fg-text-muted);
+}
+
+.fg-large-title {
+  font-size: var(--fg-font-title);
+  font-weight: 700;
+  letter-spacing: -0.4rpx;
+  color: var(--fg-text);
+}
+
+.fg-card {
+  background: var(--fg-surface);
+  border-radius: var(--fg-radius-card);
+  border: 1px solid var(--fg-border);
+  box-shadow: var(--fg-shadow-card);
+}
+
+.fg-glass {
+  background: var(--fg-surface-glass);
+  border: 1px solid var(--fg-glass-70);
+}
+
+@supports (backdrop-filter: blur(1px)) {
+  .fg-glass {
+    backdrop-filter: blur(var(--fg-blur-strong));
+  }
 }
 
 /*
