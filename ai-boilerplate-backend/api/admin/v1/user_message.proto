@@ -1,0 +1,229 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1;v1";
+
+//App-用户消息
+service UserMessage {
+  //App-用户消息-发送
+  rpc SendUserMessage(SendUserMessageReq) returns (SendUserMessageReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/user_message/send"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //App-用户消息-单条数据查询
+  rpc GetUserMessageInfo(GetUserMessageInfoReq) returns (GetUserMessageInfoReply) {
+    option (google.api.http) = {get: "/admin/v1/user_message/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //App-用户消息-列表数据查询
+  rpc GetUserMessageList(GetUserMessageListReq) returns (GetUserMessageListReply) {
+    option (google.api.http) = {get: "/admin/v1/user_message/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+//App-用户消息信息
+message UserMessageInfo {
+  string id = 1; // id
+  string messageId = 2; // 消息批次id
+  string userId = 3; // 用户id
+  string category = 4; // 消息分类(transaction/system/service)
+  string title = 5; // 标题
+  string summary = 6; // 摘要
+  string coverURL = 7; // 封面图
+  string content = 8; // 内容
+  string linkURL = 9; // 跳转链接
+  string audienceType = 10; // 投放范围(all/segment/users)
+  string audienceValue = 11; // 投放条件/用户列表
+  string sentAt = 12; // 发送时间
+  string readAt = 13; // 阅读时间
+  string adminId = 14; // 创建人
+  string createdAt = 15; // 创建时间
+  string updatedAt = 16; // 更新时间
+}
+
+//请求-App-用户消息-发送
+message SendUserMessageReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "category",
+        "title",
+        "content",
+        "audienceType"
+      ]
+    }
+  };
+  string category = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 32
+  }]; // 消息分类(transaction/system/service)
+  string title = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 200
+  }]; // 标题
+  string summary = 3 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 200
+    }
+  ]; // 摘要
+  string coverURL = 4 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 500
+    }
+  ]; // 封面图
+  string content = 5 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 9223372036854775807
+  }]; // 内容
+  string linkURL = 6 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 500
+    }
+  ]; // 跳转链接
+  string audienceType = 7 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 32
+  }]; // 投放范围(all/segment/users)
+  repeated string userIds = 8; // 指定用户ID列表
+  string membershipType = 9 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 20
+    }
+  ]; // 会员类型筛选
+  int32 activeWithinDays = 10 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).int32 = {
+      gte: 1
+      lte: 3650
+    }
+  ]; // 活跃天数筛选
+}
+
+//响应-App-用户消息-发送
+message SendUserMessageReply {
+  string messageId = 1; // 消息批次id
+  int32 total = 2; // 发送数量
+}
+
+//请求-App-用户消息-单条数据查询
+message GetUserMessageInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // id
+}
+
+//响应-App-用户消息-单条数据查询
+message GetUserMessageInfoReply {
+  UserMessageInfo info = 1;
+}
+
+//请求-App-用户消息-列表数据查询
+message GetUserMessageListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1 [(buf.validate.field).int32 = {gte: 1}]; //页码
+  int32 pageSize = 2 [(buf.validate.field).int32 = {
+    gte: 1
+    lte: 1000
+  }]; //页数
+  string category = 3 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 32
+    }
+  ]; // 消息分类
+  string title = 4 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 200
+    }
+  ]; // 标题
+  string userId = 5 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 128
+    }
+  ]; // 用户id
+  string messageId = 6 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 128
+    }
+  ]; // 消息批次id
+  string audienceType = 7 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 32
+    }
+  ]; // 投放范围
+  int32 readStatus = 8 [(buf.validate.field).ignore = IGNORE_IF_UNPOPULATED]; // 阅读状态 1已读 -1未读
+}
+
+//响应-App-用户消息-列表数据查询
+message GetUserMessageListReply {
+  int32 total = 1; //总数
+  repeated UserMessageInfo list = 2; // 列表数据
+}

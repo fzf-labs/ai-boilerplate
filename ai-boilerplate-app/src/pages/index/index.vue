@@ -15,6 +15,7 @@ definePage({
 })
 
 const bannerPosition = 'home_top'
+const messageEntryPath = '/pages-fg/message/category'
 
 interface BannerDisplayItem {
   id?: string
@@ -108,12 +109,27 @@ function handleBannerClick(item: BannerDisplayItem) {
   const targetUrl = normalizedUrl.startsWith('/') ? normalizedUrl : `/${normalizedUrl}`
   uni.navigateTo({ url: targetUrl })
 }
+
+function goToMessages() {
+  uni.navigateTo({ url: messageEntryPath })
+}
 </script>
 
 <template>
   <view class="home-container">
     <view class="home-header">
-      <text class="home-title fg-large-title">首页</text>
+      <view class="home-title">
+        <view class="home-brand">
+          <view class="home-brand__sticker" />
+          <view class="home-brand__glow" />
+          <view class="home-brand__badge">
+            <image class="home-brand__image" src="/static/logo.svg" mode="aspectFill" />
+          </view>
+        </view>
+      </view>
+      <view class="message-entry" @click="goToMessages">
+        <wd-icon name="chat" size="40rpx" color="var(--fg-text)" />
+      </view>
     </view>
     <!-- 轮播图 -->
     <HomeBanner
@@ -134,9 +150,87 @@ function handleBannerClick(item: BannerDisplayItem) {
 
 .home-header {
   padding: calc(env(safe-area-inset-top) + 24rpx) var(--fg-page-x) 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .home-title {
-  line-height: 1.15;
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.home-brand {
+  position: relative;
+  width: 72rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-brand__sticker {
+  position: absolute;
+  inset: -8rpx;
+  border-radius: 20rpx 34rpx 18rpx 30rpx;
+  background: var(--fg-white, #ffffff);
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10rpx 22rpx rgba(0, 0, 0, 0.12);
+  transform: rotate(-6deg) translate(-2rpx, 2rpx);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.home-brand__glow {
+  position: absolute;
+  inset: -14rpx;
+  border-radius: 28rpx;
+  border: 2px solid rgba(var(--fg-primary-rgb), 0.32);
+  background: radial-gradient(circle at 30% 30%, rgba(var(--fg-primary-rgb), 0.28) 0%, rgba(255, 255, 255, 0) 62%);
+  box-shadow:
+    0 0 0 2rpx rgba(var(--fg-primary-rgb), 0.12),
+    0 12rpx 30rpx rgba(var(--fg-primary-rgb), 0.24),
+    0 18rpx 40rpx rgba(var(--fg-primary-rgb), 0.18);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.home-brand__badge {
+  position: relative;
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 18rpx 30rpx 20rpx 28rpx;
+  background: var(--fg-surface);
+  border: 2px solid rgba(var(--fg-primary-rgb), 0.25);
+  box-shadow:
+    0 14rpx 28rpx var(--fg-ink-08),
+    inset 0 0 0 1rpx rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transform: rotate(-4deg);
+  z-index: 2;
+}
+
+.home-brand__image {
+  width: 52rpx;
+  height: 52rpx;
+  border-radius: 14rpx 20rpx 12rpx 18rpx;
+  box-shadow: 0 6rpx 16rpx rgba(0, 0, 0, 0.12);
+  transform: rotate(4deg);
+}
+
+.message-entry {
+  width: 68rpx;
+  height: 68rpx;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--fg-surface);
+  box-shadow: var(--fg-shadow-card);
+  border: 1px solid var(--fg-border);
 }
 </style>

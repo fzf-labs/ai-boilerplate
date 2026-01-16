@@ -1,0 +1,163 @@
+syntax = "proto3";
+
+package app.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+//import "google/protobuf/timestamp.proto";
+//import "validate/validate.proto"; use buf first
+option go_package = "github.com/fzf-labs/ai-boilerplate-backend/api/app/v1;v1";
+
+//App-用户消息
+service UserMessage {
+  //App-用户消息-分类未读数量
+  rpc GetUserMessageCategoryCounts(GetUserMessageCategoryCountsReq) returns (GetUserMessageCategoryCountsReply) {
+    option (google.api.http) = {get: "/app/v1/user_message/category_counts"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //App-用户消息-单条数据查询
+  rpc GetUserMessageInfo(GetUserMessageInfoReq) returns (GetUserMessageInfoReply) {
+    option (google.api.http) = {get: "/app/v1/user_message/info"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //App-用户消息-列表数据查询
+  rpc GetUserMessageList(GetUserMessageListReq) returns (GetUserMessageListReply) {
+    option (google.api.http) = {get: "/app/v1/user_message/list"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+  //App-用户消息-标记已读
+  rpc UpdateUserMessageRead(UpdateUserMessageReadReq) returns (UpdateUserMessageReadReply) {
+    option (google.api.http) = {
+      post: "/app/v1/user_message/read"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
+}
+
+//App-用户消息信息
+message UserMessageInfo {
+  string id = 1; // id
+  string messageId = 2; // 消息批次id
+  string userId = 3; // 用户id
+  string category = 4; // 消息分类(transaction/system/service)
+  string title = 5; // 标题
+  string summary = 6; // 摘要
+  string coverURL = 7; // 封面图
+  string content = 8; // 内容
+  string linkURL = 9; // 跳转链接
+  string audienceType = 10; // 投放范围(all/segment/users)
+  string audienceValue = 11; // 投放条件/用户列表
+  string sentAt = 12; // 发送时间
+  string readAt = 13; // 阅读时间
+  string adminId = 14; // 创建人
+  string createdAt = 15; // 创建时间
+  string updatedAt = 16; // 更新时间
+}
+
+message GetUserMessageCategoryCountsReq {}
+
+message GetUserMessageCategoryCountsReply {
+  int32 transactionUnread = 1; // 交易信息未读数
+  int32 systemUnread = 2; // 系统消息未读数
+  int32 serviceUnread = 3; // 客服消息未读数
+  int32 totalUnread = 4; // 总未读数
+}
+
+//请求-App-用户消息-单条数据查询
+message GetUserMessageInfoReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // id
+}
+
+//响应-App-用户消息-单条数据查询
+message GetUserMessageInfoReply {
+  UserMessageInfo info = 1;
+}
+
+//请求-App-用户消息-列表数据查询
+message GetUserMessageListReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "page",
+        "pageSize"
+      ]
+    }
+  };
+  int32 page = 1 [(buf.validate.field).int32 = {gte: 1}]; //页码
+  int32 pageSize = 2 [(buf.validate.field).int32 = {
+    gte: 1
+    lte: 1000
+  }]; //页数
+  string category = 3 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 32
+  }]; // 消息分类
+  int32 readStatus = 4 [(buf.validate.field).ignore = IGNORE_IF_UNPOPULATED]; // 阅读状态 1已读 -1未读
+}
+
+//响应-App-用户消息-列表数据查询
+message GetUserMessageListReply {
+  int32 total = 1; //总数
+  repeated UserMessageInfo list = 2; // 列表数据
+}
+
+message UpdateUserMessageReadReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["id"]
+    }
+  };
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // id
+}
+
+message UpdateUserMessageReadReply {}

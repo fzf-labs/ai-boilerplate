@@ -69,8 +69,8 @@ onMounted(() => {
   })
 })
 // #endif
-const activeColor = 'var(--wot-color-theme, #1890ff)'
-const inactiveColor = 'var(--fg-text-muted, #666)'
+const activeColor = 'var(--fg-primary, #007aff)'
+const inactiveColor = 'var(--fg-text-muted, #8e8e93)'
 function getColorByIndex(index: number) {
   return tabbarStore.curIdx === index ? activeColor : inactiveColor
 }
@@ -85,12 +85,13 @@ function getImageByIndex(index: number, item: CustomTabBarItem) {
 </script>
 
 <template>
-  <view v-if="customTabbarEnable" class="h-50px pb-safe">
-    <view class="border-and-fixed bg-white" @touchmove.stop.prevent>
-      <view class="h-50px flex items-center">
+  <view v-if="customTabbarEnable" class="tabbar-root pb-safe">
+    <view class="border-and-fixed" @touchmove.stop.prevent>
+      <view class="tabbar-row flex items-center">
         <view
           v-for="(item, index) in tabbarList" :key="index"
-          class="flex flex-1 flex-col items-center justify-center"
+          class="tabbar-item flex flex-1 flex-col items-center justify-center"
+          :class="{ 'is-active': tabbarStore.curIdx === index }"
           :style="{ color: getColorByIndex(index) }"
           @click="handleClick(index)"
         >
@@ -102,7 +103,7 @@ function getImageByIndex(index: number, item: CustomTabBarItem) {
               <image class="mt-6rpx h-200rpx w-200rpx" src="/static/tabbar/scan.png" />
             </view>
           </view>
-          <view v-else class="relative px-3 text-center">
+          <view v-else class="tabbar-item__content relative text-center">
             <template v-if="item.iconType === 'uiLib'">
               <!-- TODO: 以下内容请根据选择的UI库自行替换 -->
               <!-- 如：<wd-icon name="home" /> (https://wot-design-uni.cn/component/icon.html) -->
@@ -111,12 +112,12 @@ function getImageByIndex(index: number, item: CustomTabBarItem) {
               <!-- <wd-icon :name="item.icon" size="20" /> -->
             </template>
             <template v-if="item.iconType === 'unocss' || item.iconType === 'iconfont'">
-              <view :class="item.icon" class="text-20px" />
+              <view :class="item.icon" class="tabbar-icon" />
             </template>
             <template v-if="item.iconType === 'image'">
-              <image :src="getImageByIndex(index, item)" mode="scaleToFill" class="h-20px w-20px" />
+              <image :src="getImageByIndex(index, item)" mode="scaleToFill" class="tabbar-icon" />
             </template>
-            <view class="mt-2px text-12px">
+            <view class="tabbar-label">
               {{ item.text }}
             </view>
             <!-- 角标显示 -->
@@ -141,6 +142,55 @@ function getImageByIndex(index: number, item: CustomTabBarItem) {
 </template>
 
 <style scoped lang="scss">
+.tabbar-root {
+  height: 50px;
+}
+
+.tabbar-row {
+  height: 50px;
+  padding-top: 6rpx;
+  padding-bottom: 2rpx;
+  box-sizing: border-box;
+}
+
+.tabbar-item {
+  transition: color 0.2s ease;
+}
+
+.tabbar-item.is-active .tabbar-icon {
+  transform: translateY(-1rpx);
+}
+
+.tabbar-item__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 88rpx;
+  padding: 0 18rpx;
+}
+
+.tabbar-icon {
+  width: 24px;
+  height: 24px;
+  font-size: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.tabbar-label {
+  margin-top: 4rpx;
+  font-size: 20rpx;
+  line-height: 1.1;
+  letter-spacing: 0.2rpx;
+}
+
+.tabbar-item.is-active .tabbar-label {
+  font-weight: 600;
+}
+
 .border-and-fixed {
   position: fixed;
   bottom: 0;
@@ -149,10 +199,10 @@ function getImageByIndex(index: number, item: CustomTabBarItem) {
   z-index: 1000;
 
   border-top: 1px solid var(--fg-border, var(--fg-border-light));
-  background: var(--fg-surface-glass, var(--fg-white));
-  box-shadow: 0 -8rpx 20rpx var(--fg-ink-06);
-  -webkit-backdrop-filter: blur(var(--fg-blur-soft, 12rpx));
-  backdrop-filter: blur(var(--fg-blur-soft, 12rpx));
+  background: linear-gradient(180deg, var(--fg-glass-50, rgba(255, 255, 255, 0.5)) 0%, var(--fg-glass-85, rgba(255, 255, 255, 0.85)) 100%);
+  box-shadow: 0 -4rpx 16rpx var(--fg-ink-05);
+  -webkit-backdrop-filter: blur(var(--fg-blur-strong, 24rpx));
+  backdrop-filter: blur(var(--fg-blur-strong, 24rpx));
   box-sizing: border-box;
 }
 
@@ -185,6 +235,14 @@ function getImageByIndex(index: number, item: CustomTabBarItem) {
 
 .tabbar-badge-dot,
 .tabbar-badge-count {
-  background: var(--fg-danger-badge);
+  background: var(--fg-danger, #ff3b30);
+  border: 2rpx solid var(--fg-surface, #ffffff);
+  box-shadow: 0 2rpx 6rpx var(--fg-ink-04);
+}
+
+.tabbar-badge-count {
+  font-size: 18rpx;
+  font-weight: 600;
+  line-height: 22rpx;
 }
 </style>

@@ -54,6 +54,7 @@ var ProviderSet = wire.NewSet(
 	NewAdminV1SysTenantService,
 	NewAdminV1UserMembershipChangeRecordService,
 	NewAdminV1UserMembershipService,
+	NewAdminV1UserMessageService,
 	NewAdminV1UserService,
 	NewAdminV1WxGzhAccountService,
 	NewAdminV1WxGzhAutoReplyService,
@@ -73,6 +74,7 @@ var ProviderSet = wire.NewSet(
 	NewAppV1MallProductService,
 	NewAppV1MembershipService,
 	NewAppV1SelfAppReleaseService,
+	NewAppV1UserMessageService,
 	NewAppV1UserNotificationSettingService,
 	NewAppV1UserService,
 )

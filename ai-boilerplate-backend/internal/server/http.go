@@ -29,6 +29,7 @@ func NewHTTPServer(
 	adminV1DictDatumService *service.AdminV1DictDatumService,
 	adminV1SysNotifyMessageService *service.AdminV1SysNotifyMessageService,
 	adminV1SysNoticeService *service.AdminV1SysNoticeService,
+	adminV1UserMessageService *service.AdminV1UserMessageService,
 	adminV1BannerService *service.AdminV1BannerService,
 	adminV1SmsChannelService *service.AdminV1SmsChannelService,
 	adminV1SmsTemplateService *service.AdminV1SmsTemplateService,
@@ -80,6 +81,7 @@ func NewHTTPServer(
 	appV1HomeService *service.AppV1HomeService,
 	appV1BannerService *service.AppV1BannerService,
 	appV1UserService *service.AppV1UserService,
+	appV1UserMessageService *service.AppV1UserMessageService,
 	appV1MembershipService *service.AppV1MembershipService,
 	appV1HelpFeedbackService *service.AppV1HelpFeedbackService,
 	appV1HelpFaqService *service.AppV1HelpFaqService,
@@ -109,6 +111,7 @@ func NewHTTPServer(
 	adminv1.RegisterDictDatumHTTPServer(srv, adminV1DictDatumService)
 	adminv1.RegisterSysNotifyMessageHTTPServer(srv, adminV1SysNotifyMessageService)
 	adminv1.RegisterSysNoticeHTTPServer(srv, adminV1SysNoticeService)
+	adminv1.RegisterUserMessageHTTPServer(srv, adminV1UserMessageService)
 	adminv1.RegisterBannerHTTPServer(srv, adminV1BannerService)
 	adminv1.RegisterSmsChannelHTTPServer(srv, adminV1SmsChannelService)
 	adminv1.RegisterSmsTemplateHTTPServer(srv, adminV1SmsTemplateService)
@@ -159,6 +162,7 @@ func NewHTTPServer(
 	appv1.RegisterHomeHTTPServer(srv, appV1HomeService)
 	appv1.RegisterBannerHTTPServer(srv, appV1BannerService)
 	appv1.RegisterUserHTTPServer(srv, appV1UserService)
+	appv1.RegisterUserMessageHTTPServer(srv, appV1UserMessageService)
 	appv1.RegisterMembershipHTTPServer(srv, appV1MembershipService)
 	appv1.RegisterHelpFeedbackHTTPServer(srv, appV1HelpFeedbackService)
 	appv1.RegisterHelpFaqHTTPServer(srv, appV1HelpFaqService)

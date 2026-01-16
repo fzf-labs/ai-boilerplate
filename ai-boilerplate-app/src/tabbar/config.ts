@@ -114,13 +114,13 @@ export const tabbarList = customTabbarEnable ? customTabbarList : nativeTabbarLi
 const _tabbar: TabBar = {
   // 只有微信小程序支持 custom。App 和 H5 不生效
   custom: selectedTabbarStrategy === TABBAR_STRATEGY_MAP.CUSTOM_TABBAR_WITH_CACHE,
-  color: '#64748B',
-  selectedColor: '#10B981',
-  backgroundColor: '#FFFFFF',
-  borderStyle: 'black',
-  height: '50px',
+  color: '#8E8E93',
+  selectedColor: '#007AFF',
+  backgroundColor: '#F9F9F9',
+  borderStyle: 'white',
+  height: '49px',
   fontSize: '10px',
-  iconWidth: '24px',
+  iconWidth: '25px',
   spacing: '3px',
   list: _tabbarList as unknown as TabBar['list'],
 }

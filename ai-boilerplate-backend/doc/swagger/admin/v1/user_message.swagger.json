@@ -1,0 +1,389 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/user_message.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "UserMessage"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/user_message/info": {
+      "get": {
+        "summary": "App-用户消息-单条数据查询",
+        "operationId": "UserMessage_GetUserMessageInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetUserMessageInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "id",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UserMessage"
+        ]
+      }
+    },
+    "/admin/v1/user_message/list": {
+      "get": {
+        "summary": "App-用户消息-列表数据查询",
+        "operationId": "UserMessage_GetUserMessageList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetUserMessageListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "category",
+            "description": "消息分类",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "title",
+            "description": "标题",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "description": "用户id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "messageId",
+            "description": "消息批次id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "audienceType",
+            "description": "投放范围",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "readStatus",
+            "description": "阅读状态 1已读 -1未读",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UserMessage"
+        ]
+      }
+    },
+    "/admin/v1/user_message/send": {
+      "post": {
+        "summary": "App-用户消息-发送",
+        "operationId": "UserMessage_SendUserMessage",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.SendUserMessageReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.SendUserMessageReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UserMessage"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "admin.v1.GetUserMessageInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/admin.v1.UserMessageInfo"
+        }
+      },
+      "title": "响应-App-用户消息-单条数据查询"
+    },
+    "admin.v1.GetUserMessageListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.UserMessageInfo"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-App-用户消息-列表数据查询"
+    },
+    "admin.v1.SendUserMessageReply": {
+      "type": "object",
+      "properties": {
+        "messageId": {
+          "type": "string",
+          "title": "消息批次id"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "发送数量"
+        }
+      },
+      "title": "响应-App-用户消息-发送"
+    },
+    "admin.v1.SendUserMessageReq": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "type": "string",
+          "title": "消息分类(transaction/system/service)"
+        },
+        "title": {
+          "type": "string",
+          "title": "标题"
+        },
+        "summary": {
+          "type": "string",
+          "title": "摘要"
+        },
+        "coverURL": {
+          "type": "string",
+          "title": "封面图"
+        },
+        "content": {
+          "type": "string",
+          "title": "内容"
+        },
+        "linkURL": {
+          "type": "string",
+          "title": "跳转链接"
+        },
+        "audienceType": {
+          "type": "string",
+          "title": "投放范围(all/segment/users)"
+        },
+        "userIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "指定用户ID列表"
+        },
+        "membershipType": {
+          "type": "string",
+          "title": "会员类型筛选"
+        },
+        "activeWithinDays": {
+          "type": "integer",
+          "format": "int32",
+          "title": "活跃天数筛选"
+        }
+      },
+      "title": "请求-App-用户消息-发送",
+      "required": [
+        "category",
+        "title",
+        "content",
+        "audienceType"
+      ]
+    },
+    "admin.v1.UserMessageInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "messageId": {
+          "type": "string",
+          "title": "消息批次id"
+        },
+        "userId": {
+          "type": "string",
+          "title": "用户id"
+        },
+        "category": {
+          "type": "string",
+          "title": "消息分类(transaction/system/service)"
+        },
+        "title": {
+          "type": "string",
+          "title": "标题"
+        },
+        "summary": {
+          "type": "string",
+          "title": "摘要"
+        },
+        "coverURL": {
+          "type": "string",
+          "title": "封面图"
+        },
+        "content": {
+          "type": "string",
+          "title": "内容"
+        },
+        "linkURL": {
+          "type": "string",
+          "title": "跳转链接"
+        },
+        "audienceType": {
+          "type": "string",
+          "title": "投放范围(all/segment/users)"
+        },
+        "audienceValue": {
+          "type": "string",
+          "title": "投放条件/用户列表"
+        },
+        "sentAt": {
+          "type": "string",
+          "title": "发送时间"
+        },
+        "readAt": {
+          "type": "string",
+          "title": "阅读时间"
+        },
+        "adminId": {
+          "type": "string",
+          "title": "创建人"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "App-用户消息信息"
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}
