@@ -3,8 +3,8 @@ import type {
   OnActionClickParams,
   VxeTableGridOptions,
 } from '#/adapter/vxe-table';
-import type * as AiProviderPlatformApi from '#/api/v1/ai-provider-platform';
 import type * as AiProviderModelApi from '#/api/v1/ai-provider-model';
+import type * as AiProviderPlatformApi from '#/api/v1/ai-provider-platform';
 
 import { computed, ref } from 'vue';
 

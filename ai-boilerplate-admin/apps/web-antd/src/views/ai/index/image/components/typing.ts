@@ -24,31 +24,31 @@ export const AiPlatformEnum = {
 };
 
 export type ImageMidjourneyButton = {
-  label?: string;
-  emoji?: string;
   customId?: string;
+  emoji?: string;
+  label?: string;
 };
 
 export type ImageRecordView = {
-  id?: string;
   adminId?: string;
-  prompt?: string;
-  platform?: string;
-  modelId?: string;
-  model?: string;
-  width?: number;
-  height?: number;
-  status?: number;
-  finishTime?: string;
+  buttons?: ImageMidjourneyButton[];
+  createdAt?: string;
+  createTime?: string;
   errorMessage?: string;
-  publicStatus?: boolean;
+  finishTime?: string;
+  height?: number;
+  id?: string;
+  model?: string;
+  modelId?: string;
+  options?: Record<string, any>;
   picURL?: string;
   picUrl?: string;
-  options?: Record<string, any>;
+  platform?: string;
+  prompt?: string;
+  publicStatus?: boolean;
+  status?: number;
   taskId?: string;
-  buttons?: ImageMidjourneyButton[];
-  createTime?: string;
-  createdAt?: string;
+  width?: number;
 };
 
 export function normalizeImageRecord(record: any): ImageRecordView {

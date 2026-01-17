@@ -94,6 +94,10 @@ async function onUnpublish(row: ArticleInfo) {
 
 function onActionClick({ code, row }: OnActionClickParams<ArticleInfo>) {
   switch (code) {
+    case 'delete': {
+      onDelete(row);
+      break;
+    }
     case 'edit': {
       onEdit(row);
       break;
@@ -104,10 +108,6 @@ function onActionClick({ code, row }: OnActionClickParams<ArticleInfo>) {
     }
     case 'unpublish': {
       onUnpublish(row);
-      break;
-    }
-    case 'delete': {
-      onDelete(row);
       break;
     }
   }
@@ -162,4 +162,3 @@ const [Grid, gridApi] = useVbenVxeGrid({
     </Grid>
   </Page>
 </template>
-

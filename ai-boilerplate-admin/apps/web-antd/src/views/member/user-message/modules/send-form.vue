@@ -82,8 +82,8 @@ function parseUserIds(value?: string): string[] {
   if (!value) {
     return [];
   }
-  const chunks = value.split(/[\n\s,]+/).map(item => item.trim());
-  return Array.from(new Set(chunks.filter(Boolean)));
+  const chunks = value.split(/[\s,]+/).map((item) => item.trim());
+  return [...new Set(chunks.filter(Boolean))];
 }
 </script>
 

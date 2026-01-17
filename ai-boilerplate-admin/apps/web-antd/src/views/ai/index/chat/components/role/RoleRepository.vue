@@ -4,7 +4,8 @@ import { onMounted, reactive, ref } from 'vue';
 import { useVbenDrawer } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
 
-import { Button, Input, Layout, Tabs, message } from 'ant-design-vue';
+import { Button, Input, Layout, message, Tabs } from 'ant-design-vue';
+
 import RoleCategoryList from './RoleCategoryList.vue';
 import RoleList from './RoleList.vue';
 
@@ -23,14 +24,14 @@ const myRoleParams = reactive({
   pageSize: 50,
 });
 const myRoleList = ref<
-  Array<{ id?: string; name?: string; description?: string; avatar?: string }>
+  Array<{ avatar?: string; description?: string; id?: string; name?: string }>
 >([]); // my 分页大小
 const publicRoleParams = reactive({
   pageNo: 1,
   pageSize: 50,
 });
 const publicRoleList = ref<
-  Array<{ id?: string; name?: string; description?: string; avatar?: string }>
+  Array<{ avatar?: string; description?: string; id?: string; name?: string }>
 >([]); // public 分页大小
 const activeCategory = ref<string>('全部'); // 选择中的分类
 const categoryList = ref<string[]>([]); // 角色分类类别
@@ -87,18 +88,12 @@ async function handlerAddRole() {
   message.info('角色仓库暂不可用');
 }
 /** 编辑角色 */
-async function handlerCardEdit(role: any) {
+async function handlerCardEdit(_role: any) {
   message.info('角色仓库暂不可用');
 }
 
-/** 添加角色成功 */
-async function handlerAddRoleSuccess() {
-  // 刷新数据
-  await getActiveTabsRole();
-}
-
 /** 删除角色 */
-async function handlerCardDelete(role: any) {
+async function handlerCardDelete(_role: any) {
   message.info('角色仓库暂不可用');
 }
 
@@ -119,7 +114,7 @@ async function handlerCardPage(type: string) {
 }
 
 /** 选择 card 角色：新建聊天对话 */
-async function handlerCardUse(role: any) {
+async function handlerCardUse(_role: any) {
   message.info('角色仓库暂不可用');
 }
 

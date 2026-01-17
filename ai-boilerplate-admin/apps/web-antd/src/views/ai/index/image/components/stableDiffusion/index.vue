@@ -1,6 +1,7 @@
 <!-- dall3 -->
 <script setup lang="ts">
 import type { ProviderModelOption } from '../../../utils';
+import type { ImageRecordView } from '../typing';
 
 import { ref } from 'vue';
 
@@ -25,7 +26,6 @@ import {
   StableDiffusionClipGuidancePresets,
   StableDiffusionSamplers,
   StableDiffusionStylePresets,
-  type ImageRecordView,
 } from '../typing';
 
 // 接收父组件传入的模型列表

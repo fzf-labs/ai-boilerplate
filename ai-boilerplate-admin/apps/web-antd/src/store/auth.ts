@@ -39,7 +39,7 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       loginLoading.value = true;
       const { token } = await sysAuthLogin({
-        body: params as unknown as { username: string; password: string },
+        body: params as unknown as { password: string; username: string },
       });
       // 如果成功获取到 accessToken
       if (token) {

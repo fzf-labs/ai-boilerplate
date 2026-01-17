@@ -254,12 +254,17 @@ export function useGridColumns<T = UserInfo>(
           {
             code: 'more',
             text: '更多操作',
-            show: hasAccessByCodes(['member:user:test-token', 'member:user:membership-change-record']),
+            show: hasAccessByCodes([
+              'member:user:test-token',
+              'member:user:membership-change-record',
+            ]),
             children: [
               {
                 code: 'membershipChangeRecords',
                 text: '会员变更记录',
-                show: hasAccessByCodes(['member:user:membership-change-record']),
+                show: hasAccessByCodes([
+                  'member:user:membership-change-record',
+                ]),
               },
               {
                 code: 'testToken',

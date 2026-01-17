@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import type { ProviderModelOption } from '../utils';
+
 import type { AiIndexImageRecordInfo } from '#/api/v1/ai-index-image';
 
 import { nextTick, onMounted, ref } from 'vue';
@@ -7,13 +9,13 @@ import { Page } from '@vben/common-ui';
 
 import { Segmented } from 'ant-design-vue';
 
+import { fetchProviderModels } from '../utils';
 import Common from './components/common/index.vue';
 import Dall3 from './components/dall3/index.vue';
 import ImageList from './components/ImageList.vue';
 import Midjourney from './components/midjourney/index.vue';
 import StableDiffusion from './components/stableDiffusion/index.vue';
 import { AiPlatformEnum } from './components/typing';
-import { fetchProviderModels, type ProviderModelOption } from '../utils';
 
 type ImageRecordView = AiIndexImageRecordInfo & {
   options?: Record<string, any>;

@@ -162,12 +162,12 @@ async function uploadToVolcengine(
 
   // 创建 TOS 客户端（经过验证后，这些字段已确定存在）
   const client = new TOS({
-    accessKeyId: policy.accessKeyId!,
-    accessKeySecret: policy.secretAccessKey!,
-    stsToken: policy.sessionToken!,
-    region: policy.region!,
-    endpoint: policy.endpoint!,
-    bucket: policy.bucket!,
+    accessKeyId: policy.accessKeyId ?? '',
+    accessKeySecret: policy.secretAccessKey ?? '',
+    stsToken: policy.sessionToken ?? '',
+    region: policy.region ?? '',
+    endpoint: policy.endpoint ?? '',
+    bucket: policy.bucket ?? '',
   });
 
   try {

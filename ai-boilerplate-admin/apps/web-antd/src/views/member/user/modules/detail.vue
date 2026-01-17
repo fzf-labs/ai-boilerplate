@@ -64,7 +64,9 @@ const loadGzhUserInfo = async () => {
   gzhLoading.value = true;
   gzhError.value = false;
   try {
-    const res = await getWxGzhUserInfo({ params: { id: userInfo.value.wxGzhUserId } });
+    const res = await getWxGzhUserInfo({
+      params: { id: userInfo.value.wxGzhUserId },
+    });
     gzhUserInfo.value = res.info;
   } catch (error) {
     console.error('Failed to load WeChat Official Account user info:', error);
@@ -83,7 +85,9 @@ const loadXcxUserInfo = async () => {
   xcxLoading.value = true;
   xcxError.value = false;
   try {
-    const res = await getWxXcxUserInfo({ params: { id: userInfo.value.wxGzhXcxId } });
+    const res = await getWxXcxUserInfo({
+      params: { id: userInfo.value.wxGzhXcxId },
+    });
     xcxUserInfo.value = res.info;
   } catch (error) {
     console.error('Failed to load WeChat Mini Program user info:', error);

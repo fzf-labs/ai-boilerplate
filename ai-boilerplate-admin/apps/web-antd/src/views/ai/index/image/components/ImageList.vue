@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { ImageMidjourneyButton, ImageRecordView } from './typing';
 
 import { onMounted, onUnmounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -16,12 +17,7 @@ import {
 
 import ImageCard from './ImageCard.vue';
 import ImageDetail from './ImageDetail.vue';
-import {
-  AiImageStatusEnum,
-  type ImageMidjourneyButton,
-  type ImageRecordView,
-  normalizeImageRecord,
-} from './typing';
+import { AiImageStatusEnum, normalizeImageRecord } from './typing';
 
 // 暴露组件方法
 
@@ -71,7 +67,7 @@ async function getImageList(isSilent = false) {
         pageSize: queryParams.pageSize,
       },
     });
-    imageList.value = (list || []).map(normalizeImageRecord);
+    imageList.value = (list || []).map((item) => normalizeImageRecord(item));
     pageTotal.value = total || 0;
 
     // 2. 计算需要轮询的图片

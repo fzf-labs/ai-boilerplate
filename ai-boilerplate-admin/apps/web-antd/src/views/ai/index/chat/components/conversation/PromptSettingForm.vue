@@ -75,13 +75,13 @@ const [Modal, modalApi] = useVbenModal({
     modalApi.lock();
     const values = (await formApi.getValues()) as {
       id?: string;
-      promptName?: string;
       promptDesc?: string;
+      promptName?: string;
       systemMessage?: string;
     };
     try {
       const promptSetting = {
-        ...(formData.value?.promptSetting || {}),
+        ...formData.value?.promptSetting,
         name: values.promptName || '',
         desc: values.promptDesc || '',
         prompt: values.systemMessage || '',

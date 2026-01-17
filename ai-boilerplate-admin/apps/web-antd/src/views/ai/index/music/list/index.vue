@@ -1,21 +1,25 @@
 <script setup lang="ts">
 import type { Recordable } from '@vben/types';
-import type { AiIndexAudioRecordInfo } from '#/api/v1/ai-index-audio';
+
 import type { ProviderModelOption } from '../../utils';
+
+import type { AiIndexAudioRecordInfo } from '#/api/v1/ai-index-audio';
 
 import { onMounted, provide, ref } from 'vue';
 
 import { useUserStore } from '@vben/stores';
-import { Col, Empty, Row, TabPane, Tabs, message } from 'ant-design-vue';
 
-import audioBar from './audioBar/index.vue';
-import songCard from './songCard/index.vue';
-import songInfo from './songInfo/index.vue';
+import { Col, Empty, message, Row, TabPane, Tabs } from 'ant-design-vue';
+
 import {
   createAiIndexAudioRecord,
   getAiIndexAudioRecordList,
 } from '#/api/v1/ai-index-audio';
+
 import { fetchProviderModels } from '../../utils';
+import audioBar from './audioBar/index.vue';
+import songCard from './songCard/index.vue';
+import songInfo from './songInfo/index.vue';
 
 defineOptions({ name: 'AiMusicListIndex' });
 
@@ -28,10 +32,10 @@ const userStore = useUserStore();
 const modelOptions = ref<ProviderModelOption[]>([]);
 
 type MusicRecordView = AiIndexAudioRecordInfo & {
-  imageUrl?: string;
   audioUrl?: string;
-  desc?: string;
   date?: string;
+  desc?: string;
+  imageUrl?: string;
 };
 
 const mySongList = ref<MusicRecordView[]>([]);
@@ -51,7 +55,7 @@ async function loadMusicList() {
   const { list } = await getAiIndexAudioRecordList({
     params: { page: 1, pageSize: 50 },
   });
-  const normalized = (list || []).map(normalizeMusicRecord);
+  const normalized = (list || []).map((item) => normalizeMusicRecord(item));
   mySongList.value = normalized.filter((item) => !item.publicStatus);
   squareSongList.value = normalized.filter((item) => item.publicStatus);
   if (!currentSong.value?.id && normalized[0]) {
@@ -78,8 +82,7 @@ async function generateMusic(formData: Recordable<any>) {
     }
     const isLyric = formData.generateMode === 'lyric' || !!formData.lyric;
     const desc = formData.desc || formData.description || '';
-    const title =
-      formData.name || (desc ? desc.slice(0, 12) : '') || '未命名';
+    const title = formData.name || (desc ? desc.slice(0, 12) : '') || '未命名';
     const promptParts = [
       isLyric ? formData.style : desc,
       formData.pure ? '纯音乐' : '',

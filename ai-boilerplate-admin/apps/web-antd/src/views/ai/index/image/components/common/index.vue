@@ -1,13 +1,21 @@
 <!-- dall3 -->
 <script setup lang="ts">
 import type { ProviderModelOption } from '../../../utils';
+import type { ImageRecordView } from '../typing';
 
 import { ref, watch } from 'vue';
 
 import { confirm } from '@vben/common-ui';
 import { useUserStore } from '@vben/stores';
 
-import { Button, InputNumber, message, Select, Space, Textarea } from 'ant-design-vue';
+import {
+  Button,
+  InputNumber,
+  message,
+  Select,
+  Space,
+  Textarea,
+} from 'ant-design-vue';
 
 import { createAiIndexImageRecord } from '#/api/v1/ai-index-image';
 
@@ -16,7 +24,6 @@ import {
   AiPlatformEnum,
   ImageHotWords,
   OtherPlatformEnum,
-  type ImageRecordView,
 } from '../typing';
 
 // 消息弹窗

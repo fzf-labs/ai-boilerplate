@@ -4,9 +4,6 @@ import type { UploadRequestOption } from 'ant-design-vue/lib/vc-upload/interface
 
 import type { FileUploadProps } from './typing';
 
-// 上传进度事件类型
-type UploadProgressEvent = (progressEvent: any) => void;
-
 import { ref, toRefs, watch } from 'vue';
 
 import { IconifyIcon } from '@vben/icons';
@@ -17,6 +14,9 @@ import { message, Upload } from 'ant-design-vue';
 import { checkFileType } from './helper';
 import { UploadResultStatus } from './typing';
 import { useUpload, useUploadType } from './use-upload';
+
+// 上传进度事件类型
+type UploadProgressEvent = (progressEvent: any) => void;
 
 defineOptions({ name: 'FileUpload', inheritAttrs: false });
 

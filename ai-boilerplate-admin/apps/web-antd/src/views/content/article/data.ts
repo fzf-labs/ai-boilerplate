@@ -56,7 +56,7 @@ export function useFormSchema(): VbenFormSchema[] {
       fieldName: 'contentMarkdown',
       label: '内容(Markdown)',
       component: 'Textarea',
-      rules: z.string().min(1, '请输入内容').max(200000),
+      rules: z.string().min(1, '请输入内容').max(200_000),
       componentProps: {
         placeholder: '请输入 Markdown 内容',
         rows: 14,
@@ -146,7 +146,9 @@ export function useGridColumns<T = ArticleInfo>(
       title: '状态',
       minWidth: 120,
       formatter: ({ cellValue }) => {
-        const found = ArticleStatusOptions.find((item) => item.value === cellValue);
+        const found = ArticleStatusOptions.find(
+          (item) => item.value === cellValue,
+        );
         return found?.label || '';
       },
     },
@@ -217,4 +219,3 @@ export function useGridColumns<T = ArticleInfo>(
     },
   ];
 }
-

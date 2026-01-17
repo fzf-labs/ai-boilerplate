@@ -34,27 +34,35 @@ const [Modal, modalApi] = useVbenModal({
 
 const categoryText = computed(() => {
   switch (formData.value?.category) {
-    case 'transaction':
-      return '交易信息';
-    case 'system':
-      return '系统消息';
-    case 'service':
+    case 'service': {
       return '客服消息';
-    default:
+    }
+    case 'system': {
+      return '系统消息';
+    }
+    case 'transaction': {
+      return '交易信息';
+    }
+    default: {
       return formData.value?.category || '-';
+    }
   }
 });
 
 const audienceTypeText = computed(() => {
   switch (formData.value?.audienceType) {
-    case 'all':
+    case 'all': {
       return '全部用户';
-    case 'segment':
+    }
+    case 'segment': {
       return '条件筛选';
-    case 'users':
+    }
+    case 'users': {
       return '指定用户';
-    default:
+    }
+    default: {
       return formData.value?.audienceType || '-';
+    }
   }
 });
 

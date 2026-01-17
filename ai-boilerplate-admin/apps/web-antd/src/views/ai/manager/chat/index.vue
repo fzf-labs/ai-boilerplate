@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VxeTableGridOptions } from '#/adapter/vxe-table';
-import type * as AiChatMessageApi from '#/api/v1/ai-chat-message';
 import type * as AiChatConversationApi from '#/api/v1/ai-chat-conversation';
+import type * as AiChatMessageApi from '#/api/v1/ai-chat-message';
 import type { SysAdminInfo } from '#/api/v1/sys-admin';
 
 import { onMounted, ref } from 'vue';
@@ -15,11 +15,11 @@ import {
   TableAction,
   useVbenVxeGrid,
 } from '#/adapter/vxe-table';
-import { getAiChatMessageList } from '#/api/v1/ai-chat-message';
 import {
   deleteAiChatConversation,
   getAiChatConversationList,
 } from '#/api/v1/ai-chat-conversation';
+import { getAiChatMessageList } from '#/api/v1/ai-chat-message';
 import { getSysAdminSelector } from '#/api/v1/sys-admin';
 import { $t } from '#/locales';
 

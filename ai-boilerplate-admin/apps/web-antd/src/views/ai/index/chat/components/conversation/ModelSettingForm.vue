@@ -131,15 +131,15 @@ const [Modal, modalApi] = useVbenModal({
     modalApi.lock();
     const values = (await formApi.getValues()) as {
       id?: string;
+      maxContexts?: number;
+      maxTokens?: number;
       modelId?: string;
       temperature?: number;
       topP?: number;
-      maxTokens?: number;
-      maxContexts?: number;
     };
     try {
       const modelSetting = {
-        ...(formData.value?.modelSetting || {}),
+        ...formData.value?.modelSetting,
         modelId: values.modelId || '',
         temperature: values.temperature ?? 0,
         top_p: values.topP ?? 0,

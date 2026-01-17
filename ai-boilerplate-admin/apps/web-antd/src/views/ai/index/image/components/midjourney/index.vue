@@ -1,8 +1,18 @@
 <!-- dall3 -->
 <script setup lang="ts">
-import type { ImageModel, ImageSize } from '../typing';
-
 import type { ProviderModelOption } from '../../../utils';
+import type {
+  AiImageStatusEnum,
+  AiPlatformEnum,
+  ImageHotWords,
+  ImageModel,
+  type ImageRecordView,
+  ImageSize,
+  MidjourneyModels,
+  MidjourneySizeList,
+  MidjourneyVersions,
+  NijiVersionList,
+} from '../typing';
 
 import { ref } from 'vue';
 
@@ -20,17 +30,6 @@ import {
 
 import { createAiIndexImageRecord } from '#/api/v1/ai-index-image';
 import { ImageUpload } from '#/components/upload';
-
-import {
-  AiImageStatusEnum,
-  AiPlatformEnum,
-  ImageHotWords,
-  MidjourneyModels,
-  MidjourneySizeList,
-  MidjourneyVersions,
-  NijiVersionList,
-  type ImageRecordView,
-} from '../typing';
 
 // 消息弹窗
 

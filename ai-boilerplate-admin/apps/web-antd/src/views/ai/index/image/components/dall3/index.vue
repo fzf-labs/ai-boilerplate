@@ -1,8 +1,7 @@
 <!-- dall3 -->
 <script setup lang="ts">
-import type { ImageModel, ImageSize } from '../typing';
-
 import type { ProviderModelOption } from '../../../utils';
+import type { ImageModel, ImageRecordView, ImageSize } from '../typing';
 
 import { ref } from 'vue';
 
@@ -20,7 +19,6 @@ import {
   Dall3SizeList,
   Dall3StyleList,
   ImageHotWords,
-  type ImageRecordView,
 } from '../typing';
 
 // 接收父组件传入的模型列表

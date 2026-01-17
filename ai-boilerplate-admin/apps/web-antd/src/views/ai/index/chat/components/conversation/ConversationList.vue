@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue';
+
 import type * as AiIndexChatApi from '#/api/v1/ai-index-chat';
 
 import { h, onMounted, ref, toRefs, watch } from 'vue';
@@ -288,7 +289,9 @@ async function handleClearConversation() {
 }
 
 /** 对话置顶 */
-async function handleTop(conversation: AiIndexChatApi.AiIndexChatConversationItem) {
+async function handleTop(
+  conversation: AiIndexChatApi.AiIndexChatConversationItem,
+) {
   if (!conversation.id) {
     return;
   }

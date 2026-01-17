@@ -326,7 +326,6 @@ export function useGridColumns<T = MallProductInfo>(
       align: 'center',
       formatter: ({ row }) => {
         const productInfo = row as MallProductInfo;
-        console.log(productInfo.productType);
         if (productInfo.productType !== 'membership') return '-';
         const duration = productInfo.productConfig?.membership?.durationDays;
         return duration ? `${duration}天` : '-';

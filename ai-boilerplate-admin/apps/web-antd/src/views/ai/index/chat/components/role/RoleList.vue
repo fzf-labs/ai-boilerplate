@@ -17,7 +17,12 @@ const props = defineProps({
   },
   roleList: {
     type: Array as PropType<
-      Array<{ id?: string; name?: string; description?: string; avatar?: string }>
+      Array<{
+        avatar?: string;
+        description?: string;
+        id?: string;
+        name?: string;
+      }>
     >,
     required: true,
   },

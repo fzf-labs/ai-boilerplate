@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue';
+
 import type * as AiIndexChatApi from '#/api/v1/ai-index-chat';
 
 import { computed, nextTick, onMounted, ref, toRefs } from 'vue';

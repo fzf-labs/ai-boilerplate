@@ -102,13 +102,16 @@ async function handleNotificationClear() {
 async function handleNotificationRead(item: NotificationItem) {
   // 从数组中找到对应的项（包含 id）
   const found = notifications.value.find(
-    (n) => n.title === item.title && n.message === item.message && n.date === item.date
+    (n) =>
+      n.title === item.title &&
+      n.message === item.message &&
+      n.date === item.date,
   );
-  
+
   if (!found?.id) {
     return;
   }
-  
+
   await updateSysNotifyMessageRead({ body: { ids: [found.id] } });
   await handleNotificationGetUnreadCount();
   notifications.value = notifications.value.filter((n) => n.id !== found.id);

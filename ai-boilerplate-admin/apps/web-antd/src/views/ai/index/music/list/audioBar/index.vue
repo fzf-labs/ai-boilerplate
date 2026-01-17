@@ -89,8 +89,7 @@ function audioTimeUpdate(args: any) {
         v-show="!audioProps"
         @timeupdate="audioTimeUpdate"
         :src="currentSong.audioUrl"
-      >
-      </audio>
+      ></audio>
     </div>
     <div class="flex items-center gap-4">
       <IconifyIcon

@@ -131,10 +131,7 @@ onMounted(async () => {
         </Button>
       </template>
       <template #publicStatus="{ row }">
-        <Switch
-          v-model:checked="row.publicStatus"
-          :disabled="true"
-        />
+        <Switch v-model:checked="row.publicStatus" :disabled="true" />
       </template>
       <template #actions="{ row }">
         <TableAction

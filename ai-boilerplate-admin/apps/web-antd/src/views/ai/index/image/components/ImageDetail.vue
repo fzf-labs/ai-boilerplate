@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { PropType } from 'vue';
 
+import type { ImageRecordView } from './typing';
+
 import { computed } from 'vue';
 
 import { formatDate } from '@vben/utils';
@@ -10,7 +12,6 @@ import { Image } from 'ant-design-vue';
 import {
   AiPlatformEnum,
   Dall3StyleList,
-  type ImageRecordView,
   normalizeImageRecord,
   StableDiffusionClipGuidancePresets,
   StableDiffusionSamplers,

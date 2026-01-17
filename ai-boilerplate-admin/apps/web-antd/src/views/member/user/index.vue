@@ -127,16 +127,16 @@ function onActionClick({ code, row }: OnActionClickParams<UserInfo>) {
       onEdit(row);
       break;
     }
+    case 'membershipChangeRecords': {
+      onViewMembershipChangeRecords(row);
+      break;
+    }
     case 'testToken': {
       onGenerateToken(row);
       break;
     }
     case 'view': {
       onView(row);
-      break;
-    }
-    case 'membershipChangeRecords': {
-      onViewMembershipChangeRecords(row);
       break;
     }
   }

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { ImageRecordView } from '../components/typing';
 
 import { onMounted, reactive, ref } from 'vue';
 
@@ -8,7 +9,8 @@ import { useDebounceFn } from '@vueuse/core';
 import { Image, Input, Pagination } from 'ant-design-vue';
 
 import { getAiIndexImageRecordList } from '#/api/v1/ai-index-image';
-import { type ImageRecordView, normalizeImageRecord } from '../components/typing';
+
+import { normalizeImageRecord } from '../components/typing';
 
 const loading = ref(true); // 列表的加载中
 const list = ref<ImageRecordView[]>([]); // 列表的数据
@@ -27,7 +29,7 @@ async function getList() {
     const data = await getAiIndexImageRecordList({
       params: queryParams as any,
     });
-    list.value = (data.list || []).map(normalizeImageRecord);
+    list.value = (data.list || []).map((item) => normalizeImageRecord(item));
     total.value = data.total || 0;
   } finally {
     loading.value = false;

@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import type { ArticleInfo } from '#/api/v1/article';
-import type { CreateArticleReq, UpdateArticleReq } from '#/api/v1/article/types';
+import type {
+  CreateArticleReq,
+  UpdateArticleReq,
+} from '#/api/v1/article/types';
 
 import { computed, ref } from 'vue';
 
@@ -106,4 +109,3 @@ const [Modal, modalApi] = useVbenModal({
     <Form class="mx-4" />
   </Modal>
 </template>
-

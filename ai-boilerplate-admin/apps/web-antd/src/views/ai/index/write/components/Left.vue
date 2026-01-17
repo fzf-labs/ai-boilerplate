@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import type { CreateAiWriteRecordReq } from '#/api/v1/ai-write-record';
 import type { ProviderModelOption } from '../../utils';
+
+import type { CreateAiWriteRecordReq } from '#/api/v1/ai-write-record';
 
 import { onMounted, ref } from 'vue';
 
@@ -78,14 +79,14 @@ const [DefineLabel, ReuseLabel] = createReusableTemplate<{
 
 const initData: Pick<
   CreateAiWriteRecordReq,
-  | 'type'
-  | 'prompt'
-  | 'originalContent'
-  | 'tone'
+  | 'format'
   | 'language'
   | 'length'
-  | 'format'
   | 'modelId'
+  | 'originalContent'
+  | 'prompt'
+  | 'tone'
+  | 'type'
 > = {
   type: 1,
   prompt: '',

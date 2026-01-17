@@ -140,7 +140,10 @@ const [Grid, gridApi] = useVbenVxeGrid({
 </script>
 
 <template>
-  <Page auto-content-height description="管理会员权益类型，如：定位、截图、敲一敲等">
+  <Page
+    auto-content-height
+    description="管理会员权益类型，如：定位、截图、敲一敲等"
+  >
     <FormModal @success="onRefresh" />
 
     <Grid table-title="权益类型列表">

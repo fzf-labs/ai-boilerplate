@@ -69,11 +69,9 @@ async function onSubmit(values: Record<string, any>) {
   const body = {
     ...values,
   };
-  if (getIsUpdate.value) {
-    await updateMembershipBenefitType({ body });
-  } else {
-    await createMembershipBenefitType({ body });
-  }
+  await (getIsUpdate.value
+    ? updateMembershipBenefitType({ body })
+    : createMembershipBenefitType({ body }));
   emit('success');
 }
 </script>

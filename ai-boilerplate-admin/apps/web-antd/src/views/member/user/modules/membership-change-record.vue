@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormSchema } from '#/adapter/form';
 import type { VxeTableGridOptions } from '#/adapter/vxe-table';
+import type { UserMembershipChangeInfo } from '#/api/v1/user-membership-change';
 
 import { computed, ref } from 'vue';
 
@@ -8,10 +9,7 @@ import { useVbenModal } from '@vben/common-ui';
 import { formatDateTime } from '@vben/utils';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import {
-  getUserMembershipChangeList,
-  type UserMembershipChangeInfo,
-} from '#/api/v1/user-membership-change';
+import { getUserMembershipChangeList } from '#/api/v1/user-membership-change';
 
 const userId = ref('');
 const userLabel = ref('');

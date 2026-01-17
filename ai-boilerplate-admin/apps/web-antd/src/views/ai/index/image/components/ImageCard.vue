@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { PropType } from 'vue';
 
+import type { ImageMidjourneyButton, ImageRecordView } from './typing';
+
 import { onMounted, ref, toRefs, watch } from 'vue';
 
 import { confirm } from '@vben/common-ui';
@@ -8,11 +10,7 @@ import { IconifyIcon } from '@vben/icons';
 
 import { Button, Card, Image, message } from 'ant-design-vue';
 
-import {
-  AiImageStatusEnum,
-  type ImageMidjourneyButton,
-  type ImageRecordView,
-} from './typing';
+import { AiImageStatusEnum } from './typing';
 
 // 消息
 
@@ -32,9 +30,7 @@ async function handleButtonClick(type: string, detail: ImageRecordView) {
 }
 
 /** 处理 Midjourney 按钮点击事件  */
-async function handleMidjourneyBtnClick(
-  button: ImageMidjourneyButton,
-) {
+async function handleMidjourneyBtnClick(button: ImageMidjourneyButton) {
   // 确认窗体
   await confirm(`确认操作 "${button.label} ${button.emoji}" ?`);
   emits('onMjBtnClick', button, props.detail);
@@ -114,7 +110,10 @@ onMounted(async () => {
 
     <!-- 图片展示区域 -->
     <div class="mt-5 h-72 flex-1 overflow-hidden" ref="cardImageRef">
-      <Image class="w-full rounded-lg" :src="detail?.picUrl || detail?.picURL" />
+      <Image
+        class="w-full rounded-lg"
+        :src="detail?.picUrl || detail?.picURL"
+      />
       <div v-if="detail?.status === AiImageStatusEnum.FAIL">
         {{ detail?.errorMessage }}
       </div>
