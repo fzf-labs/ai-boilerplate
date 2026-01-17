@@ -1,59 +1,60 @@
 ---
 name: app-codeing
-description: App development skill for uni-app mobile application. Use when developing mobile pages, integrating backend APIs, implementing features with wot-design-uni components. Triggers include：(1) Creating new pages (2) Form and list development (3) API integration (4) State management (5) Component usage (6) Complete mobile app development workflow
+description: App 移动端前端开发技能,基于 uni-app + Vue 3 + TypeScript + wot-design-uni 技术栈。触发场景包括:(1) 开发移动端页面 (2) 实现列表/表单/详情页 (3) 对接后端 API (4) 使用 wot-design-uni 组件 (5) 状态管理和路由导航 (6) 完整的移动端 CRUD 功能开发。关键词:app、移动端、uni-app、Vue、页面开发、表单、列表、详情页、wot-design-uni、z-paging。
 ---
 
 # App Development Skill
 
-Workflow for developing uni-app mobile application (ai-boilerplate-app) with Vue 3 + TypeScript.
+uni-app 移动端应用开发技能 (ai-boilerplate-app),使用 Vue 3 + TypeScript + wot-design-uni。
 
-## Quick Start Decision Guide
+## 快速决策指南
 
-**What are you building?**
+**你要开发什么类型的页面?**
 
-1. **List page with pagination** → Use z-paging pattern (see `examples/01-list-page.md`)
-2. **Form page with validation** → Use wd-form pattern (see `examples/02-form-page.md`)
-3. **Detail/display page** → Use basic page pattern (see `examples/03-detail-page.md`)
-4. **Need component reference?** → See `references/components-guide.md`
+1. **列表页(带分页)** → 使用 z-paging 模式 → 查看 `examples/01-list-page.md`
+2. **表单页(带验证)** → 使用 wd-form 模式 → 查看 `examples/02-form-page.md`
+3. **详情/展示页** → 使用基础页面模式 → 查看 `examples/03-detail-page.md`
+4. **需要组件参考?** → 查看 `references/components-guide.md`
+5. **需要最佳实践?** → 查看 `references/best-practices.md`
 
-**Do you need to generate API?**
-- New backend API added? → Yes, run Step 1
-- API already exists? → Skip to Step 2
+**是否需要生成 API?**
+- 后端新增了 API? → 是,执行 Step 1
+- API 已存在? → 否,跳到 Step 2
 
 ---
 
-## Development Workflow
+## 开发工作流
 
-### Step 1: Generate API (Conditional)
+### Step 1: 生成 API 客户端代码 (条件执行)
 
-**When to run**: Backend API has been updated or new endpoints added.
+**何时执行**: 后端 API 已更新或新增接口。
 
-**When to skip**: API types already exist for your feature.
+**何时跳过**: 功能所需的 API 类型已存在。
 
 ```bash
 cd ai-boilerplate-app && pnpm api:gen
 ```
 
-**Important**: NEVER manually edit `src/api/v1/*` - files are auto-generated from Swagger.
+**重要**: 禁止手动编辑 `src/api/v1/*` - 这些文件由 Swagger 自动生成。
 
 ---
 
-### Step 2: Select Page Type & Location
+### Step 2: 选择页面类型和位置
 
-**Choose directory**:
-- Tabbar pages → `src/pages/{module}/`
-- Sub-pages → `src/pages-fg/{module}/`
+**选择目录**:
+- Tabbar 页面 → `src/pages/{module}/`
+- 子页面 → `src/pages-fg/{module}/`
 
-**Choose pattern** (see examples/ for full code):
-- List with pagination → `examples/01-list-page.md`
-- Form with validation → `examples/02-form-page.md`
-- Detail/display → `examples/03-detail-page.md`
+**选择模式** (完整代码见 examples/):
+- 列表+分页 → `examples/01-list-page.md`
+- 表单+验证 → `examples/02-form-page.md`
+- 详情/展示 → `examples/03-detail-page.md`
 
 ---
 
-### Step 3: Implement Page
+### Step 3: 实现页面功能
 
-**Basic page structure**:
+**基础页面结构**:
 
 ```vue
 <script lang="ts" setup>
@@ -77,7 +78,7 @@ async function fetchData() {
   }
   catch (error) {
     console.error('Error:', error)
-    toast.error('Load failed')
+    toast.error('加载失败')
   }
   finally {
     loading.value = false
@@ -89,7 +90,7 @@ onLoad(() => fetchData())
 
 <template>
   <view class="page-container">
-    <!-- Content -->
+    <!-- 页面内容 -->
     <wd-toast />
   </view>
 </template>
@@ -102,124 +103,124 @@ onLoad(() => fetchData())
 </style>
 ```
 
-**For component usage**: See `references/components-guide.md`
-
-**For patterns & standards**: See `references/best-practices.md`
+**详细指南**:
+- 组件用法 → `references/components-guide.md`
+- 编码规范 → `references/best-practices.md`
 
 ---
 
-### Step 4: Quality Check & Test
+### Step 4: 质量检查和测试
 
-**Run checks**:
+**运行检查**:
 
 ```bash
 cd ai-boilerplate-app && pnpm type-check && pnpm lint:fix
 ```
 
-**Test locally**:
+**本地测试**:
 
 ```bash
 cd ai-boilerplate-app && pnpm dev
 ```
 
-Fix any TypeScript or ESLint errors before proceeding.
+修复所有 TypeScript 和 ESLint 错误后再继续。
 
 ---
 
-## Tech Stack Reference
+## 技术栈
 
-| Category | Technology |
-|----------|-----------|
-| Framework | Vue 3 + TypeScript (Composition API) |
-| UI Library | wot-design-uni |
-| List Component | z-paging |
-| State Management | Pinia |
-| HTTP Client | Alova |
-| Build Tool | Vite + uni-app |
+| 类别 | 技术 |
+|------|------|
+| 框架 | Vue 3 + TypeScript (Composition API) |
+| UI 库 | wot-design-uni |
+| 列表组件 | z-paging |
+| 状态管理 | Pinia |
+| HTTP 客户端 | Alova |
+| 构建工具 | Vite + uni-app |
 
 ---
 
-## Project Structure
+## 项目结构
 
 ```
 ai-boilerplate-app/src/
-├── pages/           # Tabbar pages only
-├── pages-fg/        # Sub-pages (non-tabbar)
-├── api/v1/          # Generated API (DO NOT EDIT)
+├── pages/           # Tabbar 页面
+├── pages-fg/        # 子页面(非 tabbar)
+├── api/v1/          # 生成的 API (禁止编辑)
 ├── store/           # Pinia stores
-├── components/      # Shared components
-└── http/            # HTTP client config
+├── components/      # 共享组件
+└── http/            # HTTP 客户端配置
 ```
 
 ---
 
-## Reference Files
+## 参考文件
 
-**When to use**:
+**何时使用**:
 
-- **Need component syntax?** → `references/components-guide.md`
-  - wot-design-uni components (wd-form, wd-button, wd-card, etc.)
-  - z-paging list component
-  - Component props and events
+- **需要组件语法?** → `references/components-guide.md`
+  - wot-design-uni 组件 (wd-form, wd-button, wd-card 等)
+  - z-paging 列表组件
+  - 组件属性和事件
 
-- **Need code patterns?** → `references/best-practices.md`
-  - TypeScript standards
-  - API call patterns
-  - Page lifecycle hooks
-  - CSS variables
-  - Authentication patterns
+- **需要代码模式?** → `references/best-practices.md`
+  - TypeScript 规范
+  - API 调用模式
+  - 页面生命周期钩子
+  - CSS 变量
+  - 认证模式
 
-- **Need complete examples?** → `examples/`
-  - `01-list-page.md` - Paginated list with z-paging
-  - `02-form-page.md` - Form with validation
-  - `03-detail-page.md` - Detail page with params
+- **需要完整示例?** → `examples/`
+  - `01-list-page.md` - 带分页的列表
+  - `02-form-page.md` - 带验证的表单
+  - `03-detail-page.md` - 带参数的详情页
 
 ---
 
-## Common Commands
+## 常用命令
 
 ```bash
-pnpm dev          # Start dev server
-pnpm api:gen      # Generate API from Swagger
-pnpm type-check   # TypeScript check
-pnpm lint:fix     # Lint and auto-fix
-pnpm build        # Build for H5
-pnpm build:mp     # Build for WeChat Mini Program
+pnpm dev          # 启动开发服务器
+pnpm api:gen      # 从 Swagger 生成 API
+pnpm type-check   # TypeScript 检查
+pnpm lint:fix     # Lint 并自动修复
+pnpm build        # 构建 H5
+pnpm build:mp     # 构建微信小程序
 ```
 
 ---
 
-## Verification Checklist
+## 验证清单
 
-Before completing:
+完成前检查:
 
-- [ ] API generated (if backend changed)
-- [ ] Page in correct directory (pages/ or pages-fg/)
-- [ ] `definePage` with navigationBarTitleText
-- [ ] Loading/error states handled
-- [ ] `<wd-toast />` in template
-- [ ] CSS variables used (var(--fg-*))
-- [ ] Type check passes
-- [ ] Lint check passes
-- [ ] Tested in dev server
+- [ ] API 已生成 (如果后端有变更)
+- [ ] 页面在正确目录 (pages/ 或 pages-fg/)
+- [ ] 使用 `definePage` 设置 navigationBarTitleText
+- [ ] 处理了加载/错误状态
+- [ ] 模板中包含 `<wd-toast />`
+- [ ] 使用 CSS 变量 (var(--fg-*))
+- [ ] Type check 通过
+- [ ] Lint check 通过
+- [ ] 在开发服务器中测试通过
 
 ---
 
-## Troubleshooting
+## 故障排查
 
-**API types not found**:
+**API 类型未找到**:
 ```bash
 cd ai-boilerplate-app && pnpm api:gen
 ```
 
-**TypeScript errors**:
+**TypeScript 错误**:
 ```bash
 cd ai-boilerplate-app && pnpm type-check
 ```
 
-**Lint errors**:
+**Lint 错误**:
 ```bash
 cd ai-boilerplate-app && pnpm lint:fix
 ```
 
-**Component not working**: Check `references/components-guide.md` for correct usage.
+**组件不工作**: 查看 `references/components-guide.md` 了解正确用法。

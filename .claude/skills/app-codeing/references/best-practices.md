@@ -1,8 +1,20 @@
 # Best Practices
 
-Code standards and best practices for app development.
+App 开发的代码规范和最佳实践。
 
-## Project Structure
+## 目录
+
+- [项目结构](#项目结构)
+- [TypeScript 规范](#typescript-规范)
+- [API 调用模式](#api-调用模式)
+- [页面生命周期](#页面生命周期)
+- [CSS 变量](#css-变量)
+- [错误处理](#错误处理)
+- [身份认证](#身份认证)
+
+---
+
+## 项目结构
 
 ```
 src/
@@ -20,9 +32,9 @@ src/
 └── http/            # HTTP client
 ```
 
-## TypeScript Standards
+## TypeScript 规范
 
-### Type Imports
+### 类型导入
 
 ```typescript
 // Separate type imports
@@ -30,7 +42,7 @@ import type { UserInfo } from '@/api/v1/user/types'
 import { getUserInfo } from '@/api/v1/user/user'
 ```
 
-### Ref Types
+### Ref 类型
 
 ```typescript
 // Explicit type for refs
@@ -39,7 +51,7 @@ const list = ref<ContentInfo[]>([])
 const loading = ref(false)
 ```
 
-### Computed Properties
+### 计算属性
 
 ```typescript
 const displayName = computed(() =>
@@ -49,9 +61,9 @@ const displayName = computed(() =>
 
 ---
 
-## API Call Patterns
+## API 调用模式
 
-### Standard Pattern
+### 标准模式
 
 ```typescript
 async function fetchData() {
@@ -70,7 +82,7 @@ async function fetchData() {
 }
 ```
 
-### With Parameters
+### 带参数
 
 ```typescript
 const res = await getList({
@@ -79,7 +91,7 @@ const res = await getList({
 })
 ```
 
-### With Body
+### 带请求体
 
 ```typescript
 const res = await createItem({
@@ -90,7 +102,7 @@ const res = await createItem({
 
 ---
 
-## Page Lifecycle
+## 页面生命周期
 
 ### definePage
 
@@ -124,9 +136,9 @@ onShow(() => {
 
 ---
 
-## CSS Variables
+## CSS 变量
 
-### Colors
+### 颜色
 
 ```scss
 var(--fg-text)          // Primary text
@@ -138,7 +150,7 @@ var(--fg-surface)       // Card background
 var(--fg-border)        // Border color
 ```
 
-### Spacing
+### 间距
 
 ```scss
 var(--fg-page-x)        // Page horizontal padding
@@ -146,7 +158,7 @@ var(--fg-page-y)        // Page vertical padding
 var(--fg-section-gap)   // Section gap
 ```
 
-### Radius & Shadow
+### 圆角和阴影
 
 ```scss
 var(--fg-radius-card)   // Card radius
@@ -157,9 +169,9 @@ var(--fg-shadow-soft)   // Soft shadow
 
 ---
 
-## Error Handling
+## 错误处理
 
-### Toast Messages
+### Toast 消息
 
 ```typescript
 toast.success('Saved')
@@ -168,7 +180,7 @@ toast.warning('Warning')
 toast.info('Info')
 ```
 
-### Form Validation
+### 表单验证
 
 ```typescript
 const validateRes = await formRef.value?.validate()
@@ -179,9 +191,9 @@ if (validateRes && !validateRes.valid) {
 
 ---
 
-## Authentication
+## 身份认证
 
-### Check Login
+### 检查登录状态
 
 ```typescript
 import { useTokenStore } from '@/store/token'
@@ -194,7 +206,7 @@ if (!tokenStore.hasLogin) {
 }
 ```
 
-### Protected Actions
+### 受保护的操作
 
 ```typescript
 function handleAction() {
