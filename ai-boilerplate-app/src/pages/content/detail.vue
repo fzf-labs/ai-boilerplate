@@ -13,7 +13,7 @@ const toast = useToast()
 const content = ref<ContentDetail | null>(null)
 const loading = ref(false)
 
-async function fetchContentDetail(id: number) {
+async function fetchContentDetail(id: string) {
   try {
     loading.value = true
     const res = await getContentDetail({
@@ -32,9 +32,8 @@ async function fetchContentDetail(id: number) {
 }
 
 onLoad((options) => {
-  const idStr = (options as Record<string, string | undefined>).id
-  const id = Number(idStr)
-  if (!idStr || Number.isNaN(id)) {
+  const id = (options as Record<string, string | undefined>).id
+  if (!id) {
     toast.error('参数错误')
     setTimeout(() => uni.navigateBack(), 1200)
     return

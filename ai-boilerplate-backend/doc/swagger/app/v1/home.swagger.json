@@ -40,14 +40,6 @@
             "description": "内容ID",
             "in": "query",
             "required": true,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "Authorization",
-            "description": "Bearer Token",
-            "in": "header",
-            "required": true,
             "type": "string"
           }
         ],
@@ -90,13 +82,6 @@
             "required": false,
             "type": "integer",
             "format": "int32"
-          },
-          {
-            "name": "Authorization",
-            "description": "Bearer Token",
-            "in": "header",
-            "required": true,
-            "type": "string"
           }
         ],
         "tags": [
@@ -111,7 +96,6 @@
       "properties": {
         "id": {
           "type": "string",
-          "format": "int64",
           "title": "内容ID"
         },
         "title": {
@@ -155,7 +139,6 @@
       "properties": {
         "id": {
           "type": "string",
-          "format": "int64",
           "title": "内容ID"
         },
         "title": {

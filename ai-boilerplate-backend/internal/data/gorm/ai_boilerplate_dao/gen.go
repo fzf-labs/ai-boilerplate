@@ -27,6 +27,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		AiProviderPlatform:      newAiProviderPlatform(db, opts...),
 		AiVideoRecord:           newAiVideoRecord(db, opts...),
 		AiWriteRecord:           newAiWriteRecord(db, opts...),
+		Article:                 newArticle(db, opts...),
 		Banner:                  newBanner(db, opts...),
 		ConfigDatum:             newConfigDatum(db, opts...),
 		Device:                  newDevice(db, opts...),
@@ -92,6 +93,7 @@ type Query struct {
 	AiProviderPlatform      aiProviderPlatform
 	AiVideoRecord           aiVideoRecord
 	AiWriteRecord           aiWriteRecord
+	Article                 article
 	Banner                  banner
 	ConfigDatum             configDatum
 	Device                  device
@@ -158,6 +160,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		AiProviderPlatform:      q.AiProviderPlatform.clone(db),
 		AiVideoRecord:           q.AiVideoRecord.clone(db),
 		AiWriteRecord:           q.AiWriteRecord.clone(db),
+		Article:                 q.Article.clone(db),
 		Banner:                  q.Banner.clone(db),
 		ConfigDatum:             q.ConfigDatum.clone(db),
 		Device:                  q.Device.clone(db),
@@ -231,6 +234,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		AiProviderPlatform:      q.AiProviderPlatform.replaceDB(db),
 		AiVideoRecord:           q.AiVideoRecord.replaceDB(db),
 		AiWriteRecord:           q.AiWriteRecord.replaceDB(db),
+		Article:                 q.Article.replaceDB(db),
 		Banner:                  q.Banner.replaceDB(db),
 		ConfigDatum:             q.ConfigDatum.replaceDB(db),
 		Device:                  q.Device.replaceDB(db),
@@ -294,6 +298,7 @@ type queryCtx struct {
 	AiProviderPlatform      *aiProviderPlatformDo
 	AiVideoRecord           *aiVideoRecordDo
 	AiWriteRecord           *aiWriteRecordDo
+	Article                 *articleDo
 	Banner                  *bannerDo
 	ConfigDatum             *configDatumDo
 	Device                  *deviceDo
@@ -357,6 +362,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		AiProviderPlatform:      q.AiProviderPlatform.WithContext(ctx),
 		AiVideoRecord:           q.AiVideoRecord.WithContext(ctx),
 		AiWriteRecord:           q.AiWriteRecord.WithContext(ctx),
+		Article:                 q.Article.WithContext(ctx),
 		Banner:                  q.Banner.WithContext(ctx),
 		ConfigDatum:             q.ConfigDatum.WithContext(ctx),
 		Device:                  q.Device.WithContext(ctx),

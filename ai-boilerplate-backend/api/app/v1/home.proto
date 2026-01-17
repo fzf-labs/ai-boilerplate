@@ -13,37 +13,17 @@ service Home {
   // 获取内容列表
   rpc GetContentList(GetContentListReq) returns (GetContentListReply) {
     option (google.api.http) = {get: "/app/v1/home/content/list"};
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      parameters: {
-        headers: {
-          name: "Authorization"
-          description: "Bearer Token"
-          type: STRING
-          required: true
-        }
-      }
-    };
   }
 
   // 获取内容详情
   rpc GetContentDetail(GetContentDetailReq) returns (GetContentDetailReply) {
     option (google.api.http) = {get: "/app/v1/home/content/detail"};
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      parameters: {
-        headers: {
-          name: "Authorization"
-          description: "Bearer Token"
-          type: STRING
-          required: true
-        }
-      }
-    };
   }
 }
 
 // 内容信息
 message ContentInfo {
-  int64 id = 1; // 内容ID
+  string id = 1; // 内容ID
   string title = 2; // 标题
   string summary = 3; // 摘要
   string coverImage = 4; // 封面图
@@ -72,7 +52,7 @@ message GetContentListReply {
 
 // 内容详情
 message ContentDetail {
-  int64 id = 1; // 内容ID
+  string id = 1; // 内容ID
   string title = 2; // 标题
   string content = 3; // 内容
   string coverImage = 4; // 封面图
@@ -89,7 +69,10 @@ message GetContentDetailReq {
       required: ["id"]
     }
   };
-  int64 id = 1 [(buf.validate.field).int64 = {gt: 0}]; // 内容ID
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 内容ID
 }
 
 // 响应-获取内容详情

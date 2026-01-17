@@ -7,7 +7,7 @@ export type Any = {
 
 export type ContentDetail = {
   /** 内容ID */
-  id?: number;
+  id?: string;
   /** 标题 */
   title?: string;
   /** 内容 */
@@ -26,7 +26,7 @@ export type ContentDetail = {
 
 export type ContentInfo = {
   /** 内容ID */
-  id?: number;
+  id?: string;
   /** 标题 */
   title?: string;
   /** 摘要 */
@@ -45,7 +45,7 @@ export type ContentInfo = {
 
 export type GetContentDetailParams = {
   /** 内容ID */
-  id: number;
+  id: string;
 };
 
 export type GetContentDetailReply = {

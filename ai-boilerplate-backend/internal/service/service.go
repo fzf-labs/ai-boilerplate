@@ -18,6 +18,7 @@ var ProviderSet = wire.NewSet(
 	NewAdminV1AiProviderPlatformService,
 	NewAdminV1AiVideoRecordService,
 	NewAdminV1AiWriteRecordService,
+	NewAdminV1ArticleService,
 	NewAdminV1BannerService,
 	NewAdminV1ConfigDatumService,
 	NewAdminV1DeviceService,

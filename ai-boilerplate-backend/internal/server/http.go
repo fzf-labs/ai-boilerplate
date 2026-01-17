@@ -29,6 +29,7 @@ func NewHTTPServer(
 	adminV1DictDatumService *service.AdminV1DictDatumService,
 	adminV1SysNotifyMessageService *service.AdminV1SysNotifyMessageService,
 	adminV1SysNoticeService *service.AdminV1SysNoticeService,
+	adminV1ArticleService *service.AdminV1ArticleService,
 	adminV1UserMessageService *service.AdminV1UserMessageService,
 	adminV1BannerService *service.AdminV1BannerService,
 	adminV1SmsChannelService *service.AdminV1SmsChannelService,
@@ -111,6 +112,7 @@ func NewHTTPServer(
 	adminv1.RegisterDictDatumHTTPServer(srv, adminV1DictDatumService)
 	adminv1.RegisterSysNotifyMessageHTTPServer(srv, adminV1SysNotifyMessageService)
 	adminv1.RegisterSysNoticeHTTPServer(srv, adminV1SysNoticeService)
+	adminv1.RegisterArticleHTTPServer(srv, adminV1ArticleService)
 	adminv1.RegisterUserMessageHTTPServer(srv, adminV1UserMessageService)
 	adminv1.RegisterBannerHTTPServer(srv, adminV1BannerService)
 	adminv1.RegisterSmsChannelHTTPServer(srv, adminV1SmsChannelService)

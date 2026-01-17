@@ -1,0 +1,562 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "admin/v1/article.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "Article"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/v1/article/create": {
+      "post": {
+        "summary": "内容-文章-创建一条数据",
+        "operationId": "Article_CreateArticle",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateArticleReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.CreateArticleReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Article"
+        ]
+      }
+    },
+    "/admin/v1/article/delete": {
+      "post": {
+        "summary": "内容-文章-删除一条数据",
+        "operationId": "Article_DeleteArticle",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteArticleReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.DeleteArticleReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Article"
+        ]
+      }
+    },
+    "/admin/v1/article/info": {
+      "get": {
+        "summary": "内容-文章-单条数据查询",
+        "operationId": "Article_GetArticleInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetArticleInfoReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "id",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Article"
+        ]
+      }
+    },
+    "/admin/v1/article/list": {
+      "get": {
+        "summary": "内容-文章-列表数据查询",
+        "operationId": "Article_GetArticleList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetArticleListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "页码",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "页数",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "status",
+            "description": "状态(-1下线,0草稿,1已发布)",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "keyword",
+            "description": "关键词(标题)",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Article"
+        ]
+      }
+    },
+    "/admin/v1/article/update": {
+      "post": {
+        "summary": "内容-文章-更新一条数据",
+        "operationId": "Article_UpdateArticle",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateArticleReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateArticleReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Article"
+        ]
+      }
+    },
+    "/admin/v1/article/update/status": {
+      "post": {
+        "summary": "内容-文章-更新状态(发布/下线/草稿)",
+        "operationId": "Article_UpdateArticleStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateArticleStatusReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.UpdateArticleStatusReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Article"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "admin.v1.ArticleInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "title": {
+          "type": "string",
+          "title": "标题"
+        },
+        "summary": {
+          "type": "string",
+          "title": "摘要"
+        },
+        "coverImage": {
+          "type": "string",
+          "title": "封面图"
+        },
+        "contentMarkdown": {
+          "type": "string",
+          "title": "Markdown内容"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1下线,0草稿,1已发布)"
+        },
+        "publishTime": {
+          "type": "string",
+          "title": "发布时间"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "标签"
+        },
+        "isRecommend": {
+          "type": "boolean",
+          "title": "是否推荐"
+        },
+        "isHot": {
+          "type": "boolean",
+          "title": "是否热门"
+        },
+        "viewCount": {
+          "type": "string",
+          "format": "int64",
+          "title": "浏览量"
+        },
+        "likeCount": {
+          "type": "string",
+          "format": "int64",
+          "title": "点赞数"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      },
+      "title": "内容-文章信息"
+    },
+    "admin.v1.CreateArticleReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        }
+      },
+      "title": "响应-内容-文章-创建一条数据"
+    },
+    "admin.v1.CreateArticleReq": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "title": "标题"
+        },
+        "summary": {
+          "type": "string",
+          "title": "摘要"
+        },
+        "coverImage": {
+          "type": "string",
+          "title": "封面图"
+        },
+        "contentMarkdown": {
+          "type": "string",
+          "title": "Markdown内容"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1下线,0草稿,1已发布)"
+        },
+        "publishTime": {
+          "type": "string",
+          "title": "发布时间(RFC3339)"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "标签"
+        },
+        "isRecommend": {
+          "type": "boolean",
+          "title": "是否推荐"
+        },
+        "isHot": {
+          "type": "boolean",
+          "title": "是否热门"
+        }
+      },
+      "title": "请求-内容-文章-创建一条数据",
+      "required": [
+        "title",
+        "contentMarkdown"
+      ]
+    },
+    "admin.v1.DeleteArticleReply": {
+      "type": "object",
+      "title": "响应-内容-文章-删除一条数据"
+    },
+    "admin.v1.DeleteArticleReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        }
+      },
+      "title": "请求-内容-文章-删除一条数据",
+      "required": [
+        "id"
+      ]
+    },
+    "admin.v1.GetArticleInfoReply": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/admin.v1.ArticleInfo"
+        }
+      },
+      "title": "响应-内容-文章-单条数据查询"
+    },
+    "admin.v1.GetArticleListReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "title": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.ArticleInfo"
+          },
+          "title": "列表"
+        }
+      },
+      "title": "响应-内容-文章-列表数据查询"
+    },
+    "admin.v1.UpdateArticleReply": {
+      "type": "object",
+      "title": "响应-内容-文章-更新一条数据"
+    },
+    "admin.v1.UpdateArticleReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "title": {
+          "type": "string",
+          "title": "标题"
+        },
+        "summary": {
+          "type": "string",
+          "title": "摘要"
+        },
+        "coverImage": {
+          "type": "string",
+          "title": "封面图"
+        },
+        "contentMarkdown": {
+          "type": "string",
+          "title": "Markdown内容"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "标签"
+        },
+        "isRecommend": {
+          "type": "boolean",
+          "title": "是否推荐"
+        },
+        "isHot": {
+          "type": "boolean",
+          "title": "是否热门"
+        }
+      },
+      "title": "请求-内容-文章-更新一条数据",
+      "required": [
+        "id",
+        "title",
+        "contentMarkdown"
+      ]
+    },
+    "admin.v1.UpdateArticleStatusReply": {
+      "type": "object",
+      "title": "响应-内容-文章-更新状态"
+    },
+    "admin.v1.UpdateArticleStatusReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "title": "状态(-1下线,0草稿,1已发布)"
+        },
+        "publishTime": {
+          "type": "string",
+          "title": "发布时间(RFC3339)"
+        }
+      },
+      "title": "请求-内容-文章-更新状态",
+      "required": [
+        "id",
+        "status"
+      ]
+    },
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    }
+  }
+}
