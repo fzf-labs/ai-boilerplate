@@ -118,7 +118,9 @@ onLoad((options) => {
 
       <view class="body-card">
         <rich-text v-if="content.content" :nodes="content.content" class="rich-content" />
-        <view v-else class="empty-body">暂无内容</view>
+        <view v-else class="empty-body">
+          暂无内容
+        </view>
       </view>
     </view>
     <wd-toast />

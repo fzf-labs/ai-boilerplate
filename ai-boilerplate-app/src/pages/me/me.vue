@@ -417,7 +417,9 @@ onShow(() => {
   border: 1px solid var(--fg-border);
   margin-bottom: 18rpx;
   padding: 36rpx 32rpx;
-  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  transition:
+    transform 0.2s ease-out,
+    box-shadow 0.2s ease-out;
   cursor: pointer;
 }
 

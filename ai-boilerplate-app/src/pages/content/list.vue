@@ -260,4 +260,3 @@ onReachBottom(() => {
   color: var(--fg-text-muted);
 }
 </style>
-

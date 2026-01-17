@@ -210,7 +210,11 @@ const autoplay = computed(() => props.list.length > 1)
   box-shadow: 0 4rpx 10rpx rgba(var(--fg-primary-rgb), 0.3);
 }
 
-@supports not ((backdrop-filter: blur(1px))) {
+@supports not (
+  (
+    backdrop-filter: blur(1px),
+  )
+) {
   .banner-slide__content,
   .banner-indicator {
     background: var(--fg-surface);

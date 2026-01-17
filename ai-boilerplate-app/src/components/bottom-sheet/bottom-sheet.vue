@@ -143,7 +143,11 @@ function select(index: number) {
   backdrop-filter: blur(var(--fg-blur-strong));
 }
 
-@supports not ((backdrop-filter: blur(1px))) {
+@supports not (
+  (
+    backdrop-filter: blur(1px),
+  )
+) {
   .bottom-sheet {
     background: var(--fg-surface);
   }

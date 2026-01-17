@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import type { BannerItem, ListBannersParams } from '@/api/v1/banner/types'
 import { listBanners } from '@/api/v1/banner/banner'
-import HomeBanner from './components/HomeBanner.vue'
 import HomeArticles from './components/HomeArticles.vue'
+import HomeBanner from './components/HomeBanner.vue'
 
 defineOptions({
   name: 'Home',

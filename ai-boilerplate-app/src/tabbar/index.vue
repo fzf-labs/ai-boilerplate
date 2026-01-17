@@ -123,10 +123,10 @@ function getImageByIndex(index: number, item: CustomTabBarItem) {
             <!-- 角标显示 -->
             <view v-if="item.badge">
               <template v-if="item.badge === 'dot'">
-                <view class="absolute right-0 top-0 h-2 w-2 rounded-full tabbar-badge-dot" />
+                <view class="tabbar-badge-dot absolute right-0 top-0 h-2 w-2 rounded-full" />
               </template>
               <template v-else>
-                <view class="absolute top-0 box-border h-5 min-w-5 center rounded-full tabbar-badge-count px-1 text-center text-xs text-white -right-3">
+                <view class="tabbar-badge-count absolute top-0 box-border h-5 min-w-5 center rounded-full px-1 text-center text-xs text-white -right-3">
                   {{ item.badge > 99 ? '99+' : item.badge }}
                 </view>
               </template>
@@ -177,7 +177,9 @@ function getImageByIndex(index: number, item: CustomTabBarItem) {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .tabbar-label {
@@ -199,14 +201,22 @@ function getImageByIndex(index: number, item: CustomTabBarItem) {
   z-index: 1000;
 
   border-top: 1px solid var(--fg-border, var(--fg-border-light));
-  background: linear-gradient(180deg, var(--fg-glass-50, rgba(255, 255, 255, 0.5)) 0%, var(--fg-glass-85, rgba(255, 255, 255, 0.85)) 100%);
+  background: linear-gradient(
+    180deg,
+    var(--fg-glass-50, rgba(255, 255, 255, 0.5)) 0%,
+    var(--fg-glass-85, rgba(255, 255, 255, 0.85)) 100%
+  );
   box-shadow: 0 -4rpx 16rpx var(--fg-ink-05);
   -webkit-backdrop-filter: blur(var(--fg-blur-strong, 24rpx));
   backdrop-filter: blur(var(--fg-blur-strong, 24rpx));
   box-sizing: border-box;
 }
 
-@supports not ((backdrop-filter: blur(1px))) {
+@supports not (
+  (
+    backdrop-filter: blur(1px),
+  )
+) {
   .border-and-fixed {
     background: var(--fg-surface, var(--fg-white));
   }
