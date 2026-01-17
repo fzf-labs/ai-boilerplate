@@ -92,11 +92,6 @@ onReachBottom(() => {
   <view class="article-list-page">
     <view class="top-bg" />
     <view class="content">
-      <view class="list-header">
-        <text class="list-title">文章</text>
-        <text class="list-subtitle">共 {{ total || items.length }} 条</text>
-      </view>
-
       <view v-if="loading && items.length === 0" class="loading-box">
         <wd-loading />
       </view>

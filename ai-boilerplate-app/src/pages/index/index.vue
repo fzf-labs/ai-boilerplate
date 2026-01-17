@@ -2,6 +2,7 @@
 import type { BannerItem, ListBannersParams } from '@/api/v1/banner/types'
 import { listBanners } from '@/api/v1/banner/banner'
 import HomeBanner from './components/HomeBanner.vue'
+import HomeArticles from './components/HomeArticles.vue'
 
 defineOptions({
   name: 'Home',
@@ -16,7 +17,6 @@ definePage({
 
 const bannerPosition = 'home_top'
 const messageEntryPath = '/pages-fg/message/category'
-const articlesEntryPath = '/pages/content/list'
 
 interface BannerDisplayItem {
   id?: string
@@ -114,10 +114,6 @@ function handleBannerClick(item: BannerDisplayItem) {
 function goToMessages() {
   uni.navigateTo({ url: messageEntryPath })
 }
-
-function goToArticles() {
-  uni.navigateTo({ url: articlesEntryPath })
-}
 </script>
 
 <template>
@@ -143,20 +139,7 @@ function goToArticles() {
       @click="handleBannerClick"
     />
 
-    <view class="quick-actions">
-      <view class="action-card" @click="goToArticles">
-        <view class="action-icon">
-          <wd-icon name="file" size="44rpx" color="var(--wot-color-primary)" />
-        </view>
-        <view class="action-text">
-          <text class="action-title">文章</text>
-          <text class="action-desc">最新公告与指南</text>
-        </view>
-        <text class="action-arrow">></text>
-      </view>
-    </view>
-
-    <wd-toast />
+    <HomeArticles />
   </view>
 </template>
 
@@ -250,53 +233,5 @@ function goToArticles() {
   background: var(--fg-surface);
   box-shadow: var(--fg-shadow-card);
   border: 1px solid var(--fg-border);
-}
-
-.quick-actions {
-  padding: 20rpx var(--fg-page-x) 0;
-}
-
-.action-card {
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-  padding: 20rpx 24rpx;
-  border-radius: 24rpx;
-  background: var(--fg-surface);
-  border: 1px solid var(--fg-border);
-  box-shadow: var(--fg-shadow-card);
-}
-
-.action-icon {
-  width: 72rpx;
-  height: 72rpx;
-  border-radius: 22rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(var(--fg-primary-rgb), 0.08);
-}
-
-.action-text {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 6rpx;
-}
-
-.action-title {
-  font-size: 30rpx;
-  font-weight: 600;
-  color: var(--fg-text);
-}
-
-.action-desc {
-  font-size: 24rpx;
-  color: var(--fg-text-weak);
-}
-
-.action-arrow {
-  font-size: 30rpx;
-  color: var(--fg-text-weak);
 }
 </style>
