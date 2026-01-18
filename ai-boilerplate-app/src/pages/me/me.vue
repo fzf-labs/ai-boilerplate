@@ -93,6 +93,13 @@ const displayPhone = computed(() => userProfile.value?.phone || '')
 // 菜单列表
 const menuList = [
   {
+    title: '我的订单',
+    icon: 'wallet',
+    label: '查看订单记录',
+    path: '/pages/orders/list',
+    needLogin: true,
+  },
+  {
     title: '账号管理',
     icon: 'user',
     label: '密码/手机号/退出登录',
