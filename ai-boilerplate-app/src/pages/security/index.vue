@@ -268,50 +268,57 @@ onUnload(() => {
   <view class="security-page">
     <view class="top-bg" />
     <view class="content">
-      <view class="sheet">
-        <view class="sheet-header">
-          <view class="header-left">
-            <view class="header-icon">
-              <wd-icon name="user" size="44rpx" color="var(--fg-text-inverse)" />
-            </view>
-            <view class="header-text">
-              <text class="header-title">账号管理</text>
-              <text class="header-subtitle">管理你的账号与安全设置</text>
-            </view>
+      <view class="hero">
+        <view class="hero-main">
+          <view class="hero-icon">
+            <wd-icon name="user" size="44rpx" color="var(--fg-text-inverse)" />
           </view>
-          <wd-tag type="success" plain>
-            已开启基础防护
-          </wd-tag>
+          <view class="hero-text">
+            <text class="hero-title">账号管理</text>
+            <text class="hero-subtitle">管理你的账号与安全设置</text>
+          </view>
         </view>
+        <view class="hero-status">
+          <view class="status-dot" />
+          <text class="status-text">已开启基础防护</text>
+        </view>
+      </view>
 
-        <wd-cell-group border>
-          <wd-cell
-            v-for="item in menuList"
-            :key="item.title"
-            :title="item.title"
-            :label="item.label"
-            :icon="item.icon"
-            is-link
-            clickable
-            :custom-title-class="item.danger ? 'danger-title' : ''"
-            :custom-icon-class="item.danger ? 'danger-icon' : ''"
-            @click="handleMenuClick(item.action)"
+      <view class="section">
+        <view class="section-card">
+          <wd-cell-group border>
+            <wd-cell
+              v-for="item in menuList"
+              :key="item.title"
+              :title="item.title"
+              :label="item.label"
+              :icon="item.icon"
+
+              is-link clickable center
+              :custom-title-class="item.danger ? 'danger-title' : ''"
+              :custom-icon-class="item.danger ? 'cell-icon danger-icon' : 'cell-icon'"
+              @click="handleMenuClick(item.action)"
+            />
+          </wd-cell-group>
+        </view>
+      </view>
+
+      <view class="section">
+        <view class="section-card tips-card">
+          <wd-notice-bar
+            text="安全提示：定期修改密码；绑定手机号用于验证与找回；注销账号后数据将被永久删除。"
+            type="warning"
+            :scrollable="false"
           />
-        </wd-cell-group>
+        </view>
       </view>
 
-      <view class="tips">
-        <wd-notice-bar
-          text="安全提示：定期修改密码；绑定手机号用于验证与找回；注销账号后数据将被永久删除。"
-          type="warning"
-          :scrollable="false"
-        />
-      </view>
-
-      <view class="logout">
-        <wd-button :block="true" :round="true" size="large" type="error" @click="handleLogout">
-          退出登录
-        </wd-button>
+      <view class="section logout">
+        <view class="section-card action-card">
+          <wd-button class="logout-button" :block="true" :round="true" size="large" type="error" @click="handleLogout">
+            退出登录
+          </wd-button>
+        </view>
       </view>
     </view>
 
@@ -434,104 +441,139 @@ onUnload(() => {
   left: 0;
   top: 0;
   right: 0;
-  height: 260rpx;
+  height: 320rpx;
   pointer-events: none;
-  background: var(--fg-top-bg-gradient);
+  background: var(--fg-top-bg-gradient-strong);
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: -40rpx;
+    top: -120rpx;
+    width: 320rpx;
+    height: 320rpx;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(var(--fg-primary-rgb), 0.18), rgba(255, 255, 255, 0) 70%);
+    opacity: 0.9;
+  }
 }
 
 .content {
   position: relative;
   padding: 22rpx var(--fg-page-x) 40rpx;
-}
-
-.sheet {
-  background: var(--fg-surface);
-  border-radius: 28rpx;
-  overflow: hidden;
-  box-shadow: var(--fg-shadow-card);
-  border: 1px solid var(--fg-border);
-}
-
-.sheet-header {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16rpx;
-  padding: 22rpx 18rpx 18rpx;
-  border-bottom: 1px solid var(--fg-border-weak);
+  flex-direction: column;
+  gap: 20rpx;
 }
 
-.header-left {
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+  padding: 20rpx 18rpx;
+  background: var(--fg-surface-glass);
+  border-radius: 28rpx;
+  border: 1px solid var(--fg-glass-70);
+  box-shadow: var(--fg-shadow-soft);
+  -webkit-backdrop-filter: blur(var(--fg-blur-soft));
+  backdrop-filter: blur(var(--fg-blur-soft));
+  animation: ios-fade-up 0.45s ease both;
+}
+
+.hero-main {
   display: flex;
   align-items: center;
   gap: 16rpx;
+  width: 100%;
 }
 
-.header-icon {
+.hero-icon {
   width: 88rpx;
   height: 88rpx;
   border-radius: 22rpx;
-  background: rgba(var(--fg-primary-rgb), 0.12);
+  background: linear-gradient(140deg, rgba(var(--fg-primary-rgb), 0.25), rgba(var(--fg-primary-rgb), 0.08));
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: var(--fg-shadow-soft);
+  box-shadow: 0 10rpx 20rpx rgba(var(--fg-primary-rgb), 0.2);
 }
 
-.header-text {
+.hero-text {
   display: flex;
   flex-direction: column;
   gap: 8rpx;
+  flex: 1;
 }
 
-.header-title {
+.hero-title {
   font-size: 40rpx;
-  font-weight: 800;
+  font-weight: 700;
+  letter-spacing: -0.4rpx;
   color: var(--fg-text);
 }
 
-.header-subtitle {
-  font-size: 26rpx;
+.hero-subtitle {
+  font-size: 22rpx;
   color: var(--fg-text-muted);
 }
 
-:deep(.wd-cell) {
-  transition: background-color 0.2s ease;
-
-  &:active {
-    background-color: var(--fg-bg-alt);
-  }
+.hero-status {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 10rpx;
+  padding: 10rpx 16rpx;
+  border-radius: 999rpx;
+  background: rgba(52, 199, 89, 0.12);
+  color: var(--fg-text-secondary);
+  font-size: 22rpx;
 }
 
-:deep(.wd-cell__icon) {
-  color: var(--fg-primary);
+.status-dot {
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 50%;
+  background: var(--fg-success);
+  box-shadow: 0 0 0 6rpx rgba(52, 199, 89, 0.12);
 }
 
-:deep(.danger-title) {
-  color: var(--fg-danger);
-  font-weight: 700;
+.status-text {
+  font-weight: 600;
 }
 
-:deep(.danger-icon) {
-  color: var(--fg-danger);
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+  animation: ios-fade-up 0.45s ease both;
 }
 
-.tips-section {
-  margin-top: 18rpx;
+.section:nth-of-type(2) {
+  animation-delay: 0.06s;
 }
 
-.tips {
-  margin-top: 18rpx;
+.section:nth-of-type(3) {
+  animation-delay: 0.12s;
 }
 
-.logout {
-  margin-top: 32rpx;
+.section:nth-of-type(4) {
+  animation-delay: 0.18s;
+}
 
-  :deep(.wd-button) {
-    border-radius: 16rpx;
-    font-weight: 600;
-    box-shadow: 0 6rpx 18rpx rgba(212, 116, 95, 0.24);
-  }
+.section-card {
+  background: var(--fg-surface);
+  border-radius: 24rpx;
+  overflow: hidden;
+  border: 1px solid var(--fg-border);
+  box-shadow: var(--fg-shadow-card);
+}
+
+.tips-card {
+  padding: 8rpx;
+}
+
+.action-card {
+  padding: 12rpx;
 }
 
 .sheet-form {
@@ -553,11 +595,100 @@ onUnload(() => {
 
 .danger-tip {
   padding: 14rpx 12rpx;
-  font-size: 26rpx;
+  font-size: 24rpx;
   line-height: 1.5;
   color: var(--fg-text-muted);
   background: var(--fg-bg-alt);
   border-radius: 16rpx;
   border: 1px solid var(--fg-border-weak);
+}
+
+:deep(.wd-cell) {
+  transition: background-color 0.2s ease;
+
+  &:active {
+    background-color: var(--fg-bg-alt);
+  }
+}
+
+:deep(.wd-cell__title) {
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+:deep(.wd-cell__label) {
+  font-size: 22rpx;
+  color: var(--fg-text-muted);
+}
+
+:deep(.wd-cell__right) {
+  color: var(--fg-text-weak);
+}
+
+:deep(.wd-cell__arrow-right) {
+  color: var(--fg-text-weak);
+  font-size: 26rpx;
+}
+
+:deep(.wd-cell__icon) {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 16rpx;
+  background: rgba(var(--fg-primary-rgb), 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+}
+
+:deep(.cell-icon) {
+  color: var(--fg-primary);
+}
+
+:deep(.danger-title) {
+  color: var(--fg-danger);
+  font-weight: 700;
+}
+
+:deep(.danger-icon) {
+  background: rgba(255, 59, 48, 0.12);
+  color: var(--fg-danger);
+}
+
+:deep(.wd-notice-bar) {
+  border-radius: 16rpx;
+  border: 1px solid rgba(255, 159, 10, 0.18);
+  background: rgba(255, 159, 10, 0.12);
+}
+
+:deep(.wd-notice-bar__content) {
+  color: var(--fg-text-secondary);
+}
+
+:deep(.logout-button) {
+  border-radius: 18rpx;
+  font-weight: 600;
+  background: var(--fg-surface);
+  color: var(--fg-danger);
+  border: 1px solid rgba(255, 59, 48, 0.24);
+  box-shadow: none;
+}
+
+@keyframes ios-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero,
+  .section {
+    animation: none;
+  }
 }
 </style>

@@ -134,6 +134,8 @@ function select(index: number) {
 <style lang="scss" scoped>
 .bottom-sheet {
   margin: 0 20rpx calc(var(--window-bottom, 0px) + 20rpx) 20rpx;
+  position: relative;
+  padding-top: 16rpx;
   border-radius: var(--fg-radius-card);
   background: var(--fg-surface-glass);
   overflow: hidden;
@@ -141,6 +143,18 @@ function select(index: number) {
   border: 1px solid var(--fg-border);
   -webkit-backdrop-filter: blur(var(--fg-blur-strong));
   backdrop-filter: blur(var(--fg-blur-strong));
+}
+
+.bottom-sheet::before {
+  content: '';
+  position: absolute;
+  top: 10rpx;
+  left: 50%;
+  width: 72rpx;
+  height: 8rpx;
+  border-radius: var(--fg-radius-pill);
+  background: var(--fg-ink-04);
+  transform: translateX(-50%);
 }
 
 @supports not (
@@ -159,6 +173,7 @@ function select(index: number) {
   align-items: center;
   justify-content: center;
   height: 96rpx;
+  padding-top: 6rpx;
   border-bottom: 1px solid var(--fg-border-weak);
 }
 
@@ -185,7 +200,70 @@ function select(index: number) {
 }
 
 .bottom-sheet__slot {
-  padding: 16rpx 18rpx 10rpx;
+  padding: 18rpx 20rpx 12rpx;
+}
+
+.bottom-sheet :deep(.wd-input),
+.bottom-sheet :deep(.wd-textarea) {
+  background: var(--fg-bg-alt);
+  border: 1px solid var(--fg-border);
+  border-radius: 20rpx;
+  padding: 6rpx 18rpx;
+  box-shadow: inset 0 1rpx 0 rgba(255, 255, 255, 0.7);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.bottom-sheet :deep(.wd-input)::after,
+.bottom-sheet :deep(.wd-textarea)::after {
+  display: none;
+}
+
+.bottom-sheet :deep(.wd-input:focus-within),
+.bottom-sheet :deep(.wd-textarea:focus-within) {
+  background: var(--fg-surface);
+  border-color: rgba(var(--fg-primary-rgb), 0.5);
+  box-shadow:
+    inset 0 1rpx 0 rgba(255, 255, 255, 0.8),
+    0 0 0 3rpx rgba(var(--fg-primary-rgb), 0.14);
+}
+
+.bottom-sheet :deep(.wd-input__value),
+.bottom-sheet :deep(.wd-textarea__value) {
+  min-height: 88rpx;
+}
+
+.bottom-sheet :deep(.wd-input__inner) {
+  height: 88rpx;
+  font-size: 28rpx;
+  color: var(--fg-text);
+}
+
+.bottom-sheet :deep(.wd-textarea__inner) {
+  min-height: 160rpx;
+  line-height: 1.5;
+  font-size: 28rpx;
+  color: var(--fg-text);
+}
+
+.bottom-sheet :deep(.wd-input__inner:focus),
+.bottom-sheet :deep(.wd-textarea__inner:focus) {
+  box-shadow: 0 0 0 2rpx rgba(var(--fg-primary-rgb), 0.2);
+}
+
+.bottom-sheet :deep(.wd-input__inner::-webkit-input-placeholder),
+.bottom-sheet :deep(.wd-textarea__inner::-webkit-input-placeholder) {
+  color: var(--fg-text-muted);
+}
+
+.bottom-sheet :deep(.wd-input__icon),
+.bottom-sheet :deep(.wd-input__clear),
+.bottom-sheet :deep(.wd-textarea__icon),
+.bottom-sheet :deep(.wd-textarea__clear) {
+  color: var(--fg-text-muted);
+  background: transparent;
 }
 
 .bottom-sheet__action {
