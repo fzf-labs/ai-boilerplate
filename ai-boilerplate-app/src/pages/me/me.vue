@@ -90,8 +90,16 @@ const displayName = computed(() => userProfile.value?.nickname || userProfile.va
 const displayAvatar = computed(() => userProfile.value?.avatar || '/static/images/default-avatar.png')
 const displayPhone = computed(() => userProfile.value?.phone || '')
 
-// 菜单列表
-const menuList = [
+interface MenuItem {
+  title: string
+  icon: string
+  label?: string
+  path: string
+  needLogin: boolean
+}
+
+// 功能卡片
+const functionList: MenuItem[] = [
   {
     title: '我的订单',
     icon: 'wallet',
@@ -99,6 +107,10 @@ const menuList = [
     path: '/pages/orders/list',
     needLogin: true,
   },
+]
+
+// 菜单列表
+const menuList: MenuItem[] = [
   {
     title: '账号管理',
     icon: 'user',
@@ -188,7 +200,7 @@ function handleProfileCardClick() {
 /**
  * 菜单点击
  */
-function handleMenuClick(item: typeof menuList[0]) {
+function handleMenuClick(item: MenuItem) {
   if (item.needLogin && !tokenStore.hasLogin) {
     toast.warning('请先登录')
     setTimeout(() => {
@@ -323,6 +335,33 @@ onShow(() => {
           </view>
         </view>
       </view>
+
+      <!-- 功能卡片 -->
+      <wd-card type="rectangle" custom-class="function-card">
+        <template #title>
+          <view class="card-title">
+            <view class="card-title-left">
+              <wd-icon name="apps" size="32rpx" color="var(--fg-primary)" />
+              <text class="card-title-text">常用功能</text>
+            </view>
+          </view>
+        </template>
+
+        <wd-grid :column="4" :border="false">
+          <wd-grid-item
+            v-for="item in functionList"
+            :key="item.title"
+            @click="handleMenuClick(item)"
+          >
+            <view class="function-item">
+              <view class="function-icon">
+                <wd-icon :name="item.icon" size="46rpx" color="var(--fg-primary)" />
+              </view>
+              <text class="function-name">{{ item.title }}</text>
+            </view>
+          </wd-grid-item>
+        </wd-grid>
+      </wd-card>
 
       <wd-card type="rectangle" custom-class="menu-card">
         <wd-cell-group>
@@ -669,6 +708,74 @@ onShow(() => {
   background: var(--fg-surface);
   border: 1px solid var(--fg-border);
   box-shadow: var(--fg-shadow-card);
+}
+
+.wd-card.function-card.is-rectangle {
+  margin-top: 18rpx;
+  border-radius: var(--fg-radius-card);
+  overflow: hidden;
+  background: var(--fg-surface);
+  border: 1px solid var(--fg-border);
+  box-shadow: var(--fg-shadow-card);
+}
+
+:deep(.function-card .wd-card__title) {
+  padding: 26rpx 24rpx 16rpx;
+}
+
+:deep(.function-card .wd-card__content) {
+  padding: 0 8rpx 14rpx;
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-title-left {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.card-title-text {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: var(--fg-text);
+}
+
+.function-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  padding: 18rpx 10rpx;
+  border-radius: 18rpx;
+  transition: background-color 0.2s ease;
+}
+
+.function-item:active {
+  background: var(--fg-bg-alt);
+}
+
+.function-icon {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 20rpx;
+  background: var(--fg-surface-glass);
+  border: 1px solid var(--fg-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--fg-shadow-soft);
+}
+
+.function-name {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--fg-text);
 }
 
 :deep(.menu-card .wd-card__content) {
