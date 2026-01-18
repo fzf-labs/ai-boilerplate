@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import type { BannerItem, ListBannersParams } from '@/api/v1/banner/types'
 import { listBanners } from '@/api/v1/banner/banner'
-import HomeArticles from './components/HomeArticles.vue'
 import HomeBanner from './components/HomeBanner.vue'
 
 defineOptions({
@@ -139,7 +138,6 @@ function goToMessages() {
       @click="handleBannerClick"
     />
 
-    <HomeArticles />
   </view>
 </template>
 

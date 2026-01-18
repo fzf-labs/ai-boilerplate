@@ -32,6 +32,12 @@ export const nativeTabbarList: NativeTabBarItem[] = [
     text: '首页',
   },
   {
+    iconPath: 'static/tabbar/example.png',
+    selectedIconPath: 'static/tabbar/exampleHL.png',
+    pagePath: 'pages/discover/index',
+    text: '发现',
+  },
+  {
     iconPath: 'static/tabbar/personal.png',
     selectedIconPath: 'static/tabbar/personalHL.png',
     pagePath: 'pages/me/me',
@@ -51,6 +57,12 @@ export const customTabbarList: CustomTabBarItem[] = [
     iconType: 'unocss',
     icon: 'i-carbon-home',
     // badge: 'dot',
+  },
+  {
+    pagePath: 'pages/discover/index',
+    text: '发现',
+    iconType: 'unocss',
+    icon: 'i-carbon-compass',
   },
   {
     pagePath: 'pages/me/me',

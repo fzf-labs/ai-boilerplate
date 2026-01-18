@@ -2,11 +2,12 @@
 import type { ContentInfo } from '@/api/v1/home/types'
 import { useToast } from 'wot-design-uni'
 import { getContentList } from '@/api/v1/home/home'
+import { isPageTabbar } from '@/tabbar/store'
 
 const props = defineProps({
   entryPath: {
     type: String,
-    default: '/pages/content/list',
+    default: '/pages/discover/index',
   },
   detailPath: {
     type: String,
@@ -19,6 +20,10 @@ const props = defineProps({
   title: {
     type: String,
     default: '文章推荐',
+  },
+  showMore: {
+    type: Boolean,
+    default: true,
   },
 })
 
@@ -61,7 +66,12 @@ async function fetchArticleList() {
 }
 
 function goToArticles() {
-  uni.navigateTo({ url: props.entryPath })
+  const url = props.entryPath
+  if (isPageTabbar(url)) {
+    uni.switchTab({ url })
+    return
+  }
+  uni.navigateTo({ url })
 }
 
 function goToArticleDetail(item: ContentInfo) {
@@ -81,7 +91,7 @@ onMounted(() => {
   <view class="article-section">
     <view class="section-head">
       <text class="section-title">{{ title }}</text>
-      <text class="section-link" @click="goToArticles">更多</text>
+      <text v-if="showMore" class="section-link" @click="goToArticles">更多</text>
     </view>
 
     <view v-if="articleLoading && articleList.length === 0" class="article-loading">
