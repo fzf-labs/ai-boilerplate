@@ -216,32 +216,37 @@ onReachBottom(() => {
           class="order-item"
           @click="goDetail(item)"
         >
-          <view class="row head">
-            <view class="left">
-              <text class="title">订单号</text>
-              <text class="value">{{ item.id }}</text>
+          <view class="order-head">
+            <view class="order-id">
+              <text class="order-id-label">订单号</text>
+              <text class="order-id-value">{{ item.id }}</text>
             </view>
-            <text class="status">{{ getOrderStatusText(item.status) }}</text>
+            <view class="order-status" :class="`status-${item.status || 'unknown'}`">
+              <text class="order-status-text">{{ getOrderStatusText(item.status) }}</text>
+            </view>
           </view>
 
-          <view class="row">
-            <text class="label">类型</text>
-            <text class="value">{{ getProductTypeText(item.productType) }}</text>
-          </view>
-
-          <view class="row">
-            <text class="label">支付</text>
-            <text class="value">{{ getPaymentStatusText(item.paymentStatus) }}</text>
-          </view>
-
-          <view class="row">
-            <text class="label">金额</text>
-            <text class="value price">¥{{ formatPrice(item.actualAmount) }}</text>
-          </view>
-
-          <view class="row">
-            <text class="label">创建</text>
-            <text class="value">{{ formatDateTime(item.createdAt) }}</text>
+          <view class="order-body">
+            <view class="meta-row">
+              <view class="meta-cell">
+                <text class="meta-label">类型</text>
+                <text class="meta-value">{{ getProductTypeText(item.productType) }}</text>
+              </view>
+              <view class="meta-cell">
+                <text class="meta-label">支付</text>
+                <text class="meta-value">{{ getPaymentStatusText(item.paymentStatus) }}</text>
+              </view>
+            </view>
+            <view class="meta-row">
+              <view class="meta-cell">
+                <text class="meta-label">金额</text>
+                <text class="meta-value price">¥{{ formatPrice(item.actualAmount) }}</text>
+              </view>
+              <view class="meta-cell">
+                <text class="meta-label">创建</text>
+                <text class="meta-value">{{ formatDateTime(item.createdAt) }}</text>
+              </view>
+            </view>
           </view>
         </view>
       </view>
@@ -282,40 +287,49 @@ onReachBottom(() => {
 }
 
 .status-bar {
-  margin-bottom: 18rpx;
+  margin: 6rpx 0 20rpx;
+  padding: 8rpx;
+  border-radius: 999rpx;
+  background: var(--fg-surface-glass);
+  border: 1px solid var(--fg-border-weak);
+  box-shadow: var(--fg-shadow-soft);
+  box-sizing: border-box;
 }
 
 .status-row {
-  display: flex;
-  gap: 12rpx;
-  padding-right: 12rpx;
+  display: inline-flex;
+  align-items: center;
+  gap: 8rpx;
+  padding-right: 6rpx;
+  flex-wrap: nowrap;
 }
 
 .status-pill {
-  height: 56rpx;
-  padding: 0 20rpx;
-  border-radius: 28rpx;
+  height: 52rpx;
+  padding: 0 18rpx;
+  border-radius: 999rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--fg-surface);
-  border: 1px solid var(--fg-border);
-  box-shadow: var(--fg-shadow-card);
+  background: transparent;
+  border: 1px solid transparent;
   flex-shrink: 0;
+  transition: all 0.2s ease;
 }
 
 .status-pill.active {
-  background: rgba(var(--fg-primary-rgb), 0.1);
-  border-color: rgba(var(--fg-primary-rgb), 0.25);
+  background: var(--fg-surface);
+  border-color: var(--fg-border);
+  box-shadow: var(--fg-shadow-soft);
 }
 
 .status-text {
   font-size: 24rpx;
-  color: var(--fg-text);
+  color: var(--fg-text-muted);
 }
 
 .status-pill.active .status-text {
-  color: var(--fg-primary-600);
+  color: var(--fg-text);
   font-weight: 600;
 }
 
@@ -341,67 +355,127 @@ onReachBottom(() => {
 .order-list {
   display: flex;
   flex-direction: column;
-  gap: 16rpx;
+  gap: 18rpx;
 }
 
 .order-item {
-  padding: 20rpx 22rpx;
-  border-radius: 24rpx;
+  padding: 22rpx 22rpx 18rpx;
+  border-radius: 28rpx;
   background: var(--fg-surface);
-  border: 1px solid var(--fg-border);
+  border: 1px solid var(--fg-border-weak);
   box-shadow: var(--fg-shadow-card);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
 }
 
-.row {
+.order-item:active {
+  transform: scale(0.99);
+  box-shadow: var(--fg-shadow-soft);
+  border-color: rgba(var(--fg-primary-rgb), 0.2);
+}
+
+.order-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16rpx;
-  padding: 10rpx 0;
-}
-
-.row.head {
-  padding-top: 0;
+  gap: 14rpx;
   padding-bottom: 14rpx;
-  border-bottom: 1px solid var(--fg-border);
+  border-bottom: 1px solid var(--fg-border-weak);
 }
 
-.left {
+.order-id {
   display: flex;
-  flex: 1;
-  min-width: 0;
-  gap: 10rpx;
   align-items: center;
+  gap: 10rpx;
+  min-width: 0;
 }
 
-.title {
-  font-size: 24rpx;
+.order-id-label {
+  font-size: 22rpx;
   color: var(--fg-text-muted);
   flex-shrink: 0;
 }
 
-.label {
+.order-id-value {
   font-size: 24rpx;
-  color: var(--fg-text-muted);
-}
-
-.value {
-  font-size: 24rpx;
+  font-weight: 600;
   color: var(--fg-text);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  text-align: right;
 }
 
-.status {
-  font-size: 24rpx;
+.order-status {
+  padding: 6rpx 14rpx;
+  border-radius: 999rpx;
+  font-size: 22rpx;
+  font-weight: 600;
+  background: rgba(var(--fg-primary-rgb), 0.12);
   color: var(--fg-primary-600);
   flex-shrink: 0;
 }
 
-.price {
-  font-weight: 700;
+.order-status.status-pendingPayment,
+.order-status.status-pendingDelivery,
+.order-status.status-pendingReceipt {
+  background: rgba(255, 159, 10, 0.14);
+  color: var(--fg-warning);
+}
+
+.order-status.status-completed {
+  background: rgba(52, 199, 89, 0.16);
+  color: var(--fg-success);
+}
+
+.order-status.status-canceled,
+.order-status.status-refunded {
+  background: rgba(255, 59, 48, 0.14);
+  color: var(--fg-danger);
+}
+
+.order-body {
+  padding-top: 14rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.meta-row {
+  display: flex;
+  gap: 12rpx;
+}
+
+.meta-cell {
+  flex: 1;
+  min-width: 0;
+  padding: 12rpx 14rpx;
+  border-radius: 18rpx;
+  background: var(--fg-surface-glass);
+  border: 1px solid var(--fg-border-weak);
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+}
+
+.meta-label {
+  font-size: 22rpx;
+  color: var(--fg-text-muted);
+}
+
+.meta-value {
+  font-size: 24rpx;
+  color: var(--fg-text);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.meta-value.price {
+  font-size: 28rpx;
+  color: var(--fg-text);
 }
 
 .list-footer {

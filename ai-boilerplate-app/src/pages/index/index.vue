@@ -137,7 +137,6 @@ function goToMessages() {
       :list="bannerList"
       @click="handleBannerClick"
     />
-
   </view>
 </template>
 

@@ -338,15 +338,6 @@ onShow(() => {
 
       <!-- 功能卡片 -->
       <wd-card type="rectangle" custom-class="function-card">
-        <template #title>
-          <view class="card-title">
-            <view class="card-title-left">
-              <wd-icon name="apps" size="32rpx" color="var(--fg-primary)" />
-              <text class="card-title-text">常用功能</text>
-            </view>
-          </view>
-        </template>
-
         <wd-grid :column="4" :border="false">
           <wd-grid-item
             v-for="item in functionList"
@@ -737,12 +728,6 @@ onShow(() => {
   display: flex;
   align-items: center;
   gap: 10rpx;
-}
-
-.card-title-text {
-  font-size: 30rpx;
-  font-weight: 700;
-  color: var(--fg-text);
 }
 
 .function-item {

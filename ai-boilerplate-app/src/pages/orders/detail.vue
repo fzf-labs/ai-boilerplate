@@ -165,56 +165,73 @@ onShow(() => {
       </view>
 
       <view v-else class="detail">
-        <view class="card">
-          <view class="card-title">
-            订单信息
+        <view class="summary-card">
+          <view class="summary-head">
+            <view class="summary-status" :class="`status-${orderInfo.status || 'unknown'}`">
+              <text class="summary-status-text">{{ getOrderStatusText(orderInfo.status) }}</text>
+            </view>
+            <view class="summary-amount">
+              <text class="amount-label">支付金额</text>
+              <text class="amount-value">¥{{ formatPrice(orderInfo.actualAmount) }}</text>
+            </view>
           </view>
-
-          <view class="row">
-            <text class="label">订单号</text>
-            <text class="value">{{ orderInfo.id }}</text>
-          </view>
-          <view class="row">
-            <text class="label">订单状态</text>
-            <text class="value strong">{{ getOrderStatusText(orderInfo.status) }}</text>
-          </view>
-          <view class="row">
-            <text class="label">类型</text>
-            <text class="value">{{ getProductTypeText(orderInfo.productType) }}</text>
-          </view>
-          <view class="row">
-            <text class="label">创建时间</text>
-            <text class="value">{{ formatDateTime(orderInfo.createdAt) }}</text>
-          </view>
-          <view v-if="orderInfo.remark" class="row">
-            <text class="label">备注</text>
-            <text class="value">{{ orderInfo.remark }}</text>
+          <view class="summary-meta">
+            <view class="meta-item">
+              <text class="meta-label">订单号</text>
+              <text class="meta-value">{{ orderInfo.id }}</text>
+            </view>
+            <view class="meta-item">
+              <text class="meta-label">创建时间</text>
+              <text class="meta-value">{{ formatDateTime(orderInfo.createdAt) }}</text>
+            </view>
           </view>
         </view>
 
-        <view class="card">
-          <view class="card-title">
+        <view class="section-card">
+          <view class="section-title">
+            订单信息
+          </view>
+          <view class="cell-list">
+            <view class="cell-row">
+              <text class="cell-label">订单状态</text>
+              <text class="cell-value strong">{{ getOrderStatusText(orderInfo.status) }}</text>
+            </view>
+            <view class="cell-row">
+              <text class="cell-label">类型</text>
+              <text class="cell-value">{{ getProductTypeText(orderInfo.productType) }}</text>
+            </view>
+            <view v-if="orderInfo.remark" class="cell-row multiline">
+              <text class="cell-label">备注</text>
+              <text class="cell-value wrap">{{ orderInfo.remark }}</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="section-card">
+          <view class="section-title">
             支付信息
           </view>
-          <view class="row">
-            <text class="label">支付状态</text>
-            <text class="value">{{ getPaymentStatusText(orderInfo.paymentStatus) }}</text>
-          </view>
-          <view class="row">
-            <text class="label">支付方式</text>
-            <text class="value">{{ getPaymentMethodText(orderInfo.paymentMethod) }}</text>
-          </view>
-          <view class="row">
-            <text class="label">支付金额</text>
-            <text class="value price">¥{{ formatPrice(orderInfo.actualAmount) }}</text>
-          </view>
-          <view v-if="orderInfo.paymentTime" class="row">
-            <text class="label">支付时间</text>
-            <text class="value">{{ formatDateTime(orderInfo.paymentTime) }}</text>
-          </view>
-          <view v-if="orderInfo.expiredTime" class="row">
-            <text class="label">过期时间</text>
-            <text class="value">{{ formatDateTime(orderInfo.expiredTime) }}</text>
+          <view class="cell-list">
+            <view class="cell-row">
+              <text class="cell-label">支付状态</text>
+              <text class="cell-value">{{ getPaymentStatusText(orderInfo.paymentStatus) }}</text>
+            </view>
+            <view class="cell-row">
+              <text class="cell-label">支付方式</text>
+              <text class="cell-value">{{ getPaymentMethodText(orderInfo.paymentMethod) }}</text>
+            </view>
+            <view class="cell-row">
+              <text class="cell-label">支付金额</text>
+              <text class="cell-value price">¥{{ formatPrice(orderInfo.actualAmount) }}</text>
+            </view>
+            <view v-if="orderInfo.paymentTime" class="cell-row">
+              <text class="cell-label">支付时间</text>
+              <text class="cell-value">{{ formatDateTime(orderInfo.paymentTime) }}</text>
+            </view>
+            <view v-if="orderInfo.expiredTime" class="cell-row">
+              <text class="cell-label">过期时间</text>
+              <text class="cell-value">{{ formatDateTime(orderInfo.expiredTime) }}</text>
+            </view>
           </view>
         </view>
       </view>
@@ -268,39 +285,149 @@ onShow(() => {
 .detail {
   display: flex;
   flex-direction: column;
-  gap: 16rpx;
+  gap: 18rpx;
 }
 
-.card {
-  padding: 20rpx 22rpx;
-  border-radius: 24rpx;
+.summary-card {
+  padding: 22rpx 22rpx 20rpx;
+  border-radius: 28rpx;
   background: var(--fg-surface);
-  border: 1px solid var(--fg-border);
+  border: 1px solid var(--fg-border-weak);
   box-shadow: var(--fg-shadow-card);
 }
 
-.card-title {
-  font-size: 30rpx;
-  font-weight: 700;
-  color: var(--fg-text);
-  margin-bottom: 10rpx;
-}
-
-.row {
+.summary-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16rpx;
-  padding: 10rpx 0;
+  padding-bottom: 16rpx;
+  border-bottom: 1px solid var(--fg-border-weak);
 }
 
-.label {
+.summary-status {
+  padding: 8rpx 18rpx;
+  border-radius: 999rpx;
+  background: rgba(var(--fg-primary-rgb), 0.12);
+  color: var(--fg-primary-600);
+  font-size: 24rpx;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.summary-status.status-pendingPayment,
+.summary-status.status-pendingDelivery,
+.summary-status.status-pendingReceipt {
+  background: rgba(255, 159, 10, 0.14);
+  color: var(--fg-warning);
+}
+
+.summary-status.status-completed {
+  background: rgba(52, 199, 89, 0.16);
+  color: var(--fg-success);
+}
+
+.summary-status.status-canceled,
+.summary-status.status-refunded {
+  background: rgba(255, 59, 48, 0.14);
+  color: var(--fg-danger);
+}
+
+.summary-amount {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6rpx;
+}
+
+.amount-label {
+  font-size: 22rpx;
+  color: var(--fg-text-muted);
+}
+
+.amount-value {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: var(--fg-text);
+}
+
+.summary-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+  padding: 16rpx;
+  margin-top: 16rpx;
+  border-radius: 20rpx;
+  background: var(--fg-surface-glass);
+  border: 1px solid var(--fg-border-weak);
+}
+
+.meta-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12rpx;
+  align-items: center;
+}
+
+.meta-label {
+  font-size: 22rpx;
+  color: var(--fg-text-muted);
+  flex-shrink: 0;
+}
+
+.meta-value {
+  font-size: 24rpx;
+  color: var(--fg-text);
+  font-weight: 600;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.section-card {
+  padding: 18rpx 20rpx;
+  border-radius: 24rpx;
+  background: var(--fg-surface);
+  border: 1px solid var(--fg-border-weak);
+  box-shadow: var(--fg-shadow-card);
+}
+
+.section-title {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: var(--fg-text);
+  margin-bottom: 8rpx;
+}
+
+.cell-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.cell-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+  padding: 14rpx 0;
+}
+
+.cell-row + .cell-row {
+  border-top: 1px solid var(--fg-border-weak);
+}
+
+.cell-row.multiline {
+  align-items: flex-start;
+}
+
+.cell-label {
   font-size: 24rpx;
   color: var(--fg-text-muted);
   flex-shrink: 0;
 }
 
-.value {
+.cell-value {
   font-size: 24rpx;
   color: var(--fg-text);
   text-align: right;
@@ -309,12 +436,18 @@ onShow(() => {
   white-space: nowrap;
 }
 
-.strong {
+.cell-value.wrap {
+  white-space: normal;
+  text-align: left;
+}
+
+.cell-value.strong {
   font-weight: 700;
   color: var(--fg-primary-600);
 }
 
-.price {
+.cell-value.price {
   font-weight: 700;
+  font-size: 28rpx;
 }
 </style>
