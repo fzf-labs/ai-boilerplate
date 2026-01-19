@@ -223,7 +223,6 @@ onReachBottom(() => {
           @click="onTabClick(tab.key)"
         >
           <text class="tab-label">{{ tab.label }}</text>
-          <view v-if="activeTab === tab.key" class="tab-underline" />
         </view>
       </view>
 
@@ -364,32 +363,45 @@ onReachBottom(() => {
   left: 0;
   top: 0;
   right: 0;
-  height: 240rpx;
+  height: 280rpx;
   pointer-events: none;
-  background: var(--fg-top-bg-gradient);
+  background: var(--fg-top-bg-gradient-strong);
 }
 
 .content {
   position: relative;
-  padding: 24rpx 0 40rpx;
+  padding: 20rpx 0 48rpx;
 }
 
 .tab-header {
   display: flex;
-  gap: 28rpx;
-  padding: 0 var(--fg-page-x) 16rpx;
+  align-items: center;
+  margin: 0 var(--fg-page-x);
+  padding: 8rpx;
+  gap: 8rpx;
+  border-radius: var(--fg-radius-pill);
+  background: var(--fg-surface-glass);
+  border: 1px solid var(--fg-border);
+  box-shadow: var(--fg-shadow-soft);
+  -webkit-backdrop-filter: blur(var(--fg-blur-soft));
+  backdrop-filter: blur(var(--fg-blur-soft));
 }
 
 .tab-item {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  padding: 8rpx 0;
-  gap: 6rpx;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 10rpx 0;
+  border-radius: var(--fg-radius-pill);
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
 .tab-label {
-  font-size: 28rpx;
+  font-size: 26rpx;
   color: var(--fg-text-weak);
 }
 
@@ -398,48 +410,53 @@ onReachBottom(() => {
   font-weight: 600;
 }
 
-.tab-underline {
-  width: 42rpx;
-  height: 6rpx;
-  border-radius: 999rpx;
-  background: var(--fg-primary);
-  box-shadow: 0 6rpx 12rpx rgba(var(--fg-primary-rgb), 0.24);
+.tab-item.is-active {
+  background: var(--fg-surface);
+  box-shadow: 0 10rpx 20rpx var(--fg-ink-06);
 }
 
 .tab-panel {
   display: flex;
   flex-direction: column;
-  gap: 8rpx;
+  gap: 16rpx;
+  padding-top: 16rpx;
 }
 
 .article-list-section {
   padding: 0 var(--fg-page-x);
-}
-
-.activity-list-section {
-  padding: 0 var(--fg-page-x);
-}
-
-.activity-list {
   display: flex;
   flex-direction: column;
   gap: 16rpx;
 }
 
+.activity-list-section {
+  padding: 0 var(--fg-page-x);
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
 .activity-item {
   display: flex;
-  gap: 16rpx;
-  padding: 20rpx;
-  border-radius: 24rpx;
-  background: var(--fg-surface);
+  flex-direction: column;
+  gap: 14rpx;
+  padding: 18rpx;
+  border-radius: var(--fg-radius-card);
+  background: linear-gradient(180deg, var(--fg-white) 0%, var(--fg-surface-muted) 100%);
   border: 1px solid var(--fg-border);
-  box-shadow: var(--fg-shadow-card);
+  box-shadow: var(--fg-shadow-soft);
 }
 
 .activity-cover {
-  width: 180rpx;
-  height: 140rpx;
-  border-radius: 18rpx;
+  width: 100%;
+  height: 280rpx;
+  border-radius: 22rpx;
   flex-shrink: 0;
   background: var(--fg-bg);
 }
@@ -456,32 +473,36 @@ onReachBottom(() => {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 8rpx;
+  gap: 10rpx;
 }
 
 .activity-title {
-  font-size: 30rpx;
+  font-size: 32rpx;
   font-weight: 600;
   color: var(--fg-text);
 }
 
 .activity-subtitle {
-  font-size: 24rpx;
-  color: var(--fg-text-weak);
-  line-height: 1.5;
+  align-self: flex-start;
+  font-size: 22rpx;
+  color: var(--fg-primary-600);
+  line-height: 1.4;
+  padding: 6rpx 16rpx;
+  border-radius: 999rpx;
+  background: rgba(var(--fg-primary-rgb), 0.12);
 }
 
 .article-scroll {
   width: 100%;
   -ms-overflow-style: none;
   scrollbar-width: none;
-  margin-bottom: 12rpx;
+  margin-bottom: 4rpx;
 }
 
 .article-track {
   display: flex;
-  gap: 16rpx;
-  padding-bottom: 6rpx;
+  gap: 18rpx;
+  padding-bottom: 8rpx;
 }
 
 :deep(.article-scroll::-webkit-scrollbar) {
@@ -493,21 +514,21 @@ onReachBottom(() => {
 .article-card {
   display: flex;
   flex-direction: column;
-  gap: 10rpx;
-  padding: 16rpx;
-  width: 300rpx;
-  min-height: 320rpx;
-  border-radius: 24rpx;
-  background: var(--fg-surface);
+  gap: 12rpx;
+  padding: 18rpx;
+  width: 320rpx;
+  min-height: 340rpx;
+  border-radius: 28rpx;
+  background: linear-gradient(180deg, var(--fg-white) 0%, var(--fg-surface-muted) 100%);
   border: 1px solid var(--fg-border);
-  box-shadow: var(--fg-shadow-card);
+  box-shadow: var(--fg-shadow-soft);
   flex-shrink: 0;
 }
 
 .article-cover {
   width: 100%;
-  height: 170rpx;
-  border-radius: 18rpx;
+  height: 190rpx;
+  border-radius: 20rpx;
   background: var(--fg-bg);
 }
 
@@ -520,7 +541,7 @@ onReachBottom(() => {
 }
 
 .article-title {
-  font-size: 26rpx;
+  font-size: 28rpx;
   font-weight: 600;
   color: var(--fg-text);
   line-height: 1.35;
@@ -532,7 +553,7 @@ onReachBottom(() => {
 
 .article-summary {
   font-size: 22rpx;
-  color: var(--fg-text-weak);
+  color: var(--fg-text-secondary);
   line-height: 1.4;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -542,7 +563,7 @@ onReachBottom(() => {
 
 .article-time {
   margin-top: auto;
-  font-size: 22rpx;
+  font-size: 20rpx;
   color: var(--fg-text-muted);
 }
 
@@ -586,23 +607,23 @@ onReachBottom(() => {
 .article-list {
   display: flex;
   flex-direction: column;
-  gap: 16rpx;
+  gap: 18rpx;
 }
 
 .article-item {
   display: flex;
   gap: 16rpx;
-  padding: 20rpx;
-  border-radius: 24rpx;
+  padding: 18rpx;
+  border-radius: 26rpx;
   background: var(--fg-surface);
   border: 1px solid var(--fg-border);
-  box-shadow: var(--fg-shadow-card);
+  box-shadow: var(--fg-shadow-soft);
 }
 
 .item-cover {
-  width: 180rpx;
-  height: 140rpx;
-  border-radius: 18rpx;
+  width: 168rpx;
+  height: 124rpx;
+  border-radius: 16rpx;
   flex-shrink: 0;
 }
 
@@ -621,13 +642,13 @@ onReachBottom(() => {
 
 .item-summary {
   font-size: 24rpx;
-  color: var(--fg-text-weak);
+  color: var(--fg-text-secondary);
   line-height: 1.5;
 }
 
 .item-time {
   margin-top: auto;
-  font-size: 22rpx;
+  font-size: 20rpx;
   color: var(--fg-text-muted);
 }
 
