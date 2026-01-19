@@ -1,0 +1,43 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "#/*": [
+        "./src/*"
+      ],
+      "@img/*": [
+        "./src/static/*"
+      ],
+      "wot-design-uni": [
+        "./src/types/wot-design-uni"
+      ],
+      "wot-design-uni/components/wd-form/types": [
+        "./src/types/wot-design-uni-form"
+      ]
+    },
+    "types": [
+      "@dcloudio/types",
+      "@uni-helper/uni-types",
+      "@uni-helper/vite-plugin-uni-pages",
+      "miniprogram-api-typings",
+      "z-paging/types",
+      "./src/typings.d.ts"
+    ],
+    "noEmit": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "src/**/*.json"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/node_modules/**",
+    "dist"
+  ]
+}

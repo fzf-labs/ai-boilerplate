@@ -126,6 +126,7 @@ async function handlePay() {
       await new Promise((resolve, reject) => {
         uni.requestPayment({
           provider: 'wxpay',
+          orderInfo: paymentInfo.value?.prepayId || '',
           timeStamp: paymentInfo.value!.timeStamp || '',
           nonceStr: paymentInfo.value!.nonceStr || '',
           package: `prepay_id=${paymentInfo.value!.prepayId}`,
