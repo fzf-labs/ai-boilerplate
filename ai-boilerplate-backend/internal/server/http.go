@@ -30,6 +30,7 @@ func NewHTTPServer(
 	adminV1SysNotifyMessageService *service.AdminV1SysNotifyMessageService,
 	adminV1SysNoticeService *service.AdminV1SysNoticeService,
 	adminV1ArticleService *service.AdminV1ArticleService,
+	adminV1ActivityService *service.AdminV1ActivityService,
 	adminV1UserMessageService *service.AdminV1UserMessageService,
 	adminV1BannerService *service.AdminV1BannerService,
 	adminV1SmsChannelService *service.AdminV1SmsChannelService,
@@ -81,6 +82,7 @@ func NewHTTPServer(
 	// App
 	appV1HomeService *service.AppV1HomeService,
 	appV1BannerService *service.AppV1BannerService,
+	appV1ActivityService *service.AppV1ActivityService,
 	appV1UserService *service.AppV1UserService,
 	appV1UserMessageService *service.AppV1UserMessageService,
 	appV1MembershipService *service.AppV1MembershipService,
@@ -113,6 +115,7 @@ func NewHTTPServer(
 	adminv1.RegisterSysNotifyMessageHTTPServer(srv, adminV1SysNotifyMessageService)
 	adminv1.RegisterSysNoticeHTTPServer(srv, adminV1SysNoticeService)
 	adminv1.RegisterArticleHTTPServer(srv, adminV1ArticleService)
+	adminv1.RegisterActivityHTTPServer(srv, adminV1ActivityService)
 	adminv1.RegisterUserMessageHTTPServer(srv, adminV1UserMessageService)
 	adminv1.RegisterBannerHTTPServer(srv, adminV1BannerService)
 	adminv1.RegisterSmsChannelHTTPServer(srv, adminV1SmsChannelService)
@@ -163,6 +166,7 @@ func NewHTTPServer(
 	// App v1 服务注册
 	appv1.RegisterHomeHTTPServer(srv, appV1HomeService)
 	appv1.RegisterBannerHTTPServer(srv, appV1BannerService)
+	appv1.RegisterActivityHTTPServer(srv, appV1ActivityService)
 	appv1.RegisterUserHTTPServer(srv, appV1UserService)
 	appv1.RegisterUserMessageHTTPServer(srv, appV1UserMessageService)
 	appv1.RegisterMembershipHTTPServer(srv, appV1MembershipService)

@@ -19,6 +19,15 @@ const routes: RouteRecordRaw[] = [
           icon: 'lucide:newspaper',
         },
       },
+      {
+        name: 'ContentActivity',
+        path: '/content/activity',
+        component: () => import('#/views/content/activity/index.vue'),
+        meta: {
+          title: '活动管理',
+          icon: 'lucide:megaphone',
+        },
+      },
     ],
   },
 ];

@@ -39,6 +39,7 @@ var ProviderSet = wire.NewSet(
 	NewAiVideoRecordRepo,
 	NewAiWriteRecordRepo,
 	NewArticleRepo,
+	NewActivityRepo,
 	NewBannerRepo,
 	NewConfigDatumRepo,
 	NewDeviceRepo,

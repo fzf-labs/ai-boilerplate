@@ -2,4 +2,4 @@
 // @ts-ignore
 export * from './types';
 
-export * from './article';
+export * from './activity';

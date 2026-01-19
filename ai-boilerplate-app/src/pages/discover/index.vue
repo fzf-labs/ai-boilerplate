@@ -1,7 +1,12 @@
 <script lang="ts" setup>
+import type { ActivityItem } from '@/api/v1/activity/types'
 import type { ContentInfo } from '@/api/v1/home/types'
+
 import { useToast } from 'wot-design-uni'
+
+import { listActivities } from '@/api/v1/activity/activity'
 import { getContentList } from '@/api/v1/home/home'
+import { isPageTabbar } from '@/tabbar/store'
 
 definePage({
   style: {
@@ -12,24 +17,37 @@ definePage({
 const toast = useToast()
 
 const tabs = [
+  { key: 'activity', label: '活动' },
   { key: 'article', label: '文章' },
 ] as const
 const activeTab = ref<(typeof tabs)[number]['key']>(tabs[0].key)
 
-const items = ref<ContentInfo[]>([])
-const page = ref(1)
+const articleItems = ref<ContentInfo[]>([])
+const articlePage = ref(1)
+const activityItems = ref<ActivityItem[]>([])
+const activityPage = ref(1)
 const pageSize = 20
-const total = ref(0)
-const loading = ref(false)
-const lastFetchCount = ref(0)
+const articleTotal = ref(0)
+const activityTotal = ref(0)
+const articleLoading = ref(false)
+const activityLoading = ref(false)
+const articleLastFetchCount = ref(0)
+const activityLastFetchCount = ref(0)
 
-const hasMore = computed(() => {
-  if (total.value > 0)
-    return items.value.length < total.value
-  return lastFetchCount.value === pageSize
+const hasMoreArticles = computed(() => {
+  if (articleTotal.value > 0)
+    return articleItems.value.length < articleTotal.value
+  return articleLastFetchCount.value === pageSize
 })
-const featuredItems = computed(() => items.value.slice(0, 2))
-const listItems = computed(() => items.value.slice(2))
+
+const hasMoreActivities = computed(() => {
+  if (activityTotal.value > 0)
+    return activityItems.value.length < activityTotal.value
+  return activityLastFetchCount.value === pageSize
+})
+
+const featuredArticleItems = computed(() => articleItems.value.slice(0, 2))
+const listArticleItems = computed(() => articleItems.value.slice(2))
 
 function formatDateTime(value?: string) {
   if (!value)
@@ -51,12 +69,12 @@ function formatShortDate(value?: string) {
   return `${date.getFullYear()}.${pad(date.getMonth() + 1)}.${pad(date.getDate())}`
 }
 
-async function fetchList(reset = false) {
-  if (loading.value)
+async function fetchArticleList(reset = false) {
+  if (articleLoading.value)
     return
 
-  loading.value = true
-  const currentPage = reset ? 1 : page.value
+  articleLoading.value = true
+  const currentPage = reset ? 1 : articlePage.value
   try {
     const res = await getContentList({
       params: {
@@ -66,23 +84,58 @@ async function fetchList(reset = false) {
       options: {},
     })
     const list = res.list || []
-    total.value = res.total ?? total.value
-    lastFetchCount.value = list.length
+    articleTotal.value = res.total ?? articleTotal.value
+    articleLastFetchCount.value = list.length
 
     if (reset) {
-      items.value = list
+      articleItems.value = list
     }
     else {
-      items.value = items.value.concat(list)
+      articleItems.value = articleItems.value.concat(list)
     }
-    page.value = currentPage + 1
+    articlePage.value = currentPage + 1
   }
   catch (error) {
     console.error('加载文章列表失败:', error)
     toast.error('加载失败')
   }
   finally {
-    loading.value = false
+    articleLoading.value = false
+  }
+}
+
+async function fetchActivityList(reset = false) {
+  if (activityLoading.value)
+    return
+
+  activityLoading.value = true
+  const currentPage = reset ? 1 : activityPage.value
+  try {
+    const res = await listActivities({
+      params: {
+        page: currentPage,
+        pageSize,
+      },
+      options: {},
+    })
+    const list = res.list || []
+    activityTotal.value = res.total ?? activityTotal.value
+    activityLastFetchCount.value = list.length
+
+    if (reset) {
+      activityItems.value = list
+    }
+    else {
+      activityItems.value = activityItems.value.concat(list)
+    }
+    activityPage.value = currentPage + 1
+  }
+  catch (error) {
+    console.error('加载活动列表失败:', error)
+    toast.error('加载失败')
+  }
+  finally {
+    activityLoading.value = false
   }
 }
 
@@ -94,14 +147,66 @@ function goDetail(item: ContentInfo) {
   })
 }
 
+function goActivity(item: ActivityItem) {
+  const rawUrl = item.linkURL?.trim()
+  if (!rawUrl)
+    return
+
+  const linkType = item.linkType?.toLowerCase() || ''
+  const normalizedUrl = rawUrl.startsWith('app://') ? rawUrl.replace('app://', '/') : rawUrl
+  const isExternal = /^https?:\/\//i.test(normalizedUrl)
+
+  if (linkType === 'external' || isExternal) {
+    const encodedUrl = encodeURIComponent(normalizedUrl)
+    const encodedTitle = encodeURIComponent(item.title || '')
+    uni.navigateTo({
+      url: `/pages-fg/webview/index?url=${encodedUrl}&title=${encodedTitle}`,
+    })
+    return
+  }
+
+  const targetUrl = normalizedUrl.startsWith('/') ? normalizedUrl : `/${normalizedUrl}`
+  if (isPageTabbar(targetUrl)) {
+    uni.switchTab({ url: targetUrl })
+    return
+  }
+  uni.navigateTo({ url: targetUrl })
+}
+
+function onTabClick(key: (typeof tabs)[number]['key']) {
+  if (activeTab.value === key)
+    return
+  activeTab.value = key
+  if (key === 'activity') {
+    if (activityItems.value.length === 0)
+      fetchActivityList(true)
+  }
+  else {
+    if (articleItems.value.length === 0)
+      fetchArticleList(true)
+  }
+}
+
 onShow(() => {
-  fetchList(true)
+  if (activeTab.value === 'activity') {
+    fetchActivityList(true)
+  }
+  else {
+    fetchArticleList(true)
+  }
 })
 
 onReachBottom(() => {
-  if (loading.value || !hasMore.value)
+  if (activeTab.value === 'activity') {
+    if (activityLoading.value || !hasMoreActivities.value)
+      return
+    fetchActivityList(false)
     return
-  fetchList(false)
+  }
+
+  if (articleLoading.value || !hasMoreArticles.value)
+    return
+  fetchArticleList(false)
 })
 </script>
 
@@ -115,34 +220,82 @@ onReachBottom(() => {
           :key="tab.key"
           class="tab-item"
           :class="{ 'is-active': activeTab === tab.key }"
-          @click="activeTab = tab.key"
+          @click="onTabClick(tab.key)"
         >
           <text class="tab-label">{{ tab.label }}</text>
           <view v-if="activeTab === tab.key" class="tab-underline" />
         </view>
       </view>
 
-      <view v-if="activeTab === 'article'" class="tab-panel">
-        <view class="article-list-section">
-          <view v-if="loading && items.length === 0" class="loading-box">
+      <view v-if="activeTab === 'activity'" class="tab-panel">
+        <view class="activity-list-section">
+          <view v-if="activityLoading && activityItems.length === 0" class="loading-box">
             <wd-loading />
           </view>
 
-          <view v-else-if="items.length === 0" class="empty-box">
+          <view v-else-if="activityItems.length === 0" class="empty-box">
+            <wd-icon name="inbox" size="120rpx" color="var(--fg-text-disabled)" />
+            <text class="empty-text">暂无活动</text>
+          </view>
+
+          <template v-else>
+            <view class="activity-list">
+              <view
+                v-for="item in activityItems"
+                :key="item.id || item.linkURL"
+                class="activity-item"
+                @click="goActivity(item)"
+              >
+                <image
+                  v-if="item.imageURL"
+                  class="activity-cover"
+                  :src="item.imageURL"
+                  mode="aspectFill"
+                />
+                <view v-else class="activity-cover activity-cover--fallback">
+                  <wd-icon name="picture" size="32rpx" color="var(--fg-text-weak)" />
+                </view>
+                <view class="activity-body">
+                  <text class="activity-title">{{ item.title || '未命名活动' }}</text>
+                  <text v-if="item.linkType" class="activity-subtitle">
+                    {{ item.linkType.toLowerCase() === 'external' ? '外链活动' : '站内活动' }}
+                  </text>
+                </view>
+              </view>
+            </view>
+
+            <view v-if="activityItems.length > 0" class="list-footer">
+              <view v-if="activityLoading" class="loading-more">
+                <wd-loading size="20rpx" />
+                <text>加载中...</text>
+              </view>
+              <text v-else-if="!hasMoreActivities" class="no-more">没有更多了</text>
+            </view>
+          </template>
+        </view>
+      </view>
+
+      <view v-if="activeTab === 'article'" class="tab-panel">
+        <view class="article-list-section">
+          <view v-if="articleLoading && articleItems.length === 0" class="loading-box">
+            <wd-loading />
+          </view>
+
+          <view v-else-if="articleItems.length === 0" class="empty-box">
             <wd-icon name="inbox" size="120rpx" color="var(--fg-text-disabled)" />
             <text class="empty-text">暂无文章</text>
           </view>
 
           <template v-else>
             <scroll-view
-              v-if="featuredItems.length > 0"
+              v-if="featuredArticleItems.length > 0"
               scroll-x
               class="article-scroll"
               :show-scrollbar="false"
             >
               <view class="article-track">
                 <view
-                  v-for="item in featuredItems"
+                  v-for="item in featuredArticleItems"
                   :key="item.id"
                   class="article-card"
                   @click="goDetail(item)"
@@ -163,9 +316,9 @@ onReachBottom(() => {
               </view>
             </scroll-view>
 
-            <view v-if="listItems.length > 0" class="article-list">
+            <view v-if="listArticleItems.length > 0" class="article-list">
               <view
-                v-for="item in listItems"
+                v-for="item in listArticleItems"
                 :key="item.id"
                 class="article-item"
                 @click="goDetail(item)"
@@ -184,12 +337,12 @@ onReachBottom(() => {
               </view>
             </view>
 
-            <view v-if="items.length > 0" class="list-footer">
-              <view v-if="loading" class="loading-more">
+            <view v-if="articleItems.length > 0" class="list-footer">
+              <view v-if="articleLoading" class="loading-more">
                 <wd-loading size="20rpx" />
                 <text>加载中...</text>
               </view>
-              <text v-else-if="!hasMore" class="no-more">没有更多了</text>
+              <text v-else-if="!hasMoreArticles" class="no-more">没有更多了</text>
             </view>
           </template>
         </view>
@@ -261,6 +414,61 @@ onReachBottom(() => {
 
 .article-list-section {
   padding: 0 var(--fg-page-x);
+}
+
+.activity-list-section {
+  padding: 0 var(--fg-page-x);
+}
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.activity-item {
+  display: flex;
+  gap: 16rpx;
+  padding: 20rpx;
+  border-radius: 24rpx;
+  background: var(--fg-surface);
+  border: 1px solid var(--fg-border);
+  box-shadow: var(--fg-shadow-card);
+}
+
+.activity-cover {
+  width: 180rpx;
+  height: 140rpx;
+  border-radius: 18rpx;
+  flex-shrink: 0;
+  background: var(--fg-bg);
+}
+
+.activity-cover--fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--fg-border);
+  background: var(--fg-bg-alt);
+}
+
+.activity-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.activity-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--fg-text);
+}
+
+.activity-subtitle {
+  font-size: 24rpx;
+  color: var(--fg-text-weak);
+  line-height: 1.5;
 }
 
 .article-scroll {

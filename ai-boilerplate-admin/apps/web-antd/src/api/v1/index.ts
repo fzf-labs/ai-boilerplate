@@ -1,3 +1,4 @@
+export * as Activity from './activity';
 export * as AiAudioRecord from './ai-audio-record';
 export * as AiChatConversation from './ai-chat-conversation';
 export * as AiChatMessage from './ai-chat-message';
