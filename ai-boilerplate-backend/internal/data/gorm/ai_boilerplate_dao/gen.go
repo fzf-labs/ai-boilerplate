@@ -18,6 +18,7 @@ import (
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
 		db:                      db,
+		Activity:                newActivity(db, opts...),
 		AiAudioRecord:           newAiAudioRecord(db, opts...),
 		AiChatConversation:      newAiChatConversation(db, opts...),
 		AiChatMessage:           newAiChatMessage(db, opts...),
@@ -84,6 +85,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 type Query struct {
 	db *gorm.DB
 
+	Activity                activity
 	AiAudioRecord           aiAudioRecord
 	AiChatConversation      aiChatConversation
 	AiChatMessage           aiChatMessage
@@ -151,6 +153,7 @@ func (q *Query) Available() bool { return q.db != nil }
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
 		db:                      db,
+		Activity:                q.Activity.clone(db),
 		AiAudioRecord:           q.AiAudioRecord.clone(db),
 		AiChatConversation:      q.AiChatConversation.clone(db),
 		AiChatMessage:           q.AiChatMessage.clone(db),
@@ -225,6 +228,7 @@ func (q *Query) WriteDB() *Query {
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
 		db:                      db,
+		Activity:                q.Activity.replaceDB(db),
 		AiAudioRecord:           q.AiAudioRecord.replaceDB(db),
 		AiChatConversation:      q.AiChatConversation.replaceDB(db),
 		AiChatMessage:           q.AiChatMessage.replaceDB(db),
@@ -289,6 +293,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 }
 
 type queryCtx struct {
+	Activity                *activityDo
 	AiAudioRecord           *aiAudioRecordDo
 	AiChatConversation      *aiChatConversationDo
 	AiChatMessage           *aiChatMessageDo
@@ -353,6 +358,7 @@ type queryCtx struct {
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
+		Activity:                q.Activity.WithContext(ctx),
 		AiAudioRecord:           q.AiAudioRecord.WithContext(ctx),
 		AiChatConversation:      q.AiChatConversation.WithContext(ctx),
 		AiChatMessage:           q.AiChatMessage.WithContext(ctx),
