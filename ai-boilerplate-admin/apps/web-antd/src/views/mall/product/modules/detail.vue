@@ -76,8 +76,9 @@ const statusMap = {
         </DescriptionsItem>
         <DescriptionsItem label="状态">
           {{
-            statusMap[formData.status.toString() as keyof typeof statusMap] ||
-            '未知'
+            statusMap[
+              String(formData.status ?? '') as keyof typeof statusMap
+            ] || '未知'
           }}
         </DescriptionsItem>
         <DescriptionsItem label="创建时间">

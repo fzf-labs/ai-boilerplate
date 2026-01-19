@@ -188,7 +188,8 @@ async function createConversation() {
 async function updateConversationTitle(
   conversation: AiIndexChatApi.AiIndexChatConversationItem,
 ) {
-  if (!conversation.id) {
+  const conversationId = conversation.id;
+  if (!conversationId) {
     return;
   }
   // 1. 二次确认
@@ -200,7 +201,7 @@ async function updateConversationTitle(
             // 2. 发起修改
             await updateAiIndexChatConversation({
               body: {
-                id: conversation.id,
+                id: conversationId,
                 title: scope.value,
               },
             });
@@ -210,14 +211,11 @@ async function updateConversationTitle(
             // 4. 过滤当前切换的
             const filterConversationList = conversationList.value.filter(
               (item) => {
-                return item.id === conversation.id;
+                return item.id === conversationId;
               },
             );
-            if (
-              filterConversationList.length > 0 &&
-              filterConversationList[0] && // tip：避免切换对话
-              activeConversationId.value === filterConversationList[0].id
-            ) {
+            const activeId = filterConversationList[0]?.id; // tip：避免切换对话
+            if (activeId && activeConversationId.value === activeId) {
               emits('onConversationClick', filterConversationList[0]);
             }
           } catch {
@@ -324,9 +322,12 @@ onMounted(async () => {
   } else {
     // 首次默认选中第一个
     if (conversationList.value.length > 0 && conversationList.value[0]) {
-      activeConversationId.value = conversationList.value[0].id;
-      // 回调 onConversationClick
-      await emits('onConversationClick', conversationList.value[0]);
+      const firstConversationId = conversationList.value[0].id;
+      if (firstConversationId) {
+        activeConversationId.value = firstConversationId;
+        // 回调 onConversationClick
+        await emits('onConversationClick', conversationList.value[0]);
+      }
     }
   }
 });

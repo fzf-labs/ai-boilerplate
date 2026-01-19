@@ -86,6 +86,9 @@ async function getImageList(isSilent = false) {
   }
 }
 const debounceGetImageList = useDebounceFn(getImageList, 80);
+const handlePaginationChange = () => {
+  debounceGetImageList();
+};
 /** 轮询生成中的 image 列表 */
 async function refreshWatchImages() {
   if (Object.keys(inProgressImageMap.value).length === 0) {
@@ -121,9 +124,14 @@ async function handleImageButtonClick(
   }
   // 下载
   if (type === 'download') {
+    const source = imageDetail.picUrl || imageDetail.picURL;
+    if (!source) {
+      message.error('图片地址为空');
+      return;
+    }
     await downloadFileFromImageUrl({
-      fileName: imageDetail.model,
-      source: imageDetail.picUrl || imageDetail.picURL,
+      fileName: imageDetail.model || imageDetail.modelId || 'image',
+      source,
     });
     return;
   }
@@ -205,8 +213,8 @@ onUnmounted(async () => {
         show-size-changer
         v-model:current="queryParams.page"
         v-model:page-size="queryParams.pageSize"
-        @change="debounceGetImageList"
-        @show-size-change="debounceGetImageList"
+        @change="handlePaginationChange"
+        @show-size-change="handlePaginationChange"
       />
     </div>
   </Card>

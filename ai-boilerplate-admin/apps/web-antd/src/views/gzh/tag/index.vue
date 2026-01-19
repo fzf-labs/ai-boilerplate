@@ -78,7 +78,7 @@ async function onSync() {
     key: 'sync_key_msg',
   });
   try {
-    await syncWxGzhTag({ params: { appId: currentAppId } });
+    await syncWxGzhTag({ body: { appId: currentAppId } });
     message.success({
       content: '标签同步成功',
       key: 'sync_key_msg',

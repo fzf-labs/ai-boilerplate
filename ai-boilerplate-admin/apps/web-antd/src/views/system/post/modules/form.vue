@@ -1,5 +1,9 @@
 <script lang="ts" setup>
-import type { SysPostInfo } from '#/api/v1/sys-post';
+import type {
+  CreateSysPostReq,
+  SysPostInfo,
+  UpdateSysPostReq,
+} from '#/api/v1/sys-post';
 
 import { computed, ref } from 'vue';
 
@@ -46,11 +50,13 @@ const [Modal, modalApi] = useVbenModal({
     }
     modalApi.lock();
     // 提交表单
-    const data = (await formApi.getValues()) as SysPostInfo;
+    const values = (await formApi.getValues()) as CreateSysPostReq;
     try {
       await (formData.value?.id
-        ? updateSysPost({ body: data })
-        : createSysPost({ body: data }));
+        ? updateSysPost({
+            body: { ...values, id: formData.value.id } as UpdateSysPostReq,
+          })
+        : createSysPost({ body: values }));
       // 关闭并提示
       await modalApi.close();
       emit('success');
@@ -75,6 +81,9 @@ const [Modal, modalApi] = useVbenModal({
     modalApi.lock();
     try {
       const res = await getSysPostInfo({ params: { id: data.id } });
+      if (!res.info) {
+        return;
+      }
       formData.value = res.info;
       // 设置到 values
       if (formData.value) {

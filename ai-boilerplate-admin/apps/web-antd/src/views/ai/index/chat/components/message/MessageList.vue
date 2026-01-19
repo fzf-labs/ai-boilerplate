@@ -78,8 +78,8 @@ defineExpose({ scrollToBottom, handlerGoTop }); // 提供方法给 parent 调用
 // ============ 处理消息操作 ==============
 
 /** 复制 */
-async function copyContent(content: string) {
-  await copy(content);
+async function copyContent(content?: string) {
+  await copy(content ?? '');
   message.success('复制成功！');
 }
 /** 删除 */
@@ -121,14 +121,14 @@ onMounted(async () => {
         </div>
         <div class="mx-4 flex flex-col text-left">
           <div class="text-left leading-10">
-            {{ formatDate(item.createdAt) }}
+            {{ formatDate(item.createdAt ?? '') }}
           </div>
           <div
             class="relative flex flex-col break-words rounded-lg bg-gray-100 p-2.5 pb-1 pt-2.5 shadow-sm"
           >
             <MarkdownView
               class="text-sm text-gray-600"
-              :content="item.content"
+              :content="item.content ?? ''"
             />
           </div>
           <div class="mt-2 flex flex-row">
@@ -140,7 +140,7 @@ onMounted(async () => {
               <IconifyIcon icon="lucide:copy" />
             </Button>
             <Button
-              v-if="item.id > 0"
+              v-if="item.id"
               class="flex items-center bg-transparent px-1.5 hover:bg-gray-100"
               type="text"
               @click="onDelete(item)"
@@ -158,7 +158,7 @@ onMounted(async () => {
         </div>
         <div class="mx-4 flex flex-col text-left">
           <div class="text-left leading-8">
-            {{ formatDate(item.createdAt) }}
+            {{ formatDate(item.createdAt ?? '') }}
           </div>
           <div class="flex flex-row-reverse">
             <div

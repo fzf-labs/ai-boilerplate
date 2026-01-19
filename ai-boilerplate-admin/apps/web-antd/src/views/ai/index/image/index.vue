@@ -61,7 +61,7 @@ const handleDrawComplete = async () => {
 /** 重新生成：将画图详情填充到对应平台 */
 const handleRegeneration = async (image: ImageRecordView) => {
   // 切换平台
-  selectPlatform.value = image.platform;
+  selectPlatform.value = image.platform ?? 'common';
   // 根据不同平台填充 image
   await nextTick();
   switch (image.platform) {

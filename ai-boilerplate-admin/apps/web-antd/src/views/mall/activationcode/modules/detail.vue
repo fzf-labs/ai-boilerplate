@@ -8,7 +8,22 @@ import { formatDateTime } from '@vben/utils';
 
 import { Card, Tag } from 'ant-design-vue';
 
-const formData = ref<MallActivationCodeInfo>();
+type ActivationCodeDetail = MallActivationCodeInfo & {
+  userChange?: {
+    userMembershipChange?: {
+      before?: {
+        membershipType?: string;
+        expiredAt?: string;
+      };
+      after?: {
+        membershipType?: string;
+        expiredAt?: string;
+      };
+    };
+  };
+};
+
+const formData = ref<ActivationCodeDetail>();
 
 const getTitle = computed(() => {
   return `激活码详情 - ${formData.value?.code || ''}`;
@@ -21,7 +36,7 @@ const [Modal, modalApi] = useVbenModal({
       return;
     }
     // 获取数据
-    const data = modalApi.getData<MallActivationCodeInfo>();
+    const data = modalApi.getData<ActivationCodeDetail>();
     if (data) {
       formData.value = data;
     }

@@ -1,5 +1,9 @@
 <script lang="ts" setup>
-import type { SysMenuInfo } from '#/api/v1/sys-menu';
+import type {
+  CreateSysMenuReq,
+  SysMenuInfo,
+  UpdateSysMenuReq,
+} from '#/api/v1/sys-menu';
 
 import { computed, ref } from 'vue';
 
@@ -39,19 +43,26 @@ const [Modal, modalApi] = useVbenModal({
     }
     modalApi.lock();
     // 提交表单
-    const data = (await formApi.getValues()) as SysMenuInfo;
+    const data = (await formApi.getValues()) as CreateSysMenuReq;
+    const sort = data.sort ?? 0;
     try {
       await (formData.value?.id
         ? updateSysMenu({
             body: {
               ...data,
               name: data.name || '',
-              id: data.id || '',
+              id: formData.value.id,
               type: data.type || '',
-            },
+              sort,
+            } as UpdateSysMenuReq,
           })
         : createSysMenu({
-            body: { ...data, name: data.name || '', type: data.type || '' },
+            body: {
+              ...data,
+              name: data.name || '',
+              type: data.type || '',
+              sort,
+            },
           }));
       // 关闭并提示
       await modalApi.close();
@@ -78,6 +89,9 @@ const [Modal, modalApi] = useVbenModal({
       modalApi.lock();
       try {
         const res = await getSysMenuInfo({ params: { id: data.id } });
+        if (!res.info) {
+          return;
+        }
         data = res.info;
       } finally {
         modalApi.lock(false);

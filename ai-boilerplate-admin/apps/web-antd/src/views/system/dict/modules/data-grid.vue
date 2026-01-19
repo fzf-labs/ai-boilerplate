@@ -3,6 +3,7 @@ import type {
   OnActionClickParams,
   VxeTableGridOptions,
 } from '#/adapter/vxe-table';
+import type { DictDatumInfo } from '#/api/v1/dict-data';
 
 import { watch } from 'vue';
 
@@ -53,7 +54,10 @@ async function onDelete(row: any) {
     key: 'process_message',
   });
   try {
-    await deleteDictDatum({ body: { id: row.id } });
+    if (!row.id) {
+      return;
+    }
+    await deleteDictDatum({ body: { ids: [row.id] } });
     message.success({
       content: $t('common.operationSuccess'),
       key: 'process_message',
@@ -105,7 +109,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
       refresh: { code: 'query' },
       search: true,
     },
-  } as VxeTableGridOptions<DictDataInfo>,
+  } as VxeTableGridOptions<DictDatumInfo>,
 });
 
 /** 监听 dictType 变化，重新查询 */

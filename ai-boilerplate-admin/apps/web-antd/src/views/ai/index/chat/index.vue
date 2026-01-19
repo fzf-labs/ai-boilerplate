@@ -80,7 +80,7 @@ async function getConversation(id: null | string) {
     return;
   }
   activeConversation.value = res.info;
-  activeConversationId.value = res.info.id;
+  activeConversationId.value = res.info.id ?? null;
 }
 
 /**
@@ -349,12 +349,12 @@ async function stopStream() {
 
 /** 编辑 message：设置为 prompt，可以再次编辑 */
 function handleMessageEdit(message: AiIndexChatApi.AiIndexChatMessageItem) {
-  prompt.value = message.content;
+  prompt.value = message.content ?? '';
 }
 
 /** 刷新 message：基于指定消息，再次发起对话 */
 function handleMessageRefresh(message: AiIndexChatApi.AiIndexChatMessageItem) {
-  doSendMessage(message.content);
+  doSendMessage(message.content ?? '');
 }
 
 /** 滚动到 message 底部 */

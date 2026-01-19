@@ -52,7 +52,7 @@ function onSend(row: SmsTemplateInfo) {
 async function onDelete(row: SmsTemplateInfo) {
   if (!row.id) return;
   const hideLoading = message.loading({
-    content: $t('ui.actionMessage.deleting', [row.name]),
+    content: $t('ui.actionMessage.deleting', [row.templateName]),
     duration: 0,
     key: 'action_process_msg',
   });

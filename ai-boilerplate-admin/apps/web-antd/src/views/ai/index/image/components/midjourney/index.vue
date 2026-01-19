@@ -1,13 +1,12 @@
 <!-- dall3 -->
 <script setup lang="ts">
 import type { ProviderModelOption } from '../../../utils';
-import type {
+import type { ImageModel, ImageRecordView, ImageSize } from '../typing';
+
+import {
   AiImageStatusEnum,
   AiPlatformEnum,
   ImageHotWords,
-  ImageModel,
-  type ImageRecordView,
-  ImageSize,
   MidjourneyModels,
   MidjourneySizeList,
   MidjourneyVersions,
@@ -77,7 +76,7 @@ async function handleModelClick(model: ImageModel) {
   selectModel.value = model.key;
   versionList.value =
     model.key === 'niji' ? NijiVersionList : MidjourneyVersions;
-  selectVersion.value = versionList.value[0].value;
+  selectVersion.value = versionList.value[0]?.value ?? '';
 }
 
 /** 图片生成 */
@@ -133,23 +132,28 @@ async function handleGenerateImage() {
 /** 填充值 */
 async function settingValues(detail: ImageRecordView) {
   // 提示词
-  prompt.value = detail.prompt;
+  prompt.value = detail.prompt ?? '';
   // image size
-  const imageSize = MidjourneySizeList.find(
-    (item) => item.key === `${detail.width}:${detail.height}`,
-  ) as ImageSize;
-  selectSize.value = imageSize.key;
+  const imageSize =
+    MidjourneySizeList.find(
+      (item) => item.key === `${detail.width}:${detail.height}`,
+    ) || MidjourneySizeList[0];
+  if (imageSize) {
+    selectSize.value = imageSize.key;
+  }
   // 选中模型
-  const model = MidjourneyModels.find(
-    (item) => item.key === (detail.options?.model || detail.modelId),
-  ) as ImageModel;
-  await handleModelClick(model);
+  const modelKey = detail.options?.model || detail.modelId || 'midjourney';
+  const model = MidjourneyModels.find((item) => item.key === modelKey);
+  if (model) {
+    await handleModelClick(model);
+  }
   // 版本
-  selectVersion.value = versionList.value.find(
-    (item: any) => item.value === detail.options?.version,
-  ).value;
+  const matchedVersion =
+    versionList.value.find((item: any) => item.value === detail.options?.version) ||
+    versionList.value[0];
+  selectVersion.value = matchedVersion?.value ?? '';
   // image
-  referImageUrl.value = detail.options.referImageUrl;
+  referImageUrl.value = detail.options?.referImageUrl ?? '';
 }
 
 /** 暴露组件方法 */

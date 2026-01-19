@@ -85,7 +85,7 @@
     "build:quickapp-webview": "uni build -p quickapp-webview",
     "build:quickapp-webview-huawei": "uni build -p quickapp-webview-huawei",
     "build:quickapp-webview-union": "uni build -p quickapp-webview-union",
-    "type-check": "vue-tsc --noEmit --pretty -p tsconfig.check.json",
+    "check:type": "vue-tsc --noEmit --pretty -p tsconfig.check.json",
     "api:gen": "tsx scripts/api-gen/index.ts",
     "init-husky": "git init && husky",
     "init-baseFiles": "node ./scripts/create-base-files.js",

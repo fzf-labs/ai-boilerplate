@@ -47,7 +47,7 @@ async function onDelete(row: SmsChannelInfo) {
   try {
     await deleteSmsChannel({ body: { id: row.id } });
     message.success({
-      content: $t('ui.actionMessage.deleteSuccess', [row.channelName]),
+      content: $t('ui.actionMessage.deleteSuccess', [row.name]),
       key: 'action_process_msg',
     });
     onRefresh();

@@ -73,22 +73,22 @@ const [Modal, modalApi] = useVbenModal({
         {{ formatDateTime(formData?.receiveTime || '') }}
       </Descriptions.Item>
       <Descriptions.Item label="API 发送编码">
-        {{ formData?.apiSendCode }}
+        {{ formData?.APISendCode }}
       </Descriptions.Item>
       <Descriptions.Item label="API 发送消息">
-        {{ formData?.apiSendMsg }}
+        {{ formData?.APISendMsg }}
       </Descriptions.Item>
       <Descriptions.Item label="API 接收编码">
-        {{ formData?.apiReceiveCode }}
+        {{ formData?.APIReceiveCode }}
       </Descriptions.Item>
       <Descriptions.Item label="API 接收消息">
-        {{ formData?.apiReceiveMsg }}
+        {{ formData?.APIReceiveMsg }}
       </Descriptions.Item>
       <Descriptions.Item label="API 请求 ID">
-        {{ formData?.apiRequestId }}
+        {{ formData?.APIRequestID }}
       </Descriptions.Item>
       <Descriptions.Item label="API 序列号">
-        {{ formData?.apiSerialNo }}
+        {{ formData?.APISerialNo }}
       </Descriptions.Item>
     </Descriptions>
   </Modal>

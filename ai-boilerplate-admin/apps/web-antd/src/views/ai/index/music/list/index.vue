@@ -27,7 +27,7 @@ const currentType = ref('mine');
 // loading 状态
 const loading = ref(false);
 // 当前音乐
-const currentSong = ref({});
+const currentSong = ref<MusicRecordView | null>(null);
 const userStore = useUserStore();
 const modelOptions = ref<ProviderModelOption[]>([]);
 

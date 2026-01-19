@@ -114,7 +114,7 @@ export function formatPast(
       typeof param === 'string' || typeof param === 'object'
         ? new Date(param)
         : param;
-    return formatDate(date, format) as string;
+    return formatDate(date.getTime(), format) as string;
   }
 }
 

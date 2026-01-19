@@ -1,5 +1,9 @@
 <script lang="ts" setup>
-import type { DictDatumInfo } from '#/api/v1/dict-data';
+import type {
+  CreateDictDatumReq,
+  DictDatumInfo,
+  UpdateDictDatumReq,
+} from '#/api/v1/dict-data';
 
 import { computed, ref } from 'vue';
 
@@ -41,11 +45,13 @@ const [Modal, modalApi] = useVbenModal({
     }
     modalApi.lock();
     // 提交表单
-    const data = (await formApi.getValues()) as DictDatumInfo;
+    const values = (await formApi.getValues()) as CreateDictDatumReq;
     try {
       await (formData.value?.id
-        ? updateDictDatum({ body: data })
-        : createDictDatum({ body: data }));
+        ? updateDictDatum({
+            body: { ...values, id: formData.value.id } as UpdateDictDatumReq,
+          })
+        : createDictDatum({ body: values }));
       // 关闭并提示
       await modalApi.close();
       emit('success');

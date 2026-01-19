@@ -137,12 +137,16 @@ async function handleGenerateImage() {
 
 /** 填充值 */
 async function settingValues(detail: ImageRecordView) {
-  prompt.value = detail.prompt;
-  selectModel.value = detail.modelId || detail.model;
-  style.value = detail.options?.style;
-  const imageSize = Dall3SizeList.find(
-    (item) => item.key === `${detail.width}x${detail.height}`,
-  ) as ImageSize;
+  prompt.value = detail.prompt ?? '';
+  selectModel.value = detail.modelId || detail.model || '';
+  style.value = detail.options?.style ?? '';
+  const imageSize =
+    Dall3SizeList.find(
+      (item) => item.key === `${detail.width}x${detail.height}`,
+    ) || Dall3SizeList[0];
+  if (!imageSize) {
+    return;
+  }
   await handleSizeClick(imageSize);
 }
 

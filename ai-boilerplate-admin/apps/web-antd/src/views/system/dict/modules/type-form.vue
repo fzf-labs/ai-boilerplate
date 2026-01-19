@@ -1,5 +1,9 @@
 <script lang="ts" setup>
-import type { DictTypeInfo } from '#/api/v1/dict-type';
+import type {
+  CreateDictTypeReq,
+  DictTypeInfo,
+  UpdateDictTypeReq,
+} from '#/api/v1/dict-type';
 
 import { computed, ref } from 'vue';
 
@@ -39,11 +43,13 @@ const [Modal, modalApi] = useVbenModal({
     }
     modalApi.lock();
     // 提交表单
-    const data = (await formApi.getValues()) as DictTypeInfo;
+    const values = (await formApi.getValues()) as CreateDictTypeReq;
     try {
       await (formData.value?.id
-        ? updateDictType({ body: data })
-        : createDictType({ body: data }));
+        ? updateDictType({
+            body: { ...values, id: formData.value.id } as UpdateDictTypeReq,
+          })
+        : createDictType({ body: values }));
       // 关闭并提示
       await modalApi.close();
       emit('success');
@@ -68,6 +74,9 @@ const [Modal, modalApi] = useVbenModal({
     modalApi.lock();
     try {
       const res = await getDictTypeInfo({ params: { id: data.id } });
+      if (!res.info) {
+        return;
+      }
       formData.value = res.info;
       // 设置到 values
       if (formData.value) {

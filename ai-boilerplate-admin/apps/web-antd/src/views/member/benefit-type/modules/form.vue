@@ -1,5 +1,9 @@
 <script lang="ts" setup>
-import type { MembershipBenefitTypeInfo } from '#/api/v1/membership-benefit-type';
+import type {
+  CreateMembershipBenefitTypeReq,
+  MembershipBenefitTypeInfo,
+  UpdateMembershipBenefitTypeReq,
+} from '#/api/v1/membership-benefit-type';
 
 import { computed, ref } from 'vue';
 
@@ -66,12 +70,17 @@ const [Modal, modalApi] = useVbenModal({
 });
 
 async function onSubmit(values: Record<string, any>) {
-  const body = {
-    ...values,
-  };
-  await (getIsUpdate.value
-    ? updateMembershipBenefitType({ body })
-    : createMembershipBenefitType({ body }));
+  const baseValues = values as CreateMembershipBenefitTypeReq;
+  if (getIsUpdate.value) {
+    const id = formData.value?.id;
+    if (!id) {
+      return;
+    }
+    const body: UpdateMembershipBenefitTypeReq = { ...baseValues, id };
+    await updateMembershipBenefitType({ body });
+  } else {
+    await createMembershipBenefitType({ body: baseValues });
+  }
   emit('success');
 }
 </script>

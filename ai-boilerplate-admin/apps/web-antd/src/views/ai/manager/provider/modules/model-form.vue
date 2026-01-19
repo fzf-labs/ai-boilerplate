@@ -87,9 +87,13 @@ const [Modal, modalApi] = useVbenModal({
         const response = await getAiProviderModelInfo({
           params: { id: data.id },
         });
-        formData.value = response.info;
+        const info = response.info;
+        if (!info) {
+          return;
+        }
+        formData.value = info;
         // 设置到 values
-        await formApi.setValues(formData.value);
+        await formApi.setValues(info);
       } finally {
         modalApi.unlock();
       }

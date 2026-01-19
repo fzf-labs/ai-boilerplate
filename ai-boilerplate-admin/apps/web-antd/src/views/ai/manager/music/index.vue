@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VxeTableGridOptions } from '#/adapter/vxe-table';
 import type * as AiAudioRecordApi from '#/api/v1/ai-audio-record';
-import type { SysAdminInfo } from '#/api/v1/sys-admin';
+import type { GetSysAdminSelectorItem } from '#/api/v1/sys-admin';
 
 import { onMounted, ref } from 'vue';
 
@@ -23,7 +23,7 @@ import { $t } from '#/locales';
 
 import { useGridColumns, useGridFormSchema } from './data';
 
-const userList = ref<SysAdminInfo[]>([]); // 用户列表
+const userList = ref<GetSysAdminSelectorItem[]>([]); // 用户列表
 
 /** 刷新表格 */
 function onRefresh() {
@@ -84,8 +84,8 @@ const [Grid, gridApi] = useVbenVxeGrid({
 
 onMounted(async () => {
   // 获得下拉数据
-  const res = await getSysAdminSelector();
-  userList.value = res.list;
+  const res = await getSysAdminSelector({});
+  userList.value = res.list || [];
 });
 </script>
 
@@ -104,7 +104,7 @@ onMounted(async () => {
       <template #content="{ row }">
         <Button
           type="link"
-          v-if="row.audioURL?.length > 0"
+          v-if="row.audioURL && row.audioURL.length > 0"
           :href="row.audioURL"
           target="_blank"
           class="p-0"
@@ -113,16 +113,7 @@ onMounted(async () => {
         </Button>
         <Button
           type="link"
-          v-if="row.videoURL?.length > 0"
-          :href="row.videoURL"
-          target="_blank"
-          class="p-0 !pl-1"
-        >
-          视频
-        </Button>
-        <Button
-          type="link"
-          v-if="row.imageURL?.length > 0"
+          v-if="row.imageURL && row.imageURL.length > 0"
           :href="row.imageURL"
           target="_blank"
           class="p-0 !pl-1"

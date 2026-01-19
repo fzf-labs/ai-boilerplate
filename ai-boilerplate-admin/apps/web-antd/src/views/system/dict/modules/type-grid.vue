@@ -48,7 +48,10 @@ async function onDelete(row: DictTypeInfo) {
     key: 'process_message',
   });
   try {
-    await deleteDictType({ body: { id: row.id } });
+    if (!row.id) {
+      return;
+    }
+    await deleteDictType({ body: { ids: [row.id] } });
     message.success({
       content: $t('common.operationSuccess'),
       key: 'process_message',

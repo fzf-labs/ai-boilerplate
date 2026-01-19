@@ -37,13 +37,13 @@ function onUpload() {
 /** 复制链接到剪贴板 */
 const { copy } = useClipboard({ legacy: true });
 async function onCopyUrl(row: FileDatumInfo) {
-  if (!row.url) {
+  if (!row.URL) {
     message.error('文件 URL 为空');
     return;
   }
 
   try {
-    await copy(row.url);
+    await copy(row.URL);
     message.success('复制成功');
   } catch {
     message.error('复制失败');
@@ -134,15 +134,15 @@ const [Grid, gridApi] = useVbenVxeGrid({
         </Button>
       </template>
       <template #file-content="{ row }">
-        <Image v-if="row.ext && row.ext.includes('image')" :src="row.url" />
+        <Image v-if="row.ext && row.ext.includes('image')" :src="row.URL" />
         <Button
           v-else-if="row.ext && row.ext.includes('pdf')"
           type="link"
-          @click="() => openUrl(row.url)"
+          @click="() => openUrl(row.URL)"
         >
           预览
         </Button>
-        <Button v-else type="link" @click="() => openUrl(row.url)">
+        <Button v-else type="link" @click="() => openUrl(row.URL)">
           下载
         </Button>
       </template>

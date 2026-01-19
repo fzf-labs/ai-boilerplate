@@ -42,10 +42,14 @@ const detail = computed(() =>
     <div class="text-lg font-bold">时间</div>
     <div class="mt-2 text-gray-600">
       <div>
-        提交时间：{{ formatDate(detail?.createTime, 'yyyy-MM-dd HH:mm:ss') }}
+        提交时间：{{
+          formatDate(detail?.createTime || '', 'yyyy-MM-dd HH:mm:ss')
+        }}
       </div>
       <div>
-        生成时间：{{ formatDate(detail?.finishTime, 'yyyy-MM-dd HH:mm:ss') }}
+        生成时间：{{
+          formatDate(detail?.finishTime || '', 'yyyy-MM-dd HH:mm:ss')
+        }}
       </div>
     </div>
   </div>

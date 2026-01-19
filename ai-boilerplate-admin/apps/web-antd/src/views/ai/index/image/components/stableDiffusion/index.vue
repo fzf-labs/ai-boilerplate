@@ -128,9 +128,9 @@ async function handleGenerateImage() {
 
 /** 填充值 */
 async function settingValues(detail: ImageRecordView) {
-  prompt.value = detail.prompt;
-  width.value = detail.width;
-  height.value = detail.height;
+  prompt.value = detail.prompt ?? '';
+  width.value = detail.width ?? width.value;
+  height.value = detail.height ?? height.value;
   seed.value = detail.options?.seed;
   steps.value = detail.options?.steps;
   scale.value = detail.options?.scale;

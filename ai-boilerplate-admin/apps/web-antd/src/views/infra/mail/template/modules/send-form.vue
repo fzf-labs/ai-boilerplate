@@ -30,6 +30,23 @@ async function sendMail(data: {
 }
 
 const formData = ref<MailTemplateInfo>();
+const parseParams = (params?: string): string[] => {
+  if (!params) {
+    return [];
+  }
+  try {
+    const parsed = JSON.parse(params);
+    if (Array.isArray(parsed)) {
+      return parsed.filter((item) => typeof item === 'string');
+    }
+  } catch {
+    // fall through to split
+  }
+  return params
+    .split(',')
+    .map((item) => item.trim())
+    .filter(Boolean);
+};
 
 const [Form, formApi] = useVbenForm({
   layout: 'horizontal',
@@ -46,11 +63,9 @@ const [Modal, modalApi] = useVbenModal({
     // 构建发送请求
     const values = await formApi.getValues();
     const paramsObj: Record<string, string> = {};
-    if (formData.value?.params) {
-      formData.value.params.forEach((param: string) => {
-        paramsObj[param] = values[`param_${param}`];
-      });
-    }
+    parseParams(formData.value?.params).forEach((param) => {
+      paramsObj[param] = values[`param_${param}`];
+    });
     const sendData = {
       mail: values.mail,
       templateCode: formData.value?.code || '',
@@ -97,19 +112,17 @@ const [Modal, modalApi] = useVbenModal({
 /** 动态构建表单 schema */
 const buildFormSchema = () => {
   const schema = useSendMailFormSchema();
-  if (formData.value?.params) {
-    formData.value.params?.forEach((param: string) => {
-      schema.push({
-        fieldName: `param_${param}`,
-        label: `参数 ${param}`,
-        component: 'Input',
-        componentProps: {
-          placeholder: `请输入参数 ${param}`,
-        },
-        rules: 'required',
-      });
+  parseParams(formData.value?.params).forEach((param) => {
+    schema.push({
+      fieldName: `param_${param}`,
+      label: `参数 ${param}`,
+      component: 'Input',
+      componentProps: {
+        placeholder: `请输入参数 ${param}`,
+      },
+      rules: 'required',
     });
-  }
+  });
   return schema;
 };
 </script>

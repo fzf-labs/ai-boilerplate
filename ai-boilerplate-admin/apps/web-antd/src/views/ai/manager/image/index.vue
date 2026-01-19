@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VxeTableGridOptions } from '#/adapter/vxe-table';
 import type * as AiImageRecordApi from '#/api/v1/ai-image-record';
-import type { SysAdminInfo } from '#/api/v1/sys-admin';
+import type { GetSysAdminSelectorItem } from '#/api/v1/sys-admin';
 
 import { onMounted, ref } from 'vue';
 
@@ -24,7 +24,7 @@ import { $t } from '#/locales';
 
 import { AiImageStatusEnum, useGridColumns, useGridFormSchema } from './data';
 
-const userList = ref<SysAdminInfo[]>([]); // 用户列表
+const userList = ref<GetSysAdminSelectorItem[]>([]); // 用户列表
 
 /** 刷新表格 */
 function onRefresh() {
@@ -109,8 +109,8 @@ const [Grid, gridApi] = useVbenVxeGrid({
 
 onMounted(async () => {
   // 获得下拉数据
-  const res = await getSysAdminSelector();
-  userList.value = res.list;
+  const res = await getSysAdminSelector({});
+  userList.value = res.list || [];
 });
 </script>
 

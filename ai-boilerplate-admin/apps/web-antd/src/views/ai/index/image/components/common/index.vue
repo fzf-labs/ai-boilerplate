@@ -103,9 +103,9 @@ async function handleGenerateImage() {
 
 /** 填充值 */
 async function settingValues(detail: ImageRecordView) {
-  prompt.value = detail.prompt;
-  width.value = detail.width;
-  height.value = detail.height;
+  prompt.value = detail.prompt ?? '';
+  width.value = detail.width ?? width.value;
+  height.value = detail.height ?? height.value;
 }
 
 /** 平台切换 */
@@ -200,10 +200,10 @@ defineExpose({ settingValues });
       >
         <Select.Option
           v-for="item in platformModels"
-          :key="item.id"
-          :value="item.id"
+          :key="item.id || item.modelId"
+          :value="item.modelId"
         >
-          {{ item.name }}
+          {{ item.modelName || item.modelId }}
         </Select.Option>
       </Select>
     </Space>

@@ -43,7 +43,10 @@ watch(detail, async (newVal) => {
 });
 const loading = ref();
 /** 处理加载状态 */
-async function handleLoading(status: number) {
+async function handleLoading(status?: number) {
+  if (status === undefined) {
+    return;
+  }
   // 情况一：如果是生成中，则设置加载中的 loading
   if (status === AiImageStatusEnum.IN_PROGRESS) {
     loading.value = message.loading({

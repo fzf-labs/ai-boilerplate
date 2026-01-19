@@ -14,7 +14,7 @@ import { fetchProviderModels } from '../../utils';
 import Tag from './Tag.vue';
 import { AiWriteTypeEnum, WriteExample } from './typing';
 
-type TabType = CreateAiWriteRecordReq['type'];
+type TabType = NonNullable<CreateAiWriteRecordReq['type']>;
 
 defineProps<{
   isWriting: boolean;
