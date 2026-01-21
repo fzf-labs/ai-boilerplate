@@ -49,13 +49,19 @@ service UserNotificationSetting {
 message NotificationSettingsInfo {
   string id = 1; // ID
   string userId = 2; // 用户ID
-  bool systemNotification = 3; // 系统通知
-  bool activityNotification = 4; // 活动通知
-  bool orderNotification = 5; // 订单通知
-  string dndStartTime = 6; // 勿扰开始时间
-  string dndEndTime = 7; // 勿扰结束时间
-  string createdAt = 8; // 创建时间
-  string updatedAt = 9; // 更新时间
+  repeated NotificationCategory categories = 3; // 通知类别
+  string dndStartTime = 4; // 勿扰开始时间
+  string dndEndTime = 5; // 勿扰结束时间
+  string createdAt = 6; // 创建时间
+  string updatedAt = 7; // 更新时间
+}
+
+//通知类别
+message NotificationCategory {
+  string key = 1; // 唯一标识
+  string title = 2; // 标题
+  string description = 3; // 描述
+  bool enabled = 4; // 是否开启
 }
 
 //请求-获取用户通知设置
@@ -68,23 +74,27 @@ message GetNotificationSettingsReply {
 
 //请求-更新用户通知设置
 message UpdateNotificationSettingsReq {
-  bool systemNotification = 1; // 系统通知
-  bool activityNotification = 2; // 活动通知
-  bool orderNotification = 3; // 订单通知
-  string dndStartTime = 4 [
+  repeated NotificationPreference preferences = 1; // 通知偏好
+  string dndStartTime = 2 [
     (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
     (buf.validate.field).string = {
       min_len: 1
       max_len: 10
     }
   ]; // 勿扰开始时间（格式：HH:mm）
-  string dndEndTime = 5 [
+  string dndEndTime = 3 [
     (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
     (buf.validate.field).string = {
       min_len: 1
       max_len: 10
     }
   ]; // 勿扰结束时间（格式：HH:mm）
+}
+
+//通知偏好
+message NotificationPreference {
+  string key = 1; // 唯一标识
+  bool enabled = 2; // 是否开启
 }
 
 //响应-更新用户通知设置

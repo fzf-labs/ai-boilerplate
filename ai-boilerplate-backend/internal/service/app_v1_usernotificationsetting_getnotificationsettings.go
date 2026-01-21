@@ -38,14 +38,13 @@ func (a *AppV1UserNotificationSettingService) GetNotificationSettings(ctx contex
 
 	// 如果不存在，创建默认设置
 	if len(settings) == 0 {
+		preferences := defaultNotificationPreferences()
 		defaultSettings := &ai_boilerplate_model.UserNotificationSetting{
-			ID:                   uuidutil.GenUUID(),
-			UserID:               userID,
-			SystemNotification:   true,
-			ActivityNotification: true,
-			OrderNotification:    true,
-			DndStartTime:         "22:00",
-			DndEndTime:           "08:00",
+			ID:                      uuidutil.GenUUID(),
+			UserID:                  userID,
+			NotificationPreferences: encodeNotificationPreferences(preferences),
+			DndStartTime:            "22:00",
+			DndEndTime:              "08:00",
 		}
 
 		err = a.userNotificationSettingRepo.CreateOne(ctx, defaultSettings)
@@ -54,28 +53,28 @@ func (a *AppV1UserNotificationSettingService) GetNotificationSettings(ctx contex
 		}
 
 		resp.Settings = &pb.NotificationSettingsInfo{
-			Id:                   defaultSettings.ID,
-			UserId:               defaultSettings.UserID,
-			SystemNotification:   defaultSettings.SystemNotification,
-			ActivityNotification: defaultSettings.ActivityNotification,
-			OrderNotification:    defaultSettings.OrderNotification,
-			DndStartTime:         defaultSettings.DndStartTime,
-			DndEndTime:           defaultSettings.DndEndTime,
-			CreatedAt:            defaultSettings.CreatedAt.Format(time.RFC3339),
-			UpdatedAt:            defaultSettings.UpdatedAt.Format(time.RFC3339),
+			Id:           defaultSettings.ID,
+			UserId:       defaultSettings.UserID,
+			Categories:   buildNotificationCategories(preferences),
+			DndStartTime: defaultSettings.DndStartTime,
+			DndEndTime:   defaultSettings.DndEndTime,
+			CreatedAt:    defaultSettings.CreatedAt.Format(time.RFC3339),
+			UpdatedAt:    defaultSettings.UpdatedAt.Format(time.RFC3339),
 		}
 	} else {
 		setting := settings[0]
+		preferences := decodeNotificationPreferences(setting.NotificationPreferences)
+		if len(preferences) == 0 {
+			preferences = defaultNotificationPreferences()
+		}
 		resp.Settings = &pb.NotificationSettingsInfo{
-			Id:                   setting.ID,
-			UserId:               setting.UserID,
-			SystemNotification:   setting.SystemNotification,
-			ActivityNotification: setting.ActivityNotification,
-			OrderNotification:    setting.OrderNotification,
-			DndStartTime:         setting.DndStartTime,
-			DndEndTime:           setting.DndEndTime,
-			CreatedAt:            setting.CreatedAt.Format(time.RFC3339),
-			UpdatedAt:            setting.UpdatedAt.Format(time.RFC3339),
+			Id:           setting.ID,
+			UserId:       setting.UserID,
+			Categories:   buildNotificationCategories(preferences),
+			DndStartTime: setting.DndStartTime,
+			DndEndTime:   setting.DndEndTime,
+			CreatedAt:    setting.CreatedAt.Format(time.RFC3339),
+			UpdatedAt:    setting.UpdatedAt.Format(time.RFC3339),
 		}
 	}
 

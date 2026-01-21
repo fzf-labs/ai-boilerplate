@@ -29,16 +29,12 @@ func newUserNotificationSetting(db *gorm.DB, opts ...gen.DOOption) userNotificat
 	_userNotificationSetting.ALL = field.NewAsterisk(tableName)
 	_userNotificationSetting.ID = field.NewString(tableName, "id")
 	_userNotificationSetting.UserID = field.NewString(tableName, "user_id")
-	_userNotificationSetting.SystemNotification = field.NewBool(tableName, "system_notification")
-	_userNotificationSetting.ActivityNotification = field.NewBool(tableName, "activity_notification")
-	_userNotificationSetting.OrderNotification = field.NewBool(tableName, "order_notification")
-	_userNotificationSetting.MessageNotification = field.NewBool(tableName, "message_notification")
-	_userNotificationSetting.DndEnabled = field.NewBool(tableName, "dnd_enabled")
 	_userNotificationSetting.DndStartTime = field.NewString(tableName, "dnd_start_time")
 	_userNotificationSetting.DndEndTime = field.NewString(tableName, "dnd_end_time")
 	_userNotificationSetting.CreatedAt = field.NewTime(tableName, "created_at")
 	_userNotificationSetting.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_userNotificationSetting.DeletedAt = field.NewField(tableName, "deleted_at")
+	_userNotificationSetting.NotificationPreferences = field.NewField(tableName, "notification_preferences")
 
 	_userNotificationSetting.fillFieldMap()
 
@@ -48,19 +44,15 @@ func newUserNotificationSetting(db *gorm.DB, opts ...gen.DOOption) userNotificat
 type userNotificationSetting struct {
 	userNotificationSettingDo userNotificationSettingDo
 
-	ALL                  field.Asterisk
-	ID                   field.String
-	UserID               field.String
-	SystemNotification   field.Bool
-	ActivityNotification field.Bool
-	OrderNotification    field.Bool
-	MessageNotification  field.Bool
-	DndEnabled           field.Bool
-	DndStartTime         field.String
-	DndEndTime           field.String
-	CreatedAt            field.Time
-	UpdatedAt            field.Time
-	DeletedAt            field.Field
+	ALL                     field.Asterisk
+	ID                      field.String
+	UserID                  field.String
+	DndStartTime            field.String
+	DndEndTime              field.String
+	CreatedAt               field.Time
+	UpdatedAt               field.Time
+	DeletedAt               field.Field
+	NotificationPreferences field.Field // 通知偏好(JSON)
 
 	fieldMap map[string]field.Expr
 }
@@ -79,16 +71,12 @@ func (u *userNotificationSetting) updateTableName(table string) *userNotificatio
 	u.ALL = field.NewAsterisk(table)
 	u.ID = field.NewString(table, "id")
 	u.UserID = field.NewString(table, "user_id")
-	u.SystemNotification = field.NewBool(table, "system_notification")
-	u.ActivityNotification = field.NewBool(table, "activity_notification")
-	u.OrderNotification = field.NewBool(table, "order_notification")
-	u.MessageNotification = field.NewBool(table, "message_notification")
-	u.DndEnabled = field.NewBool(table, "dnd_enabled")
 	u.DndStartTime = field.NewString(table, "dnd_start_time")
 	u.DndEndTime = field.NewString(table, "dnd_end_time")
 	u.CreatedAt = field.NewTime(table, "created_at")
 	u.UpdatedAt = field.NewTime(table, "updated_at")
 	u.DeletedAt = field.NewField(table, "deleted_at")
+	u.NotificationPreferences = field.NewField(table, "notification_preferences")
 
 	u.fillFieldMap()
 
@@ -117,19 +105,15 @@ func (u *userNotificationSetting) GetFieldByName(fieldName string) (field.OrderE
 }
 
 func (u *userNotificationSetting) fillFieldMap() {
-	u.fieldMap = make(map[string]field.Expr, 12)
+	u.fieldMap = make(map[string]field.Expr, 8)
 	u.fieldMap["id"] = u.ID
 	u.fieldMap["user_id"] = u.UserID
-	u.fieldMap["system_notification"] = u.SystemNotification
-	u.fieldMap["activity_notification"] = u.ActivityNotification
-	u.fieldMap["order_notification"] = u.OrderNotification
-	u.fieldMap["message_notification"] = u.MessageNotification
-	u.fieldMap["dnd_enabled"] = u.DndEnabled
 	u.fieldMap["dnd_start_time"] = u.DndStartTime
 	u.fieldMap["dnd_end_time"] = u.DndEndTime
 	u.fieldMap["created_at"] = u.CreatedAt
 	u.fieldMap["updated_at"] = u.UpdatedAt
 	u.fieldMap["deleted_at"] = u.DeletedAt
+	u.fieldMap["notification_preferences"] = u.NotificationPreferences
 }
 
 func (u userNotificationSetting) clone(db *gorm.DB) userNotificationSetting {

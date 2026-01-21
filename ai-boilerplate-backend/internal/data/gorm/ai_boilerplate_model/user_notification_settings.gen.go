@@ -7,6 +7,7 @@ package ai_boilerplate_model
 import (
 	"time"
 
+	"gorm.io/datatypes"
 	"gorm.io/gorm"
 )
 
@@ -14,18 +15,14 @@ const TableNameUserNotificationSetting = "user_notification_settings"
 
 // UserNotificationSetting mapped from table <user_notification_settings>
 type UserNotificationSetting struct {
-	ID                   string         `gorm:"column:id;type:uuid;not null" json:"id"`
-	UserID               string         `gorm:"column:user_id;type:uuid;not null" json:"userId"`
-	SystemNotification   bool           `gorm:"column:system_notification;type:boolean;not null" json:"systemNotification"`
-	ActivityNotification bool           `gorm:"column:activity_notification;type:boolean;not null" json:"activityNotification"`
-	OrderNotification    bool           `gorm:"column:order_notification;type:boolean;not null" json:"orderNotification"`
-	MessageNotification  bool           `gorm:"column:message_notification;type:boolean;not null" json:"messageNotification"`
-	DndEnabled           bool           `gorm:"column:dnd_enabled;type:boolean;not null" json:"dndEnabled"`
-	DndStartTime         string         `gorm:"column:dnd_start_time;type:character varying(5)" json:"dndStartTime"`
-	DndEndTime           string         `gorm:"column:dnd_end_time;type:character varying(5)" json:"dndEndTime"`
-	CreatedAt            time.Time      `gorm:"column:created_at;type:timestamp with time zone;not null" json:"createdAt"`
-	UpdatedAt            time.Time      `gorm:"column:updated_at;type:timestamp with time zone;not null" json:"updatedAt"`
-	DeletedAt            gorm.DeletedAt `gorm:"column:deleted_at;type:timestamp with time zone" json:"deletedAt"`
+	ID                      string         `gorm:"column:id;type:uuid;not null" json:"id"`
+	UserID                  string         `gorm:"column:user_id;type:uuid;not null" json:"userId"`
+	DndStartTime            string         `gorm:"column:dnd_start_time;type:character varying(5)" json:"dndStartTime"`
+	DndEndTime              string         `gorm:"column:dnd_end_time;type:character varying(5)" json:"dndEndTime"`
+	CreatedAt               time.Time      `gorm:"column:created_at;type:timestamp with time zone;not null" json:"createdAt"`
+	UpdatedAt               time.Time      `gorm:"column:updated_at;type:timestamp with time zone;not null" json:"updatedAt"`
+	DeletedAt               gorm.DeletedAt `gorm:"column:deleted_at;type:timestamp with time zone" json:"deletedAt"`
+	NotificationPreferences datatypes.JSON `gorm:"column:notification_preferences;type:jsonb;not null;comment:通知偏好(JSON)" json:"notificationPreferences"` // 通知偏好(JSON)
 }
 
 // TableName UserNotificationSetting's table name

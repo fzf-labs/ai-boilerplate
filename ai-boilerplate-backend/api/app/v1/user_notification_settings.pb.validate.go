@@ -61,11 +61,39 @@ func (m *NotificationSettingsInfo) validate(all bool) error {
 
 	// no validation rules for UserId
 
-	// no validation rules for SystemNotification
+	for idx, item := range m.GetCategories() {
+		_, _ = idx, item
 
-	// no validation rules for ActivityNotification
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, NotificationSettingsInfoValidationError{
+						field:  fmt.Sprintf("Categories[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, NotificationSettingsInfoValidationError{
+						field:  fmt.Sprintf("Categories[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return NotificationSettingsInfoValidationError{
+					field:  fmt.Sprintf("Categories[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
 
-	// no validation rules for OrderNotification
+	}
 
 	// no validation rules for DndStartTime
 
@@ -154,6 +182,116 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = NotificationSettingsInfoValidationError{}
+
+// Validate checks the field values on NotificationCategory with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *NotificationCategory) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on NotificationCategory with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// NotificationCategoryMultiError, or nil if none found.
+func (m *NotificationCategory) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *NotificationCategory) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Key
+
+	// no validation rules for Title
+
+	// no validation rules for Description
+
+	// no validation rules for Enabled
+
+	if len(errors) > 0 {
+		return NotificationCategoryMultiError(errors)
+	}
+
+	return nil
+}
+
+// NotificationCategoryMultiError is an error wrapping multiple validation
+// errors returned by NotificationCategory.ValidateAll() if the designated
+// constraints aren't met.
+type NotificationCategoryMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m NotificationCategoryMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m NotificationCategoryMultiError) AllErrors() []error { return m }
+
+// NotificationCategoryValidationError is the validation error returned by
+// NotificationCategory.Validate if the designated constraints aren't met.
+type NotificationCategoryValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e NotificationCategoryValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e NotificationCategoryValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e NotificationCategoryValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e NotificationCategoryValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e NotificationCategoryValidationError) ErrorName() string {
+	return "NotificationCategoryValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e NotificationCategoryValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sNotificationCategory.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = NotificationCategoryValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = NotificationCategoryValidationError{}
 
 // Validate checks the field values on GetNotificationSettingsReq with the
 // rules defined in the proto definition for this message. If any rules are
@@ -411,11 +549,39 @@ func (m *UpdateNotificationSettingsReq) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for SystemNotification
+	for idx, item := range m.GetPreferences() {
+		_, _ = idx, item
 
-	// no validation rules for ActivityNotification
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, UpdateNotificationSettingsReqValidationError{
+						field:  fmt.Sprintf("Preferences[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, UpdateNotificationSettingsReqValidationError{
+						field:  fmt.Sprintf("Preferences[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return UpdateNotificationSettingsReqValidationError{
+					field:  fmt.Sprintf("Preferences[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
 
-	// no validation rules for OrderNotification
+	}
 
 	// no validation rules for DndStartTime
 
@@ -501,6 +667,112 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = UpdateNotificationSettingsReqValidationError{}
+
+// Validate checks the field values on NotificationPreference with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *NotificationPreference) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on NotificationPreference with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// NotificationPreferenceMultiError, or nil if none found.
+func (m *NotificationPreference) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *NotificationPreference) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Key
+
+	// no validation rules for Enabled
+
+	if len(errors) > 0 {
+		return NotificationPreferenceMultiError(errors)
+	}
+
+	return nil
+}
+
+// NotificationPreferenceMultiError is an error wrapping multiple validation
+// errors returned by NotificationPreference.ValidateAll() if the designated
+// constraints aren't met.
+type NotificationPreferenceMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m NotificationPreferenceMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m NotificationPreferenceMultiError) AllErrors() []error { return m }
+
+// NotificationPreferenceValidationError is the validation error returned by
+// NotificationPreference.Validate if the designated constraints aren't met.
+type NotificationPreferenceValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e NotificationPreferenceValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e NotificationPreferenceValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e NotificationPreferenceValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e NotificationPreferenceValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e NotificationPreferenceValidationError) ErrorName() string {
+	return "NotificationPreferenceValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e NotificationPreferenceValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sNotificationPreference.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = NotificationPreferenceValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = NotificationPreferenceValidationError{}
 
 // Validate checks the field values on UpdateNotificationSettingsReply with the
 // rules defined in the proto definition for this message. If any rules are

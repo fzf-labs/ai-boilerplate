@@ -20,17 +20,31 @@ export type GetNotificationSettingsResponses = {
   default: Status;
 };
 
+export type NotificationCategory = {
+  /** 唯一标识 */
+  key?: string;
+  /** 标题 */
+  title?: string;
+  /** 描述 */
+  description?: string;
+  /** 是否开启 */
+  enabled?: boolean;
+};
+
+export type NotificationPreference = {
+  /** 唯一标识 */
+  key?: string;
+  /** 是否开启 */
+  enabled?: boolean;
+};
+
 export type NotificationSettingsInfo = {
   /** ID */
   id?: string;
   /** 用户ID */
   userId?: string;
-  /** 系统通知 */
-  systemNotification?: boolean;
-  /** 活动通知 */
-  activityNotification?: boolean;
-  /** 订单通知 */
-  orderNotification?: boolean;
+  /** 通知类别 */
+  categories?: NotificationCategory[];
   /** 勿扰开始时间 */
   dndStartTime?: string;
   /** 勿扰结束时间 */
@@ -50,12 +64,8 @@ export type Status = {
 export type UpdateNotificationSettingsReply = object;
 
 export type UpdateNotificationSettingsReq = {
-  /** 系统通知 */
-  systemNotification?: boolean;
-  /** 活动通知 */
-  activityNotification?: boolean;
-  /** 订单通知 */
-  orderNotification?: boolean;
+  /** 通知偏好 */
+  preferences?: NotificationPreference[];
   /** 勿扰开始时间（格式：HH:mm） */
   dndStartTime?: string;
   /** 勿扰结束时间（格式：HH:mm） */

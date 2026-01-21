@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { useToast } from 'wot-design-uni'
 import { checkUpdate } from '@/api/v1/self-app-release'
+import { LOGIN_PAGE } from '@/router/config'
+import { useTokenStore } from '@/store/token'
 
 interface ICacheInfo {
   sizeKB: number
@@ -27,6 +29,7 @@ definePage({
 })
 
 const toast = useToast()
+const tokenStore = useTokenStore()
 
 // 缓存信息
 const cacheInfo = ref<ICacheInfo | null>(null)
@@ -56,6 +59,14 @@ const languageActions = computed(() => {
 
 // 菜单列表
 const menuList = [
+  {
+    title: '通知设置',
+    icon: 'chat',
+    label: '管理消息推送偏好',
+    action: 'notificationSettings',
+    showValue: false,
+    value: '',
+  },
   {
     title: '语言切换',
     icon: 'translate-bold',
@@ -262,6 +273,16 @@ function navigateToWebview(url: string, title: string) {
  */
 function handleMenuClick(action: string) {
   switch (action) {
+    case 'notificationSettings':
+      if (!tokenStore.hasLogin) {
+        toast.warning('请先登录')
+        setTimeout(() => {
+          uni.navigateTo({ url: LOGIN_PAGE })
+        }, 1500)
+        return
+      }
+      uni.navigateTo({ url: '/pages/settings/notification' })
+      break
     case 'changeLanguage':
       languageSheetVisible.value = true
       break

@@ -40,9 +40,17 @@ func (a *AppV1UserNotificationSettingService) UpdateNotificationSettings(ctx con
 
 	// 更新设置
 	setting := settings[0]
-	setting.SystemNotification = req.SystemNotification
-	setting.ActivityNotification = req.ActivityNotification
-	setting.OrderNotification = req.OrderNotification
+	preferences := make(map[string]bool, len(req.GetPreferences()))
+	for _, pref := range req.GetPreferences() {
+		if pref.GetKey() == "" {
+			continue
+		}
+		preferences[pref.GetKey()] = pref.GetEnabled()
+	}
+	if len(preferences) == 0 {
+		return nil, pb.ErrorReasonParamError()
+	}
+	setting.NotificationPreferences = encodeNotificationPreferences(preferences)
 
 	if req.DndStartTime != "" {
 		setting.DndStartTime = req.DndStartTime

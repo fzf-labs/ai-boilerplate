@@ -4,6 +4,7 @@ import "github.com/google/wire"
 
 // ProviderSet is service providers.
 var ProviderSet = wire.NewSet(
+	NewAdminV1ActivityService,
 	NewAdminV1AiAudioRecordService,
 	NewAdminV1AiChatConversationService,
 	NewAdminV1AiChatMessageService,
@@ -19,7 +20,6 @@ var ProviderSet = wire.NewSet(
 	NewAdminV1AiVideoRecordService,
 	NewAdminV1AiWriteRecordService,
 	NewAdminV1ArticleService,
-	NewAdminV1ActivityService,
 	NewAdminV1BannerService,
 	NewAdminV1ConfigDatumService,
 	NewAdminV1DeviceService,
@@ -66,8 +66,8 @@ var ProviderSet = wire.NewSet(
 	NewAdminV1WxGzhTagService,
 	NewAdminV1WxGzhUserService,
 	NewAdminV1WxXcxUserService,
-	NewAppV1BannerService,
 	NewAppV1ActivityService,
+	NewAppV1BannerService,
 	NewAppV1HelpCategoryService,
 	NewAppV1HelpFaqService,
 	NewAppV1HelpFeedbackService,
