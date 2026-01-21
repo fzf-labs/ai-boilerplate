@@ -26,6 +26,3 @@ logs/
 # 临时文件
 *.tmp
 *.temp
-
-# Auto Claude data directory
-.auto-claude/
