@@ -4,6 +4,10 @@ import type { HelpFaqInfo } from '@/api/v1/help-faq/types'
 import { useToast } from 'wot-design-uni'
 import { listHelpCategories } from '@/api/v1/help-category/helpCategory'
 import { listHelpFaqs } from '@/api/v1/help-faq/helpFaq'
+import HelpHeader from './components/HelpHeader.vue'
+import CategoryGrid from './components/CategoryGrid.vue'
+import HotFaqList from './components/HotFaqList.vue'
+import ErrorState from './components/ErrorState.vue'
 
 definePage({
   style: {
@@ -13,37 +17,40 @@ definePage({
 
 const toast = useToast()
 
-// 帮助分类列表
-const categories = ref<HelpCategoryInfo[]>([])
-// 热门问题列表
-const hotFaqs = ref<HelpFaqInfo[]>([])
-// 加载状态
-const loading = ref(false)
-// 搜索关键词
-const searchKeyword = ref('')
+// 状态管理
+const state = reactive({
+  categories: [] as HelpCategoryInfo[],
+  hotFaqs: [] as HelpFaqInfo[],
+  loading: false,
+  refreshing: false,
+  loadError: false,
+  searchKeyword: '',
+})
 
 /**
- * 获取帮助分类
+ * 加载帮助分类
  */
-async function fetchCategories() {
+async function loadCategories() {
   try {
-    loading.value = true
+    state.loading = true
+    state.loadError = false
     const res = await listHelpCategories({ options: {} })
-    categories.value = res.list || []
+    state.categories = res.list || []
   }
   catch (error) {
     console.error('获取帮助分类失败:', error)
-    toast.error('加载失败')
+    state.loadError = true
+    toast.error('加载失败，请重试')
   }
   finally {
-    loading.value = false
+    state.loading = false
   }
 }
 
 /**
- * 获取热门问题
+ * 加载热门问题
  */
-async function fetchHotFaqs() {
+async function loadHotFaqs() {
   try {
     const res = await listHelpFaqs({
       params: {
@@ -52,7 +59,7 @@ async function fetchHotFaqs() {
       },
       options: {},
     })
-    hotFaqs.value = res.list || []
+    state.hotFaqs = res.list || []
   }
   catch (error) {
     console.error('获取热门问题失败:', error)
@@ -60,19 +67,67 @@ async function fetchHotFaqs() {
 }
 
 /**
- * 跳转到分类详情
+ * 加载所有数据
  */
-function goToCategoryDetail(categoryId?: string) {
-  if (!categoryId) {
-    toast.warning('分类不存在')
+async function loadData() {
+  await Promise.all([
+    loadCategories(),
+    loadHotFaqs(),
+  ])
+}
+
+/**
+ * 下拉刷新
+ */
+async function handleRefresh() {
+  state.refreshing = true
+  try {
+    await loadData()
+    toast.success('刷新成功')
+  }
+  catch (error) {
+    console.error('刷新失败:', error)
+  }
+  finally {
+    state.refreshing = false
+  }
+}
+
+/**
+ * 重试加载
+ */
+async function handleRetry() {
+  await loadData()
+}
+
+/**
+ * 搜索问题
+ */
+function handleSearch() {
+  if (!state.searchKeyword.trim()) {
+    toast.warning('请输入搜索关键词')
     return
   }
   uni.navigateTo({
-    url: `/pages/help/faq?categoryId=${categoryId}`,
+    url: `/pages/help/faq?keyword=${encodeURIComponent(state.searchKeyword.trim())}`,
   })
 }
 
-function goToFaq(faq: HelpFaqInfo) {
+/**
+ * 选择分类
+ */
+function handleCategorySelect(categoryId: string) {
+  const category = state.categories.find(c => c.id === categoryId)
+  const categoryName = category?.name || '常见问题'
+  uni.navigateTo({
+    url: `/pages/help/faq?categoryId=${categoryId}&categoryName=${encodeURIComponent(categoryName)}`,
+  })
+}
+
+/**
+ * 选择FAQ
+ */
+function handleFaqSelect(faq: HelpFaqInfo) {
   const keyword = faq.question?.trim()
   uni.navigateTo({
     url: keyword ? `/pages/help/faq?keyword=${encodeURIComponent(keyword)}` : '/pages/help/faq',
@@ -82,127 +137,77 @@ function goToFaq(faq: HelpFaqInfo) {
 /**
  * 跳转到问题反馈
  */
-function goToFeedback() {
+function handleFeedback() {
   uni.navigateTo({
     url: '/pages/help/feedback',
   })
 }
 
-/**
- * 搜索问题
- */
-function handleSearch() {
-  if (!searchKeyword.value.trim()) {
-    toast.warning('请输入搜索关键词')
-    return
-  }
-  uni.navigateTo({
-    url: `/pages/help/faq?keyword=${encodeURIComponent(searchKeyword.value.trim())}`,
-  })
-}
-
+// 页面加载
 onLoad(() => {
-  fetchCategories()
-  fetchHotFaqs()
+  loadData()
 })
 </script>
 
 <template>
   <view class="help-page">
-    <view class="top-bg" />
-    <view class="content">
-      <!-- 优化后的头部卡片 -->
-      <view class="header-card">
-        <view class="header-icon">
-          <wd-icon name="help-circle" size="56rpx" color="var(--wot-color-primary)" />
-        </view>
-        <view class="header-title">
-          帮助中心
-        </view>
-        <view class="header-subtitle">
-          搜索问题，或选择分类快速找到答案
-        </view>
-        <view class="header-search">
-          <wd-search
-            v-model="searchKeyword"
-            :hide-cancel="true"
-            placeholder="搜索问题（如：登录、密码、手机号）"
-            @search="handleSearch"
+    <!-- 背景装饰 -->
+    <view class="page-bg" />
+
+    <!-- 下拉刷新容器 -->
+    <scroll-view
+      class="scroll-container"
+      scroll-y
+      refresher-enabled
+      :refresher-triggered="state.refreshing"
+      @refresherrefresh="handleRefresh"
+    >
+      <view class="page-content">
+        <!-- 头部搜索 -->
+        <HelpHeader
+          v-model="state.searchKeyword"
+          @search="handleSearch"
+        />
+
+        <!-- 错误状态 -->
+        <ErrorState
+          v-if="state.loadError && !state.loading"
+          @retry="handleRetry"
+        />
+
+        <!-- 正常内容 -->
+        <template v-else>
+          <!-- 分类网格 -->
+          <CategoryGrid
+            :categories="state.categories"
+            :loading="state.loading"
+            @select="handleCategorySelect"
           />
-        </view>
-      </view>
 
-      <!-- 优化后的帮助分类卡片 -->
-      <wd-card type="rectangle" custom-class="card">
-        <template #title>
-          <view class="card-title">
-            <view class="card-title-left">
-              <wd-icon name="apps" size="32rpx" color="var(--wot-color-primary)" />
-              <text class="card-title-text">帮助分类</text>
-            </view>
-          </view>
-        </template>
+          <!-- 热门问题 -->
+          <HotFaqList
+            :faqs="state.hotFaqs"
+            :loading="state.loading"
+            @select="handleFaqSelect"
+          />
 
-        <wd-skeleton
-          theme="paragraph"
-          :row-col="[1, 1, 1]"
-          :loading="loading"
-          animation="gradient"
-        >
-          <view v-if="categories.length === 0" class="empty">
-            暂无分类
-          </view>
-          <wd-grid v-else :column="3" :border="false">
-            <wd-grid-item
-              v-for="category in categories"
-              :key="category.id"
-              @click="goToCategoryDetail(category.id)"
+          <!-- 反馈按钮 -->
+          <view class="feedback-section">
+            <wd-button
+              :block="true"
+              :round="true"
+              size="large"
+              type="primary"
+              @click="handleFeedback"
             >
-              <view class="category-item">
-                <view class="category-icon">
-                  <wd-icon :name="category.icon || 'help'" size="46rpx" />
-                </view>
-                <text class="category-name">{{ category.name }}</text>
-              </view>
-            </wd-grid-item>
-          </wd-grid>
-        </wd-skeleton>
-      </wd-card>
-
-      <!-- 优化后的热门问题卡片 -->
-      <wd-card type="rectangle" custom-class="card card-gap">
-        <template #title>
-          <view class="card-title">
-            <view class="card-title-left">
-              <wd-icon name="fire" size="32rpx" color="#ff6b6b" />
-              <text class="card-title-text">热门问题</text>
-            </view>
-            <wd-tag type="danger" plain size="small">
-              HOT
-            </wd-tag>
+              <wd-icon name="edit" size="32rpx" custom-style="margin-right: 8rpx" />
+              提交问题反馈
+            </wd-button>
           </view>
         </template>
-
-        <wd-cell-group>
-          <wd-cell
-            v-for="faq in hotFaqs"
-            :key="faq.id"
-            :title="faq.question"
-            is-link
-            @click="goToFaq(faq)"
-          />
-          <view v-if="!loading && hotFaqs.length === 0" class="empty empty-pad">
-            暂无热门问题
-          </view>
-        </wd-cell-group>
-      </wd-card>
-
-      <view class="feedback">
-        <wd-button :block="true" :round="true" size="large" type="primary" @click="goToFeedback">
-          提交问题反馈
-        </wd-button>
       </view>
-    </view>
+    </scroll-view>
+
     <wd-toast />
   </view>
 </template>
@@ -214,147 +219,48 @@ onLoad(() => {
   position: relative;
 }
 
-.top-bg {
+.page-bg {
   position: absolute;
   left: 0;
   top: 0;
   right: 0;
-  height: 260rpx;
+  height: 240rpx;
   pointer-events: none;
   background: var(--fg-top-bg-gradient);
 }
 
-.content {
+.scroll-container {
+  height: 100vh;
+}
+
+.page-content {
   position: relative;
-  padding: 22rpx var(--fg-page-x) 40rpx;
+  padding: 20rpx var(--fg-page-x) 40rpx;
 }
 
-.header-card {
-  padding: 32rpx 24rpx 24rpx;
-  background: var(--fg-surface);
-  border-radius: 32rpx;
-  border: 1px solid var(--fg-border);
-  box-shadow: var(--fg-shadow-card);
-  margin-bottom: 24rpx;
-  text-align: center;
+.feedback-section {
+  margin-top: 20rpx;
+  animation: fadeInUp 0.4s ease-out 0.3s backwards;
+
+  :deep(.wd-button) {
+    box-shadow: 0 8rpx 24rpx rgba(var(--wot-color-primary-rgb), 0.25);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:active {
+      transform: scale(0.98);
+      box-shadow: 0 4rpx 12rpx rgba(var(--wot-color-primary-rgb), 0.2);
+    }
+  }
 }
 
-.header-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 96rpx;
-  height: 96rpx;
-  margin: 0 auto 20rpx;
-  background: linear-gradient(
-    135deg,
-    rgba(var(--wot-color-primary-rgb, 0, 122, 255), 0.1) 0%,
-    rgba(var(--wot-color-primary-rgb, 0, 122, 255), 0.05) 100%
-  );
-  border-radius: 50%;
-  border: 2px solid rgba(var(--wot-color-primary-rgb, 0, 122, 255), 0.2);
-}
-
-.header-title {
-  font-size: 44rpx;
-  font-weight: 800;
-  color: var(--fg-text);
-  margin-bottom: 12rpx;
-}
-
-.header-subtitle {
-  font-size: 26rpx;
-  color: var(--fg-text-muted);
-  line-height: 1.6;
-}
-
-.header-search {
-  margin-top: 24rpx;
-  background: var(--fg-bg-alt);
-  border-radius: 24rpx;
-  padding: 12rpx;
-  border: 1px solid var(--fg-border-weak);
-  transition: all 0.3s ease;
-}
-
-.wd-card.card.is-rectangle {
-  border-radius: 28rpx;
-  overflow: hidden;
-  background: var(--fg-surface);
-  border: 1px solid var(--fg-border);
-  box-shadow: var(--fg-shadow-card);
-}
-
-.card-gap {
-  margin-top: 18rpx;
-}
-
-:deep(.card .wd-card__title-content) {
-  padding: 18rpx 18rpx 0;
-}
-
-:deep(.card .wd-card__content) {
-  padding: 16rpx 8rpx 18rpx;
-}
-
-.category-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16rpx;
-  padding: 24rpx 12rpx;
-  transition: all 0.3s ease;
-}
-
-.category-icon {
-  width: 96rpx;
-  height: 96rpx;
-  border-radius: 24rpx;
-  background: linear-gradient(135deg, rgba(var(--fg-primary-rgb), 0.12) 0%, rgba(var(--fg-primary-rgb), 0.06) 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4rpx 12rpx rgba(var(--fg-primary-rgb), 0.08);
-  transition: all 0.3s ease;
-}
-
-.category-name {
-  font-size: 26rpx;
-  color: var(--fg-text-secondary);
-  font-weight: 600;
-  text-align: center;
-  line-height: 1.4;
-}
-
-.card-title {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.card-title-left {
-  display: flex;
-  align-items: center;
-  gap: 12rpx;
-}
-
-.card-title-text {
-  font-size: 32rpx;
-  font-weight: 800;
-  color: var(--fg-text);
-}
-
-.feedback {
-  margin-top: 18rpx;
-}
-
-.empty {
-  color: var(--fg-text-muted);
-  font-size: 26rpx;
-  text-align: center;
-}
-
-.empty-pad {
-  padding: 22rpx 0 8rpx;
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>

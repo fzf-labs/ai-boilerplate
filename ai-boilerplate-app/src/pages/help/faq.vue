@@ -19,6 +19,8 @@ const expandedIds = ref<Set<string>>(new Set())
 const loading = ref(false)
 // 搜索关键词
 const searchKeyword = ref('')
+// 页面标题
+const pageTitle = ref('常见问题')
 
 /**
  * 获取FAQ列表
@@ -73,7 +75,16 @@ async function handleFeedback(faqId?: string, isHelpful?: boolean) {
 }
 
 onLoad(async (options) => {
-  const { categoryId, keyword, id } = options as Record<string, string | undefined>
+  const { categoryId, categoryName, keyword, id } = options as Record<string, string | undefined>
+
+  // 设置页面标题
+  if (categoryName) {
+    pageTitle.value = decodeURIComponent(categoryName)
+  }
+  else if (keyword) {
+    pageTitle.value = '搜索结果'
+  }
+
   if (keyword) {
     searchKeyword.value = keyword
     await fetchFaqs(undefined, keyword)
@@ -100,7 +111,7 @@ onLoad(async (options) => {
           <wd-icon name="chat" size="48rpx" color="var(--wot-color-primary)" />
         </view>
         <view class="header-info">
-          <text class="header-title">常见问题</text>
+          <text class="header-title">{{ pageTitle }}</text>
           <text class="header-subtitle">找到您需要的答案</text>
         </view>
       </view>
