@@ -93,6 +93,7 @@ func NewHTTPServer(
 	appV1MallActivationCodeService *service.AppV1MallActivationCodeService,
 	appV1MallProductService *service.AppV1MallProductService,
 	appV1MallOrderService *service.AppV1MallOrderService,
+	appV1UserNotificationSettingService *service.AppV1UserNotificationSettingService,
 ) *http.Server {
 	srv := bootstrap.NewHTTPServer(
 		c,
@@ -177,6 +178,7 @@ func NewHTTPServer(
 	appv1.RegisterMallActivationCodeHTTPServer(srv, appV1MallActivationCodeService)
 	appv1.RegisterMallProductHTTPServer(srv, appV1MallProductService)
 	appv1.RegisterMallOrderHTTPServer(srv, appV1MallOrderService)
+	appv1.RegisterUserNotificationSettingHTTPServer(srv, appV1UserNotificationSettingService)
 	// 自定义路由
 	adminRoute := srv.Route("/admin")
 	adminRoute.POST("/v1/ai_index_chat/completions", adminV1AiIndexChatService.AiIndexChatCompletionsHandler)     // AI 聊天-聊天 ChatCompletions格式 (SSE 流式返回)
