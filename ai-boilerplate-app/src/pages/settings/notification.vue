@@ -24,6 +24,26 @@ const dndSettings = reactive({
   dndEndTime: '',
 })
 
+function handleOpenSystemSettings() {
+  // #ifdef APP-PLUS
+  const openSetting = (uni as any).openAppAuthorizeSetting
+  if (typeof openSetting !== 'function') {
+    toast.info('请在系统设置中开启通知权限')
+    return
+  }
+  openSetting({
+    fail: (error: unknown) => {
+      console.error('打开系统设置失败:', error)
+      toast.error('打开系统设置失败')
+    },
+  })
+  // #endif
+
+  // #ifndef APP-PLUS
+  toast.info('请在系统设置中开启通知权限')
+  // #endif
+}
+
 function ensureLogin() {
   if (tokenStore.hasLogin)
     return true
@@ -113,6 +133,14 @@ onShow(() => {
             <text class="header-subtitle">自定义不同类型消息的推送提醒</text>
           </view>
         </view>
+        <wd-button
+          size="small"
+          type="primary"
+          plain
+          @click="handleOpenSystemSettings"
+        >
+          系统设置
+        </wd-button>
       </view>
 
       <wd-card type="rectangle" custom-class="card">
