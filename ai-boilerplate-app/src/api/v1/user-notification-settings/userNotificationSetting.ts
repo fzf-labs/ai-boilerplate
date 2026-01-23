@@ -20,7 +20,7 @@ export function getNotificationSettings({
   );
 }
 
-/** 更新用户通知设置 返回值: An unexpected error response. PUT /app/v1/notification/settings */
+/** 更新用户通知设置 返回值: An unexpected error response. POST /app/v1/notification/settings */
 export function updateNotificationSettings({
   body,
   options,
@@ -31,7 +31,7 @@ export function updateNotificationSettings({
   return request<API.UpdateNotificationSettingsReply>(
     '/app/v1/notification/settings',
     {
-      method: 'PUT',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },

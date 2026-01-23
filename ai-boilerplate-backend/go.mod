@@ -19,10 +19,13 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.19.1
 	github.com/hibiken/asynq v0.25.1
 	github.com/jinzhu/copier v0.4.0
+	github.com/lib/pq v1.10.9
+	github.com/microcosm-cc/bluemonday v1.0.27
 	github.com/redis/rueidis v1.0.59
 	github.com/samber/lo v1.50.0
 	github.com/spf13/cast v1.7.0
 	github.com/volcengine/volc-sdk-golang v1.0.221
+	github.com/yuin/goldmark v1.7.16
 	go.opentelemetry.io/otel/trace v1.35.0
 	go.uber.org/automaxprocs v1.5.1
 	golang.org/x/net v0.41.0
@@ -110,12 +113,10 @@ require (
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.18.0 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.10 // indirect
-	github.com/lib/pq v1.10.9 // indirect
 	github.com/lufia/plan9stats v0.0.0-20230326075908-cb1d2100619a // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
-	github.com/microcosm-cc/bluemonday v1.0.27 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
@@ -157,7 +158,6 @@ require (
 	github.com/volcengine/volcengine-go-sdk v1.1.49 // indirect
 	github.com/wk8/go-ordered-map/v2 v2.1.8 // indirect
 	github.com/yargevad/filepathx v1.0.0 // indirect
-	github.com/yuin/goldmark v1.7.16 // indirect
 	github.com/yusufpapurcu/wmi v1.2.4 // indirect
 	go.etcd.io/etcd/api/v3 v3.5.12 // indirect
 	go.etcd.io/etcd/client/pkg/v3 v3.5.12 // indirect

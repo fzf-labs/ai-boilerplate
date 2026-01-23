@@ -7,6 +7,8 @@ package ai_boilerplate_repo
 import (
 	"context"
 	"errors"
+	"reflect"
+	"strings"
 
 	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/gorm/ai_boilerplate_dao"
 	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/gorm/ai_boilerplate_model"
@@ -24,6 +26,10 @@ var _ IUserNotificationSettingRepo = (*UserNotificationSettingRepo)(nil)
 var (
 	CacheUserNotificationSettingByConditionPrefix         = "DBCache:ai_boilerplate:UserNotificationSettingByCondition"
 	CacheUserNotificationSettingUnscopedByConditionPrefix = "DBCache:ai_boilerplate:UserNotificationSettingUnscopedByCondition"
+	CacheUserNotificationSettingByIDPrefix                = "DBCache:ai_boilerplate:UserNotificationSettingByID"
+	CacheUserNotificationSettingUnscopedByIDPrefix        = "DBCache:ai_boilerplate:UserNotificationSettingUnscopedByID"
+	CacheUserNotificationSettingByUserIDPrefix            = "DBCache:ai_boilerplate:UserNotificationSettingByUserID"
+	CacheUserNotificationSettingUnscopedByUserIDPrefix    = "DBCache:ai_boilerplate:UserNotificationSettingUnscopedByUserID"
 )
 
 type (
@@ -34,16 +40,132 @@ type (
 		DeepCopy(data *ai_boilerplate_model.UserNotificationSetting) *ai_boilerplate_model.UserNotificationSetting
 		// CreateOne 创建一条数据
 		CreateOne(ctx context.Context, data *ai_boilerplate_model.UserNotificationSetting) error
+		// CreateOneCache 创建一条数据, 并删除缓存
+		CreateOneCache(ctx context.Context, data *ai_boilerplate_model.UserNotificationSetting) error
 		// CreateOneByTx 创建一条数据(事务)
 		CreateOneByTx(ctx context.Context, tx *ai_boilerplate_dao.Query, data *ai_boilerplate_model.UserNotificationSetting) error
+		// CreateOneCacheByTx 创建一条数据(事务), 并删除缓存
+		CreateOneCacheByTx(ctx context.Context, tx *ai_boilerplate_dao.Query, data *ai_boilerplate_model.UserNotificationSetting) error
 		// CreateBatch 批量创建数据
 		CreateBatch(ctx context.Context, data []*ai_boilerplate_model.UserNotificationSetting, batchSize int) error
+		// CreateBatchCache 批量创建数据, 并删除缓存
+		CreateBatchCache(ctx context.Context, data []*ai_boilerplate_model.UserNotificationSetting, batchSize int) error
 		// CreateBatchByTx 批量创建数据(事务)
 		CreateBatchByTx(ctx context.Context, tx *ai_boilerplate_dao.Query, data []*ai_boilerplate_model.UserNotificationSetting, batchSize int) error
+		// CreateBatchCacheByTx 批量创建数据(事务), 并删除缓存
+		CreateBatchCacheByTx(ctx context.Context, tx *ai_boilerplate_dao.Query, data []*ai_boilerplate_model.UserNotificationSetting, batchSize int) error
+		// UpsertOne Upsert一条数据
+		UpsertOne(ctx context.Context, data *ai_boilerplate_model.UserNotificationSetting) error
+		// UpsertOneCache Upsert一条数据, 并删除缓存
+		UpsertOneCache(ctx context.Context, data *ai_boilerplate_model.UserNotificationSetting) error
+		// UpsertOneByTx Upsert一条数据(事务)
+		UpsertOneByTx(ctx context.Context, tx *ai_boilerplate_dao.Query, data *ai_boilerplate_model.UserNotificationSetting) error
+		// UpsertOneCacheByTx Upsert一条数据(事务), 并删除缓存
+		UpsertOneCacheByTx(ctx context.Context, tx *ai_boilerplate_dao.Query, data *ai_boilerplate_model.UserNotificationSetting) error
 		// UpsertOneByFields 根据fields字段Upsert一条数据
 		UpsertOneByFields(ctx context.Context, data *ai_boilerplate_model.UserNotificationSetting, fields []string) error
+		// UpsertOneCacheByFields 根据fields字段Upsert一条数据, 并删除缓存
+		UpsertOneCacheByFields(ctx context.Context, data *ai_boilerplate_model.UserNotificationSetting, fields []string) error
 		// UpsertOneByFieldsTx 根据fields字段Upsert一条数据(事务)
 		UpsertOneByFieldsTx(ctx context.Context, tx *ai_boilerplate_dao.Query, data *ai_boilerplate_model.UserNotificationSetting, fields []string) error
+		// UpsertOneCacheByFieldsTx 根据fields字段Upsert一条数据(事务), 并删除缓存
+		UpsertOneCacheByFieldsTx(ctx context.Context, tx *ai_boilerplate_dao.Query, data *ai_boilerplate_model.UserNotificationSetting, fields []string) error
+		// UpdateOne 更新一条数据
+		UpdateOne(ctx context.Context, newData *ai_boilerplate_model.UserNotificationSetting) error
+		// UpdateOneUnscoped 更新一条数据（包括软删除）
+		UpdateOneUnscoped(ctx context.Context, newData *ai_boilerplate_model.UserNotificationSetting) error
+		// UpdateOneCache 更新一条数据，并删除缓存
+		UpdateOneCache(ctx context.Context, newData *ai_boilerplate_model.UserNotificationSetting, oldData *ai_boilerplate_model.UserNotificationSetting) error
+		// UpdateOneUnscopedCache 更新一条数据，并删除缓存（包括软删除）
+		UpdateOneUnscopedCache(ctx context.Context, newData *ai_boilerplate_model.UserNotificationSetting, oldData *ai_boilerplate_model.UserNotificationSetting) error
+		// UpdateOneByTx 更新一条数据(事务)
+		UpdateOneByTx(ctx context.Context, tx *ai_boilerplate_dao.Query, newData *ai_boilerplate_model.UserNotificationSetting) error
+		// UpdateOneUnscopedByTx 更新一条数据(事务)（包括软删除）
+		UpdateOneUnscopedByTx(ctx context.Context, tx *ai_boilerplate_dao.Query, newData *ai_boilerplate_model.UserNotificationSetting) error
+		// UpdateOneCacheByTx 更新一条数据(事务)，并删除缓存
+		UpdateOneCacheByTx(ctx context.Context, tx *ai_boilerplate_dao.Query, newData *ai_boilerplate_model.UserNotificationSetting, oldData *ai_boilerplate_model.UserNotificationSetting) error
+		// UpdateOneUnscopedCacheByTx 更新一条数据(事务)，并删除缓存（包括软删除）
+		UpdateOneUnscopedCacheByTx(ctx context.Context, tx *ai_boilerplate_dao.Query, newData *ai_boilerplate_model.UserNotificationSetting, oldData *ai_boilerplate_model.UserNotificationSetting) error
+		// UpdateOneWithZero 更新一条数据,包含零值，并删除缓存
+		UpdateOneWithZero(ctx context.Context, newData *ai_boilerplate_model.UserNotificationSetting) error
+		// UpdateOneUnscopedWithZero 更新一条数据,包含零值（包括软删除）
+		UpdateOneUnscopedWithZero(ctx context.Context, newData *ai_boilerplate_model.UserNotificationSetting) error
+		// UpdateOneCacheWithZero 更新一条数据,包含零值，并删除缓存
+		UpdateOneCacheWithZero(ctx context.Context, newData *ai_boilerplate_model.UserNotificationSetting, oldData *ai_boilerplate_model.UserNotificationSetting) error
+		// UpdateOneUnscopedCacheWithZero 更新一条数据,包含零值，并删除缓存（包括软删除）
+		UpdateOneUnscopedCacheWithZero(ctx context.Context, newData *ai_boilerplate_model.UserNotificationSetting, oldData *ai_boilerplate_model.UserNotificationSetting) error
+		// UpdateOneWithZeroByTx 更新一条数据(事务),包含零值，并删除缓存
+		UpdateOneWithZeroByTx(ctx context.Context, tx *ai_boilerplate_dao.Query, newData *ai_boilerplate_model.UserNotificationSetting) error
+		// UpdateOneUnscopedWithZeroByTx 更新一条数据(事务),包含零值（包括软删除）
+		UpdateOneUnscopedWithZeroByTx(ctx context.Context, tx *ai_boilerplate_dao.Query, newData *ai_boilerplate_model.UserNotificationSetting) error
+		// UpdateOneCacheWithZeroByTx 更新一条数据(事务),包含零值，并删除缓存
+		UpdateOneCacheWithZeroByTx(ctx context.Context, tx *ai_boilerplate_dao.Query, newData *ai_boilerplate_model.UserNotificationSetting, oldData *ai_boilerplate_model.UserNotificationSetting) error
+		// UpdateOneUnscopedCacheWithZeroByTx 更新一条数据(事务),包含零值，并删除缓存（包括软删除）
+		UpdateOneUnscopedCacheWithZeroByTx(ctx context.Context, tx *ai_boilerplate_dao.Query, newData *ai_boilerplate_model.UserNotificationSetting, oldData *ai_boilerplate_model.UserNotificationSetting) error
+		// UpdateBatchByID 根据字段ID批量更新,零值会被更新
+		UpdateBatchByID(ctx context.Context, ID string, data map[string]interface{}) error
+		// UpdateBatchUnscopedByID 根据字段ID批量更新,零值会被更新（包括软删除）
+		UpdateBatchUnscopedByID(ctx context.Context, ID string, data map[string]interface{}) error
+		// UpdateBatchByIDTx 根据主键ID批量更新(事务),零值会被更新
+		UpdateBatchByIDTx(ctx context.Context, tx *ai_boilerplate_dao.Query, ID string, data map[string]interface{}) error
+		// UpdateBatchUnscopedByIDTx 根据主键ID批量更新(事务),零值会被更新（包括软删除）
+		UpdateBatchUnscopedByIDTx(ctx context.Context, tx *ai_boilerplate_dao.Query, ID string, data map[string]interface{}) error
+		// UpdateBatchByIDS 根据字段IDS批量更新,零值会被更新
+		UpdateBatchByIDS(ctx context.Context, IDS []string, data map[string]interface{}) error
+		// UpdateBatchUnscopedByIDS 根据字段IDS批量更新,零值会被更新（包括软删除）
+		UpdateBatchUnscopedByIDS(ctx context.Context, IDS []string, data map[string]interface{}) error
+		// UpdateBatchByIDSTx 根据字段IDS批量更新(事务),零值会被更新
+		UpdateBatchByIDSTx(ctx context.Context, tx *ai_boilerplate_dao.Query, IDS []string, data map[string]interface{}) error
+		// UpdateBatchUnscopedByIDSTx 根据字段IDS批量更新(事务),零值会被更新（包括软删除）
+		UpdateBatchUnscopedByIDSTx(ctx context.Context, tx *ai_boilerplate_dao.Query, IDS []string, data map[string]interface{}) error
+		// UpdateBatchByUserID 根据字段UserID批量更新,零值会被更新
+		UpdateBatchByUserID(ctx context.Context, userID string, data map[string]interface{}) error
+		// UpdateBatchUnscopedByUserID 根据字段UserID批量更新,零值会被更新（包括软删除）
+		UpdateBatchUnscopedByUserID(ctx context.Context, userID string, data map[string]interface{}) error
+		// UpdateBatchByUserIDTx 根据主键UserID批量更新(事务),零值会被更新
+		UpdateBatchByUserIDTx(ctx context.Context, tx *ai_boilerplate_dao.Query, userID string, data map[string]interface{}) error
+		// UpdateBatchUnscopedByUserIDTx 根据主键UserID批量更新(事务),零值会被更新（包括软删除）
+		UpdateBatchUnscopedByUserIDTx(ctx context.Context, tx *ai_boilerplate_dao.Query, userID string, data map[string]interface{}) error
+		// UpdateBatchByUserIDS 根据字段UserIDS批量更新,零值会被更新
+		UpdateBatchByUserIDS(ctx context.Context, userIDS []string, data map[string]interface{}) error
+		// UpdateBatchUnscopedByUserIDS 根据字段UserIDS批量更新,零值会被更新（包括软删除）
+		UpdateBatchUnscopedByUserIDS(ctx context.Context, userIDS []string, data map[string]interface{}) error
+		// UpdateBatchByUserIDSTx 根据字段UserIDS批量更新(事务),零值会被更新
+		UpdateBatchByUserIDSTx(ctx context.Context, tx *ai_boilerplate_dao.Query, userIDS []string, data map[string]interface{}) error
+		// UpdateBatchUnscopedByUserIDSTx 根据字段UserIDS批量更新(事务),零值会被更新（包括软删除）
+		UpdateBatchUnscopedByUserIDSTx(ctx context.Context, tx *ai_boilerplate_dao.Query, userIDS []string, data map[string]interface{}) error
+		// FindOneByID 根据ID查询一条数据
+		FindOneByID(ctx context.Context, ID string) (*ai_boilerplate_model.UserNotificationSetting, error)
+		// FindOneUnscopedByID 根据ID查询一条数据（包括软删除）
+		FindOneUnscopedByID(ctx context.Context, ID string) (*ai_boilerplate_model.UserNotificationSetting, error)
+		// FindOneCacheByID 根据ID查询一条数据，并设置缓存
+		FindOneCacheByID(ctx context.Context, ID string) (*ai_boilerplate_model.UserNotificationSetting, error)
+		// FindOneUnscopedCacheByID 根据ID查询一条数据（包括软删除），并设置缓存
+		FindOneUnscopedCacheByID(ctx context.Context, ID string) (*ai_boilerplate_model.UserNotificationSetting, error)
+		// FindMultiByIDS 根据IDS查询多条数据
+		FindMultiByIDS(ctx context.Context, IDS []string) ([]*ai_boilerplate_model.UserNotificationSetting, error)
+		// FindMultiUnscopedByIDS 根据IDS查询多条数据（包括软删除）
+		FindMultiUnscopedByIDS(ctx context.Context, IDS []string) ([]*ai_boilerplate_model.UserNotificationSetting, error)
+		// FindMultiCacheByIDS 根据IDS查询多条数据，并设置缓存
+		FindMultiCacheByIDS(ctx context.Context, IDS []string) ([]*ai_boilerplate_model.UserNotificationSetting, error)
+		// FindMultiUnscopedCacheByIDS 根据IDS查询多条数据（包括软删除），并设置缓存
+		FindMultiUnscopedCacheByIDS(ctx context.Context, IDS []string) ([]*ai_boilerplate_model.UserNotificationSetting, error)
+		// FindOneByUserID 根据userID查询一条数据
+		FindOneByUserID(ctx context.Context, userID string) (*ai_boilerplate_model.UserNotificationSetting, error)
+		// FindOneUnscopedByUserID 根据userID查询一条数据（包括软删除）
+		FindOneUnscopedByUserID(ctx context.Context, userID string) (*ai_boilerplate_model.UserNotificationSetting, error)
+		// FindOneCacheByUserID 根据userID查询一条数据，并设置缓存
+		FindOneCacheByUserID(ctx context.Context, userID string) (*ai_boilerplate_model.UserNotificationSetting, error)
+		// FindOneUnscopedCacheByUserID 根据userID查询一条数据（包括软删除），并设置缓存
+		FindOneUnscopedCacheByUserID(ctx context.Context, userID string) (*ai_boilerplate_model.UserNotificationSetting, error)
+		// FindMultiByUserIDS 根据userIDS查询多条数据
+		FindMultiByUserIDS(ctx context.Context, userIDS []string) ([]*ai_boilerplate_model.UserNotificationSetting, error)
+		// FindMultiUnscopedByUserIDS 根据userIDS查询多条数据（包括软删除）
+		FindMultiUnscopedByUserIDS(ctx context.Context, userIDS []string) ([]*ai_boilerplate_model.UserNotificationSetting, error)
+		// FindMultiCacheByUserIDS 根据userIDS查询多条数据，并设置缓存
+		FindMultiCacheByUserIDS(ctx context.Context, userIDS []string) ([]*ai_boilerplate_model.UserNotificationSetting, error)
+		// FindMultiUnscopedCacheByUserIDS 根据userIDS查询多条数据（包括软删除），并设置缓存
+		FindMultiUnscopedCacheByUserIDS(ctx context.Context, userIDS []string) ([]*ai_boilerplate_model.UserNotificationSetting, error)
 		// FindMultiByCondition 自定义查询数据(通用)
 		FindMultiByCondition(ctx context.Context, conditionReq *condition.Req) ([]*ai_boilerplate_model.UserNotificationSetting, *condition.Reply, error)
 		// FindMultiUnscopedByCondition 自定义查询数据(通用)（包括软删除）
@@ -52,6 +174,72 @@ type (
 		FindMultiCacheByCondition(ctx context.Context, conditionReq *condition.Req) ([]*ai_boilerplate_model.UserNotificationSetting, *condition.Reply, error)
 		// FindMultiUnscopedCacheByCondition 自定义查询数据(通用)（包括软删除）,并设置缓存
 		FindMultiUnscopedCacheByCondition(ctx context.Context, conditionReq *condition.Req) ([]*ai_boilerplate_model.UserNotificationSetting, *condition.Reply, error)
+		// DeleteOneByID 根据ID删除一条数据
+		DeleteOneByID(ctx context.Context, ID string) error
+		// DeleteOneUnscopedByID 根据ID删除一条数据
+		DeleteOneUnscopedByID(ctx context.Context, ID string) error
+		// DeleteOneCacheByID 根据ID删除一条数据，并删除缓存
+		DeleteOneCacheByID(ctx context.Context, ID string) error
+		// DeleteOneUnscopedCacheByID 根据ID删除一条数据，并删除缓存
+		DeleteOneUnscopedCacheByID(ctx context.Context, ID string) error
+		// DeleteOneByIDTx 根据ID删除一条数据(事务)
+		DeleteOneByIDTx(ctx context.Context, tx *ai_boilerplate_dao.Query, ID string) error
+		// DeleteOneUnscopedByIDTx 根据ID删除一条数据(事务)
+		DeleteOneUnscopedByIDTx(ctx context.Context, tx *ai_boilerplate_dao.Query, ID string) error
+		// DeleteOneCacheByIDTx 根据ID删除一条数据，并删除缓存(事务)
+		DeleteOneCacheByIDTx(ctx context.Context, tx *ai_boilerplate_dao.Query, ID string) error
+		// DeleteOneUnscopedCacheByIDTx 根据ID删除一条数据，并删除缓存(事务)
+		DeleteOneUnscopedCacheByIDTx(ctx context.Context, tx *ai_boilerplate_dao.Query, ID string) error
+		// DeleteMultiByIDS 根据IDS删除多条数据
+		DeleteMultiByIDS(ctx context.Context, IDS []string) error
+		// DeleteMultiUnscopedByIDS 根据IDS删除多条数据
+		DeleteMultiUnscopedByIDS(ctx context.Context, IDS []string) error
+		// DeleteMultiCacheByIDS 根据IDS删除多条数据，并删除缓存
+		DeleteMultiCacheByIDS(ctx context.Context, IDS []string) error
+		// DeleteMultiUnscopedCacheByIDS 根据IDS删除多条数据，并删除缓存
+		DeleteMultiUnscopedCacheByIDS(ctx context.Context, IDS []string) error
+		// DeleteMultiByIDSTx 根据IDS删除多条数据(事务)
+		DeleteMultiByIDSTx(ctx context.Context, tx *ai_boilerplate_dao.Query, IDS []string) error
+		// DeleteMultiUnscopedByIDSTx 根据IDS删除多条数据(事务)
+		DeleteMultiUnscopedByIDSTx(ctx context.Context, tx *ai_boilerplate_dao.Query, IDS []string) error
+		// DeleteMultiCacheByIDSTx 根据IDS删除多条数据，并删除缓存(事务)
+		DeleteMultiCacheByIDSTx(ctx context.Context, tx *ai_boilerplate_dao.Query, IDS []string) error
+		// DeleteMultiUnscopedCacheByIDSTx 根据IDS删除多条数据，并删除缓存(事务)
+		DeleteMultiUnscopedCacheByIDSTx(ctx context.Context, tx *ai_boilerplate_dao.Query, IDS []string) error
+		// DeleteOneByUserID 根据userID删除一条数据
+		DeleteOneByUserID(ctx context.Context, userID string) error
+		// DeleteOneUnscopedByUserID 根据userID删除一条数据
+		DeleteOneUnscopedByUserID(ctx context.Context, userID string) error
+		// DeleteOneCacheByUserID 根据userID删除一条数据，并删除缓存
+		DeleteOneCacheByUserID(ctx context.Context, userID string) error
+		// DeleteOneUnscopedCacheByUserID 根据userID删除一条数据，并删除缓存
+		DeleteOneUnscopedCacheByUserID(ctx context.Context, userID string) error
+		// DeleteOneByUserIDTx 根据userID删除一条数据(事务)
+		DeleteOneByUserIDTx(ctx context.Context, tx *ai_boilerplate_dao.Query, userID string) error
+		// DeleteOneUnscopedByUserIDTx 根据userID删除一条数据(事务)
+		DeleteOneUnscopedByUserIDTx(ctx context.Context, tx *ai_boilerplate_dao.Query, userID string) error
+		// DeleteOneCacheByUserIDTx 根据userID删除一条数据，并删除缓存(事务)
+		DeleteOneCacheByUserIDTx(ctx context.Context, tx *ai_boilerplate_dao.Query, userID string) error
+		// DeleteOneUnscopedCacheByUserIDTx 根据userID删除一条数据，并删除缓存(事务)
+		DeleteOneUnscopedCacheByUserIDTx(ctx context.Context, tx *ai_boilerplate_dao.Query, userID string) error
+		// DeleteMultiByUserIDS 根据UserIDS删除多条数据
+		DeleteMultiByUserIDS(ctx context.Context, userIDS []string) error
+		// DeleteMultiUnscopedByUserIDS 根据UserIDS删除多条数据
+		DeleteMultiUnscopedByUserIDS(ctx context.Context, userIDS []string) error
+		// DeleteMultiCacheByUserIDS 根据UserIDS删除多条数据，并删除缓存
+		DeleteMultiCacheByUserIDS(ctx context.Context, userIDS []string) error
+		// DeleteMultiUnscopedCacheByUserIDS 根据UserIDS删除多条数据，并删除缓存
+		DeleteMultiUnscopedCacheByUserIDS(ctx context.Context, userIDS []string) error
+		// DeleteMultiByUserIDSTx 根据UserIDS删除多条数据(事务)
+		DeleteMultiByUserIDSTx(ctx context.Context, tx *ai_boilerplate_dao.Query, userIDS []string) error
+		// DeleteMultiUnscopedByUserIDSTx 根据UserIDS删除多条数据(事务)
+		DeleteMultiUnscopedByUserIDSTx(ctx context.Context, tx *ai_boilerplate_dao.Query, userIDS []string) error
+		// DeleteMultiCacheByUserIDSTx 根据UserIDS删除多条数据，并删除缓存(事务)
+		DeleteMultiCacheByUserIDSTx(ctx context.Context, tx *ai_boilerplate_dao.Query, userIDS []string) error
+		// DeleteMultiUnscopedCacheByUserIDSTx 根据UserIDS删除多条数据，并删除缓存(事务)
+		DeleteMultiUnscopedCacheByUserIDSTx(ctx context.Context, tx *ai_boilerplate_dao.Query, userIDS []string) error
+		// DeleteIndexCache 删除索引存在的缓存
+		DeleteIndexCache(ctx context.Context, data ...*ai_boilerplate_model.UserNotificationSetting) error
 	}
 	UserNotificationSettingRepo struct {
 		db       *gorm.DB
@@ -90,10 +278,38 @@ func (u *UserNotificationSettingRepo) CreateOne(ctx context.Context, data *ai_bo
 	return nil
 }
 
+// CreateOneCache 创建一条数据, 并删除缓存
+func (u *UserNotificationSettingRepo) CreateOneCache(ctx context.Context, data *ai_boilerplate_model.UserNotificationSetting) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	err := dao.WithContext(ctx).Create(data)
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // CreateOneByTx 创建一条数据(事务)
 func (u *UserNotificationSettingRepo) CreateOneByTx(ctx context.Context, tx *ai_boilerplate_dao.Query, data *ai_boilerplate_model.UserNotificationSetting) error {
 	dao := tx.UserNotificationSetting
 	err := dao.WithContext(ctx).Create(data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// CreateOneCacheByTx 创建一条数据(事务), 并删除缓存
+func (u *UserNotificationSettingRepo) CreateOneCacheByTx(ctx context.Context, tx *ai_boilerplate_dao.Query, data *ai_boilerplate_model.UserNotificationSetting) error {
+	dao := tx.UserNotificationSetting
+	err := dao.WithContext(ctx).Create(data)
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, data)
 	if err != nil {
 		return err
 	}
@@ -110,10 +326,98 @@ func (u *UserNotificationSettingRepo) CreateBatch(ctx context.Context, data []*a
 	return nil
 }
 
+// CreateBatchCache 批量创建数据, 并删除缓存
+func (u *UserNotificationSettingRepo) CreateBatchCache(ctx context.Context, data []*ai_boilerplate_model.UserNotificationSetting, batchSize int) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	err := dao.WithContext(ctx).CreateInBatches(data, batchSize)
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, data...)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // CreateBatchByTx 批量创建数据(事务)
 func (u *UserNotificationSettingRepo) CreateBatchByTx(ctx context.Context, tx *ai_boilerplate_dao.Query, data []*ai_boilerplate_model.UserNotificationSetting, batchSize int) error {
 	dao := tx.UserNotificationSetting
 	err := dao.WithContext(ctx).CreateInBatches(data, batchSize)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// CreateBatchCacheByTx 批量创建数据(事务), 并删除缓存
+func (u *UserNotificationSettingRepo) CreateBatchCacheByTx(ctx context.Context, tx *ai_boilerplate_dao.Query, data []*ai_boilerplate_model.UserNotificationSetting, batchSize int) error {
+	dao := tx.UserNotificationSetting
+	err := dao.WithContext(ctx).CreateInBatches(data, batchSize)
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, data...)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpsertOne Upsert一条数据
+// Update all columns, except primary keys, to new value on conflict
+func (u *UserNotificationSettingRepo) UpsertOne(ctx context.Context, data *ai_boilerplate_model.UserNotificationSetting) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	err := dao.WithContext(ctx).Save(data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpsertOneCache Upsert一条数据, 并删除缓存
+// Update all columns, except primary keys, to new value on conflict
+func (u *UserNotificationSettingRepo) UpsertOneCache(ctx context.Context, data *ai_boilerplate_model.UserNotificationSetting) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	oldData, err := dao.WithContext(ctx).Where(dao.ID.Eq(data.ID)).Unscoped().First()
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		return err
+	}
+	err = dao.WithContext(ctx).Save(data)
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, oldData, data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpsertOneByTx Upsert一条数据(事务)
+// Update all columns, except primary keys, to new value on conflict
+func (u *UserNotificationSettingRepo) UpsertOneByTx(ctx context.Context, tx *ai_boilerplate_dao.Query, data *ai_boilerplate_model.UserNotificationSetting) error {
+	dao := tx.UserNotificationSetting
+	err := dao.WithContext(ctx).Save(data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpsertOneCacheByTx Upsert一条数据(事务), 并删除缓存
+// Update all columns, except primary keys, to new value on conflict
+func (u *UserNotificationSettingRepo) UpsertOneCacheByTx(ctx context.Context, tx *ai_boilerplate_dao.Query, data *ai_boilerplate_model.UserNotificationSetting) error {
+	dao := tx.UserNotificationSetting
+	oldData, err := dao.WithContext(ctx).Where(dao.ID.Eq(data.ID)).Unscoped().First()
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		return err
+	}
+	err = dao.WithContext(ctx).Save(data)
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, oldData, data)
 	if err != nil {
 		return err
 	}
@@ -140,6 +444,55 @@ func (u *UserNotificationSettingRepo) UpsertOneByFields(ctx context.Context, dat
 	return nil
 }
 
+// UpsertOneCacheByFields 根据fields字段Upsert一条数据, 并删除缓存
+func (u *UserNotificationSettingRepo) UpsertOneCacheByFields(ctx context.Context, data *ai_boilerplate_model.UserNotificationSetting, fields []string) error {
+	if len(fields) == 0 {
+		return errors.New("UpsertOneByFields fields is empty")
+	}
+	fieldNameToValue := make(map[string]interface{})
+	typ := reflect.TypeOf(data).Elem()
+	val := reflect.ValueOf(data).Elem()
+	for i := 0; i < typ.NumField(); i++ {
+		field := typ.Field(i)
+		gormTag := field.Tag.Get("gorm")
+		if gormTag != "" {
+			gormTags := strings.Split(gormTag, ";")
+			for _, item := range gormTags {
+				if strings.Contains(item, "column") {
+					columnName := strings.TrimPrefix(item, "column:")
+					fieldValue := val.Field(i).Interface()
+					fieldNameToValue[columnName] = fieldValue
+					break
+				}
+			}
+		}
+	}
+	whereExpressions := make([]clause.Expression, 0)
+	columns := make([]clause.Column, 0)
+	for _, item := range fields {
+		whereExpressions = append(whereExpressions, clause.And(clause.Eq{Column: item, Value: fieldNameToValue[item]}))
+		columns = append(columns, clause.Column{Name: item})
+	}
+	oldData := &ai_boilerplate_model.UserNotificationSetting{}
+	err := u.db.Model(&ai_boilerplate_model.UserNotificationSetting{}).Clauses(whereExpressions...).Unscoped().First(oldData).Error
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		return err
+	}
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	err = dao.WithContext(ctx).Clauses(clause.OnConflict{
+		Columns:   columns,
+		UpdateAll: true,
+	}).Create(data)
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, oldData, data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // UpsertOneByFieldsTx 根据fields字段Upsert一条数据(事务)
 func (u *UserNotificationSettingRepo) UpsertOneByFieldsTx(ctx context.Context, tx *ai_boilerplate_dao.Query, data *ai_boilerplate_model.UserNotificationSetting, fields []string) error {
 	if len(fields) == 0 {
@@ -158,6 +511,811 @@ func (u *UserNotificationSettingRepo) UpsertOneByFieldsTx(ctx context.Context, t
 		return err
 	}
 	return nil
+}
+
+// UpsertOneCacheByFieldsTx 根据fields字段Upsert一条数据(事务), 并删除缓存
+func (u *UserNotificationSettingRepo) UpsertOneCacheByFieldsTx(ctx context.Context, tx *ai_boilerplate_dao.Query, data *ai_boilerplate_model.UserNotificationSetting, fields []string) error {
+	if len(fields) == 0 {
+		return errors.New("UpsertOneByFieldsTx fields is empty")
+	}
+	fieldNameToValue := make(map[string]interface{})
+	typ := reflect.TypeOf(data).Elem()
+	val := reflect.ValueOf(data).Elem()
+	for i := 0; i < typ.NumField(); i++ {
+		field := typ.Field(i)
+		gormTag := field.Tag.Get("gorm")
+		if gormTag != "" {
+			gormTags := strings.Split(gormTag, ";")
+			for _, item := range gormTags {
+				if strings.Contains(item, "column") {
+					columnName := strings.TrimPrefix(item, "column:")
+					fieldValue := val.Field(i).Interface()
+					fieldNameToValue[columnName] = fieldValue
+					break
+				}
+			}
+		}
+	}
+	whereExpressions := make([]clause.Expression, 0)
+	columns := make([]clause.Column, 0)
+	for _, item := range fields {
+		whereExpressions = append(whereExpressions, clause.And(clause.Eq{Column: item, Value: fieldNameToValue[item]}))
+		columns = append(columns, clause.Column{Name: item})
+	}
+	oldData := &ai_boilerplate_model.UserNotificationSetting{}
+	err := u.db.Model(&ai_boilerplate_model.UserNotificationSetting{}).Clauses(whereExpressions...).Unscoped().First(oldData).Error
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		return err
+	}
+	dao := tx.UserNotificationSetting
+	err = dao.WithContext(ctx).Clauses(clause.OnConflict{
+		Columns:   columns,
+		UpdateAll: true,
+	}).Create(data)
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, oldData, data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateOne 更新一条数据
+// data 中主键字段必须有值，零值不会被更新
+func (u *UserNotificationSettingRepo) UpdateOne(ctx context.Context, newData *ai_boilerplate_model.UserNotificationSetting) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	_, err := dao.WithContext(ctx).Updates(newData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateOneUnscoped 更新一条数据（包括软删除）
+// data 中主键字段必须有值，零值不会被更新
+func (u *UserNotificationSettingRepo) UpdateOneUnscoped(ctx context.Context, newData *ai_boilerplate_model.UserNotificationSetting) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	_, err := dao.WithContext(ctx).Unscoped().Updates(newData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateOneCache 更新一条数据，并删除缓存
+// data 中主键字段必须有值，零值不会被更新
+// oldData 旧数据，删除缓存时使用
+func (u *UserNotificationSettingRepo) UpdateOneCache(ctx context.Context, newData *ai_boilerplate_model.UserNotificationSetting, oldData *ai_boilerplate_model.UserNotificationSetting) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	_, err := dao.WithContext(ctx).Updates(newData)
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, oldData, newData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateOneUnscopedCache 更新一条数据，并删除缓存（包括软删除）
+// data 中主键字段必须有值，零值不会被更新
+// oldData 旧数据，删除缓存时使用
+func (u *UserNotificationSettingRepo) UpdateOneUnscopedCache(ctx context.Context, newData *ai_boilerplate_model.UserNotificationSetting, oldData *ai_boilerplate_model.UserNotificationSetting) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	_, err := dao.WithContext(ctx).Unscoped().Updates(newData)
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, oldData, newData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateOneByTx 更新一条数据(事务)
+// data 中主键字段必须有值，零值不会被更新
+func (u *UserNotificationSettingRepo) UpdateOneByTx(ctx context.Context, tx *ai_boilerplate_dao.Query, newData *ai_boilerplate_model.UserNotificationSetting) error {
+	dao := tx.UserNotificationSetting
+	_, err := dao.WithContext(ctx).Updates(newData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateOneUnscopedByTx 更新一条数据(事务)（包括软删除）
+// data 中主键字段必须有值，零值不会被更新
+func (u *UserNotificationSettingRepo) UpdateOneUnscopedByTx(ctx context.Context, tx *ai_boilerplate_dao.Query, newData *ai_boilerplate_model.UserNotificationSetting) error {
+	dao := tx.UserNotificationSetting
+	_, err := dao.WithContext(ctx).Unscoped().Updates(newData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateOneCacheByTx 更新一条数据(事务)，并删除缓存
+// data 中主键字段必须有值，零值不会被更新
+// oldData 旧数据，删除缓存时使用
+func (u *UserNotificationSettingRepo) UpdateOneCacheByTx(ctx context.Context, tx *ai_boilerplate_dao.Query, newData *ai_boilerplate_model.UserNotificationSetting, oldData *ai_boilerplate_model.UserNotificationSetting) error {
+	dao := tx.UserNotificationSetting
+	_, err := dao.WithContext(ctx).Updates(newData)
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, oldData, newData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateOneUnscopedCacheByTx 更新一条数据(事务)，并删除缓存（包括软删除）
+// data 中主键字段必须有值，零值不会被更新
+// oldData 旧数据，删除缓存时使用
+func (u *UserNotificationSettingRepo) UpdateOneUnscopedCacheByTx(ctx context.Context, tx *ai_boilerplate_dao.Query, newData *ai_boilerplate_model.UserNotificationSetting, oldData *ai_boilerplate_model.UserNotificationSetting) error {
+	dao := tx.UserNotificationSetting
+	_, err := dao.WithContext(ctx).Unscoped().Updates(newData)
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, oldData, newData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateOneWithZero 更新一条数据,包含零值
+// data 中主键字段必须有值,并且会更新所有字段,包括零值
+func (u *UserNotificationSettingRepo) UpdateOneWithZero(ctx context.Context, newData *ai_boilerplate_model.UserNotificationSetting) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	_, err := dao.WithContext(ctx).Select(dao.ALL.WithTable("")).Updates(newData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateOneUnscopedWithZero 更新一条数据,包含零值（包括软删除）
+// data 中主键字段必须有值,并且会更新所有字段,包括零值
+func (u *UserNotificationSettingRepo) UpdateOneUnscopedWithZero(ctx context.Context, newData *ai_boilerplate_model.UserNotificationSetting) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	_, err := dao.WithContext(ctx).Unscoped().Select(dao.ALL.WithTable("")).Updates(newData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateOneCacheWithZero 更新一条数据,包含零值，并删除缓存
+// data 中主键字段必须有值,并且会更新所有字段,包括零值
+// oldData 旧数据，删除缓存时使用
+func (u *UserNotificationSettingRepo) UpdateOneCacheWithZero(ctx context.Context, newData *ai_boilerplate_model.UserNotificationSetting, oldData *ai_boilerplate_model.UserNotificationSetting) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	_, err := dao.WithContext(ctx).Select(dao.ALL.WithTable("")).Updates(newData)
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, oldData, newData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateOneUnscopedCacheWithZero 更新一条数据,包含零值，并删除缓存（包括软删除）
+// data 中主键字段必须有值,并且会更新所有字段,包括零值
+// oldData 旧数据，删除缓存时使用
+func (u *UserNotificationSettingRepo) UpdateOneUnscopedCacheWithZero(ctx context.Context, newData *ai_boilerplate_model.UserNotificationSetting, oldData *ai_boilerplate_model.UserNotificationSetting) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	_, err := dao.WithContext(ctx).Unscoped().Select(dao.ALL.WithTable("")).Updates(newData)
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, oldData, newData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateOneWithZeroByTx 更新一条数据(事务),包含零值，
+// data 中主键字段必须有值,并且会更新所有字段,包括零值
+func (u *UserNotificationSettingRepo) UpdateOneWithZeroByTx(ctx context.Context, tx *ai_boilerplate_dao.Query, newData *ai_boilerplate_model.UserNotificationSetting) error {
+	dao := tx.UserNotificationSetting
+	_, err := dao.WithContext(ctx).Select(dao.ALL.WithTable("")).Updates(newData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateOneUnscopedWithZeroByTx 更新一条数据(事务),包含零值（包括软删除）
+// data 中主键字段必须有值,并且会更新所有字段,包括零值
+func (u *UserNotificationSettingRepo) UpdateOneUnscopedWithZeroByTx(ctx context.Context, tx *ai_boilerplate_dao.Query, newData *ai_boilerplate_model.UserNotificationSetting) error {
+	dao := tx.UserNotificationSetting
+	_, err := dao.WithContext(ctx).Unscoped().Select(dao.ALL.WithTable("")).Updates(newData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateOneCacheWithZeroByTx 更新一条数据(事务),包含零值，并删除缓存
+// data 中主键字段必须有值,并且会更新所有字段,包括零值
+// oldData 旧数据，删除缓存时使用
+func (u *UserNotificationSettingRepo) UpdateOneCacheWithZeroByTx(ctx context.Context, tx *ai_boilerplate_dao.Query, newData *ai_boilerplate_model.UserNotificationSetting, oldData *ai_boilerplate_model.UserNotificationSetting) error {
+	dao := tx.UserNotificationSetting
+	_, err := dao.WithContext(ctx).Select(dao.ALL.WithTable("")).Updates(newData)
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, oldData, newData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateOneUnscopedCacheWithZeroByTx 更新一条数据(事务),包含零值，并删除缓存（包括软删除）
+// data 中主键字段必须有值,并且会更新所有字段,包括零值
+// oldData 旧数据，删除缓存时使用
+func (u *UserNotificationSettingRepo) UpdateOneUnscopedCacheWithZeroByTx(ctx context.Context, tx *ai_boilerplate_dao.Query, newData *ai_boilerplate_model.UserNotificationSetting, oldData *ai_boilerplate_model.UserNotificationSetting) error {
+	dao := tx.UserNotificationSetting
+	_, err := dao.WithContext(ctx).Unscoped().Select(dao.ALL.WithTable("")).Updates(newData)
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, oldData, newData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateBatchByID 根据字段ID批量更新,零值会被更新
+func (u *UserNotificationSettingRepo) UpdateBatchByID(ctx context.Context, ID string, data map[string]interface{}) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	_, err := dao.WithContext(ctx).Where(dao.ID.Eq(ID)).Updates(data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateBatchUnscopedByID 根据字段ID批量更新,零值会被更新（包括软删除）
+func (u *UserNotificationSettingRepo) UpdateBatchUnscopedByID(ctx context.Context, ID string, data map[string]interface{}) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	_, err := dao.WithContext(ctx).Unscoped().Where(dao.ID.Eq(ID)).Updates(data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateBatchByIDTx 根据字段ID批量更新(事务),零值会被更新
+func (u *UserNotificationSettingRepo) UpdateBatchByIDTx(ctx context.Context, tx *ai_boilerplate_dao.Query, ID string, data map[string]interface{}) error {
+	dao := tx.UserNotificationSetting
+	_, err := dao.WithContext(ctx).Where(dao.ID.Eq(ID)).Updates(data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateBatchUnscopedByIDTx 根据字段ID批量更新(事务),零值会被更新（包括软删除）
+func (u *UserNotificationSettingRepo) UpdateBatchUnscopedByIDTx(ctx context.Context, tx *ai_boilerplate_dao.Query, ID string, data map[string]interface{}) error {
+	dao := tx.UserNotificationSetting
+	_, err := dao.WithContext(ctx).Unscoped().Where(dao.ID.Eq(ID)).Updates(data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateBatchByIDS 根据字段IDS批量更新,零值会被更新
+func (u *UserNotificationSettingRepo) UpdateBatchByIDS(ctx context.Context, IDS []string, data map[string]interface{}) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	_, err := dao.WithContext(ctx).Where(dao.ID.In(IDS...)).Updates(data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateBatchUnscopedByIDS 根据字段IDS批量更新,零值会被更新（包括软删除）
+func (u *UserNotificationSettingRepo) UpdateBatchUnscopedByIDS(ctx context.Context, IDS []string, data map[string]interface{}) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	_, err := dao.WithContext(ctx).Unscoped().Where(dao.ID.In(IDS...)).Updates(data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateBatchByIDSTx 根据字段IDS批量更新(事务),零值会被更新
+func (u *UserNotificationSettingRepo) UpdateBatchByIDSTx(ctx context.Context, tx *ai_boilerplate_dao.Query, IDS []string, data map[string]interface{}) error {
+	dao := tx.UserNotificationSetting
+	_, err := dao.WithContext(ctx).Where(dao.ID.In(IDS...)).Updates(data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateBatchUnscopedByIDSTx 根据字段IDS批量更新(事务),零值会被更新（包括软删除）
+func (u *UserNotificationSettingRepo) UpdateBatchUnscopedByIDSTx(ctx context.Context, tx *ai_boilerplate_dao.Query, IDS []string, data map[string]interface{}) error {
+	dao := tx.UserNotificationSetting
+	_, err := dao.WithContext(ctx).Unscoped().Where(dao.ID.In(IDS...)).Updates(data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateBatchByUserID 根据字段UserID批量更新,零值会被更新
+func (u *UserNotificationSettingRepo) UpdateBatchByUserID(ctx context.Context, userID string, data map[string]interface{}) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	_, err := dao.WithContext(ctx).Where(dao.UserID.Eq(userID)).Updates(data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateBatchUnscopedByUserID 根据字段UserID批量更新,零值会被更新（包括软删除）
+func (u *UserNotificationSettingRepo) UpdateBatchUnscopedByUserID(ctx context.Context, userID string, data map[string]interface{}) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	_, err := dao.WithContext(ctx).Unscoped().Where(dao.UserID.Eq(userID)).Updates(data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateBatchByUserIDTx 根据字段UserID批量更新(事务),零值会被更新
+func (u *UserNotificationSettingRepo) UpdateBatchByUserIDTx(ctx context.Context, tx *ai_boilerplate_dao.Query, userID string, data map[string]interface{}) error {
+	dao := tx.UserNotificationSetting
+	_, err := dao.WithContext(ctx).Where(dao.UserID.Eq(userID)).Updates(data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateBatchUnscopedByUserIDTx 根据字段UserID批量更新(事务),零值会被更新（包括软删除）
+func (u *UserNotificationSettingRepo) UpdateBatchUnscopedByUserIDTx(ctx context.Context, tx *ai_boilerplate_dao.Query, userID string, data map[string]interface{}) error {
+	dao := tx.UserNotificationSetting
+	_, err := dao.WithContext(ctx).Unscoped().Where(dao.UserID.Eq(userID)).Updates(data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateBatchByUserIDS 根据字段UserIDS批量更新,零值会被更新
+func (u *UserNotificationSettingRepo) UpdateBatchByUserIDS(ctx context.Context, userIDS []string, data map[string]interface{}) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	_, err := dao.WithContext(ctx).Where(dao.UserID.In(userIDS...)).Updates(data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateBatchUnscopedByUserIDS 根据字段UserIDS批量更新,零值会被更新（包括软删除）
+func (u *UserNotificationSettingRepo) UpdateBatchUnscopedByUserIDS(ctx context.Context, userIDS []string, data map[string]interface{}) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	_, err := dao.WithContext(ctx).Unscoped().Where(dao.UserID.In(userIDS...)).Updates(data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateBatchByUserIDSTx 根据字段UserIDS批量更新(事务),零值会被更新
+func (u *UserNotificationSettingRepo) UpdateBatchByUserIDSTx(ctx context.Context, tx *ai_boilerplate_dao.Query, userIDS []string, data map[string]interface{}) error {
+	dao := tx.UserNotificationSetting
+	_, err := dao.WithContext(ctx).Where(dao.UserID.In(userIDS...)).Updates(data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateBatchUnscopedByUserIDSTx 根据字段UserIDS批量更新(事务),零值会被更新（包括软删除）
+func (u *UserNotificationSettingRepo) UpdateBatchUnscopedByUserIDSTx(ctx context.Context, tx *ai_boilerplate_dao.Query, userIDS []string, data map[string]interface{}) error {
+	dao := tx.UserNotificationSetting
+	_, err := dao.WithContext(ctx).Unscoped().Where(dao.UserID.In(userIDS...)).Updates(data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// FindOneByID 根据ID查询一条数据
+func (u *UserNotificationSettingRepo) FindOneByID(ctx context.Context, ID string) (*ai_boilerplate_model.UserNotificationSetting, error) {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	result, err := dao.WithContext(ctx).Where(dao.ID.Eq(ID)).First()
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, err
+	}
+	return result, nil
+}
+
+// FindOneUnscopedByID 根据ID查询一条数据（包括软删除）
+func (u *UserNotificationSettingRepo) FindOneUnscopedByID(ctx context.Context, ID string) (*ai_boilerplate_model.UserNotificationSetting, error) {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	result, err := dao.WithContext(ctx).Unscoped().Where(dao.ID.Eq(ID)).First()
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, err
+	}
+	return result, nil
+}
+
+// FindOneCacheByID 根据ID查询一条数据，并设置缓存
+func (u *UserNotificationSettingRepo) FindOneCacheByID(ctx context.Context, ID string) (*ai_boilerplate_model.UserNotificationSetting, error) {
+	resp := new(ai_boilerplate_model.UserNotificationSetting)
+	cacheKey := u.cache.Key(CacheUserNotificationSettingByIDPrefix, ID)
+	cacheValue, err := u.cache.Fetch(ctx, cacheKey, func() (string, error) {
+		dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+		result, err := dao.WithContext(ctx).Where(dao.ID.Eq(ID)).First()
+		if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+			return "", err
+		}
+		marshal, err := u.encoding.Marshal(result)
+		if err != nil {
+			return "", err
+		}
+		return string(marshal), nil
+	}, u.cache.TTL())
+	if err != nil {
+		return nil, err
+	}
+	if cacheValue != "" {
+		err = u.encoding.Unmarshal([]byte(cacheValue), resp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return resp, nil
+}
+
+// FindOneUnscopedCacheByID 根据ID查询一条数据（包括软删除），并设置缓存
+func (u *UserNotificationSettingRepo) FindOneUnscopedCacheByID(ctx context.Context, ID string) (*ai_boilerplate_model.UserNotificationSetting, error) {
+	resp := new(ai_boilerplate_model.UserNotificationSetting)
+	cacheKey := u.cache.Key(CacheUserNotificationSettingUnscopedByIDPrefix, ID)
+	cacheValue, err := u.cache.Fetch(ctx, cacheKey, func() (string, error) {
+		dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+		result, err := dao.WithContext(ctx).Unscoped().Where(dao.ID.Eq(ID)).First()
+		if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+			return "", err
+		}
+		marshal, err := u.encoding.Marshal(result)
+		if err != nil {
+			return "", err
+		}
+		return string(marshal), nil
+	}, u.cache.TTL())
+	if err != nil {
+		return nil, err
+	}
+	if cacheValue != "" {
+		err = u.encoding.Unmarshal([]byte(cacheValue), resp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return resp, nil
+}
+
+// FindMultiByIDS 根据IDS查询多条数据
+func (u *UserNotificationSettingRepo) FindMultiByIDS(ctx context.Context, IDS []string) ([]*ai_boilerplate_model.UserNotificationSetting, error) {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	result, err := dao.WithContext(ctx).Where(dao.ID.In(IDS...)).Find()
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+// FindMultiUnscopedByIDS 根据IDS查询多条数据（包括软删除）
+func (u *UserNotificationSettingRepo) FindMultiUnscopedByIDS(ctx context.Context, IDS []string) ([]*ai_boilerplate_model.UserNotificationSetting, error) {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	result, err := dao.WithContext(ctx).Unscoped().Where(dao.ID.In(IDS...)).Find()
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+// FindMultiCacheByIDS 根据IDS查询多条数据，并设置缓存
+func (u *UserNotificationSettingRepo) FindMultiCacheByIDS(ctx context.Context, IDS []string) ([]*ai_boilerplate_model.UserNotificationSetting, error) {
+	resp := make([]*ai_boilerplate_model.UserNotificationSetting, 0)
+	cacheKeys := make([]string, 0)
+	keyToParam := make(map[string]string)
+	for _, item := range IDS {
+		cacheKey := u.cache.Key(CacheUserNotificationSettingByIDPrefix, item)
+		cacheKeys = append(cacheKeys, cacheKey)
+		keyToParam[cacheKey] = item
+	}
+	cacheValue, err := u.cache.FetchBatch(ctx, cacheKeys, func(miss []string) (map[string]string, error) {
+		dbValue := make(map[string]string)
+		params := make([]string, 0)
+		for _, item := range miss {
+			dbValue[item] = ""
+			params = append(params, keyToParam[item])
+		}
+		dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+		result, err := dao.WithContext(ctx).Where(dao.ID.In(params...)).Find()
+		if err != nil {
+			return nil, err
+		}
+		for _, item := range result {
+			marshal, err := u.encoding.Marshal(item)
+			if err != nil {
+				return nil, err
+			}
+			dbValue[u.cache.Key(CacheUserNotificationSettingByIDPrefix, item.ID)] = string(marshal)
+		}
+		return dbValue, nil
+	}, u.cache.TTL())
+	if err != nil {
+		return nil, err
+	}
+	for _, cacheKey := range cacheKeys {
+		if cacheValue[cacheKey] != "" {
+			tmp := new(ai_boilerplate_model.UserNotificationSetting)
+			err := u.encoding.Unmarshal([]byte(cacheValue[cacheKey]), tmp)
+			if err != nil {
+				return nil, err
+			}
+			resp = append(resp, tmp)
+		}
+	}
+	return resp, nil
+}
+
+// FindMultiUnscopedCacheByIDS 根据IDS查询多条数据（包括软删除），并设置缓存
+func (u *UserNotificationSettingRepo) FindMultiUnscopedCacheByIDS(ctx context.Context, IDS []string) ([]*ai_boilerplate_model.UserNotificationSetting, error) {
+	resp := make([]*ai_boilerplate_model.UserNotificationSetting, 0)
+	cacheKeys := make([]string, 0)
+	keyToParam := make(map[string]string)
+	for _, item := range IDS {
+		cacheKey := u.cache.Key(CacheUserNotificationSettingUnscopedByIDPrefix, item)
+		cacheKeys = append(cacheKeys, cacheKey)
+		keyToParam[cacheKey] = item
+	}
+	cacheValue, err := u.cache.FetchBatch(ctx, cacheKeys, func(miss []string) (map[string]string, error) {
+		dbValue := make(map[string]string)
+		params := make([]string, 0)
+		for _, item := range miss {
+			dbValue[item] = ""
+			params = append(params, keyToParam[item])
+		}
+		dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+		result, err := dao.WithContext(ctx).Unscoped().Where(dao.ID.In(params...)).Find()
+		if err != nil {
+			return nil, err
+		}
+		for _, item := range result {
+			marshal, err := u.encoding.Marshal(item)
+			if err != nil {
+				return nil, err
+			}
+			dbValue[u.cache.Key(CacheUserNotificationSettingUnscopedByIDPrefix, item.ID)] = string(marshal)
+		}
+		return dbValue, nil
+	}, u.cache.TTL())
+	if err != nil {
+		return nil, err
+	}
+	for _, cacheKey := range cacheKeys {
+		if cacheValue[cacheKey] != "" {
+			tmp := new(ai_boilerplate_model.UserNotificationSetting)
+			err := u.encoding.Unmarshal([]byte(cacheValue[cacheKey]), tmp)
+			if err != nil {
+				return nil, err
+			}
+			resp = append(resp, tmp)
+		}
+	}
+	return resp, nil
+}
+
+// FindOneByUserID 根据userID查询一条数据
+func (u *UserNotificationSettingRepo) FindOneByUserID(ctx context.Context, userID string) (*ai_boilerplate_model.UserNotificationSetting, error) {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	result, err := dao.WithContext(ctx).Where(dao.UserID.Eq(userID)).First()
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, err
+	}
+	return result, nil
+}
+
+// FindOneUnscopedByUserID 根据userID查询一条数据（包括软删除）
+func (u *UserNotificationSettingRepo) FindOneUnscopedByUserID(ctx context.Context, userID string) (*ai_boilerplate_model.UserNotificationSetting, error) {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	result, err := dao.WithContext(ctx).Unscoped().Where(dao.UserID.Eq(userID)).First()
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, err
+	}
+	return result, nil
+}
+
+// FindOneCacheByUserID 根据userID查询一条数据，并设置缓存
+func (u *UserNotificationSettingRepo) FindOneCacheByUserID(ctx context.Context, userID string) (*ai_boilerplate_model.UserNotificationSetting, error) {
+	resp := new(ai_boilerplate_model.UserNotificationSetting)
+	cacheKey := u.cache.Key(CacheUserNotificationSettingByUserIDPrefix, userID)
+	cacheValue, err := u.cache.Fetch(ctx, cacheKey, func() (string, error) {
+		dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+		result, err := dao.WithContext(ctx).Where(dao.UserID.Eq(userID)).First()
+		if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+			return "", err
+		}
+		marshal, err := u.encoding.Marshal(result)
+		if err != nil {
+			return "", err
+		}
+		return string(marshal), nil
+	}, u.cache.TTL())
+	if err != nil {
+		return nil, err
+	}
+	if cacheValue != "" {
+		err = u.encoding.Unmarshal([]byte(cacheValue), resp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return resp, nil
+}
+
+// FindOneUnscopedCacheByUserID 根据userID查询一条数据（包括软删除），并设置缓存
+func (u *UserNotificationSettingRepo) FindOneUnscopedCacheByUserID(ctx context.Context, userID string) (*ai_boilerplate_model.UserNotificationSetting, error) {
+	resp := new(ai_boilerplate_model.UserNotificationSetting)
+	cacheKey := u.cache.Key(CacheUserNotificationSettingUnscopedByUserIDPrefix, userID)
+	cacheValue, err := u.cache.Fetch(ctx, cacheKey, func() (string, error) {
+		dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+		result, err := dao.WithContext(ctx).Unscoped().Where(dao.UserID.Eq(userID)).First()
+		if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+			return "", err
+		}
+		marshal, err := u.encoding.Marshal(result)
+		if err != nil {
+			return "", err
+		}
+		return string(marshal), nil
+	}, u.cache.TTL())
+	if err != nil {
+		return nil, err
+	}
+	if cacheValue != "" {
+		err = u.encoding.Unmarshal([]byte(cacheValue), resp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return resp, nil
+}
+
+// FindMultiByUserIDS 根据userIDS查询多条数据
+func (u *UserNotificationSettingRepo) FindMultiByUserIDS(ctx context.Context, userIDS []string) ([]*ai_boilerplate_model.UserNotificationSetting, error) {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	result, err := dao.WithContext(ctx).Where(dao.UserID.In(userIDS...)).Find()
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+// FindMultiUnscopedByUserIDS 根据userIDS查询多条数据（包括软删除）
+func (u *UserNotificationSettingRepo) FindMultiUnscopedByUserIDS(ctx context.Context, userIDS []string) ([]*ai_boilerplate_model.UserNotificationSetting, error) {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	result, err := dao.WithContext(ctx).Unscoped().Where(dao.UserID.In(userIDS...)).Find()
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+// FindMultiCacheByUserIDS 根据userIDS查询多条数据，并设置缓存
+func (u *UserNotificationSettingRepo) FindMultiCacheByUserIDS(ctx context.Context, userIDS []string) ([]*ai_boilerplate_model.UserNotificationSetting, error) {
+	resp := make([]*ai_boilerplate_model.UserNotificationSetting, 0)
+	cacheKeys := make([]string, 0)
+	keyToParam := make(map[string]string)
+	for _, item := range userIDS {
+		cacheKey := u.cache.Key(CacheUserNotificationSettingByUserIDPrefix, item)
+		cacheKeys = append(cacheKeys, cacheKey)
+		keyToParam[cacheKey] = item
+	}
+	cacheValue, err := u.cache.FetchBatch(ctx, cacheKeys, func(miss []string) (map[string]string, error) {
+		dbValue := make(map[string]string)
+		params := make([]string, 0)
+		for _, item := range miss {
+			dbValue[item] = ""
+			params = append(params, keyToParam[item])
+		}
+		dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+		result, err := dao.WithContext(ctx).Where(dao.UserID.In(params...)).Find()
+		if err != nil {
+			return nil, err
+		}
+		for _, item := range result {
+			marshal, err := u.encoding.Marshal(item)
+			if err != nil {
+				return nil, err
+			}
+			dbValue[u.cache.Key(CacheUserNotificationSettingByUserIDPrefix, item.UserID)] = string(marshal)
+		}
+		return dbValue, nil
+	}, u.cache.TTL())
+	if err != nil {
+		return nil, err
+	}
+	for _, cacheKey := range cacheKeys {
+		if cacheValue[cacheKey] != "" {
+			tmp := new(ai_boilerplate_model.UserNotificationSetting)
+			err := u.encoding.Unmarshal([]byte(cacheValue[cacheKey]), tmp)
+			if err != nil {
+				return nil, err
+			}
+			resp = append(resp, tmp)
+		}
+	}
+	return resp, nil
+}
+
+// FindMultiUnscopedCacheByUserIDS 根据userIDS查询多条数据（包括软删除），并设置缓存
+func (u *UserNotificationSettingRepo) FindMultiUnscopedCacheByUserIDS(ctx context.Context, userIDS []string) ([]*ai_boilerplate_model.UserNotificationSetting, error) {
+	resp := make([]*ai_boilerplate_model.UserNotificationSetting, 0)
+	cacheKeys := make([]string, 0)
+	keyToParam := make(map[string]string)
+	for _, item := range userIDS {
+		cacheKey := u.cache.Key(CacheUserNotificationSettingUnscopedByUserIDPrefix, item)
+		cacheKeys = append(cacheKeys, cacheKey)
+		keyToParam[cacheKey] = item
+	}
+	cacheValue, err := u.cache.FetchBatch(ctx, cacheKeys, func(miss []string) (map[string]string, error) {
+		dbValue := make(map[string]string)
+		params := make([]string, 0)
+		for _, item := range miss {
+			dbValue[item] = ""
+			params = append(params, keyToParam[item])
+		}
+		dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+		result, err := dao.WithContext(ctx).Unscoped().Where(dao.UserID.In(params...)).Find()
+		if err != nil {
+			return nil, err
+		}
+		for _, item := range result {
+			marshal, err := u.encoding.Marshal(item)
+			if err != nil {
+				return nil, err
+			}
+			dbValue[u.cache.Key(CacheUserNotificationSettingUnscopedByUserIDPrefix, item.UserID)] = string(marshal)
+		}
+		return dbValue, nil
+	}, u.cache.TTL())
+	if err != nil {
+		return nil, err
+	}
+	for _, cacheKey := range cacheKeys {
+		if cacheValue[cacheKey] != "" {
+			tmp := new(ai_boilerplate_model.UserNotificationSetting)
+			err := u.encoding.Unmarshal([]byte(cacheValue[cacheKey]), tmp)
+			if err != nil {
+				return nil, err
+			}
+			resp = append(resp, tmp)
+		}
+	}
+	return resp, nil
 }
 
 // FindMultiByCondition 自定义查询数据(通用)
@@ -316,4 +1474,524 @@ func (u *UserNotificationSettingRepo) FindMultiUnscopedCacheByCondition(ctx cont
 		}
 	}
 	return tmp.Result, tmp.ConditionReply, nil
+}
+
+// DeleteOneByID 根据ID删除一条数据
+func (u *UserNotificationSettingRepo) DeleteOneByID(ctx context.Context, ID string) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	_, err := dao.WithContext(ctx).Where(dao.ID.Eq(ID)).Delete()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteOneUnscopedByID 根据ID删除一条数据
+func (u *UserNotificationSettingRepo) DeleteOneUnscopedByID(ctx context.Context, ID string) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	_, err := dao.WithContext(ctx).Unscoped().Where(dao.ID.Eq(ID)).Delete()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteOneCacheByID 根据ID删除一条数据，并删除缓存
+func (u *UserNotificationSettingRepo) DeleteOneCacheByID(ctx context.Context, ID string) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	result, err := dao.WithContext(ctx).Where(dao.ID.Eq(ID)).First()
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		return err
+	}
+	if result == nil {
+		return nil
+	}
+	_, err = dao.WithContext(ctx).Where(dao.ID.Eq(ID)).Delete()
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, result)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteOneUnscopedCacheByID 根据ID删除一条数据，并删除缓存
+func (u *UserNotificationSettingRepo) DeleteOneUnscopedCacheByID(ctx context.Context, ID string) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	result, err := dao.WithContext(ctx).Unscoped().Where(dao.ID.Eq(ID)).First()
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		return err
+	}
+	if result == nil {
+		return nil
+	}
+	_, err = dao.WithContext(ctx).Unscoped().Where(dao.ID.Eq(ID)).Delete()
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, result)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteOneByIDTx 根据ID删除一条数据
+func (u *UserNotificationSettingRepo) DeleteOneByIDTx(ctx context.Context, tx *ai_boilerplate_dao.Query, ID string) error {
+	dao := tx.UserNotificationSetting
+	_, err := dao.WithContext(ctx).Where(dao.ID.Eq(ID)).Delete()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteOneUnscopedByIDTx 根据ID删除一条数据
+func (u *UserNotificationSettingRepo) DeleteOneUnscopedByIDTx(ctx context.Context, tx *ai_boilerplate_dao.Query, ID string) error {
+	dao := tx.UserNotificationSetting
+	_, err := dao.WithContext(ctx).Unscoped().Where(dao.ID.Eq(ID)).Delete()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteOneCacheByIDTx 根据ID删除一条数据，并删除缓存
+func (u *UserNotificationSettingRepo) DeleteOneCacheByIDTx(ctx context.Context, tx *ai_boilerplate_dao.Query, ID string) error {
+	dao := tx.UserNotificationSetting
+	result, err := dao.WithContext(ctx).Where(dao.ID.Eq(ID)).First()
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		return err
+	}
+	if result == nil {
+		return nil
+	}
+	_, err = dao.WithContext(ctx).Where(dao.ID.Eq(ID)).Delete()
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, result)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteOneUnscopedCacheByIDTx 根据ID删除一条数据，并删除缓存
+func (u *UserNotificationSettingRepo) DeleteOneUnscopedCacheByIDTx(ctx context.Context, tx *ai_boilerplate_dao.Query, ID string) error {
+	dao := tx.UserNotificationSetting
+	result, err := dao.WithContext(ctx).Unscoped().Where(dao.ID.Eq(ID)).First()
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		return err
+	}
+	if result == nil {
+		return nil
+	}
+	_, err = dao.WithContext(ctx).Unscoped().Where(dao.ID.Eq(ID)).Delete()
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, result)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteMultiByIDS 根据IDS删除多条数据
+func (u *UserNotificationSettingRepo) DeleteMultiByIDS(ctx context.Context, IDS []string) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	_, err := dao.WithContext(ctx).Where(dao.ID.In(IDS...)).Delete()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteMultiUnscopedByIDS 根据IDS删除多条数据
+func (u *UserNotificationSettingRepo) DeleteMultiUnscopedByIDS(ctx context.Context, IDS []string) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	_, err := dao.WithContext(ctx).Unscoped().Where(dao.ID.In(IDS...)).Delete()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteMultiCacheByIDS 根据IDS删除多条数据，并删除缓存
+func (u *UserNotificationSettingRepo) DeleteMultiCacheByIDS(ctx context.Context, IDS []string) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	result, err := dao.WithContext(ctx).Where(dao.ID.In(IDS...)).Find()
+	if err != nil {
+		return err
+	}
+	if len(result) == 0 {
+		return nil
+	}
+	_, err = dao.WithContext(ctx).Where(dao.ID.In(IDS...)).Delete()
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, result...)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteMultiUnscopedCacheByIDS 根据IDS删除多条数据，并删除缓存
+func (u *UserNotificationSettingRepo) DeleteMultiUnscopedCacheByIDS(ctx context.Context, IDS []string) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	result, err := dao.WithContext(ctx).Unscoped().Where(dao.ID.In(IDS...)).Find()
+	if err != nil {
+		return err
+	}
+	if len(result) == 0 {
+		return nil
+	}
+	_, err = dao.WithContext(ctx).Unscoped().Where(dao.ID.In(IDS...)).Delete()
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, result...)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteMultiByIDSTx 根据IDS删除多条数据
+func (u *UserNotificationSettingRepo) DeleteMultiByIDSTx(ctx context.Context, tx *ai_boilerplate_dao.Query, IDS []string) error {
+	dao := tx.UserNotificationSetting
+	_, err := dao.WithContext(ctx).Where(dao.ID.In(IDS...)).Delete()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteMultiUnscopedByIDSTx 根据IDS删除多条数据
+func (u *UserNotificationSettingRepo) DeleteMultiUnscopedByIDSTx(ctx context.Context, tx *ai_boilerplate_dao.Query, IDS []string) error {
+	dao := tx.UserNotificationSetting
+	_, err := dao.WithContext(ctx).Unscoped().Where(dao.ID.In(IDS...)).Delete()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteMultiCacheByIDSTx 根据IDS删除多条数据，并删除缓存
+func (u *UserNotificationSettingRepo) DeleteMultiCacheByIDSTx(ctx context.Context, tx *ai_boilerplate_dao.Query, IDS []string) error {
+	dao := tx.UserNotificationSetting
+	result, err := dao.WithContext(ctx).Where(dao.ID.In(IDS...)).Find()
+	if err != nil {
+		return err
+	}
+	if len(result) == 0 {
+		return nil
+	}
+	_, err = dao.WithContext(ctx).Where(dao.ID.In(IDS...)).Delete()
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, result...)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteMultiUnscopedCacheByIDSTx 根据IDS删除多条数据，并删除缓存
+func (u *UserNotificationSettingRepo) DeleteMultiUnscopedCacheByIDSTx(ctx context.Context, tx *ai_boilerplate_dao.Query, IDS []string) error {
+	dao := tx.UserNotificationSetting
+	result, err := dao.WithContext(ctx).Unscoped().Where(dao.ID.In(IDS...)).Find()
+	if err != nil {
+		return err
+	}
+	if len(result) == 0 {
+		return nil
+	}
+	_, err = dao.WithContext(ctx).Unscoped().Where(dao.ID.In(IDS...)).Delete()
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, result...)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteOneByUserID 根据userID删除一条数据
+func (u *UserNotificationSettingRepo) DeleteOneByUserID(ctx context.Context, userID string) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	_, err := dao.WithContext(ctx).Where(dao.UserID.Eq(userID)).Delete()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteOneUnscopedByUserID 根据userID删除一条数据
+func (u *UserNotificationSettingRepo) DeleteOneUnscopedByUserID(ctx context.Context, userID string) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	_, err := dao.WithContext(ctx).Unscoped().Where(dao.UserID.Eq(userID)).Delete()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteOneCacheByUserID 根据userID删除一条数据，并删除缓存
+func (u *UserNotificationSettingRepo) DeleteOneCacheByUserID(ctx context.Context, userID string) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	result, err := dao.WithContext(ctx).Where(dao.UserID.Eq(userID)).First()
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		return err
+	}
+	if result == nil {
+		return nil
+	}
+	_, err = dao.WithContext(ctx).Where(dao.UserID.Eq(userID)).Delete()
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, result)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteOneUnscopedCacheByUserID 根据userID删除一条数据，并删除缓存
+func (u *UserNotificationSettingRepo) DeleteOneUnscopedCacheByUserID(ctx context.Context, userID string) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	result, err := dao.WithContext(ctx).Unscoped().Where(dao.UserID.Eq(userID)).First()
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		return err
+	}
+	if result == nil {
+		return nil
+	}
+	_, err = dao.WithContext(ctx).Unscoped().Where(dao.UserID.Eq(userID)).Delete()
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, result)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteOneByUserIDTx 根据userID删除一条数据
+func (u *UserNotificationSettingRepo) DeleteOneByUserIDTx(ctx context.Context, tx *ai_boilerplate_dao.Query, userID string) error {
+	dao := tx.UserNotificationSetting
+	_, err := dao.WithContext(ctx).Where(dao.UserID.Eq(userID)).Delete()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteOneUnscopedByUserIDTx 根据userID删除一条数据
+func (u *UserNotificationSettingRepo) DeleteOneUnscopedByUserIDTx(ctx context.Context, tx *ai_boilerplate_dao.Query, userID string) error {
+	dao := tx.UserNotificationSetting
+	_, err := dao.WithContext(ctx).Unscoped().Where(dao.UserID.Eq(userID)).Delete()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteOneCacheByUserIDTx 根据userID删除一条数据，并删除缓存
+func (u *UserNotificationSettingRepo) DeleteOneCacheByUserIDTx(ctx context.Context, tx *ai_boilerplate_dao.Query, userID string) error {
+	dao := tx.UserNotificationSetting
+	result, err := dao.WithContext(ctx).Where(dao.UserID.Eq(userID)).First()
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		return err
+	}
+	if result == nil {
+		return nil
+	}
+	_, err = dao.WithContext(ctx).Where(dao.UserID.Eq(userID)).Delete()
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, result)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteOneUnscopedCacheByUserIDTx 根据userID删除一条数据，并删除缓存
+func (u *UserNotificationSettingRepo) DeleteOneUnscopedCacheByUserIDTx(ctx context.Context, tx *ai_boilerplate_dao.Query, userID string) error {
+	dao := tx.UserNotificationSetting
+	result, err := dao.WithContext(ctx).Unscoped().Where(dao.UserID.Eq(userID)).First()
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		return err
+	}
+	if result == nil {
+		return nil
+	}
+	_, err = dao.WithContext(ctx).Unscoped().Where(dao.UserID.Eq(userID)).Delete()
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, result)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteMultiByUserIDS 根据userIDS删除多条数据
+func (u *UserNotificationSettingRepo) DeleteMultiByUserIDS(ctx context.Context, userIDS []string) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	_, err := dao.WithContext(ctx).Where(dao.UserID.In(userIDS...)).Delete()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteMultiUnscopedByUserIDS 根据userIDS删除多条数据
+func (u *UserNotificationSettingRepo) DeleteMultiUnscopedByUserIDS(ctx context.Context, userIDS []string) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	_, err := dao.WithContext(ctx).Unscoped().Where(dao.UserID.In(userIDS...)).Delete()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteMultiCacheByUserIDS 根据userIDS删除多条数据，并删除缓存
+func (u *UserNotificationSettingRepo) DeleteMultiCacheByUserIDS(ctx context.Context, userIDS []string) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	result, err := dao.WithContext(ctx).Where(dao.UserID.In(userIDS...)).Find()
+	if err != nil {
+		return err
+	}
+	if len(result) == 0 {
+		return nil
+	}
+	_, err = dao.WithContext(ctx).Where(dao.UserID.In(userIDS...)).Delete()
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, result...)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteMultiUnscopedCacheByUserIDS 根据userIDS删除多条数据，并删除缓存
+func (u *UserNotificationSettingRepo) DeleteMultiUnscopedCacheByUserIDS(ctx context.Context, userIDS []string) error {
+	dao := ai_boilerplate_dao.Use(u.db).UserNotificationSetting
+	result, err := dao.WithContext(ctx).Unscoped().Where(dao.UserID.In(userIDS...)).Find()
+	if err != nil {
+		return err
+	}
+	if len(result) == 0 {
+		return nil
+	}
+	_, err = dao.WithContext(ctx).Unscoped().Where(dao.UserID.In(userIDS...)).Delete()
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, result...)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteMultiByUserIDSTx 根据userIDS删除多条数据
+func (u *UserNotificationSettingRepo) DeleteMultiByUserIDSTx(ctx context.Context, tx *ai_boilerplate_dao.Query, userIDS []string) error {
+	dao := tx.UserNotificationSetting
+	_, err := dao.WithContext(ctx).Where(dao.UserID.In(userIDS...)).Delete()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteMultiUnscopedByUserIDSTx 根据userIDS删除多条数据
+func (u *UserNotificationSettingRepo) DeleteMultiUnscopedByUserIDSTx(ctx context.Context, tx *ai_boilerplate_dao.Query, userIDS []string) error {
+	dao := tx.UserNotificationSetting
+	_, err := dao.WithContext(ctx).Unscoped().Where(dao.UserID.In(userIDS...)).Delete()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteMultiCacheByUserIDSTx 根据userIDS删除多条数据，并删除缓存
+func (u *UserNotificationSettingRepo) DeleteMultiCacheByUserIDSTx(ctx context.Context, tx *ai_boilerplate_dao.Query, userIDS []string) error {
+	dao := tx.UserNotificationSetting
+	result, err := dao.WithContext(ctx).Where(dao.UserID.In(userIDS...)).Find()
+	if err != nil {
+		return err
+	}
+	if len(result) == 0 {
+		return nil
+	}
+	_, err = dao.WithContext(ctx).Where(dao.UserID.In(userIDS...)).Delete()
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, result...)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteMultiUnscopedCacheByUserIDSTx 根据userIDS删除多条数据，并删除缓存
+func (u *UserNotificationSettingRepo) DeleteMultiUnscopedCacheByUserIDSTx(ctx context.Context, tx *ai_boilerplate_dao.Query, userIDS []string) error {
+	dao := tx.UserNotificationSetting
+	result, err := dao.WithContext(ctx).Unscoped().Where(dao.UserID.In(userIDS...)).Find()
+	if err != nil {
+		return err
+	}
+	if len(result) == 0 {
+		return nil
+	}
+	_, err = dao.WithContext(ctx).Unscoped().Where(dao.UserID.In(userIDS...)).Delete()
+	if err != nil {
+		return err
+	}
+	err = u.DeleteIndexCache(ctx, result...)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteUniqueIndexCache 删除索引存在的缓存
+func (u *UserNotificationSettingRepo) DeleteIndexCache(ctx context.Context, data ...*ai_boilerplate_model.UserNotificationSetting) error {
+	KeyMap := make(map[string]struct{})
+	keys := make([]string, 0)
+	keys = append(keys, u.cache.Key(CacheUserNotificationSettingByConditionPrefix))
+	keys = append(keys, u.cache.Key(CacheUserNotificationSettingUnscopedByConditionPrefix))
+	for _, item := range data {
+		if item != nil {
+			KeyMap[u.cache.Key(CacheUserNotificationSettingByIDPrefix, item.ID)] = struct{}{}
+			KeyMap[u.cache.Key(CacheUserNotificationSettingUnscopedByIDPrefix, item.ID)] = struct{}{}
+			KeyMap[u.cache.Key(CacheUserNotificationSettingByUserIDPrefix, item.UserID)] = struct{}{}
+			KeyMap[u.cache.Key(CacheUserNotificationSettingUnscopedByUserIDPrefix, item.UserID)] = struct{}{}
+		}
+	}
+	for item := range KeyMap {
+		keys = append(keys, item)
+	}
+	err := u.cache.DelBatch(ctx, keys)
+	if err != nil {
+		return err
+	}
+	return nil
 }

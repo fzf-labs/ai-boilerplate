@@ -133,14 +133,6 @@ onShow(() => {
             <text class="header-subtitle">自定义不同类型消息的推送提醒</text>
           </view>
         </view>
-        <wd-button
-          size="small"
-          type="primary"
-          plain
-          @click="handleOpenSystemSettings"
-        >
-          系统设置
-        </wd-button>
       </view>
 
       <wd-card type="rectangle" custom-class="card">
@@ -154,16 +146,14 @@ onShow(() => {
           <wd-loading />
         </view>
         <wd-cell-group v-else-if="hasCategories" border>
-          <wd-cell
-            v-for="item in categories"
-            :key="item.key"
-            :title="item.title"
-            :label="item.description"
-          >
-            <template #right>
-              <wd-switch v-model="item.enabled" />
-            </template>
-          </wd-cell>
+        <wd-cell
+          v-for="item in categories"
+          :key="item.key"
+          :title="item.title"
+          :label="item.description"
+        >
+          <wd-switch v-model="item.enabled" />
+        </wd-cell>
         </wd-cell-group>
         <view v-else class="empty-box">
           暂无可用通知类型

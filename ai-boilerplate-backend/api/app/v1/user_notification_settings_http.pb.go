@@ -30,7 +30,7 @@ type UserNotificationSettingHTTPServer interface {
 func RegisterUserNotificationSettingHTTPServer(s *http.Server, srv UserNotificationSettingHTTPServer) {
 	r := s.Route("/")
 	r.GET("/app/v1/notification/settings", _UserNotificationSetting_GetNotificationSettings0_HTTP_Handler(srv))
-	r.PUT("/app/v1/notification/settings", _UserNotificationSetting_UpdateNotificationSettings0_HTTP_Handler(srv))
+	r.POST("/app/v1/notification/settings", _UserNotificationSetting_UpdateNotificationSettings0_HTTP_Handler(srv))
 }
 
 func _UserNotificationSetting_GetNotificationSettings0_HTTP_Handler(srv UserNotificationSettingHTTPServer) func(ctx http.Context) error {
@@ -103,7 +103,7 @@ func (c *UserNotificationSettingHTTPClientImpl) UpdateNotificationSettings(ctx c
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationUserNotificationSettingUpdateNotificationSettings))
 	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "PUT", path, in, &out, opts...)
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
 		return nil, err
 	}

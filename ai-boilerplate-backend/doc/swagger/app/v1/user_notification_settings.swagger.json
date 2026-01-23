@@ -47,7 +47,7 @@
           "UserNotificationSetting"
         ]
       },
-      "put": {
+      "post": {
         "summary": "更新用户通知设置",
         "operationId": "UserNotificationSetting_UpdateNotificationSettings",
         "responses": {

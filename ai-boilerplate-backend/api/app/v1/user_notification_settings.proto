@@ -29,7 +29,7 @@ service UserNotificationSetting {
   //更新用户通知设置
   rpc UpdateNotificationSettings(UpdateNotificationSettingsReq) returns (UpdateNotificationSettingsReply) {
     option (google.api.http) = {
-      put: "/app/v1/notification/settings"
+      post: "/app/v1/notification/settings"
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {

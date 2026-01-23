@@ -303,16 +303,6 @@ onUnload(() => {
         </view>
       </view>
 
-      <view class="section">
-        <view class="section-card tips-card">
-          <wd-notice-bar
-            text="安全提示：定期修改密码；绑定手机号用于验证与找回；注销账号后数据将被永久删除。"
-            type="warning"
-            :scrollable="false"
-          />
-        </view>
-      </view>
-
       <view class="section logout">
         <view class="section-card action-card">
           <wd-button class="logout-button" :block="true" :round="true" size="large" type="error" @click="handleLogout">

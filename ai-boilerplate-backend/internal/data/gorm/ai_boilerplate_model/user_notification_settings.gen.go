@@ -15,7 +15,7 @@ const TableNameUserNotificationSetting = "user_notification_settings"
 
 // UserNotificationSetting mapped from table <user_notification_settings>
 type UserNotificationSetting struct {
-	ID                      string         `gorm:"column:id;type:uuid;not null" json:"id"`
+	ID                      string         `gorm:"column:id;type:uuid;primaryKey;default:gen_random_uuid()" json:"id"`
 	UserID                  string         `gorm:"column:user_id;type:uuid;not null" json:"userId"`
 	DndStartTime            string         `gorm:"column:dnd_start_time;type:character varying(5)" json:"dndStartTime"`
 	DndEndTime              string         `gorm:"column:dnd_end_time;type:character varying(5)" json:"dndEndTime"`
