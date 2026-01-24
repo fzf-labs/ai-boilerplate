@@ -5,7 +5,7 @@ import type { ProviderModelOption } from '../../utils';
 
 import type { AiIndexAudioRecordInfo } from '#/api/v1/ai-index-audio';
 
-import { onMounted, provide, ref } from 'vue';
+import { computed, onMounted, provide, ref } from 'vue';
 
 import { useUserStore } from '@vben/stores';
 
@@ -28,6 +28,9 @@ const currentType = ref('mine');
 const loading = ref(false);
 // 当前音乐
 const currentSong = ref<MusicRecordView | null>(null);
+const currentSongView = computed<MusicRecordView>(
+  () => currentSong.value ?? ({} as MusicRecordView),
+);
 const userStore = useUserStore();
 const modelOptions = ref<ProviderModelOption[]>([]);
 
@@ -127,7 +130,7 @@ defineExpose({
   generateMusic,
 });
 
-provide('currentSong', currentSong);
+provide('currentSong', currentSongView);
 
 onMounted(async () => {
   try {

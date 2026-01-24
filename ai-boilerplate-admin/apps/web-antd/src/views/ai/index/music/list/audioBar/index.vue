@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-import { inject, reactive, ref } from 'vue';
+import { computed, inject, reactive, ref } from 'vue';
 
 import { IconifyIcon } from '@vben/icons';
-import { formatPast } from '@vben/utils';
 
 import { Image, Slider } from 'ant-design-vue';
 
@@ -11,30 +10,76 @@ defineOptions({ name: 'AiMusicAudioBarIndex' });
 const currentSong = inject<any>('currentSong', {});
 
 const audioRef = ref<HTMLAudioElement | null>(null);
-// 音频相关属性https://www.runoob.com/tags/ref-av-dom.html
-const audioProps = reactive<any>({
+// Audio state for UI and playback control.
+const audioState = reactive({
   autoplay: true,
   paused: false,
-  currentTime: '00:00',
-  duration: '00:00',
+  currentTime: 0,
+  duration: 0,
   muted: false,
-  volume: 50,
 });
+const volumePercent = ref(50);
+
+function formatSeconds(value: number) {
+  const safeValue = Number.isFinite(value) ? Math.floor(value) : 0;
+  const minutes = Math.floor(safeValue / 60);
+  const seconds = safeValue % 60;
+  return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+}
+
+const currentTimeLabel = computed(() => formatSeconds(audioState.currentTime));
+const durationLabel = computed(() => formatSeconds(audioState.duration));
 
 function toggleStatus(type: string) {
-  audioProps[type] = !audioProps[type];
-  if (type === 'paused' && audioRef.value) {
-    if (audioProps[type]) {
-      audioRef.value.pause();
-    } else {
-      audioRef.value.play();
+  if (type === 'paused') {
+    audioState.paused = !audioState.paused;
+    if (audioRef.value) {
+      if (audioState.paused) {
+        audioRef.value.pause();
+      } else {
+        audioRef.value.play();
+      }
+    }
+    return;
+  }
+  if (type === 'muted') {
+    audioState.muted = !audioState.muted;
+    if (audioRef.value) {
+      audioRef.value.muted = audioState.muted;
     }
   }
 }
 
+function seekAudio(value: number) {
+  if (!audioRef.value) {
+    return;
+  }
+  audioRef.value.currentTime = value;
+  audioState.currentTime = value;
+}
+
+function updateDuration() {
+  if (!audioRef.value) {
+    return;
+  }
+  const duration = audioRef.value.duration;
+  audioState.duration = Number.isFinite(duration) ? duration : 0;
+}
+
+function updateVolume(value: number) {
+  volumePercent.value = value;
+  if (audioRef.value) {
+    audioRef.value.volume = Math.min(1, Math.max(0, value / 100));
+  }
+}
+
 // 更新播放位置
-function audioTimeUpdate(args: any) {
-  audioProps.currentTime = formatPast(new Date(args.timeStamp), 'mm:ss');
+function audioTimeUpdate() {
+  if (!audioRef.value) {
+    return;
+  }
+  audioState.currentTime = audioRef.value.currentTime || 0;
+  updateDuration();
 }
 </script>
 
@@ -61,7 +106,7 @@ function audioTimeUpdate(args: any) {
       />
       <IconifyIcon
         :icon="
-          audioProps.paused
+          audioState.paused
             ? 'mdi:arrow-right-drop-circle'
             : 'solar:pause-circle-bold'
         "
@@ -73,31 +118,41 @@ function audioTimeUpdate(args: any) {
         class="size-5 cursor-pointer text-gray-300"
       />
       <div class="flex items-center gap-4">
-        <span>{{ audioProps.currentTime }}</span>
+        <span>{{ currentTimeLabel }}</span>
         <Slider
-          v-model:value="audioProps.duration"
+          v-model:value="audioState.currentTime"
+          :max="audioState.duration"
           color="#409eff"
           class="!w-40"
+          @change="seekAudio"
         />
-        <span>{{ audioProps.duration }}</span>
+        <span>{{ durationLabel }}</span>
       </div>
       <!-- 音频 -->
       <audio
-        v-bind="audioProps"
         ref="audioRef"
         controls
-        v-show="!audioProps"
-        @timeupdate="audioTimeUpdate"
+        :autoplay="audioState.autoplay"
+        :muted="audioState.muted"
         :src="currentSong.audioUrl"
+        :volume="volumePercent / 100"
+        @loadedmetadata="updateDuration"
+        @timeupdate="audioTimeUpdate"
       ></audio>
     </div>
     <div class="flex items-center gap-4">
       <IconifyIcon
-        :icon="audioProps.muted ? 'tabler:volume-off' : 'tabler:volume'"
+        :icon="audioState.muted ? 'tabler:volume-off' : 'tabler:volume'"
         class="size-5 cursor-pointer"
         @click="toggleStatus('muted')"
       />
-      <Slider v-model:value="audioProps.volume" color="#409eff" class="!w-40" />
+      <Slider
+        v-model:value="volumePercent"
+        :max="100"
+        color="#409eff"
+        class="!w-40"
+        @change="updateVolume"
+      />
     </div>
   </div>
 </template>
