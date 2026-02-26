@@ -67,11 +67,11 @@ allowed-tools: Read, Glob, Grep, mcp__dbhub__search_objects
 | Step | 工件 | 状态 |
 |------|------|------|
 | 1 | SQL 文件 | ✅/❌ |
-| 1 | 数据库表 | ✅/❌ |
-| 2 | GORM Model | ✅/❌ |
-| 3 | Proto 文件 | ✅/❌ |
+| 2 | 数据库表 | ✅/❌ |
+| 3 | GORM Model | ✅/❌ |
+| 4 | Proto 文件 | ✅/❌ |
 | 5 | API pb.go | ✅/❌ |
-| 5 | Service 文件 | ✅/❌ |
+| 6 | Service 文件 | ✅/❌ |
 
 ### 建议
 - 建议从 Step {N} 开始
