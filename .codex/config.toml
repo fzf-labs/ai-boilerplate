@@ -1,4 +1,13 @@
-# Connect to your database
-[mcp_servers.dbhub]
+[mcp_servers.chrome-devtools]
+args = ["chrome-devtools-mcp@latest"]
 command = "npx"
-args = ["@bytebase/dbhub@latest", "--transport", "stdio", "--dsn", "postgres://postgres:123456@127.0.0.1:5432/ai_boilerplate"]
+
+[mcp_servers.dbhub]
+args = [
+    "@bytebase/dbhub@latest",
+    "--transport",
+    "stdio",
+    "--dsn",
+    "postgres://postgres:123456@127.0.0.1:5432/ai_boilerplate",
+]
+command = "npx"
