@@ -12,3 +12,5 @@ desktop, and iOS product development.
 - `ai-boilerplate-electron`: Electron desktop boilerplate.
 - `ai-boilerplate-tauri`: Tauri desktop boilerplate.
 - `ai-boilerplate-ios`: SwiftUI iOS boilerplate based on `nimblehq/ios-templates`.
+- `ai-boilerplate-android`: Native Android boilerplate based on
+  `its-me-debk007/kotlin-android-mvvm-template`.
