@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "AI Boilerplate Chrome Extension",
+  "description": "A Manifest V3 Chrome extension starter built with Vite and TypeScript.",
+  "version": "0.0.0",
+  "action": {
+    "default_title": "AI Boilerplate",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "assets/background.js",
+    "type": "module"
+  },
+  "permissions": ["activeTab", "storage"],
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["assets/content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

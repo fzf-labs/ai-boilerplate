@@ -1,0 +1,21 @@
+{
+  "name": "ai-boilerplate-chrome-extension",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Chrome extension boilerplate based on Manifest V3, Vite, and TypeScript.",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "npm run type-check && vite build",
+    "build-only": "vite build",
+    "preview": "vite preview",
+    "type-check": "tsc --noEmit",
+    "pack:zip": "npm run build && cd dist && zip -qr ../chrome-extension.zip ."
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.329",
+    "@types/node": "^24.10.4",
+    "typescript": "~5.9.3",
+    "vite": "^7.3.0"
+  }
+}

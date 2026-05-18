@@ -1,0 +1,4 @@
+node_modules
+dist
+chrome-extension.zip
+*.local

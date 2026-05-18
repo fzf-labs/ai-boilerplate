@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Boilerplate Extension</title>
+  </head>
+  <body>
+    <main class="popup-shell">
+      <section class="hero">
+        <span class="status-dot" aria-hidden="true"></span>
+        <p class="eyebrow">Manifest V3</p>
+        <h1>Chrome Extension</h1>
+        <p id="page-summary" class="summary">Open a web page to inspect the active tab.</p>
+      </section>
+
+      <dl class="meta-list">
+        <div>
+          <dt>Current tab</dt>
+          <dd id="tab-title">Waiting for tab data</dd>
+        </div>
+        <div>
+          <dt>Content script</dt>
+          <dd id="content-status">Checking</dd>
+        </div>
+      </dl>
+
+      <button id="refresh-button" type="button">Refresh tab info</button>
+    </main>
+
+    <script type="module" src="/src/popup/main.ts"></script>
+  </body>
+</html>

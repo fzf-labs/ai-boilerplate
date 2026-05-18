@@ -11,6 +11,7 @@ desktop, and iOS product development.
 - `ai-boilerplate-pc`: PC/web frontend boilerplate.
 - `ai-boilerplate-electron`: Electron desktop boilerplate.
 - `ai-boilerplate-tauri`: Tauri desktop boilerplate.
+- `ai-boilerplate-chrome-extension`: Chrome extension boilerplate based on Manifest V3.
 - `ai-boilerplate-ios`: SwiftUI iOS boilerplate based on `nimblehq/ios-templates`.
 - `ai-boilerplate-android`: Native Android boilerplate based on
   `its-me-debk007/kotlin-android-mvvm-template`.
