@@ -1,0 +1,32 @@
+# frozen_string_literal: true
+
+# Post-build checks that require build artifacts
+# This runs after build/test to analyze build results
+
+xcodeproj = "./AIBoilerplate.xcodeproj"
+xcresultPath = "./fastlane/test_output/AIBoilerplate Staging.xcresult"
+scheme = "AIBoilerplate Staging"
+xcovOutputDirectory = "./fastlane/xcov_output"
+
+# Xcode summary
+changed_files = (git.modified_files - git.deleted_files) + git.added_files
+xcode_summary.ignored_results { |result|
+  if result.location
+    not changed_files.include?(result.location.file_path)
+  else
+    true
+  end
+}
+xcode_summary.inline_mode = true
+xcode_summary.report xcresultPath
+
+# Xcov
+xcov.report(
+  scheme: scheme,
+  project: xcodeproj,
+  output_directory: xcovOutputDirectory,
+  xccov_file_direct_path: xcresultPath,
+  only_project_targets: true,
+  markdown_report: true,
+  html_report: false
+)

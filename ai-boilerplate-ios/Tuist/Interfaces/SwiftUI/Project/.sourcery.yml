@@ -1,0 +1,9 @@
+sources:
+  - AIBoilerplateIOS/Sources
+templates:
+  - tools/sourcery/templates
+output:
+  AIBoilerplateIOSTests/Sources/Mocks/Sourcery 
+args:
+  autoMockableTestableImports:
+    - AIBoilerplateIOS
