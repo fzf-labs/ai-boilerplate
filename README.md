@@ -7,7 +7,7 @@ desktop, and iOS product development.
 
 - `ai-boilerplate-backend`: Go backend boilerplate.
 - `ai-boilerplate-admin`: Admin frontend boilerplate.
-- `ai-boilerplate-app`: Mobile app boilerplate.
+- `ai-boilerplate-uniapp`: Uni-app mobile app boilerplate.
 - `ai-boilerplate-pc`: PC/web frontend boilerplate.
 - `ai-boilerplate-electron`: Electron desktop boilerplate.
 - `ai-boilerplate-tauri`: Tauri desktop boilerplate.
