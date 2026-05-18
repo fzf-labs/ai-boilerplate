@@ -2,7 +2,7 @@
 SUBTREES := \
 	backend|ai-boilerplate-backend|git@github.com:fzf-labs/ai-boilerplate-backend.git|master \
 	admin|ai-boilerplate-admin|git@github.com:fzf-labs/ai-boilerplate-admin.git|master \
-	app|ai-boilerplate-app|git@github.com:fzf-labs/ai-boilerplate-app.git|master
+	app|ai-boilerplate-uniapp|git@github.com:fzf-labs/ai-boilerplate-uniapp.git|master
 
 # 颜色定义
 COLOR_RESET := \033[0m

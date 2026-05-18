@@ -5,7 +5,7 @@ description: App 移动端前端开发技能,基于 uni-app + Vue 3 + TypeScript
 
 # App Development Skill
 
-uni-app 移动端应用开发技能 (ai-boilerplate-app),使用 Vue 3 + TypeScript + wot-design-uni。
+uni-app 移动端应用开发技能 (ai-boilerplate-uniapp),使用 Vue 3 + TypeScript + wot-design-uni。
 
 ## 快速决策指南
 
@@ -32,7 +32,7 @@ uni-app 移动端应用开发技能 (ai-boilerplate-app),使用 Vue 3 + TypeScri
 **何时跳过**: 功能所需的 API 类型已存在。
 
 ```bash
-cd ai-boilerplate-app && pnpm api:gen
+cd ai-boilerplate-uniapp && pnpm api:gen
 ```
 
 **重要**: 禁止手动编辑 `src/api/v1/*` - 这些文件由 Swagger 自动生成。
@@ -114,13 +114,13 @@ onLoad(() => fetchData())
 **运行检查**:
 
 ```bash
-cd ai-boilerplate-app && pnpm type-check && pnpm lint:fix
+cd ai-boilerplate-uniapp && pnpm type-check && pnpm lint:fix
 ```
 
 **本地测试**:
 
 ```bash
-cd ai-boilerplate-app && pnpm dev
+cd ai-boilerplate-uniapp && pnpm dev
 ```
 
 修复所有 TypeScript 和 ESLint 错误后再继续。
@@ -143,7 +143,7 @@ cd ai-boilerplate-app && pnpm dev
 ## 项目结构
 
 ```
-ai-boilerplate-app/src/
+ai-boilerplate-uniapp/src/
 ├── pages/           # Tabbar 页面
 ├── pages-fg/        # 子页面(非 tabbar)
 ├── api/v1/          # 生成的 API (禁止编辑)
@@ -210,17 +210,17 @@ pnpm build:mp     # 构建微信小程序
 
 **API 类型未找到**:
 ```bash
-cd ai-boilerplate-app && pnpm api:gen
+cd ai-boilerplate-uniapp && pnpm api:gen
 ```
 
 **TypeScript 错误**:
 ```bash
-cd ai-boilerplate-app && pnpm type-check
+cd ai-boilerplate-uniapp && pnpm type-check
 ```
 
 **Lint 错误**:
 ```bash
-cd ai-boilerplate-app && pnpm lint:fix
+cd ai-boilerplate-uniapp && pnpm lint:fix
 ```
 
 **组件不工作**: 查看 `references/components-guide.md` 了解正确用法。

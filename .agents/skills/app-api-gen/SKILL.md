@@ -16,14 +16,14 @@ allowed-tools: Bash, Read, Glob
 ## 命令
 
 ```bash
-cd ai-boilerplate-app && pnpm api:gen
+cd ai-boilerplate-uniapp && pnpm api:gen
 ```
 
 ## 工作原理
 
 1. 扫描 `ai-boilerplate-backend/doc/swagger/app/` 下所有 `.swagger.json` 文件
 2. 使用 `openapi-ts-request` 生成 TypeScript 代码
-3. 输出到 `ai-boilerplate-app/src/api/` 目录
+3. 输出到 `ai-boilerplate-uniapp/src/api/` 目录
 
 ## 生成文件
 
@@ -31,9 +31,9 @@ cd ai-boilerplate-app && pnpm api:gen
 - `ai-boilerplate-backend/doc/swagger/app/v1/{module}.swagger.json`
 
 **输出：**
-- `ai-boilerplate-app/src/api/v1/{module}/index.ts` - API 函数
-- `ai-boilerplate-app/src/api/v1/{module}/types.ts` - TypeScript 类型
-- `ai-boilerplate-app/src/api/v1/index.ts` - 统一导出
+- `ai-boilerplate-uniapp/src/api/v1/{module}/index.ts` - API 函数
+- `ai-boilerplate-uniapp/src/api/v1/{module}/types.ts` - TypeScript 类型
+- `ai-boilerplate-uniapp/src/api/v1/index.ts` - 统一导出
 
 ## 使用示例
 
@@ -56,7 +56,7 @@ const res = await createUser({ body: { name: 'test' } })
 
 ```
 ## App API 生成
-- 命令: cd ai-boilerplate-app && pnpm api:gen
+- 命令: cd ai-boilerplate-uniapp && pnpm api:gen
 - 状态: ✅ 已生成
 - 生成模块: [列出生成的模块]
 ```
