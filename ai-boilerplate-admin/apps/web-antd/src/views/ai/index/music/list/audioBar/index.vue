@@ -10,6 +10,8 @@ defineOptions({ name: 'AiMusicAudioBarIndex' });
 const currentSong = inject<any>('currentSong', {});
 
 const audioRef = ref<HTMLAudioElement | null>(null);
+type SliderValue = number | [number, number];
+
 // Audio state for UI and playback control.
 const audioState = reactive({
   autoplay: true,
@@ -50,12 +52,17 @@ function toggleStatus(type: string) {
   }
 }
 
-function seekAudio(value: number) {
+function normalizeSliderValue(value: SliderValue) {
+  return Array.isArray(value) ? (value[0] ?? 0) : value;
+}
+
+function seekAudio(value: SliderValue) {
   if (!audioRef.value) {
     return;
   }
-  audioRef.value.currentTime = value;
-  audioState.currentTime = value;
+  const nextValue = normalizeSliderValue(value);
+  audioRef.value.currentTime = nextValue;
+  audioState.currentTime = nextValue;
 }
 
 function updateDuration() {
@@ -66,10 +73,11 @@ function updateDuration() {
   audioState.duration = Number.isFinite(duration) ? duration : 0;
 }
 
-function updateVolume(value: number) {
-  volumePercent.value = value;
+function updateVolume(value: SliderValue) {
+  const nextValue = normalizeSliderValue(value);
+  volumePercent.value = nextValue;
   if (audioRef.value) {
-    audioRef.value.volume = Math.min(1, Math.max(0, value / 100));
+    audioRef.value.volume = Math.min(1, Math.max(0, nextValue / 100));
   }
 }
 

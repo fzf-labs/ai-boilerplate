@@ -117,6 +117,14 @@ async function handlePay() {
       return
   }
 
+  if (!paymentInfo.value) {
+    await fetchPaymentInfo(orderInfo.value.orderId)
+    if (!paymentInfo.value) {
+      toast.error('获取支付信息失败')
+      return
+    }
+  }
+
   paying.value = true
 
   try {
@@ -146,7 +154,7 @@ async function handlePay() {
 
       // 支付成功
       uni.redirectTo({
-        url: `/pages/vip/result?status=success&orderId=${orderInfo.value.orderId}`,
+        url: `/pages/vip/result?status=pending&orderId=${orderInfo.value.orderId}`,
       })
     }
     // #endif
@@ -154,20 +162,14 @@ async function handlePay() {
     // #ifndef MP-WEIXIN
     // H5/APP 使用支付链接
     if (paymentInfo.value?.paymentUrl) {
+      toast.info('完成支付后，请返回订单页刷新状态')
       // 打开支付页面
       uni.navigateTo({
         url: `/pages-fg/webview/index?url=${encodeURIComponent(paymentInfo.value.paymentUrl)}`,
       })
     }
     else {
-      // 模拟支付成功（开发测试用）
-      toast.loading('正在处理...')
-      setTimeout(() => {
-        toast.close()
-        uni.redirectTo({
-          url: `/pages/vip/result?status=success&orderId=${orderInfo.value?.orderId}`,
-        })
-      }, 1500)
+      toast.error('当前支付方式暂不支持此平台，请稍后再试')
     }
     // #endif
   }

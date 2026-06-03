@@ -53,6 +53,7 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
     const accessStore = useAccessStore();
     const authStore = useAuthStore();
     accessStore.setAccessToken(null);
+    accessStore.setRefreshToken(null);
     if (
       preferences.app.loginExpiredMode === 'modal' &&
       accessStore.isAccessChecked
@@ -68,27 +69,24 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
    */
   async function doRefreshToken() {
     const accessStore = useAccessStore();
-    const oldRefreshToken = accessStore.refreshToken;
-    
+    const oldRefreshToken = accessStore.refreshToken || accessStore.accessToken;
+
     if (!oldRefreshToken) {
       throw new Error('No refresh token available');
     }
-    
+
     const resp = await sysAuthRefreshToken({
       body: { refreshToken: oldRefreshToken },
     });
-    
+
     const newToken = resp.token;
     if (!newToken) {
       throw new Error('Failed to refresh token');
     }
-    
+
     accessStore.setAccessToken(newToken);
-    // 如果返回了新的 refreshToken，也更新它
-    if (resp.refreshAt) {
-      accessStore.setRefreshToken(newToken);
-    }
-    
+    accessStore.setRefreshToken(newToken);
+
     return newToken;
   }
 

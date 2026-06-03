@@ -4,6 +4,7 @@ import (
 	"context"
 
 	pb "github.com/fzf-labs/ai-boilerplate-backend/api/app/v1"
+	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/constant"
 )
 
 // Login 登录
@@ -16,6 +17,9 @@ func (a *AppV1UserService) Login(ctx context.Context, req *pb.LoginReq) (*pb.Log
 	}
 	if user == nil || user.ID == "" {
 		return nil, pb.ErrorReasonAccountNotFound()
+	}
+	if user.Status != int32(constant.StatusEnable) {
+		return nil, pb.ErrorReasonUnauthorized()
 	}
 	// 验证密码
 	if !a.userRepo.VerifyPassword(user.Salt, req.GetPassword(), user.Password) {

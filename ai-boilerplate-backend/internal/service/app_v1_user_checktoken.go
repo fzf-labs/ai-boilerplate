@@ -4,6 +4,7 @@ import (
 	"context"
 
 	pb "github.com/fzf-labs/ai-boilerplate-backend/api/app/v1"
+	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/constant"
 )
 
 // CheckToken 检查token
@@ -18,6 +19,13 @@ func (a *AppV1UserService) CheckToken(ctx context.Context, req *pb.CheckTokenReq
 	uid, ok := claims["uid"].(string)
 	if !ok || uid == "" {
 		return nil, pb.ErrorReasonTokenInvalidErr()
+	}
+	user, err := a.userRepo.FindOneCacheByID(ctx, uid)
+	if err != nil {
+		return nil, pb.ErrorReasonDataSQLError(pb.WithError(err))
+	}
+	if user == nil || user.ID == "" || user.Status != int32(constant.StatusEnable) {
+		return nil, pb.ErrorReasonUnauthorized()
 	}
 	resp.UserId = uid
 	if wxGzhUserID, ok := claims["wxGzhUserId"].(string); ok {

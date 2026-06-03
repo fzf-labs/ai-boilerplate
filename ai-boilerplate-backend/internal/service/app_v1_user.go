@@ -8,17 +8,26 @@ import (
 
 func NewAppV1UserService(
 	logger log.Logger,
+	commonRepo *data.CommonRepo,
+	smsCodeRepo *data.SmsCodeRepo,
 	userRepo *data.UserRepo,
+	userMembershipRepo *data.UserMembershipRepo,
 ) *AppV1UserService {
 	l := log.NewHelper(log.With(logger, "module", "service/user"))
 	return &AppV1UserService{
-		log:      l,
-		userRepo: userRepo,
+		log:                l,
+		commonRepo:         commonRepo,
+		smsCodeRepo:        smsCodeRepo,
+		userRepo:           userRepo,
+		userMembershipRepo: userMembershipRepo,
 	}
 }
 
 type AppV1UserService struct {
 	pb.UnimplementedUserServer
-	log      *log.Helper
-	userRepo *data.UserRepo
+	log                *log.Helper
+	commonRepo         *data.CommonRepo
+	smsCodeRepo        *data.SmsCodeRepo
+	userRepo           *data.UserRepo
+	userMembershipRepo *data.UserMembershipRepo
 }

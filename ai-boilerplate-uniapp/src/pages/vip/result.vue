@@ -9,16 +9,30 @@ definePage({
   },
 })
 
+type ResultStatus = 'success' | 'fail' | 'pending'
+
 const toast = useToast()
 
-// 支付状态
-const status = ref<'success' | 'fail'>('success')
+// 路由状态提示，仅作为兜底，不直接信任成功态
+const statusHint = ref<ResultStatus>('pending')
 // 订单ID
 const orderId = ref('')
 // 订单信息
 const orderInfo = ref<MallOrderInfo | null>(null)
 // 加载状态
 const loading = ref(false)
+
+const status = computed<ResultStatus>(() => {
+  switch (orderInfo.value?.paymentStatus) {
+    case 1:
+    case 3:
+      return 'success'
+    case 2:
+      return 'fail'
+    default:
+      return statusHint.value === 'fail' ? 'fail' : 'pending'
+  }
+})
 
 /**
  * 获取订单详情
@@ -52,6 +66,17 @@ function formatPrice(p?: number) {
   return p.toFixed(2)
 }
 
+function getPaymentMethodText(method?: string) {
+  switch (method) {
+    case 'wechat':
+      return '微信支付'
+    case 'alipay':
+      return '支付宝'
+    default:
+      return method || '待确认'
+  }
+}
+
 /**
  * 查看会员详情
  */
@@ -77,10 +102,24 @@ function handleRetry() {
   uni.navigateBack()
 }
 
+async function handleRefreshStatus() {
+  await fetchOrderInfo()
+  if (status.value === 'success') {
+    toast.success('支付已确认')
+    return
+  }
+  if (status.value === 'fail') {
+    toast.error('支付失败，请重新支付')
+    return
+  }
+  toast.info('支付结果确认中，请稍后再试')
+}
+
 // 页面加载
 onLoad((options) => {
   const opts = options as Record<string, string>
-  status.value = (opts.status as 'success' | 'fail') || 'success'
+  const queryStatus = opts.status as ResultStatus | undefined
+  statusHint.value = queryStatus === 'fail' ? 'fail' : 'pending'
   orderId.value = opts.orderId || ''
 
   if (orderId.value) {
@@ -92,23 +131,41 @@ onLoad((options) => {
 <template>
   <view class="result-page">
     <!-- 结果图标 -->
-    <view class="result-header" :class="{ success: status === 'success', fail: status === 'fail' }">
+    <view
+      class="result-header"
+      :class="{
+        success: status === 'success',
+        fail: status === 'fail',
+        pending: status === 'pending',
+      }"
+    >
       <view class="result-icon">
+        <wd-loading v-if="status === 'pending'" size="48rpx" />
         <wd-icon
+          v-else
           :name="status === 'success' ? 'check' : 'close'"
           size="80rpx"
           color="var(--fg-text-inverse)"
         />
       </view>
       <view class="result-title">
-        {{ status === 'success' ? '支付成功' : '支付失败' }}
+        {{
+          status === 'success'
+            ? '支付成功'
+            : status === 'fail'
+              ? '支付失败'
+              : '支付确认中'
+        }}
       </view>
       <view class="result-desc">
         <template v-if="status === 'success'">
           恭喜您成功开通VIP会员
         </template>
-        <template v-else>
+        <template v-else-if="status === 'fail'">
           支付过程中出现问题，请重试
+        </template>
+        <template v-else>
+          支付结果正在同步，请稍后刷新查看
         </template>
       </view>
     </view>
@@ -133,7 +190,7 @@ onLoad((options) => {
         </view>
         <view class="order-row">
           <text class="label">支付方式</text>
-          <text class="value">微信支付</text>
+          <text class="value">{{ getPaymentMethodText(orderInfo.paymentMethod) }}</text>
         </view>
         <view v-if="orderInfo.paymentTime" class="order-row">
           <text class="label">支付时间</text>
@@ -164,7 +221,7 @@ onLoad((options) => {
           返回首页
         </wd-button>
       </template>
-      <template v-else>
+      <template v-else-if="status === 'fail'">
         <wd-button
           type="primary"
           size="large"
@@ -173,6 +230,26 @@ onLoad((options) => {
           @click="handleRetry"
         >
           重新支付
+        </wd-button>
+        <wd-button
+          type="text"
+          size="large"
+          block
+          custom-class="secondary-btn"
+          @click="handleGoHome"
+        >
+          返回首页
+        </wd-button>
+      </template>
+      <template v-else>
+        <wd-button
+          type="primary"
+          size="large"
+          round block
+          :loading="loading"
+          @click="handleRefreshStatus"
+        >
+          刷新状态
         </wd-button>
         <wd-button
           type="text"
@@ -223,6 +300,11 @@ onLoad((options) => {
 .result-header.fail .result-icon {
   background: rgba(255, 59, 48, 0.12);
   box-shadow: 0 12rpx 28rpx rgba(255, 59, 48, 0.2);
+}
+
+.result-header.pending .result-icon {
+  background: rgba(var(--fg-primary-rgb), 0.08);
+  box-shadow: var(--fg-shadow-soft);
 }
 
 .result-title {

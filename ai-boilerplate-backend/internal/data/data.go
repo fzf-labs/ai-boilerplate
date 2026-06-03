@@ -63,6 +63,7 @@ var ProviderSet = wire.NewSet(
 	NewSelfAppReleaseRepo,
 	NewSelfAppRepo,
 	NewSensitiveWordRepo,
+	NewSmsCodeRepo,
 	NewSmsChannelRepo,
 	NewSmsLogRepo,
 	NewSmsTemplateRepo,

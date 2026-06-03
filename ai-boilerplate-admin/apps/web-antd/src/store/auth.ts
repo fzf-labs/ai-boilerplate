@@ -44,6 +44,7 @@ export const useAuthStore = defineStore('auth', () => {
       // 如果成功获取到 accessToken
       if (token) {
         accessStore.setAccessToken(token);
+        accessStore.setRefreshToken(token);
         // 获取用户信息并存储到 accessStore 中
         const fetchAdminInfoResult = await fetchAdminInfo();
         adminInfo = fetchAdminInfoResult as unknown as AuthAdminInfo;
