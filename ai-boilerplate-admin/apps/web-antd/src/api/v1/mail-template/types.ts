@@ -170,6 +170,28 @@ export type MailTemplateSelectorItem = {
   name?: string;
 };
 
+export type SendMailTemplateMsgReply = object;
+
+export type SendMailTemplateMsgReq = {
+  /** 模板编号 */
+  id: string;
+  /** 收件邮箱 */
+  mail: string;
+  /** 模板参数 */
+  params?: Record<string, string>;
+};
+
+export type SendMailTemplateMsgResponses = {
+  /**
+   * A successful response.
+   */
+  200: SendMailTemplateMsgReply;
+  /**
+   * An unexpected error response.
+   */
+  default: Status;
+};
+
 export type Status = {
   code?: number;
   message?: string;

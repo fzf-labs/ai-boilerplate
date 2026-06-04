@@ -7,9 +7,22 @@ import { useAccess } from '@vben/access';
 import { getMailAccountSelector } from '#/api/v1/mail-account';
 import { getMailTemplateSelector } from '#/api/v1/mail-template';
 import { getRangePickerDefaultProps } from '#/utils';
-import { CommonStatusEnum } from '#/utils/constants';
 
 const { hasAccessByCodes } = useAccess();
+
+export function formatMailSendStatus(sendStatus?: number) {
+  switch (sendStatus) {
+    case 1: {
+      return '成功';
+    }
+    case -1: {
+      return '失败';
+    }
+    default: {
+      return '';
+    }
+  }
+}
 
 /** 列表的搜索表单 */
 export function useGridFormSchema(): VbenFormSchema[] {
@@ -141,17 +154,7 @@ export function useGridColumns<T = MailLogInfo>(
       title: '发送状态',
       minWidth: 120,
       formatter: (row) => {
-        switch (row.cellValue) {
-          case CommonStatusEnum.DISABLE: {
-            return '禁用';
-          }
-          case CommonStatusEnum.ENABLE: {
-            return '启用';
-          }
-          default: {
-            return '';
-          }
-        }
+        return formatMailSendStatus(Number(row.cellValue));
       },
     },
     {

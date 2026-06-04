@@ -120,6 +120,24 @@ service MailTemplate {
       }
     };
   }
+
+  //邮件模版表-发送邮件
+  rpc SendMailTemplateMsg(SendMailTemplateMsgReq) returns (SendMailTemplateMsgReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/mail_template/send"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "Bearer Token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
 }
 
 //邮件模版表信息
@@ -360,3 +378,28 @@ message GetMailTemplateSelectorReq {
 message GetMailTemplateSelectorReply {
   repeated MailTemplateSelectorItem list = 1; // 列表数据
 }
+
+//请求-邮件模版表-发送邮件
+message SendMailTemplateMsgReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: [
+        "id",
+        "mail"
+      ]
+    }
+  };
+
+  string id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }]; // 模板编号
+  string mail = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 255
+  }]; // 收件邮箱
+  map<string, string> params = 3; // 模板参数
+}
+
+//响应-邮件模版表-发送邮件
+message SendMailTemplateMsgReply {}

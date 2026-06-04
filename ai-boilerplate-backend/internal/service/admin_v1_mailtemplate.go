@@ -9,11 +9,15 @@ import (
 func NewAdminV1MailTemplateService(
 	logger log.Logger,
 	mailTemplateRepo *data.MailTemplateRepo,
+	mailAccountRepo *data.MailAccountRepo,
+	mailLogRepo *data.MailLogRepo,
 ) *AdminV1MailTemplateService {
 	l := log.NewHelper(log.With(logger, "module", "service/mailTemplate"))
 	return &AdminV1MailTemplateService{
 		log:              l,
 		mailTemplateRepo: mailTemplateRepo,
+		mailAccountRepo:  mailAccountRepo,
+		mailLogRepo:      mailLogRepo,
 	}
 }
 
@@ -21,4 +25,6 @@ type AdminV1MailTemplateService struct {
 	pb.UnimplementedMailTemplateServer
 	log              *log.Helper
 	mailTemplateRepo *data.MailTemplateRepo
+	mailAccountRepo  *data.MailAccountRepo
+	mailLogRepo      *data.MailLogRepo
 }

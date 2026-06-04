@@ -24,6 +24,7 @@ const OperationMailTemplateDeleteMailTemplate = "/admin.v1.MailTemplate/DeleteMa
 const OperationMailTemplateGetMailTemplateInfo = "/admin.v1.MailTemplate/GetMailTemplateInfo"
 const OperationMailTemplateGetMailTemplateList = "/admin.v1.MailTemplate/GetMailTemplateList"
 const OperationMailTemplateGetMailTemplateSelector = "/admin.v1.MailTemplate/GetMailTemplateSelector"
+const OperationMailTemplateSendMailTemplateMsg = "/admin.v1.MailTemplate/SendMailTemplateMsg"
 const OperationMailTemplateUpdateMailTemplate = "/admin.v1.MailTemplate/UpdateMailTemplate"
 const OperationMailTemplateUpdateMailTemplateStatus = "/admin.v1.MailTemplate/UpdateMailTemplateStatus"
 
@@ -33,6 +34,7 @@ type MailTemplateHTTPServer interface {
 	GetMailTemplateInfo(context.Context, *GetMailTemplateInfoReq) (*GetMailTemplateInfoReply, error)
 	GetMailTemplateList(context.Context, *GetMailTemplateListReq) (*GetMailTemplateListReply, error)
 	GetMailTemplateSelector(context.Context, *GetMailTemplateSelectorReq) (*GetMailTemplateSelectorReply, error)
+	SendMailTemplateMsg(context.Context, *SendMailTemplateMsgReq) (*SendMailTemplateMsgReply, error)
 	UpdateMailTemplate(context.Context, *UpdateMailTemplateReq) (*UpdateMailTemplateReply, error)
 	UpdateMailTemplateStatus(context.Context, *UpdateMailTemplateStatusReq) (*UpdateMailTemplateStatusReply, error)
 }
@@ -46,6 +48,7 @@ func RegisterMailTemplateHTTPServer(s *http.Server, srv MailTemplateHTTPServer) 
 	r.GET("/admin/v1/mail_template/info", _MailTemplate_GetMailTemplateInfo0_HTTP_Handler(srv))
 	r.GET("/admin/v1/mail_template/list", _MailTemplate_GetMailTemplateList0_HTTP_Handler(srv))
 	r.GET("/admin/v1/mail_template/selector", _MailTemplate_GetMailTemplateSelector0_HTTP_Handler(srv))
+	r.POST("/admin/v1/mail_template/send", _MailTemplate_SendMailTemplateMsg0_HTTP_Handler(srv))
 }
 
 func _MailTemplate_CreateMailTemplate0_HTTP_Handler(srv MailTemplateHTTPServer) func(ctx http.Context) error {
@@ -181,12 +184,32 @@ func _MailTemplate_GetMailTemplateSelector0_HTTP_Handler(srv MailTemplateHTTPSer
 	}
 }
 
+func _MailTemplate_SendMailTemplateMsg0_HTTP_Handler(srv MailTemplateHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in SendMailTemplateMsgReq
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationMailTemplateSendMailTemplateMsg)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.SendMailTemplateMsg(ctx, req.(*SendMailTemplateMsgReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*SendMailTemplateMsgReply)
+		return ctx.Result(200, reply)
+	}
+}
+
 type MailTemplateHTTPClient interface {
 	CreateMailTemplate(ctx context.Context, req *CreateMailTemplateReq, opts ...http.CallOption) (rsp *CreateMailTemplateReply, err error)
 	DeleteMailTemplate(ctx context.Context, req *DeleteMailTemplateReq, opts ...http.CallOption) (rsp *DeleteMailTemplateReply, err error)
 	GetMailTemplateInfo(ctx context.Context, req *GetMailTemplateInfoReq, opts ...http.CallOption) (rsp *GetMailTemplateInfoReply, err error)
 	GetMailTemplateList(ctx context.Context, req *GetMailTemplateListReq, opts ...http.CallOption) (rsp *GetMailTemplateListReply, err error)
 	GetMailTemplateSelector(ctx context.Context, req *GetMailTemplateSelectorReq, opts ...http.CallOption) (rsp *GetMailTemplateSelectorReply, err error)
+	SendMailTemplateMsg(ctx context.Context, req *SendMailTemplateMsgReq, opts ...http.CallOption) (rsp *SendMailTemplateMsgReply, err error)
 	UpdateMailTemplate(ctx context.Context, req *UpdateMailTemplateReq, opts ...http.CallOption) (rsp *UpdateMailTemplateReply, err error)
 	UpdateMailTemplateStatus(ctx context.Context, req *UpdateMailTemplateStatusReq, opts ...http.CallOption) (rsp *UpdateMailTemplateStatusReply, err error)
 }
@@ -258,6 +281,19 @@ func (c *MailTemplateHTTPClientImpl) GetMailTemplateSelector(ctx context.Context
 	opts = append(opts, http.Operation(OperationMailTemplateGetMailTemplateSelector))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *MailTemplateHTTPClientImpl) SendMailTemplateMsg(ctx context.Context, in *SendMailTemplateMsgReq, opts ...http.CallOption) (*SendMailTemplateMsgReply, error) {
+	var out SendMailTemplateMsgReply
+	pattern := "/admin/v1/mail_template/send"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationMailTemplateSendMailTemplateMsg))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
 		return nil, err
 	}

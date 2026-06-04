@@ -107,6 +107,33 @@ export type LoginResponses = {
   default: Status;
 };
 
+export type RegisterReply = {
+  /** 用户ID */
+  id?: string;
+};
+
+export type RegisterReq = {
+  /** 手机号 */
+  phone: string;
+  /** 密码 */
+  password: string;
+  /** 确认密码 */
+  confirmPassword: string;
+  /** 昵称 */
+  nickname?: string;
+};
+
+export type RegisterResponses = {
+  /**
+   * A successful response.
+   */
+  200: RegisterReply;
+  /**
+   * An unexpected error response.
+   */
+  default: Status;
+};
+
 export type SendVerifyCodeReply = object;
 
 export type SendVerifyCodeReq = {

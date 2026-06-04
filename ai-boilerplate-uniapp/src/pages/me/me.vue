@@ -170,14 +170,9 @@ async function fetchMembershipInfo() {
  * 登录
  */
 async function handleLogin() {
-  // #ifdef MP-WEIXIN
-  await tokenStore.wxLogin()
-  // #endif
-  // #ifndef MP-WEIXIN
   uni.navigateTo({
     url: `${LOGIN_PAGE}`,
   })
-  // #endif
 }
 
 /**

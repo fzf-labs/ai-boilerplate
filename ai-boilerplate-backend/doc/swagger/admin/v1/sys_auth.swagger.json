@@ -334,6 +334,24 @@
       },
       "title": "响应-查询用户信息"
     },
+    "admin.v1.SysAuthCheckTokenReply": {
+      "type": "object",
+      "properties": {
+        "adminId": {
+          "type": "string",
+          "title": "管理员ID"
+        },
+        "nickname": {
+          "type": "string",
+          "title": "昵称"
+        },
+        "tenantId": {
+          "type": "string",
+          "title": "租户ID"
+        }
+      },
+      "title": "响应-检查token"
+    },
     "admin.v1.SysAuthLoginReply": {
       "type": "object",
       "properties": {

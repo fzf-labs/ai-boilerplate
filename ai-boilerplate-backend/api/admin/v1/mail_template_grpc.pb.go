@@ -36,6 +36,8 @@ type MailTemplateClient interface {
 	GetMailTemplateList(ctx context.Context, in *GetMailTemplateListReq, opts ...grpc.CallOption) (*GetMailTemplateListReply, error)
 	// 邮件模版表-选择器
 	GetMailTemplateSelector(ctx context.Context, in *GetMailTemplateSelectorReq, opts ...grpc.CallOption) (*GetMailTemplateSelectorReply, error)
+	// 邮件模版表-发送邮件
+	SendMailTemplateMsg(ctx context.Context, in *SendMailTemplateMsgReq, opts ...grpc.CallOption) (*SendMailTemplateMsgReply, error)
 }
 
 type mailTemplateClient struct {
@@ -109,6 +111,15 @@ func (c *mailTemplateClient) GetMailTemplateSelector(ctx context.Context, in *Ge
 	return out, nil
 }
 
+func (c *mailTemplateClient) SendMailTemplateMsg(ctx context.Context, in *SendMailTemplateMsgReq, opts ...grpc.CallOption) (*SendMailTemplateMsgReply, error) {
+	out := new(SendMailTemplateMsgReply)
+	err := c.cc.Invoke(ctx, "/admin.v1.MailTemplate/SendMailTemplateMsg", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MailTemplateServer is the server API for MailTemplate service.
 // All implementations must embed UnimplementedMailTemplateServer
 // for forward compatibility
@@ -127,6 +138,8 @@ type MailTemplateServer interface {
 	GetMailTemplateList(context.Context, *GetMailTemplateListReq) (*GetMailTemplateListReply, error)
 	// 邮件模版表-选择器
 	GetMailTemplateSelector(context.Context, *GetMailTemplateSelectorReq) (*GetMailTemplateSelectorReply, error)
+	// 邮件模版表-发送邮件
+	SendMailTemplateMsg(context.Context, *SendMailTemplateMsgReq) (*SendMailTemplateMsgReply, error)
 	mustEmbedUnimplementedMailTemplateServer()
 }
 
@@ -154,6 +167,9 @@ func (UnimplementedMailTemplateServer) GetMailTemplateList(context.Context, *Get
 }
 func (UnimplementedMailTemplateServer) GetMailTemplateSelector(context.Context, *GetMailTemplateSelectorReq) (*GetMailTemplateSelectorReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMailTemplateSelector not implemented")
+}
+func (UnimplementedMailTemplateServer) SendMailTemplateMsg(context.Context, *SendMailTemplateMsgReq) (*SendMailTemplateMsgReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendMailTemplateMsg not implemented")
 }
 func (UnimplementedMailTemplateServer) mustEmbedUnimplementedMailTemplateServer() {}
 
@@ -294,6 +310,24 @@ func _MailTemplate_GetMailTemplateSelector_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MailTemplate_SendMailTemplateMsg_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendMailTemplateMsgReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MailTemplateServer).SendMailTemplateMsg(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/admin.v1.MailTemplate/SendMailTemplateMsg",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MailTemplateServer).SendMailTemplateMsg(ctx, req.(*SendMailTemplateMsgReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MailTemplate_ServiceDesc is the grpc.ServiceDesc for MailTemplate service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -328,6 +362,10 @@ var MailTemplate_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetMailTemplateSelector",
 			Handler:    _MailTemplate_GetMailTemplateSelector_Handler,
+		},
+		{
+			MethodName: "SendMailTemplateMsg",
+			Handler:    _MailTemplate_SendMailTemplateMsg_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

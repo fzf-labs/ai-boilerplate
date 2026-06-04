@@ -120,3 +120,21 @@ export function updateUserInfo({
     ...(options || {}),
   });
 }
+
+/** 注册 返回值: An unexpected error response. POST /app/v1/user/register */
+export function register({
+  body,
+  options,
+}: {
+  body: API.RegisterReq;
+  options?: CustomRequestOptions_;
+}) {
+  return request<API.RegisterReply>('/app/v1/user/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}

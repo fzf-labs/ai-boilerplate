@@ -91,6 +91,16 @@
     }
   },
   "definitions": {
+    "admin.v1.CreateSysOperateLogReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "编号"
+        }
+      },
+      "title": "响应-系统-日志-创建一条数据"
+    },
     "admin.v1.GetSysOperateLogListReply": {
       "type": "object",
       "properties": {

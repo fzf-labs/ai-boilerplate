@@ -280,6 +280,39 @@
           "User"
         ]
       }
+    },
+    "/app/v1/user/register": {
+      "post": {
+        "summary": "注册",
+        "operationId": "User_Register",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.RegisterReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/app.v1.RegisterReq"
+            }
+          }
+        ],
+        "tags": [
+          "User"
+        ]
+      }
     }
   },
   "definitions": {
@@ -331,6 +364,24 @@
         "newPassword",
         "confirmPassword"
       ]
+    },
+    "app.v1.CheckTokenReply": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "title": "用户ID"
+        },
+        "wxGzhUserId": {
+          "type": "string",
+          "title": "公众号用户Id"
+        },
+        "wxGzhXcxId": {
+          "type": "string",
+          "title": "小程序用户Id"
+        }
+      },
+      "title": "响应-检查token"
     },
     "app.v1.DeleteAccountReply": {
       "type": "object",
@@ -395,6 +446,43 @@
       "required": [
         "username",
         "password"
+      ]
+    },
+    "app.v1.RegisterReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "用户ID"
+        }
+      },
+      "title": "响应-注册"
+    },
+    "app.v1.RegisterReq": {
+      "type": "object",
+      "properties": {
+        "phone": {
+          "type": "string",
+          "title": "手机号"
+        },
+        "password": {
+          "type": "string",
+          "title": "密码"
+        },
+        "confirmPassword": {
+          "type": "string",
+          "title": "确认密码"
+        },
+        "nickname": {
+          "type": "string",
+          "title": "昵称"
+        }
+      },
+      "title": "请求-注册",
+      "required": [
+        "phone",
+        "password",
+        "confirmPassword"
       ]
     },
     "app.v1.SendVerifyCodeReply": {

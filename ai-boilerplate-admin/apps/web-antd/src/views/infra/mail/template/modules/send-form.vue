@@ -8,26 +8,11 @@ import { useVbenModal } from '@vben/common-ui';
 import { message } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { request } from '#/api/request';
+import { sendMailTemplateMsg } from '#/api/v1/mail-template';
 
 import { useSendMailFormSchema } from '../data';
 
 const emit = defineEmits(['success']);
-
-// Send mail function (placeholder - API may not exist yet)
-async function sendMail(data: {
-  mail: string;
-  templateCode: string;
-  templateParams: Record<string, string>;
-}) {
-  return request('/admin/v1/mail_template/send', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data,
-  });
-}
 
 const formData = ref<MailTemplateInfo>();
 const parseParams = (params?: string): string[] => {
@@ -67,14 +52,14 @@ const [Modal, modalApi] = useVbenModal({
       paramsObj[param] = values[`param_${param}`];
     });
     const sendData = {
+      id: formData.value?.id || '',
       mail: values.mail,
-      templateCode: formData.value?.code || '',
-      templateParams: paramsObj,
+      params: paramsObj,
     };
 
     // 提交表单
     try {
-      await sendMail(sendData);
+      await sendMailTemplateMsg({ body: sendData });
       // 关闭并提示
       await modalApi.close();
       emit('success');

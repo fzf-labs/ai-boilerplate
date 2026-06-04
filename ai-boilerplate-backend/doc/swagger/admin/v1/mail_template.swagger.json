@@ -262,6 +262,46 @@
         ]
       }
     },
+    "/admin/v1/mail_template/send": {
+      "post": {
+        "summary": "邮件模版表-发送邮件",
+        "operationId": "MailTemplate_SendMailTemplateMsg",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.SendMailTemplateMsgReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/admin.v1.SendMailTemplateMsgReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MailTemplate"
+        ]
+      }
+    },
     "/admin/v1/mail_template/update": {
       "post": {
         "summary": "邮件模版表-更新一条数据",
@@ -531,6 +571,35 @@
           "title": "模板名称"
         }
       }
+    },
+    "admin.v1.SendMailTemplateMsgReply": {
+      "type": "object",
+      "title": "响应-邮件模版表-发送邮件"
+    },
+    "admin.v1.SendMailTemplateMsgReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "模板编号"
+        },
+        "mail": {
+          "type": "string",
+          "title": "收件邮箱"
+        },
+        "params": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "模板参数"
+        }
+      },
+      "title": "请求-邮件模版表-发送邮件",
+      "required": [
+        "id",
+        "mail"
+      ]
     },
     "admin.v1.UpdateMailTemplateReply": {
       "type": "object",

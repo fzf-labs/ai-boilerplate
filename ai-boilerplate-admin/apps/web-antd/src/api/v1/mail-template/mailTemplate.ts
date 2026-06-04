@@ -103,6 +103,24 @@ export function getMailTemplateSelector({
   );
 }
 
+/** 邮件模版表-发送邮件 返回值: An unexpected error response. POST /admin/v1/mail_template/send */
+export function sendMailTemplateMsg({
+  body,
+  options,
+}: {
+  body: API.SendMailTemplateMsgReq;
+  options?: { [key: string]: unknown };
+}) {
+  return request<API.SendMailTemplateMsgReply>('/admin/v1/mail_template/send', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 邮件模版表-更新一条数据 返回值: An unexpected error response. POST /admin/v1/mail_template/update */
 export function updateMailTemplate({
   body,

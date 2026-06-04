@@ -1856,3 +1856,213 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = GetMailTemplateSelectorReplyValidationError{}
+
+// Validate checks the field values on SendMailTemplateMsgReq with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *SendMailTemplateMsgReq) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SendMailTemplateMsgReq with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// SendMailTemplateMsgReqMultiError, or nil if none found.
+func (m *SendMailTemplateMsgReq) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SendMailTemplateMsgReq) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	// no validation rules for Mail
+
+	// no validation rules for Params
+
+	if len(errors) > 0 {
+		return SendMailTemplateMsgReqMultiError(errors)
+	}
+
+	return nil
+}
+
+// SendMailTemplateMsgReqMultiError is an error wrapping multiple validation
+// errors returned by SendMailTemplateMsgReq.ValidateAll() if the designated
+// constraints aren't met.
+type SendMailTemplateMsgReqMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SendMailTemplateMsgReqMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SendMailTemplateMsgReqMultiError) AllErrors() []error { return m }
+
+// SendMailTemplateMsgReqValidationError is the validation error returned by
+// SendMailTemplateMsgReq.Validate if the designated constraints aren't met.
+type SendMailTemplateMsgReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SendMailTemplateMsgReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SendMailTemplateMsgReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SendMailTemplateMsgReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SendMailTemplateMsgReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SendMailTemplateMsgReqValidationError) ErrorName() string {
+	return "SendMailTemplateMsgReqValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e SendMailTemplateMsgReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSendMailTemplateMsgReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SendMailTemplateMsgReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SendMailTemplateMsgReqValidationError{}
+
+// Validate checks the field values on SendMailTemplateMsgReply with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *SendMailTemplateMsgReply) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SendMailTemplateMsgReply with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// SendMailTemplateMsgReplyMultiError, or nil if none found.
+func (m *SendMailTemplateMsgReply) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SendMailTemplateMsgReply) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return SendMailTemplateMsgReplyMultiError(errors)
+	}
+
+	return nil
+}
+
+// SendMailTemplateMsgReplyMultiError is an error wrapping multiple validation
+// errors returned by SendMailTemplateMsgReply.ValidateAll() if the designated
+// constraints aren't met.
+type SendMailTemplateMsgReplyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SendMailTemplateMsgReplyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SendMailTemplateMsgReplyMultiError) AllErrors() []error { return m }
+
+// SendMailTemplateMsgReplyValidationError is the validation error returned by
+// SendMailTemplateMsgReply.Validate if the designated constraints aren't met.
+type SendMailTemplateMsgReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SendMailTemplateMsgReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SendMailTemplateMsgReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SendMailTemplateMsgReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SendMailTemplateMsgReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SendMailTemplateMsgReplyValidationError) ErrorName() string {
+	return "SendMailTemplateMsgReplyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e SendMailTemplateMsgReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSendMailTemplateMsgReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SendMailTemplateMsgReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SendMailTemplateMsgReplyValidationError{}

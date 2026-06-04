@@ -24,6 +24,8 @@ const _ = grpc.SupportPackageIsVersion7
 type UserClient interface {
 	// 登录
 	Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginReply, error)
+	// 注册
+	Register(ctx context.Context, in *RegisterReq, opts ...grpc.CallOption) (*RegisterReply, error)
 	// 检查token
 	CheckToken(ctx context.Context, in *CheckTokenReq, opts ...grpc.CallOption) (*CheckTokenReply, error)
 	// 获取用户详情
@@ -51,6 +53,15 @@ func NewUserClient(cc grpc.ClientConnInterface) UserClient {
 func (c *userClient) Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginReply, error) {
 	out := new(LoginReply)
 	err := c.cc.Invoke(ctx, "/app.v1.User/Login", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) Register(ctx context.Context, in *RegisterReq, opts ...grpc.CallOption) (*RegisterReply, error) {
+	out := new(RegisterReply)
+	err := c.cc.Invoke(ctx, "/app.v1.User/Register", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -126,6 +137,8 @@ func (c *userClient) DeleteAccount(ctx context.Context, in *DeleteAccountReq, op
 type UserServer interface {
 	// 登录
 	Login(context.Context, *LoginReq) (*LoginReply, error)
+	// 注册
+	Register(context.Context, *RegisterReq) (*RegisterReply, error)
 	// 检查token
 	CheckToken(context.Context, *CheckTokenReq) (*CheckTokenReply, error)
 	// 获取用户详情
@@ -149,6 +162,9 @@ type UnimplementedUserServer struct {
 
 func (UnimplementedUserServer) Login(context.Context, *LoginReq) (*LoginReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+}
+func (UnimplementedUserServer) Register(context.Context, *RegisterReq) (*RegisterReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Register not implemented")
 }
 func (UnimplementedUserServer) CheckToken(context.Context, *CheckTokenReq) (*CheckTokenReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckToken not implemented")
@@ -198,6 +214,24 @@ func _User_Login_Handler(srv interface{}, ctx context.Context, dec func(interfac
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServer).Login(ctx, req.(*LoginReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_Register_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RegisterReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).Register(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/app.v1.User/Register",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).Register(ctx, req.(*RegisterReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -338,6 +372,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Login",
 			Handler:    _User_Login_Handler,
+		},
+		{
+			MethodName: "Register",
+			Handler:    _User_Register_Handler,
 		},
 		{
 			MethodName: "CheckToken",

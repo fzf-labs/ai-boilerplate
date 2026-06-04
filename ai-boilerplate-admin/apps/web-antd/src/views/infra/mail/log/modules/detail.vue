@@ -8,6 +8,7 @@ import { formatDateTime } from '@vben/utils';
 
 import { Descriptions } from 'ant-design-vue';
 import DOMPurify from 'dompurify';
+import { formatMailSendStatus } from '../data';
 
 const formData = ref<MailLogInfo>();
 
@@ -70,7 +71,7 @@ const [Modal, modalApi] = useVbenModal({
           <div v-html="sanitizedContent"></div>
         </Descriptions.Item>
         <Descriptions.Item label="发送状态">
-          {{ formData?.sendStatus }}
+          {{ formatMailSendStatus(formData?.sendStatus) }}
         </Descriptions.Item>
         <Descriptions.Item label="发送时间">
           {{ formatDateTime(formData?.sendTime || '') }}

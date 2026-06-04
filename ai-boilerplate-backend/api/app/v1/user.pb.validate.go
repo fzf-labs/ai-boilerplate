@@ -243,6 +243,215 @@ var _ interface {
 	ErrorName() string
 } = LoginReplyValidationError{}
 
+// Validate checks the field values on RegisterReq with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *RegisterReq) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on RegisterReq with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in RegisterReqMultiError, or
+// nil if none found.
+func (m *RegisterReq) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *RegisterReq) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Phone
+
+	// no validation rules for Password
+
+	// no validation rules for ConfirmPassword
+
+	// no validation rules for Nickname
+
+	if len(errors) > 0 {
+		return RegisterReqMultiError(errors)
+	}
+
+	return nil
+}
+
+// RegisterReqMultiError is an error wrapping multiple validation errors
+// returned by RegisterReq.ValidateAll() if the designated constraints aren't met.
+type RegisterReqMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m RegisterReqMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m RegisterReqMultiError) AllErrors() []error { return m }
+
+// RegisterReqValidationError is the validation error returned by
+// RegisterReq.Validate if the designated constraints aren't met.
+type RegisterReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e RegisterReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e RegisterReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e RegisterReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e RegisterReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e RegisterReqValidationError) ErrorName() string { return "RegisterReqValidationError" }
+
+// Error satisfies the builtin error interface
+func (e RegisterReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sRegisterReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = RegisterReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = RegisterReqValidationError{}
+
+// Validate checks the field values on RegisterReply with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *RegisterReply) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on RegisterReply with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in RegisterReplyMultiError, or
+// nil if none found.
+func (m *RegisterReply) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *RegisterReply) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	if len(errors) > 0 {
+		return RegisterReplyMultiError(errors)
+	}
+
+	return nil
+}
+
+// RegisterReplyMultiError is an error wrapping multiple validation errors
+// returned by RegisterReply.ValidateAll() if the designated constraints
+// aren't met.
+type RegisterReplyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m RegisterReplyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m RegisterReplyMultiError) AllErrors() []error { return m }
+
+// RegisterReplyValidationError is the validation error returned by
+// RegisterReply.Validate if the designated constraints aren't met.
+type RegisterReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e RegisterReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e RegisterReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e RegisterReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e RegisterReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e RegisterReplyValidationError) ErrorName() string { return "RegisterReplyValidationError" }
+
+// Error satisfies the builtin error interface
+func (e RegisterReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sRegisterReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = RegisterReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = RegisterReplyValidationError{}
+
 // Validate checks the field values on CheckTokenReq with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
