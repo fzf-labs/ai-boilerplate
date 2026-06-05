@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { useToast } from 'wot-design-uni'
 import { checkUpdate } from '@/api/v1/self-app-release'
+import { AGREEMENT_URLS } from '@/pages-fg/login/config'
 import { LOGIN_PAGE } from '@/router/config'
 import { useTokenStore } from '@/store/token'
 
@@ -85,16 +86,16 @@ const menuList = [
   },
 ]
 
-// 协议 URL 配置（为空则跳转 404）
-const PRIVACY_URL = ''
-const TERMS_URL = ''
+const PRIVACY_URL = AGREEMENT_URLS.privacyPolicy
+const TERMS_URL = AGREEMENT_URLS.userAgreement
 
-const legalList = [
+const legalList = computed(() => [
   {
     title: '隐私协议',
     icon: 'file',
     label: '了解我们如何保护你的隐私',
     action: 'privacy',
+    url: PRIVACY_URL,
     showValue: false,
   },
   {
@@ -102,15 +103,16 @@ const legalList = [
     icon: 'file',
     label: '服务条款与使用规范',
     action: 'terms',
+    url: TERMS_URL,
     showValue: false,
   },
-]
+].filter(item => !!item.url))
 
 const aboutList = [
   {
     title: '关于我们',
     icon: 'info-circle',
-    label: '版本信息与联系方式',
+    label: '版本信息与反馈入口',
     action: 'about',
     showValue: false,
   },
@@ -442,7 +444,7 @@ onLoad(() => {
         </wd-cell-group>
       </wd-card>
 
-      <wd-card type="rectangle" custom-class="card card-gap">
+      <wd-card v-if="legalList.length > 0" type="rectangle" custom-class="card card-gap">
         <template #title>
           <view class="card-title">
             协议与政策
@@ -523,7 +525,7 @@ onLoad(() => {
           版本号：v{{ versionInfo?.currentVersion || '1.0.0' }}
         </view>
         <view class="about-line">
-          联系方式：support@example.com
+          反馈入口：应用内「问题反馈」
         </view>
       </view>
     </bottom-sheet>

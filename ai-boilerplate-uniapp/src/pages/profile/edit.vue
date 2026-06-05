@@ -2,6 +2,7 @@
 import type { UpdateUserInfoReq, UserInfo } from '@/api/v1/user/types'
 import { useToast } from 'wot-design-uni'
 import { getUserInfo, updateUserInfo } from '@/api/v1/user/user'
+import { useUpload, uploadFileUrl } from '@/utils/uploadFile'
 
 definePage({
   style: {
@@ -21,6 +22,19 @@ const formData = ref<UpdateUserInfoReq>({
 })
 
 const originData = ref<UpdateUserInfoReq | null>(null)
+const avatarSelecting = ref(false)
+const { loading: avatarUploading, run: chooseAvatar } = useUpload(
+  uploadFileUrl.USER_AVATAR,
+  {},
+  {
+    count: 1,
+    maxSize: 5,
+    sizeType: ['compressed'],
+    sourceType: ['album', 'camera'],
+    onSuccess: handleAvatarUploadSuccess,
+    onError: handleAvatarUploadError,
+  },
+)
 
 const genderOptions = [
   { label: '保密', value: 0 },
@@ -86,6 +100,26 @@ function toReq(info?: UserInfo | null): UpdateUserInfoReq {
   }
 }
 
+function normalizeUploadedAvatar(value: unknown): string {
+  if (typeof value === 'string')
+    return value.trim()
+
+  if (value && typeof value === 'object') {
+    const record = value as Record<string, unknown>
+    const candidate = record.url
+      ?? record.avatarUrl
+      ?? record.avatar
+      ?? record.path
+      ?? record.fileUrl
+      ?? record.filePath
+      ?? record.data
+    if (typeof candidate === 'string')
+      return candidate.trim()
+  }
+
+  return ''
+}
+
 /**
  * 获取用户信息
  */
@@ -114,18 +148,29 @@ async function fetchUserProfile() {
  * 选择头像
  */
 function handleChooseAvatar() {
-  uni.chooseImage({
-    count: 1,
-    sizeType: ['compressed'],
-    sourceType: ['album', 'camera'],
-    success: (res) => {
-      const tempFilePath = res.tempFilePaths[0]
-      // 这里应该上传到服务器，获取图片URL
-      // 暂时使用本地路径
-      formData.value.avatar = tempFilePath
-      saveProfile()
-    },
-  })
+  if (avatarSelecting.value || avatarUploading.value || saving.value)
+    return
+
+  avatarSelecting.value = true
+  chooseAvatar()
+}
+
+async function handleAvatarUploadSuccess(result: unknown) {
+  avatarSelecting.value = false
+  const avatar = normalizeUploadedAvatar(result)
+  if (!avatar) {
+    toast.error('头像上传失败')
+    return
+  }
+
+  formData.value.avatar = avatar
+  await saveProfile()
+}
+
+function handleAvatarUploadError(error: unknown) {
+  avatarSelecting.value = false
+  console.error('头像上传失败:', error)
+  toast.error('头像上传失败')
 }
 
 async function saveProfile() {
@@ -220,10 +265,15 @@ onLoad(() => {
       >
         <view class="sheet">
           <view class="sheet-header">
-            <view class="avatar-wrap" @click="handleChooseAvatar">
+            <view
+              class="avatar-wrap"
+              :class="{ 'avatar-wrap--uploading': avatarUploading || avatarSelecting }"
+              @click="handleChooseAvatar"
+            >
               <image :src="avatarSrc" class="avatar" mode="aspectFill" />
               <view class="avatar-badge">
-                <wd-icon name="edit" size="28rpx" color="var(--fg-text-inverse)" />
+                <wd-loading v-if="avatarUploading" size="24rpx" />
+                <wd-icon v-else name="edit" size="28rpx" color="var(--fg-text-inverse)" />
               </view>
             </view>
             <view class="header-meta">
@@ -339,6 +389,10 @@ onLoad(() => {
   &:active {
     opacity: 0.92;
   }
+}
+
+.avatar-wrap--uploading {
+  opacity: 0.88;
 }
 
 .avatar {

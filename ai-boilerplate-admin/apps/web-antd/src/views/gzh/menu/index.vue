@@ -887,7 +887,7 @@ const handleAccountChange = (value: any) => {
                           placeholder="公众号链接"
                         />
                         <template #extra>
-                          <div>跳转连接推荐使用安全域名https://</div>
+                          <div>跳转链接请使用已配置的安全域名，且必须以 https:// 开头</div>
                         </template>
                       </FormItem>
                     </div>
@@ -901,9 +901,7 @@ const handleAccountChange = (value: any) => {
                           placeholder="小程序AppId"
                         />
                         <template #extra>
-                          <div>
-                            输入对应的小程序Appid 示例：wxd027d2b162044fd5
-                          </div>
+                          <div>输入对应的小程序 AppId</div>
                         </template>
                       </FormItem>
                       <FormItem label="页面路径" field="pagepath" required>
@@ -912,9 +910,7 @@ const handleAccountChange = (value: any) => {
                           placeholder="页面路径"
                         />
                         <template #extra>
-                          <div>
-                            输入对应的小程序页面路径 示例：/pages/index/index
-                          </div>
+                          <div>输入对应的小程序页面路径</div>
                         </template>
                       </FormItem>
                     </div>

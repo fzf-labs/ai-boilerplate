@@ -32,8 +32,8 @@ export const nativeTabbarList: NativeTabBarItem[] = [
     text: '首页',
   },
   {
-    iconPath: 'static/tabbar/example.png',
-    selectedIconPath: 'static/tabbar/exampleHL.png',
+    iconPath: 'static/tabbar/scan.png',
+    selectedIconPath: 'static/tabbar/scan.png',
     pagePath: 'pages/discover/index',
     text: '发现',
   },

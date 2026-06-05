@@ -29,13 +29,12 @@ import { createCopyNativeResourcesPlugin } from './vite-plugins/copy-native-reso
 import syncManifestPlugin from './vite-plugins/sync-manifest-plugins'
 
 // https://vitejs.dev/config/
-export default defineConfig(({ command, mode }) => {
+export default defineConfig(({ mode }) => {
   // @see https://unocss.dev/
   // const UnoCSS = (await import('unocss/vite')).default
   // console.log(mode === process.env.NODE_ENV) // true
 
   // mode: 区分生产环境还是开发环境
-  console.log('command, mode -> ', command, mode)
   // pnpm dev:h5 时得到 => serve development
   // pnpm build:h5 时得到 => build production
   // pnpm dev:mp-weixin 时得到 => build development (注意区别，command为build)
@@ -45,7 +44,6 @@ export default defineConfig(({ command, mode }) => {
   // dev 和 build 命令可以分别使用 .env.development 和 .env.production 的环境变量
 
   const { UNI_PLATFORM } = process.env
-  console.log('UNI_PLATFORM -> ', UNI_PLATFORM) // 得到 mp-weixin, h5, app 等
 
   const env = loadEnv(mode, path.resolve(process.cwd(), 'env'))
   const {
@@ -58,8 +56,6 @@ export default defineConfig(({ command, mode }) => {
     VITE_APP_PROXY_PREFIX,
     VITE_COPY_NATIVE_RES_ENABLE,
   } = env
-  console.log('环境变量 env -> ', env)
-
   return defineConfig({
     envDir: './env', // 自定义env目录
     base: VITE_APP_PUBLIC_BASE,
