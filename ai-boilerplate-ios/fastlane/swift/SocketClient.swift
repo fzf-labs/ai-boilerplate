@@ -30,7 +30,6 @@ class SocketClient: NSObject {
 
     static let connectTimeoutSeconds = 2
     static let defaultCommandTimeoutSeconds = 10800 // 3 hours
-    static let doneToken = "done"
     static let cancelToken = "cancelFastlaneRun"
 
     fileprivate var inputStream: InputStream!
@@ -112,7 +111,17 @@ class SocketClient: NSObject {
 
     func send(rubyCommand: RubyCommandable) {
         verbose(message: "sending: \(rubyCommand.json)")
-        send(string: rubyCommand.json)
+        let isDoneCommand: Bool
+        if let controlCommand = rubyCommand as? ControlCommand {
+            if case .done = controlCommand.shutdownCommandType {
+                isDoneCommand = true
+            } else {
+                isDoneCommand = false
+            }
+        } else {
+            isDoneCommand = false
+        }
+        send(string: rubyCommand.json, isDoneCommand: isDoneCommand)
         writeSemaphore.signal()
     }
 
@@ -151,10 +160,13 @@ class SocketClient: NSObject {
         }
     }
 
-    private func privateSend(string: String) {
+    private func privateSend(string: String, isDoneCommand: Bool = false) {
         writeQueue.sync {
             writeSemaphore.wait()
             self.sendThroughQueue(string: string)
+            if isDoneCommand {
+                self.cleaningUpAfterDone = true
+            }
             writeSemaphore.signal()
             let timeoutSeconds = self.cleaningUpAfterDone ? 1 : self.commandTimeoutSeconds
             let timeToWait = DispatchTimeInterval.seconds(timeoutSeconds)
@@ -165,7 +177,7 @@ class SocketClient: NSObject {
         }
     }
 
-    private func send(string: String) {
+    private func send(string: String, isDoneCommand: Bool = false) {
         guard !cleaningUpAfterDone else {
             // This will happen after we abort if there are commands waiting to be executed
             // Need to check state of SocketClient in command runner to make sure we can accept `send`
@@ -173,11 +185,7 @@ class SocketClient: NSObject {
             return
         }
 
-        if string == SocketClient.doneToken {
-            cleaningUpAfterDone = true
-        }
-
-        privateSend(string: string)
+        privateSend(string: string, isDoneCommand: isDoneCommand)
     }
 
     func closeSession(sendAbort: Bool = true) {

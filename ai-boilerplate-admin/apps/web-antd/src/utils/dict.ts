@@ -1,15 +1,10 @@
-// TODO @芋艿：后续再优化
-// TODO @芋艿：可以共享么？
-
 import type { DictItem } from '#/store';
 
 import { isObject } from '@vben/utils';
 
 import { useDictStore } from '#/store';
 
-// TODO @dhb52：top-level 调用 导致："getActivePinia()" was called but there was no active Pinia
-// 先临时移入到方法中
-// const dictStore = useDictStore();
+// 字典查询统一在函数内部读取 Pinia，避免顶层访问 store 触发 getActivePinia 报错。
 
 /** AntD 组件的颜色类型 */
 type ColorType = 'error' | 'info' | 'success' | 'warning';
