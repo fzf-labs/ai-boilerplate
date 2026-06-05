@@ -87,6 +87,13 @@ func (r *SysAdminRepo) CheckToken(ctx context.Context, token string) (map[string
 	return claims, nil
 }
 
+// JwtTokenClear 清理当前 admin 的 token
+func (r *SysAdminRepo) JwtTokenClear(ctx context.Context, adminID string) error {
+	_ = ctx
+
+	return r.jwt.JwtTokenClear(adminID)
+}
+
 // AdminIdToNickname 根据adminId获取adminName
 func (r *SysAdminRepo) AdminIDToNickname(ctx context.Context, adminIDs []string) (map[string]string, error) {
 	adminIDs = lo.Filter(adminIDs, func(item string, _ int) bool {

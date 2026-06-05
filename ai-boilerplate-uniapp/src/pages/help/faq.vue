@@ -2,6 +2,7 @@
 import type { HelpFaqInfo } from '@/api/v1/help-faq/types'
 import { useToast } from 'wot-design-uni'
 import { listHelpFaqs } from '@/api/v1/help-faq/helpFaq'
+import { submitFeedback } from '@/api/v1/help-feedback/helpFeedback'
 
 definePage({
   style: {
@@ -17,6 +18,8 @@ const faqList = ref<HelpFaqInfo[]>([])
 const expandedIds = ref<Set<string>>(new Set())
 // 加载状态
 const loading = ref(false)
+// 反馈提交中的 FAQ 标识
+const feedbackLoadingKey = ref('')
 // 搜索关键词
 const searchKeyword = ref('')
 // 页面标题
@@ -69,9 +72,38 @@ function isExpanded(id?: string) {
 /**
  * 提交反馈
  */
-async function handleFeedback(faqId?: string, isHelpful?: boolean) {
-  // TODO: 等待后端提供 FAQ 反馈接口
-  toast.success('感谢您的反馈')
+function getFaqFeedbackKey(faq?: HelpFaqInfo) {
+  return faq?.id || faq?.question || ''
+}
+
+async function handleFeedback(faq: HelpFaqInfo, isHelpful: boolean) {
+  const feedbackKey = getFaqFeedbackKey(faq)
+  if (!feedbackKey || feedbackLoadingKey.value === feedbackKey) {
+    return
+  }
+
+  feedbackLoadingKey.value = feedbackKey
+  try {
+    await submitFeedback({
+      body: {
+        category: isHelpful ? 'faq_helpful' : 'faq_unhelpful',
+        description: [
+          `FAQ ID: ${faq.id || 'unknown'}`,
+          `问题: ${faq.question || '（无标题）'}`,
+          `反馈: ${isHelpful ? '有帮助' : '没帮助'}`,
+        ].join('\n'),
+      },
+      options: {},
+    })
+    toast.success('感谢您的反馈')
+  }
+  catch (error) {
+    console.error('提交 FAQ 反馈失败:', error)
+    toast.error('反馈提交失败')
+  }
+  finally {
+    feedbackLoadingKey.value = ''
+  }
 }
 
 onLoad(async (options) => {
@@ -165,11 +197,24 @@ onLoad(async (options) => {
               <view class="feedback-section">
                 <text class="feedback-label">这个回答有帮助吗？</text>
                 <view class="feedback-buttons">
-                  <wd-button size="small" type="success" plain @click="handleFeedback(faq.id, true)">
+                  <wd-button
+                    size="small"
+                    type="success"
+                    plain
+                    :loading="feedbackLoadingKey === getFaqFeedbackKey(faq)"
+                    :disabled="feedbackLoadingKey === getFaqFeedbackKey(faq)"
+                    @click="handleFeedback(faq, true)"
+                  >
                     <wd-icon name="thumb-up" size="28rpx" />
                     有帮助
                   </wd-button>
-                  <wd-button size="small" plain @click="handleFeedback(faq.id, false)">
+                  <wd-button
+                    size="small"
+                    plain
+                    :loading="feedbackLoadingKey === getFaqFeedbackKey(faq)"
+                    :disabled="feedbackLoadingKey === getFaqFeedbackKey(faq)"
+                    @click="handleFeedback(faq, false)"
+                  >
                     <wd-icon name="thumb-down" size="28rpx" />
                     没帮助
                   </wd-button>

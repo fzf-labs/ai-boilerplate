@@ -263,6 +263,70 @@
         ]
       }
     },
+    "/admin/v1/ai_index_chat/knowledge/selector": {
+      "get": {
+        "summary": "AI 聊天对话表-知识库选择器",
+        "operationId": "AiIndexChat_GetAiIndexChatKnowledgeSelector",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetAiIndexChatKnowledgeSelectorReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiIndexChat"
+        ]
+      }
+    },
+    "/admin/v1/ai_index_chat/mcp/selector": {
+      "get": {
+        "summary": "AI 聊天对话表-MCP选择器",
+        "operationId": "AiIndexChat_GetAiIndexChatMcpSelector",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/admin.v1.GetAiIndexChatMcpSelectorReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AiIndexChat"
+        ]
+      }
+    },
     "/admin/v1/ai_index_chat/message/list": {
       "get": {
         "summary": "AI 聊天消息表-列表数据查询",
@@ -449,6 +513,34 @@
         }
       }
     },
+    "admin.v1.AiIndexChatKnowledgeSelectorItem": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "title": "标签"
+        },
+        "value": {
+          "type": "string",
+          "title": "值"
+        }
+      },
+      "title": "AI 聊天对话表-知识库选择器"
+    },
+    "admin.v1.AiIndexChatMcpSelectorItem": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "title": "标签"
+        },
+        "value": {
+          "type": "string",
+          "title": "值"
+        }
+      },
+      "title": "AI 聊天对话表-MCP选择器"
+    },
     "admin.v1.AiIndexChatMessageItem": {
       "type": "object",
       "properties": {
@@ -597,6 +689,34 @@
         }
       },
       "title": "响应-AI 聊天对话表-列表数据查询"
+    },
+    "admin.v1.GetAiIndexChatKnowledgeSelectorReply": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.AiIndexChatKnowledgeSelectorItem"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-AI 聊天对话表-知识库选择器"
+    },
+    "admin.v1.GetAiIndexChatMcpSelectorReply": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/admin.v1.AiIndexChatMcpSelectorItem"
+          },
+          "title": "列表数据"
+        }
+      },
+      "title": "响应-AI 聊天对话表-MCP选择器"
     },
     "admin.v1.GetAiIndexChatMessageListReply": {
       "type": "object",

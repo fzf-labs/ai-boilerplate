@@ -9,6 +9,7 @@ import { message } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
 import {
+  getAiIndexChatMcpSelector,
   getAiIndexChatConversationItem,
   updateAiIndexChatConversation,
 } from '#/api/v1/ai-index-chat';
@@ -17,10 +18,9 @@ import { $t } from '#/locales';
 const emit = defineEmits(['success']);
 const formData = ref<AiIndexChatApi.AiIndexChatConversationItem>();
 
-// TODO: 替换为实际的 MCP API
 async function getMcpOptions() {
-  // 临时返回空数组，等待后端 MCP 接口实现
-  return [];
+  const res = await getAiIndexChatMcpSelector({});
+  return res.list || [];
 }
 
 const [Form, formApi] = useVbenForm({
@@ -122,10 +122,5 @@ const [Modal, modalApi] = useVbenModal({
 <template>
   <Modal class="w-2/5" title="MCP 设置">
     <Form class="mx-4" />
-    <template #footer>
-      <div class="text-muted-foreground mb-2 text-sm">
-        💡 提示：暂无可用 MCP 工具，等待后端接口实现后即可使用
-      </div>
-    </template>
   </Modal>
 </template>

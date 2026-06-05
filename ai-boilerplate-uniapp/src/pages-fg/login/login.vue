@@ -4,6 +4,9 @@ import { computed, reactive, ref } from 'vue'
 import { useToast } from 'wot-design-uni'
 import { REGISTER_PAGE } from '@/router/config'
 import { useTokenStore } from '@/store/token'
+import { isPageTabbar } from '@/tabbar/store'
+import { parseUrlToObj } from '@/utils'
+import { AGREEMENT_URLS } from './config'
 
 definePage({
   style: {
@@ -22,12 +25,7 @@ const formRef = ref<FormInstance | null>(null)
 const loading = ref(false)
 const rememberAccount = ref(true)
 const agreeTerms = ref(false)
-
-// 协议链接配置
-const AGREEMENT_URLS = {
-  userAgreement: 'https://example.com/user-agreement',
-  privacyPolicy: 'https://example.com/privacy-policy',
-}
+const redirectPath = ref('')
 
 const rules: FormRules = {
   username: [{ required: true, message: '请输入账号' }],
@@ -54,7 +52,7 @@ function persistRememberedAccount() {
 }
 
 function goBackOrMeTab() {
-  const pages = getCurrentPages?.() ?? []
+  const pages = getCurrentPages()
   if (pages.length > 1) {
     uni.navigateBack()
     return
@@ -70,12 +68,40 @@ function goRegister() {
   uni.navigateTo({ url: REGISTER_PAGE })
 }
 
+function safeDecode(value: string) {
+  try {
+    return decodeURIComponent(value)
+  }
+  catch {
+    return value
+  }
+}
+
+function navigateAfterLogin() {
+  const target = redirectPath.value.trim()
+  if (target) {
+    const { path } = parseUrlToObj(target)
+    if (path && isPageTabbar(path)) {
+      uni.switchTab({ url: path })
+    }
+    else {
+      uni.reLaunch({ url: target })
+    }
+    return
+  }
+  goBackOrMeTab()
+}
+
 function handleWeixinLoginTip() {
   toast.info('暂未接入微信登录')
 }
 
 function openAgreement(type: 'userAgreement' | 'privacyPolicy') {
   const url = AGREEMENT_URLS[type]
+  if (!url) {
+    toast.info('请先配置协议链接')
+    return
+  }
   uni.navigateTo({
     url: `/pages-fg/webview/index?url=${encodeURIComponent(url)}`,
   })
@@ -100,7 +126,7 @@ async function doLogin() {
       password: form.password,
     })
     persistRememberedAccount()
-    goBackOrMeTab()
+    navigateAfterLogin()
   }
   catch (error) {
     console.error('登录失败', error)
@@ -110,8 +136,9 @@ async function doLogin() {
   }
 }
 
-onLoad(() => {
+onLoad((options) => {
   restoreRememberedAccount()
+  redirectPath.value = options?.redirect ? safeDecode(options.redirect) : ''
 })
 </script>
 
@@ -194,7 +221,7 @@ onLoad(() => {
           <view class="other">
             <wd-divider>其他方式</wd-divider>
             <wd-button :block="true" :plain="true" :disabled="loading" @click="handleWeixinLoginTip">
-              微信登录（待接入）
+              微信登录
             </wd-button>
           </view>
           <!-- #endif -->

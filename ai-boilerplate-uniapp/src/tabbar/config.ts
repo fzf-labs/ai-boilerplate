@@ -17,13 +17,13 @@ export const TABBAR_STRATEGY_MAP = {
   CUSTOM_TABBAR_WITHOUT_CACHE: 3,
 }
 
-// TODO: 1/3. 通过这里切换使用tabbar的策略
+// 通过这里切换使用 tabbar 的策略
 // 如果是使用 NO_TABBAR(0)，nativeTabbarList 和 customTabbarList 都不生效(里面的配置不用管)
 // 如果是使用 NATIVE_TABBAR(1)，只需要配置 nativeTabbarList，customTabbarList 不生效
 // 如果是使用 CUSTOM_TABBAR(2,3)，只需要配置 customTabbarList，nativeTabbarList 不生效
 export const selectedTabbarStrategy = TABBAR_STRATEGY_MAP.CUSTOM_TABBAR_WITH_CACHE
 
-// TODO: 2/3. 使用 NATIVE_TABBAR 时，更新下面的 tabbar 配置
+// 使用 NATIVE_TABBAR 时，更新下面的 tabbar 配置
 export const nativeTabbarList: NativeTabBarItem[] = [
   {
     iconPath: 'static/tabbar/home.png',
@@ -45,7 +45,7 @@ export const nativeTabbarList: NativeTabBarItem[] = [
   },
 ]
 
-// TODO: 3/3. 使用 CUSTOM_TABBAR(2,3) 时，更新下面的 tabbar 配置
+// 使用 CUSTOM_TABBAR(2,3) 时，更新下面的 tabbar 配置
 // 如果需要配置鼓包，需要在 'tabbar/store.ts' 里面设置，最后在 `tabbar/index.vue` 里面更改鼓包的图片
 export const customTabbarList: CustomTabBarItem[] = [
   {

@@ -14,6 +14,9 @@ func (a *AdminV1SmsTemplateService) GetSmsTemplateInfo(ctx context.Context, req 
 	if err != nil {
 		return nil, pb.ErrorReasonDataSQLError(pb.WithError(err))
 	}
+	if data == nil || data.ID == "" {
+		return nil, pb.ErrorReasonDataRecordNotFound()
+	}
 	resp.Info = &pb.SmsTemplateInfo{
 		Id:              data.ID,
 		SmsChannelId:    data.SmsChannelID,

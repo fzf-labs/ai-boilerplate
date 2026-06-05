@@ -5,6 +5,7 @@ import (
 
 	pb "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1"
 	"github.com/fzf-labs/godb/orm/condition"
+	"github.com/fzf-labs/goutil/timeutil"
 )
 
 // GetSysAPIList 系统-接口-列表数据查询
@@ -32,8 +33,13 @@ func (a *AdminV1SysAPIService) GetSysAPIList(ctx context.Context, req *pb.GetSys
 	if len(list) > 0 {
 		for _, v := range list {
 			resp.List = append(resp.List, &pb.SysAPIInfo{
-				Id: v.ID,
-				// TODO
+				Id:           v.ID,
+				PermissionId: v.PermissionID,
+				Method:       v.Method,
+				Path:         v.Path,
+				Desc:         v.Desc,
+				CreatedAt:    timeutil.RFC3339(v.CreatedAt),
+				UpdatedAt:    timeutil.RFC3339(v.UpdatedAt),
 			})
 		}
 	}

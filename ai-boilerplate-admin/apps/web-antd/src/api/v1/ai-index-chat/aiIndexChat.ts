@@ -130,6 +130,36 @@ export function updateAiIndexChatConversation({
   );
 }
 
+/** AI 聊天对话表-知识库选择器 返回值: An unexpected error response. GET /admin/v1/ai_index_chat/knowledge/selector */
+export function getAiIndexChatKnowledgeSelector({
+  options,
+}: {
+  options?: { [key: string]: unknown };
+}) {
+  return request<API.GetAiIndexChatKnowledgeSelectorReply>(
+    '/admin/v1/ai_index_chat/knowledge/selector',
+    {
+      method: 'GET',
+      ...(options || {}),
+    }
+  );
+}
+
+/** AI 聊天对话表-MCP选择器 返回值: An unexpected error response. GET /admin/v1/ai_index_chat/mcp/selector */
+export function getAiIndexChatMcpSelector({
+  options,
+}: {
+  options?: { [key: string]: unknown };
+}) {
+  return request<API.GetAiIndexChatMcpSelectorReply>(
+    '/admin/v1/ai_index_chat/mcp/selector',
+    {
+      method: 'GET',
+      ...(options || {}),
+    }
+  );
+}
+
 /** AI 聊天消息表-列表数据查询 返回值: An unexpected error response. GET /admin/v1/ai_index_chat/message/list */
 export function getAiIndexChatMessageList({
   params,

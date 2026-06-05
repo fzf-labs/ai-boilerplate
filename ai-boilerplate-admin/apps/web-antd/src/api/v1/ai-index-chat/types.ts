@@ -24,6 +24,20 @@ export type AiIndexChatConversationItem = {
   updatedAt?: string;
 };
 
+export type AiIndexChatKnowledgeSelectorItem = {
+  /** 标签 */
+  label?: string;
+  /** 值 */
+  value?: string;
+};
+
+export type AiIndexChatMcpSelectorItem = {
+  /** 标签 */
+  label?: string;
+  /** 值 */
+  value?: string;
+};
+
 export type AiIndexChatMessageItem = {
   /** 消息编号 */
   id?: string;
@@ -141,6 +155,38 @@ export type GetAiIndexChatConversationListResponses = {
    * A successful response.
    */
   200: GetAiIndexChatConversationListReply;
+  /**
+   * An unexpected error response.
+   */
+  default: Status;
+};
+
+export type GetAiIndexChatKnowledgeSelectorReply = {
+  /** 列表数据 */
+  list?: AiIndexChatKnowledgeSelectorItem[];
+};
+
+export type GetAiIndexChatKnowledgeSelectorResponses = {
+  /**
+   * A successful response.
+   */
+  200: GetAiIndexChatKnowledgeSelectorReply;
+  /**
+   * An unexpected error response.
+   */
+  default: Status;
+};
+
+export type GetAiIndexChatMcpSelectorReply = {
+  /** 列表数据 */
+  list?: AiIndexChatMcpSelectorItem[];
+};
+
+export type GetAiIndexChatMcpSelectorResponses = {
+  /**
+   * A successful response.
+   */
+  200: GetAiIndexChatMcpSelectorReply;
   /**
    * An unexpected error response.
    */

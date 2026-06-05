@@ -129,10 +129,14 @@ async function handleImageButtonClick(
       message.error('图片地址为空');
       return;
     }
-    await downloadFileFromImageUrl({
-      fileName: imageDetail.model || imageDetail.modelId || 'image',
-      source,
-    });
+    try {
+      await downloadFileFromImageUrl({
+        fileName: imageDetail.model || imageDetail.modelId || 'image',
+        source,
+      });
+    } catch {
+      message.error('图片下载失败');
+    }
     return;
   }
   // 重新生成

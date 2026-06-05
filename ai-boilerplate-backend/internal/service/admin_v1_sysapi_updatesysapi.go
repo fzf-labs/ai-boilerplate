@@ -17,7 +17,10 @@ func (a *AdminV1SysAPIService) UpdateSysAPI(ctx context.Context, req *pb.UpdateS
 		return nil, pb.ErrorReasonDataRecordNotFound()
 	}
 	oldData := a.sysAPIRepo.DeepCopy(data)
-	// TODO
+	data.PermissionID = req.GetPermissionId()
+	data.Method = req.GetMethod()
+	data.Path = req.GetPath()
+	data.Desc = req.GetDesc()
 	err = a.sysAPIRepo.UpdateOneCacheWithZero(ctx, data, oldData)
 	if err != nil {
 		return nil, pb.ErrorReasonDataSQLError(pb.WithError(err))

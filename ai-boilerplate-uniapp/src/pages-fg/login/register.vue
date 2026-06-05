@@ -4,6 +4,7 @@ import { computed, reactive, ref } from 'vue'
 import { useToast } from 'wot-design-uni'
 import { register } from '@/api/v1/user/user'
 import { LOGIN_PAGE } from '@/router/config'
+import { AGREEMENT_URLS } from './config'
 
 definePage({
   style: {
@@ -37,13 +38,12 @@ const canSubmit = computed(() => {
     && !loading.value
 })
 
-const AGREEMENT_URLS = {
-  userAgreement: 'https://example.com/user-agreement',
-  privacyPolicy: 'https://example.com/privacy-policy',
-}
-
 function openAgreement(type: 'userAgreement' | 'privacyPolicy') {
   const url = AGREEMENT_URLS[type]
+  if (!url) {
+    toast.info('请先配置协议链接')
+    return
+  }
   uni.navigateTo({
     url: `/pages-fg/webview/index?url=${encodeURIComponent(url)}`,
   })

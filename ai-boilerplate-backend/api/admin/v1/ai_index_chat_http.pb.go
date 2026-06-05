@@ -23,6 +23,8 @@ const OperationAiIndexChatCreateAiIndexChatConversation = "/admin.v1.AiIndexChat
 const OperationAiIndexChatDeleteAiIndexChatConversation = "/admin.v1.AiIndexChat/DeleteAiIndexChatConversation"
 const OperationAiIndexChatGetAiIndexChatConversationItem = "/admin.v1.AiIndexChat/GetAiIndexChatConversationItem"
 const OperationAiIndexChatGetAiIndexChatConversationList = "/admin.v1.AiIndexChat/GetAiIndexChatConversationList"
+const OperationAiIndexChatGetAiIndexChatKnowledgeSelector = "/admin.v1.AiIndexChat/GetAiIndexChatKnowledgeSelector"
+const OperationAiIndexChatGetAiIndexChatMcpSelector = "/admin.v1.AiIndexChat/GetAiIndexChatMcpSelector"
 const OperationAiIndexChatGetAiIndexChatMessageList = "/admin.v1.AiIndexChat/GetAiIndexChatMessageList"
 const OperationAiIndexChatPinAiIndexChatConversation = "/admin.v1.AiIndexChat/PinAiIndexChatConversation"
 const OperationAiIndexChatUpdateAiIndexChatConversation = "/admin.v1.AiIndexChat/UpdateAiIndexChatConversation"
@@ -32,6 +34,8 @@ type AiIndexChatHTTPServer interface {
 	DeleteAiIndexChatConversation(context.Context, *DeleteAiIndexChatConversationReq) (*DeleteAiIndexChatConversationReply, error)
 	GetAiIndexChatConversationItem(context.Context, *GetAiIndexChatConversationItemReq) (*GetAiIndexChatConversationItemReply, error)
 	GetAiIndexChatConversationList(context.Context, *GetAiIndexChatConversationListReq) (*GetAiIndexChatConversationListReply, error)
+	GetAiIndexChatKnowledgeSelector(context.Context, *GetAiIndexChatKnowledgeSelectorReq) (*GetAiIndexChatKnowledgeSelectorReply, error)
+	GetAiIndexChatMcpSelector(context.Context, *GetAiIndexChatMcpSelectorReq) (*GetAiIndexChatMcpSelectorReply, error)
 	GetAiIndexChatMessageList(context.Context, *GetAiIndexChatMessageListReq) (*GetAiIndexChatMessageListReply, error)
 	PinAiIndexChatConversation(context.Context, *PinAiIndexChatConversationReq) (*PinAiIndexChatConversationReply, error)
 	UpdateAiIndexChatConversation(context.Context, *UpdateAiIndexChatConversationReq) (*UpdateAiIndexChatConversationReply, error)
@@ -46,6 +50,8 @@ func RegisterAiIndexChatHTTPServer(s *http.Server, srv AiIndexChatHTTPServer) {
 	r.GET("/admin/v1/ai_index_chat/conversation/info", _AiIndexChat_GetAiIndexChatConversationItem0_HTTP_Handler(srv))
 	r.GET("/admin/v1/ai_index_chat/conversation/list", _AiIndexChat_GetAiIndexChatConversationList0_HTTP_Handler(srv))
 	r.GET("/admin/v1/ai_index_chat/message/list", _AiIndexChat_GetAiIndexChatMessageList0_HTTP_Handler(srv))
+	r.GET("/admin/v1/ai_index_chat/knowledge/selector", _AiIndexChat_GetAiIndexChatKnowledgeSelector0_HTTP_Handler(srv))
+	r.GET("/admin/v1/ai_index_chat/mcp/selector", _AiIndexChat_GetAiIndexChatMcpSelector0_HTTP_Handler(srv))
 }
 
 func _AiIndexChat_CreateAiIndexChatConversation0_HTTP_Handler(srv AiIndexChatHTTPServer) func(ctx http.Context) error {
@@ -181,11 +187,51 @@ func _AiIndexChat_GetAiIndexChatMessageList0_HTTP_Handler(srv AiIndexChatHTTPSer
 	}
 }
 
+func _AiIndexChat_GetAiIndexChatKnowledgeSelector0_HTTP_Handler(srv AiIndexChatHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in GetAiIndexChatKnowledgeSelectorReq
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAiIndexChatGetAiIndexChatKnowledgeSelector)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.GetAiIndexChatKnowledgeSelector(ctx, req.(*GetAiIndexChatKnowledgeSelectorReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*GetAiIndexChatKnowledgeSelectorReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _AiIndexChat_GetAiIndexChatMcpSelector0_HTTP_Handler(srv AiIndexChatHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in GetAiIndexChatMcpSelectorReq
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAiIndexChatGetAiIndexChatMcpSelector)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.GetAiIndexChatMcpSelector(ctx, req.(*GetAiIndexChatMcpSelectorReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*GetAiIndexChatMcpSelectorReply)
+		return ctx.Result(200, reply)
+	}
+}
+
 type AiIndexChatHTTPClient interface {
 	CreateAiIndexChatConversation(ctx context.Context, req *CreateAiIndexChatConversationReq, opts ...http.CallOption) (rsp *CreateAiIndexChatConversationReply, err error)
 	DeleteAiIndexChatConversation(ctx context.Context, req *DeleteAiIndexChatConversationReq, opts ...http.CallOption) (rsp *DeleteAiIndexChatConversationReply, err error)
 	GetAiIndexChatConversationItem(ctx context.Context, req *GetAiIndexChatConversationItemReq, opts ...http.CallOption) (rsp *GetAiIndexChatConversationItemReply, err error)
 	GetAiIndexChatConversationList(ctx context.Context, req *GetAiIndexChatConversationListReq, opts ...http.CallOption) (rsp *GetAiIndexChatConversationListReply, err error)
+	GetAiIndexChatKnowledgeSelector(ctx context.Context, req *GetAiIndexChatKnowledgeSelectorReq, opts ...http.CallOption) (rsp *GetAiIndexChatKnowledgeSelectorReply, err error)
+	GetAiIndexChatMcpSelector(ctx context.Context, req *GetAiIndexChatMcpSelectorReq, opts ...http.CallOption) (rsp *GetAiIndexChatMcpSelectorReply, err error)
 	GetAiIndexChatMessageList(ctx context.Context, req *GetAiIndexChatMessageListReq, opts ...http.CallOption) (rsp *GetAiIndexChatMessageListReply, err error)
 	PinAiIndexChatConversation(ctx context.Context, req *PinAiIndexChatConversationReq, opts ...http.CallOption) (rsp *PinAiIndexChatConversationReply, err error)
 	UpdateAiIndexChatConversation(ctx context.Context, req *UpdateAiIndexChatConversationReq, opts ...http.CallOption) (rsp *UpdateAiIndexChatConversationReply, err error)
@@ -243,6 +289,32 @@ func (c *AiIndexChatHTTPClientImpl) GetAiIndexChatConversationList(ctx context.C
 	pattern := "/admin/v1/ai_index_chat/conversation/list"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationAiIndexChatGetAiIndexChatConversationList))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *AiIndexChatHTTPClientImpl) GetAiIndexChatKnowledgeSelector(ctx context.Context, in *GetAiIndexChatKnowledgeSelectorReq, opts ...http.CallOption) (*GetAiIndexChatKnowledgeSelectorReply, error) {
+	var out GetAiIndexChatKnowledgeSelectorReply
+	pattern := "/admin/v1/ai_index_chat/knowledge/selector"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationAiIndexChatGetAiIndexChatKnowledgeSelector))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *AiIndexChatHTTPClientImpl) GetAiIndexChatMcpSelector(ctx context.Context, in *GetAiIndexChatMcpSelectorReq, opts ...http.CallOption) (*GetAiIndexChatMcpSelectorReply, error) {
+	var out GetAiIndexChatMcpSelectorReply
+	pattern := "/admin/v1/ai_index_chat/mcp/selector"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationAiIndexChatGetAiIndexChatMcpSelector))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {

@@ -15,6 +15,8 @@
 
 ## 登录跳转
 
-目前登录的跳转逻辑主要在 `src/router/interceptor.ts` 和 `src/pages/login/login.vue` 里面，默认会在登录后自动重定向到来源/配置的页面。
+目前登录的跳转逻辑主要在 `src/router/interceptor.ts` 和 `src/pages-fg/login/login.vue` 里面，默认会在登录后自动重定向到来源/配置的页面。
 
 如果与您的业务不符，您可以自行修改。
+
+协议链接配置在 `src/pages-fg/login/config.ts`，留空时点击会提示先配置链接。

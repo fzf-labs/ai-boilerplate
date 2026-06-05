@@ -7,5 +7,6 @@ export default defineConfig({
   test: {
     environment: 'happy-dom',
     exclude: [...configDefaults.exclude, '**/e2e/**'],
+    setupFiles: ['./vitest.setup.ts'],
   },
 });

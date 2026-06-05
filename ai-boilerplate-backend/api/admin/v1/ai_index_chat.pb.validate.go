@@ -2219,6 +2219,705 @@ var _ interface {
 	ErrorName() string
 } = GetAiIndexChatMessageListReplyValidationError{}
 
+// Validate checks the field values on AiIndexChatKnowledgeSelectorItem with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *AiIndexChatKnowledgeSelectorItem) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on AiIndexChatKnowledgeSelectorItem with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// AiIndexChatKnowledgeSelectorItemMultiError, or nil if none found.
+func (m *AiIndexChatKnowledgeSelectorItem) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *AiIndexChatKnowledgeSelectorItem) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Label
+
+	// no validation rules for Value
+
+	if len(errors) > 0 {
+		return AiIndexChatKnowledgeSelectorItemMultiError(errors)
+	}
+
+	return nil
+}
+
+// AiIndexChatKnowledgeSelectorItemMultiError is an error wrapping multiple
+// validation errors returned by
+// AiIndexChatKnowledgeSelectorItem.ValidateAll() if the designated
+// constraints aren't met.
+type AiIndexChatKnowledgeSelectorItemMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m AiIndexChatKnowledgeSelectorItemMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m AiIndexChatKnowledgeSelectorItemMultiError) AllErrors() []error { return m }
+
+// AiIndexChatKnowledgeSelectorItemValidationError is the validation error
+// returned by AiIndexChatKnowledgeSelectorItem.Validate if the designated
+// constraints aren't met.
+type AiIndexChatKnowledgeSelectorItemValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e AiIndexChatKnowledgeSelectorItemValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e AiIndexChatKnowledgeSelectorItemValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e AiIndexChatKnowledgeSelectorItemValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e AiIndexChatKnowledgeSelectorItemValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e AiIndexChatKnowledgeSelectorItemValidationError) ErrorName() string {
+	return "AiIndexChatKnowledgeSelectorItemValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e AiIndexChatKnowledgeSelectorItemValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sAiIndexChatKnowledgeSelectorItem.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = AiIndexChatKnowledgeSelectorItemValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = AiIndexChatKnowledgeSelectorItemValidationError{}
+
+// Validate checks the field values on GetAiIndexChatKnowledgeSelectorReq with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *GetAiIndexChatKnowledgeSelectorReq) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetAiIndexChatKnowledgeSelectorReq
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// GetAiIndexChatKnowledgeSelectorReqMultiError, or nil if none found.
+func (m *GetAiIndexChatKnowledgeSelectorReq) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetAiIndexChatKnowledgeSelectorReq) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return GetAiIndexChatKnowledgeSelectorReqMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetAiIndexChatKnowledgeSelectorReqMultiError is an error wrapping multiple
+// validation errors returned by
+// GetAiIndexChatKnowledgeSelectorReq.ValidateAll() if the designated
+// constraints aren't met.
+type GetAiIndexChatKnowledgeSelectorReqMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetAiIndexChatKnowledgeSelectorReqMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetAiIndexChatKnowledgeSelectorReqMultiError) AllErrors() []error { return m }
+
+// GetAiIndexChatKnowledgeSelectorReqValidationError is the validation error
+// returned by GetAiIndexChatKnowledgeSelectorReq.Validate if the designated
+// constraints aren't met.
+type GetAiIndexChatKnowledgeSelectorReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetAiIndexChatKnowledgeSelectorReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetAiIndexChatKnowledgeSelectorReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetAiIndexChatKnowledgeSelectorReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetAiIndexChatKnowledgeSelectorReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetAiIndexChatKnowledgeSelectorReqValidationError) ErrorName() string {
+	return "GetAiIndexChatKnowledgeSelectorReqValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetAiIndexChatKnowledgeSelectorReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetAiIndexChatKnowledgeSelectorReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetAiIndexChatKnowledgeSelectorReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetAiIndexChatKnowledgeSelectorReqValidationError{}
+
+// Validate checks the field values on GetAiIndexChatKnowledgeSelectorReply
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the first error encountered is returned, or nil if
+// there are no violations.
+func (m *GetAiIndexChatKnowledgeSelectorReply) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetAiIndexChatKnowledgeSelectorReply
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// GetAiIndexChatKnowledgeSelectorReplyMultiError, or nil if none found.
+func (m *GetAiIndexChatKnowledgeSelectorReply) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetAiIndexChatKnowledgeSelectorReply) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetList() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, GetAiIndexChatKnowledgeSelectorReplyValidationError{
+						field:  fmt.Sprintf("List[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, GetAiIndexChatKnowledgeSelectorReplyValidationError{
+						field:  fmt.Sprintf("List[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return GetAiIndexChatKnowledgeSelectorReplyValidationError{
+					field:  fmt.Sprintf("List[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return GetAiIndexChatKnowledgeSelectorReplyMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetAiIndexChatKnowledgeSelectorReplyMultiError is an error wrapping multiple
+// validation errors returned by
+// GetAiIndexChatKnowledgeSelectorReply.ValidateAll() if the designated
+// constraints aren't met.
+type GetAiIndexChatKnowledgeSelectorReplyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetAiIndexChatKnowledgeSelectorReplyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetAiIndexChatKnowledgeSelectorReplyMultiError) AllErrors() []error { return m }
+
+// GetAiIndexChatKnowledgeSelectorReplyValidationError is the validation error
+// returned by GetAiIndexChatKnowledgeSelectorReply.Validate if the designated
+// constraints aren't met.
+type GetAiIndexChatKnowledgeSelectorReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetAiIndexChatKnowledgeSelectorReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetAiIndexChatKnowledgeSelectorReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetAiIndexChatKnowledgeSelectorReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetAiIndexChatKnowledgeSelectorReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetAiIndexChatKnowledgeSelectorReplyValidationError) ErrorName() string {
+	return "GetAiIndexChatKnowledgeSelectorReplyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetAiIndexChatKnowledgeSelectorReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetAiIndexChatKnowledgeSelectorReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetAiIndexChatKnowledgeSelectorReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetAiIndexChatKnowledgeSelectorReplyValidationError{}
+
+// Validate checks the field values on AiIndexChatMcpSelectorItem with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *AiIndexChatMcpSelectorItem) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on AiIndexChatMcpSelectorItem with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// AiIndexChatMcpSelectorItemMultiError, or nil if none found.
+func (m *AiIndexChatMcpSelectorItem) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *AiIndexChatMcpSelectorItem) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Label
+
+	// no validation rules for Value
+
+	if len(errors) > 0 {
+		return AiIndexChatMcpSelectorItemMultiError(errors)
+	}
+
+	return nil
+}
+
+// AiIndexChatMcpSelectorItemMultiError is an error wrapping multiple
+// validation errors returned by AiIndexChatMcpSelectorItem.ValidateAll() if
+// the designated constraints aren't met.
+type AiIndexChatMcpSelectorItemMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m AiIndexChatMcpSelectorItemMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m AiIndexChatMcpSelectorItemMultiError) AllErrors() []error { return m }
+
+// AiIndexChatMcpSelectorItemValidationError is the validation error returned
+// by AiIndexChatMcpSelectorItem.Validate if the designated constraints aren't met.
+type AiIndexChatMcpSelectorItemValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e AiIndexChatMcpSelectorItemValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e AiIndexChatMcpSelectorItemValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e AiIndexChatMcpSelectorItemValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e AiIndexChatMcpSelectorItemValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e AiIndexChatMcpSelectorItemValidationError) ErrorName() string {
+	return "AiIndexChatMcpSelectorItemValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e AiIndexChatMcpSelectorItemValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sAiIndexChatMcpSelectorItem.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = AiIndexChatMcpSelectorItemValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = AiIndexChatMcpSelectorItemValidationError{}
+
+// Validate checks the field values on GetAiIndexChatMcpSelectorReq with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetAiIndexChatMcpSelectorReq) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetAiIndexChatMcpSelectorReq with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetAiIndexChatMcpSelectorReqMultiError, or nil if none found.
+func (m *GetAiIndexChatMcpSelectorReq) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetAiIndexChatMcpSelectorReq) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return GetAiIndexChatMcpSelectorReqMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetAiIndexChatMcpSelectorReqMultiError is an error wrapping multiple
+// validation errors returned by GetAiIndexChatMcpSelectorReq.ValidateAll() if
+// the designated constraints aren't met.
+type GetAiIndexChatMcpSelectorReqMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetAiIndexChatMcpSelectorReqMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetAiIndexChatMcpSelectorReqMultiError) AllErrors() []error { return m }
+
+// GetAiIndexChatMcpSelectorReqValidationError is the validation error returned
+// by GetAiIndexChatMcpSelectorReq.Validate if the designated constraints
+// aren't met.
+type GetAiIndexChatMcpSelectorReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetAiIndexChatMcpSelectorReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetAiIndexChatMcpSelectorReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetAiIndexChatMcpSelectorReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetAiIndexChatMcpSelectorReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetAiIndexChatMcpSelectorReqValidationError) ErrorName() string {
+	return "GetAiIndexChatMcpSelectorReqValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetAiIndexChatMcpSelectorReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetAiIndexChatMcpSelectorReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetAiIndexChatMcpSelectorReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetAiIndexChatMcpSelectorReqValidationError{}
+
+// Validate checks the field values on GetAiIndexChatMcpSelectorReply with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetAiIndexChatMcpSelectorReply) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetAiIndexChatMcpSelectorReply with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// GetAiIndexChatMcpSelectorReplyMultiError, or nil if none found.
+func (m *GetAiIndexChatMcpSelectorReply) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetAiIndexChatMcpSelectorReply) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetList() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, GetAiIndexChatMcpSelectorReplyValidationError{
+						field:  fmt.Sprintf("List[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, GetAiIndexChatMcpSelectorReplyValidationError{
+						field:  fmt.Sprintf("List[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return GetAiIndexChatMcpSelectorReplyValidationError{
+					field:  fmt.Sprintf("List[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return GetAiIndexChatMcpSelectorReplyMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetAiIndexChatMcpSelectorReplyMultiError is an error wrapping multiple
+// validation errors returned by GetAiIndexChatMcpSelectorReply.ValidateAll()
+// if the designated constraints aren't met.
+type GetAiIndexChatMcpSelectorReplyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetAiIndexChatMcpSelectorReplyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetAiIndexChatMcpSelectorReplyMultiError) AllErrors() []error { return m }
+
+// GetAiIndexChatMcpSelectorReplyValidationError is the validation error
+// returned by GetAiIndexChatMcpSelectorReply.Validate if the designated
+// constraints aren't met.
+type GetAiIndexChatMcpSelectorReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetAiIndexChatMcpSelectorReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetAiIndexChatMcpSelectorReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetAiIndexChatMcpSelectorReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetAiIndexChatMcpSelectorReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetAiIndexChatMcpSelectorReplyValidationError) ErrorName() string {
+	return "GetAiIndexChatMcpSelectorReplyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetAiIndexChatMcpSelectorReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetAiIndexChatMcpSelectorReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetAiIndexChatMcpSelectorReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetAiIndexChatMcpSelectorReplyValidationError{}
+
 // Validate checks the field values on AiIndexChatCompletionsReq with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.

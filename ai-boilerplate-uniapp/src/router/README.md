@@ -43,8 +43,8 @@ definePage({
 
 ## 登录注册页路由
 
-登录页 `login.vue` 对应路由是 `/pages/login/login`.
-注册页 `register.vue` 对应路由是 `/pages/login/register`.
+登录页 `login.vue` 对应路由是 `/pages-fg/login/login`.
+注册页 `register.vue` 对应路由是 `/pages-fg/login/register`.
 
 ## 登录注册页适用性
 

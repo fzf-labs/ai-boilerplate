@@ -36,6 +36,10 @@ type AiIndexChatClient interface {
 	GetAiIndexChatConversationList(ctx context.Context, in *GetAiIndexChatConversationListReq, opts ...grpc.CallOption) (*GetAiIndexChatConversationListReply, error)
 	// AI 聊天消息表-列表数据查询
 	GetAiIndexChatMessageList(ctx context.Context, in *GetAiIndexChatMessageListReq, opts ...grpc.CallOption) (*GetAiIndexChatMessageListReply, error)
+	// AI 聊天对话表-知识库选择器
+	GetAiIndexChatKnowledgeSelector(ctx context.Context, in *GetAiIndexChatKnowledgeSelectorReq, opts ...grpc.CallOption) (*GetAiIndexChatKnowledgeSelectorReply, error)
+	// AI 聊天对话表-MCP选择器
+	GetAiIndexChatMcpSelector(ctx context.Context, in *GetAiIndexChatMcpSelectorReq, opts ...grpc.CallOption) (*GetAiIndexChatMcpSelectorReply, error)
 }
 
 type aiIndexChatClient struct {
@@ -109,6 +113,24 @@ func (c *aiIndexChatClient) GetAiIndexChatMessageList(ctx context.Context, in *G
 	return out, nil
 }
 
+func (c *aiIndexChatClient) GetAiIndexChatKnowledgeSelector(ctx context.Context, in *GetAiIndexChatKnowledgeSelectorReq, opts ...grpc.CallOption) (*GetAiIndexChatKnowledgeSelectorReply, error) {
+	out := new(GetAiIndexChatKnowledgeSelectorReply)
+	err := c.cc.Invoke(ctx, "/admin.v1.AiIndexChat/GetAiIndexChatKnowledgeSelector", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *aiIndexChatClient) GetAiIndexChatMcpSelector(ctx context.Context, in *GetAiIndexChatMcpSelectorReq, opts ...grpc.CallOption) (*GetAiIndexChatMcpSelectorReply, error) {
+	out := new(GetAiIndexChatMcpSelectorReply)
+	err := c.cc.Invoke(ctx, "/admin.v1.AiIndexChat/GetAiIndexChatMcpSelector", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AiIndexChatServer is the server API for AiIndexChat service.
 // All implementations must embed UnimplementedAiIndexChatServer
 // for forward compatibility
@@ -127,6 +149,10 @@ type AiIndexChatServer interface {
 	GetAiIndexChatConversationList(context.Context, *GetAiIndexChatConversationListReq) (*GetAiIndexChatConversationListReply, error)
 	// AI 聊天消息表-列表数据查询
 	GetAiIndexChatMessageList(context.Context, *GetAiIndexChatMessageListReq) (*GetAiIndexChatMessageListReply, error)
+	// AI 聊天对话表-知识库选择器
+	GetAiIndexChatKnowledgeSelector(context.Context, *GetAiIndexChatKnowledgeSelectorReq) (*GetAiIndexChatKnowledgeSelectorReply, error)
+	// AI 聊天对话表-MCP选择器
+	GetAiIndexChatMcpSelector(context.Context, *GetAiIndexChatMcpSelectorReq) (*GetAiIndexChatMcpSelectorReply, error)
 	mustEmbedUnimplementedAiIndexChatServer()
 }
 
@@ -154,6 +180,12 @@ func (UnimplementedAiIndexChatServer) GetAiIndexChatConversationList(context.Con
 }
 func (UnimplementedAiIndexChatServer) GetAiIndexChatMessageList(context.Context, *GetAiIndexChatMessageListReq) (*GetAiIndexChatMessageListReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAiIndexChatMessageList not implemented")
+}
+func (UnimplementedAiIndexChatServer) GetAiIndexChatKnowledgeSelector(context.Context, *GetAiIndexChatKnowledgeSelectorReq) (*GetAiIndexChatKnowledgeSelectorReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAiIndexChatKnowledgeSelector not implemented")
+}
+func (UnimplementedAiIndexChatServer) GetAiIndexChatMcpSelector(context.Context, *GetAiIndexChatMcpSelectorReq) (*GetAiIndexChatMcpSelectorReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAiIndexChatMcpSelector not implemented")
 }
 func (UnimplementedAiIndexChatServer) mustEmbedUnimplementedAiIndexChatServer() {}
 
@@ -294,6 +326,42 @@ func _AiIndexChat_GetAiIndexChatMessageList_Handler(srv interface{}, ctx context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AiIndexChat_GetAiIndexChatKnowledgeSelector_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAiIndexChatKnowledgeSelectorReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AiIndexChatServer).GetAiIndexChatKnowledgeSelector(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/admin.v1.AiIndexChat/GetAiIndexChatKnowledgeSelector",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AiIndexChatServer).GetAiIndexChatKnowledgeSelector(ctx, req.(*GetAiIndexChatKnowledgeSelectorReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AiIndexChat_GetAiIndexChatMcpSelector_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAiIndexChatMcpSelectorReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AiIndexChatServer).GetAiIndexChatMcpSelector(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/admin.v1.AiIndexChat/GetAiIndexChatMcpSelector",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AiIndexChatServer).GetAiIndexChatMcpSelector(ctx, req.(*GetAiIndexChatMcpSelectorReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AiIndexChat_ServiceDesc is the grpc.ServiceDesc for AiIndexChat service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -328,6 +396,14 @@ var AiIndexChat_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetAiIndexChatMessageList",
 			Handler:    _AiIndexChat_GetAiIndexChatMessageList_Handler,
+		},
+		{
+			MethodName: "GetAiIndexChatKnowledgeSelector",
+			Handler:    _AiIndexChat_GetAiIndexChatKnowledgeSelector_Handler,
+		},
+		{
+			MethodName: "GetAiIndexChatMcpSelector",
+			Handler:    _AiIndexChat_GetAiIndexChatMcpSelector_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

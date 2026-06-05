@@ -98,14 +98,14 @@ function getImageByIndex(index: number, item: CustomTabBarItem) {
           <view v-if="item.isBulge" class="relative">
             <!-- 中间一个鼓包tabbarItem的处理 -->
             <view class="bulge">
-              <!-- TODO 2/2: 中间鼓包tabbarItem配置：通常是一个图片，或者icon，点击触发业务逻辑 -->
+              <!-- 中间鼓包 tabbarItem：通常是图片或 icon，点击后触发业务逻辑 -->
               <!-- 常见的是：扫描按钮、发布按钮、更多按钮等 -->
               <image class="mt-6rpx h-200rpx w-200rpx" src="/static/tabbar/scan.png" />
             </view>
           </view>
           <view v-else class="tabbar-item__content relative text-center">
             <template v-if="item.iconType === 'uiLib'">
-              <!-- TODO: 以下内容请根据选择的UI库自行替换 -->
+              <!-- 以下内容请根据选择的 UI 库自行替换 -->
               <!-- 如：<wd-icon name="home" /> (https://wot-design-uni.cn/component/icon.html) -->
               <!-- 如：<uv-icon name="home" /> (https://www.uvui.cn/components/icon.html) -->
               <!-- 如：<sar-icon name="image" /> (https://sard.wzt.zone/sard-uniapp-docs/components/icon)(sar没有home图标^_^) -->

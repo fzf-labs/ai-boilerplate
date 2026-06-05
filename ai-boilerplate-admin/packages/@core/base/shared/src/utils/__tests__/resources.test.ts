@@ -1,14 +1,29 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { loadScript } from '../resources';
 
-const testJsPath =
-  'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js';
+const testJsPath = 'test-script.js';
 
 describe('loadScript', () => {
+  let scripts: HTMLScriptElement[];
+
   beforeEach(() => {
-    // 每个测试前清空 head，保证环境干净
-    document.head.innerHTML = '';
+    scripts = [];
+
+    vi.spyOn(document.head, 'append').mockImplementation((...nodes) => {
+      scripts.push(...(nodes as HTMLScriptElement[]));
+    });
+    vi.spyOn(document.head, 'querySelectorAll').mockImplementation(
+      (selector: string) =>
+        findScripts(selector) as unknown as NodeListOf<HTMLScriptElement>,
+    );
+    vi.spyOn(document, 'querySelector').mockImplementation(
+      (selector: string) => findScripts(selector)[0] ?? null,
+    );
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it('should resolve when the script loads successfully', async () => {
@@ -29,33 +44,39 @@ describe('loadScript', () => {
 
   it('should not insert duplicate script and resolve immediately if already loaded', async () => {
     // 先手动插入一个相同 src 的 script
+    const duplicatePath = 'bar.js';
     const existing = document.createElement('script');
-    existing.src = 'bar.js';
-    document.head.append(existing);
+    existing.src = duplicatePath;
+    scripts.push(existing);
 
     // 再次调用
-    const promise = loadScript('bar.js');
+    const promise = loadScript(duplicatePath);
 
     // 立即 resolve
     await expect(promise).resolves.toBeUndefined();
 
     // head 中只保留一个
-    const scripts = document.head.querySelectorAll('script[src="bar.js"]');
-    expect(scripts).toHaveLength(1);
+    const matchedScripts = document.head.querySelectorAll(
+      `script[src="${duplicatePath}"]`,
+    );
+    expect(matchedScripts).toHaveLength(1);
   });
 
   it('should reject when the script fails to load', async () => {
-    const promise = loadScript('error.js');
+    const errorPath = 'error.js';
+    const promise = loadScript(errorPath);
 
     const script = document.querySelector(
-      'script[src="error.js"]',
+      `script[src="${errorPath}"]`,
     ) as HTMLScriptElement;
     expect(script).toBeTruthy();
 
     // 模拟加载失败
     script.dispatchEvent(new Event('error'));
 
-    await expect(promise).rejects.toThrow('Failed to load script: error.js');
+    await expect(promise).rejects.toThrow(
+      `Failed to load script: ${errorPath}`,
+    );
   });
 
   it('should handle multiple concurrent calls and only insert one script tag', async () => {
@@ -74,9 +95,17 @@ describe('loadScript', () => {
     await expect(p2).resolves.toBeUndefined();
 
     // 只插入一次
-    const scripts = document.head.querySelectorAll(
+    const matchedScripts = document.head.querySelectorAll(
       `script[src="${testJsPath}"]`,
     );
-    expect(scripts).toHaveLength(1);
+    expect(matchedScripts).toHaveLength(1);
   });
+
+  function findScripts(selector: string): HTMLScriptElement[] {
+    const match = selector.match(/^script\[src="(.+)"\]$/);
+    if (!match) {
+      return [];
+    }
+    return scripts.filter((script) => script.getAttribute('src') === match[1]);
+  }
 });

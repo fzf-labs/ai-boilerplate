@@ -9,6 +9,27 @@ interface DownloadOptions<T = string> {
 const DEFAULT_FILENAME = 'downloaded_file';
 
 /**
+ * 将 data URL 转为 Blob。
+ */
+export function dataURLtoBlob(dataURL: string): Blob {
+  const [header, base64Data] = dataURL.split(',');
+  if (!header || !base64Data) {
+    throw new Error('Invalid data URL.');
+  }
+
+  const mimeMatch = header.match(/:(.*?);/);
+  const mime = mimeMatch?.[1] || 'application/octet-stream';
+  const binary = window.atob(base64Data);
+  const bytes = new Uint8Array(binary.length);
+
+  for (let index = 0; index < binary.length; index += 1) {
+    bytes[index] = binary.charCodeAt(index);
+  }
+
+  return new Blob([bytes], { type: mime });
+}
+
+/**
  * 通过 URL 下载文件，支持跨域
  * @throws {Error} - 当下载失败时抛出错误
  */
@@ -102,20 +123,32 @@ export function downloadFileFromBlobPart({
  */
 export function urlToBase64(url: string, mineType?: string): Promise<string> {
   return new Promise((resolve, reject) => {
-    let canvas = document.createElement('CANVAS') as HTMLCanvasElement | null;
-    const ctx = canvas?.getContext('2d');
+    const canvas = document.createElement('canvas') as HTMLCanvasElement;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      reject(new Error('Failed to create canvas context.'));
+      return;
+    }
+
     const img = new Image();
-    img.crossOrigin = '';
+    img.crossOrigin = 'anonymous';
     img.addEventListener('load', () => {
-      if (!canvas || !ctx) {
-        return reject(new Error('Failed to create canvas.'));
+      try {
+        canvas.height = img.height;
+        canvas.width = img.width;
+        ctx.drawImage(img, 0, 0);
+        const dataURL = canvas.toDataURL(mineType || 'image/png');
+        resolve(dataURL);
+      } catch (error) {
+        reject(
+          error instanceof Error
+            ? error
+            : new Error('Failed to convert image to base64.'),
+        );
       }
-      canvas.height = img.height;
-      canvas.width = img.width;
-      ctx.drawImage(img, 0, 0);
-      const dataURL = canvas.toDataURL(mineType || 'image/png');
-      canvas = null;
-      resolve(dataURL);
+    });
+    img.addEventListener('error', () => {
+      reject(new Error(`Failed to load image: ${url}`));
     });
     img.src = url;
   });

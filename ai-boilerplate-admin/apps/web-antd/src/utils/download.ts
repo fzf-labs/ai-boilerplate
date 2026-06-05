@@ -1,4 +1,4 @@
-import { dataURLtoBlob, urlToBase64 } from './base64Conver';
+import { dataURLtoBlob, openWindow, urlToBase64 } from '@vben/utils';
 
 /**
  * Download online pictures
@@ -7,15 +7,14 @@ import { dataURLtoBlob, urlToBase64 } from './base64Conver';
  * @param mime
  * @param bom
  */
-export function downloadByOnlineUrl(
+export async function downloadByOnlineUrl(
   url: string,
   filename: string,
   mime?: string,
   bom?: BlobPart,
 ) {
-  urlToBase64(url).then((base64) => {
-    downloadByBase64(base64, filename, mime, bom);
-  });
+  const base64 = await urlToBase64(url);
+  downloadByBase64(base64, filename, mime, bom);
 }
 
 /**
@@ -104,21 +103,4 @@ export function downloadByUrl({
 
   openWindow(url, { target });
   return true;
-}
-
-export function openWindow(
-  url: string,
-  opt?: {
-    noopener?: boolean;
-    noreferrer?: boolean;
-    target?: '_blank' | '_self' | string;
-  },
-) {
-  const { noopener = true, noreferrer = true, target = '__blank' } = opt || {};
-  const feature: string[] = [];
-
-  noopener && feature.push('noopener=yes');
-  noreferrer && feature.push('noreferrer=yes');
-
-  window.open(url, target, feature.join(','));
 }
