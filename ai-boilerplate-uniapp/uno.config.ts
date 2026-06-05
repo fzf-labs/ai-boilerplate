@@ -47,7 +47,7 @@ export default defineConfig({
         ),
       },
     }),
-    // TODO: check 是否会有别的影响
+    // 保留 legacy 兼容层，修复低端安卓机对颜色函数的兼容问题。
     // 处理低端安卓机的样式问题
     // 将颜色函数 (rgb()和hsl()) 从空格分隔转换为逗号分隔，更好的兼容性app端，example：
     // `rgb(255 0 0)` -> `rgb(255, 0, 0)`

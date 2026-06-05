@@ -184,24 +184,29 @@ export function useTypeGridColumns<T = DictTypeInfo>(
 
 // ============================== 字典数据 ==============================
 
-// TODO @芋艿：后续针对 antd，增加
-/**
- * 颜色选项
- */
+// AntD Tag 支持的预设颜色和兼容别名，cssClass 也可以直接填 hex 色值。
 const colorOptions = [
   { value: '', label: '无' },
-  { value: 'processing', label: '主要' },
-  { value: 'success', label: '成功' },
   { value: 'default', label: '默认' },
+  { value: 'processing', label: '主要' },
+  { value: 'primary', label: '主题色（兼容）' },
+  { value: 'info', label: '信息（兼容）' },
+  { value: 'success', label: '成功' },
   { value: 'warning', label: '警告' },
   { value: 'error', label: '危险' },
-  { value: 'pink', label: 'pink' },
-  { value: 'red', label: 'red' },
-  { value: 'orange', label: 'orange' },
-  { value: 'green', label: 'green' },
-  { value: 'cyan', label: 'cyan' },
-  { value: 'blue', label: 'blue' },
-  { value: 'purple', label: 'purple' },
+  { value: 'danger', label: '危险（兼容）' },
+  { value: 'magenta', label: '洋红' },
+  { value: 'pink', label: '粉色' },
+  { value: 'red', label: '红色' },
+  { value: 'volcano', label: '火山' },
+  { value: 'orange', label: '橙色' },
+  { value: 'gold', label: '金色' },
+  { value: 'lime', label: '青柠' },
+  { value: 'green', label: '绿色' },
+  { value: 'cyan', label: '青色' },
+  { value: 'blue', label: '蓝色' },
+  { value: 'geekblue', label: '极客蓝' },
+  { value: 'purple', label: '紫色' },
 ];
 
 /** 数据新增/修改的表单 */
@@ -300,7 +305,7 @@ export function useDataFormSchema(): VbenFormSchema[] {
       componentProps: {
         placeholder: '请输入 CSS Class',
       },
-      help: '输入 hex 模式的颜色, 例如 #108ee9',
+      help: '支持 AntD Tag 颜色名或 hex 颜色，例如 #108ee9',
     },
     {
       fieldName: 'remark',

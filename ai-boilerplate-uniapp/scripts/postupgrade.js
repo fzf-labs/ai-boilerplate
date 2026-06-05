@@ -13,7 +13,7 @@ const execPromise = promisify(exec)
 
 // 定义要执行的命令
 const dependencies = [
-  // TODO: 如果不需要某个平台的小程序，请手动删除或注释掉
+  // 按需保留需要卸载的小程序平台包，不用的平台直接从这里删掉即可。
   '@dcloudio/uni-mp-baidu',
   '@dcloudio/uni-mp-jd',
   '@dcloudio/uni-mp-kuaishou',

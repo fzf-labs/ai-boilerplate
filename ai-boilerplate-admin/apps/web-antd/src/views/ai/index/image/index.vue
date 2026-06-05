@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import type { ProviderModelOption } from '../utils';
-
-import type { AiIndexImageRecordInfo } from '#/api/v1/ai-index-image';
+import type { ImageRecordView } from './components/typing';
 
 import { nextTick, onMounted, ref } from 'vue';
 
@@ -16,10 +15,6 @@ import ImageList from './components/ImageList.vue';
 import Midjourney from './components/midjourney/index.vue';
 import StableDiffusion from './components/stableDiffusion/index.vue';
 import { AiPlatformEnum } from './components/typing';
-
-type ImageRecordView = AiIndexImageRecordInfo & {
-  options?: Record<string, any>;
-};
 
 const imageListRef = ref<any>(); // image 列表 ref
 const dall3Ref = ref<any>(); // dall3(openai) ref
@@ -47,6 +42,11 @@ const platformOptions = [
     value: AiPlatformEnum.STABLE_DIFFUSION,
   },
 ];
+const dedicatedPlatforms = new Set<string>([
+  AiPlatformEnum.OPENAI,
+  AiPlatformEnum.MIDJOURNEY,
+  AiPlatformEnum.STABLE_DIFFUSION,
+]);
 
 const models = ref<ProviderModelOption[]>([]); // 模型列表
 
@@ -60,29 +60,35 @@ const handleDrawComplete = async () => {
 
 /** 重新生成：将画图详情填充到对应平台 */
 const handleRegeneration = async (image: ImageRecordView) => {
+  const targetPlatform = dedicatedPlatforms.has(image.platform ?? '')
+    ? (image.platform as string)
+    : 'common';
   // 切换平台
-  selectPlatform.value = image.platform ?? 'common';
+  selectPlatform.value = targetPlatform;
   // 根据不同平台填充 image
   await nextTick();
-  switch (image.platform) {
+  if (targetPlatform === 'common') {
+    await commonRef.value?.settingValues(image);
+    return;
+  }
+  switch (targetPlatform) {
     case AiPlatformEnum.MIDJOURNEY: {
-      midjourneyRef.value.settingValues(image);
+      await midjourneyRef.value?.settingValues(image);
 
       break;
     }
     case AiPlatformEnum.OPENAI: {
-      dall3Ref.value.settingValues(image);
+      await dall3Ref.value?.settingValues(image);
 
       break;
     }
     case AiPlatformEnum.STABLE_DIFFUSION: {
-      stableDiffusionRef.value.settingValues(image);
+      await stableDiffusionRef.value?.settingValues(image);
 
       break;
     }
     // No default
   }
-  // TODO @fan：貌似 other 重新设置不行？
 };
 
 /** 组件挂载的时候 */

@@ -89,6 +89,11 @@ class Fastfile: LaneFile {
     }
 
     // MARK: - Upload builds to Firebase and AppStore
+
+    private func firebaseReleaseNotes() -> String {
+        let releaseNote = Constant.releaseNote.trimmingCharacters(in: .whitespacesAndNewlines)
+        return releaseNote.isEmpty ? "Release notes not provided." : releaseNote
+    }
     
     func buildDevAndUploadToFirebaseLane() {
         desc("Build Dev app and upload to Firebase")
@@ -98,8 +103,7 @@ class Fastfile: LaneFile {
 
         buildAdHocDevLane()
 
-        // TODO: - Make release notes
-        Distribution.uploadToFirebase(environment: .dev, releaseNotes: "")
+        Distribution.uploadToFirebase(environment: .dev, releaseNotes: firebaseReleaseNotes())
 
         Build.saveBuildContextToCI()
     }
@@ -112,8 +116,7 @@ class Fastfile: LaneFile {
 
         buildAdHocStagingLane()
 
-        // TODO: - Make release notes
-        Distribution.uploadToFirebase(environment: .staging, releaseNotes: Constant.releaseNote)
+        Distribution.uploadToFirebase(environment: .staging, releaseNotes: firebaseReleaseNotes())
 
         Build.saveBuildContextToCI()
     }
@@ -126,8 +129,7 @@ class Fastfile: LaneFile {
 
         buildAdHocProductionLane()
 
-        // TODO: - Make release notes
-        Distribution.uploadToFirebase(environment: .production, releaseNotes: Constant.releaseNote)
+        Distribution.uploadToFirebase(environment: .production, releaseNotes: firebaseReleaseNotes())
 
         Build.saveBuildContextToCI()
     }
@@ -159,7 +161,7 @@ class Fastfile: LaneFile {
         buildAppStoreLane()
 
         AppStoreAuthentication.connectAPIKey()
-        Distribution.uploadToTestFlight(changeLog: Constant.releaseNote)
+        Distribution.uploadToTestFlight(changeLog: firebaseReleaseNotes())
 
         Build.saveBuildContextToCI()
     }

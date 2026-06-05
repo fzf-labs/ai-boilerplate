@@ -13,7 +13,7 @@ interface DictState {
   dictCache: Dict;
 }
 
-// TODO @芋艿：可以共享么？
+// 这里作为共享字典缓存，供 `utils/dict.ts` 和字典标签组件复用。
 export const useDictStore = defineStore('dict', {
   actions: {
     getDictData(dictType: string, value: any) {

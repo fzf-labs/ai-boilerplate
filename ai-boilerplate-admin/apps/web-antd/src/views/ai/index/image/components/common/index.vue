@@ -104,12 +104,17 @@ async function handleGenerateImage() {
 /** 填充值 */
 async function settingValues(detail: ImageRecordView) {
   prompt.value = detail.prompt ?? '';
-  width.value = detail.width ?? width.value;
-  height.value = detail.height ?? height.value;
+  selectHotWord.value = ImageHotWords.includes(prompt.value)
+    ? prompt.value
+    : '';
+  width.value = detail.width ?? 512;
+  height.value = detail.height ?? 512;
+  otherPlatform.value = detail.platform ?? AiPlatformEnum.TONG_YI;
+  handlerPlatformChange(otherPlatform.value);
 }
 
 /** 平台切换 */
-async function handlerPlatformChange(platform: any) {
+function handlerPlatformChange(platform: any) {
   // 根据选择的平台筛选模型
   platformModels.value = props.models.filter(
     (item: ProviderModelOption) => item.platformName === platform,

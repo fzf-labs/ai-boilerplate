@@ -8,10 +8,10 @@ import type { SysDeptInfo } from '#/api/v1/sys-dept';
 
 import { ref } from 'vue';
 
-import { Page, useVbenModal } from '@vben/common-ui';
+import { confirm, Page, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
 
-import { Button, message, Modal } from 'ant-design-vue';
+import { Button, message } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
@@ -93,43 +93,41 @@ function onDetail(row: SysAdminInfo) {
   detailModalApi.setData(row).open();
 }
 
-// TODO @芋艿：后续怎么简化一下 confirm 的实现。
 /** 更新用户状态 */
 async function onStatusChange(
   newStatus: number,
   row: SysAdminInfo,
-): Promise<boolean | undefined> {
-  return new Promise((resolve, reject) => {
-    // 启用 1 禁用 -1
-    let newStatusText = '启用';
-    if (newStatus === -1) {
-      newStatusText = '禁用';
-    }
-    Modal.confirm({
+): Promise<boolean> {
+  const id = row.id;
+  if (!id) {
+    message.error($t('ui.actionMessage.operationFailed'));
+    return false;
+  }
+
+  // 启用 1 禁用 -1
+  const newStatusText = newStatus === -1 ? '禁用' : '启用';
+  try {
+    await confirm({
       title: '切换状态',
       content: `你要将${row.username}的状态切换为【${newStatusText}】吗？`,
-      onCancel() {
-        reject(new Error('已取消'));
-      },
-      onOk() {
-        // 更新用户状态
-        updateSysAdminStatus({
-          body: { id: row.id as string, status: newStatus },
-        })
-          .then(() => {
-            // 提示并返回成功
-            message.success({
-              content: $t('ui.actionMessage.operationSuccess'),
-              key: 'action_process_msg',
-            });
-            resolve(true);
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      },
     });
-  });
+  } catch {
+    return false;
+  }
+
+  try {
+    await updateSysAdminStatus({
+      body: { id, status: newStatus },
+    });
+    message.success({
+      content: $t('ui.actionMessage.operationSuccess'),
+      key: 'action_process_msg',
+    });
+    return true;
+  } catch {
+    message.error($t('ui.actionMessage.operationFailed'));
+    return false;
+  }
 }
 
 /** 表格操作按钮的回调函数 */

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 
 interface IFrameProps {
   /** iframe 的源地址 */
@@ -10,19 +10,24 @@ const props = defineProps<IFrameProps>();
 
 const loading = ref(true);
 const height = ref('');
-const frameRef = ref<HTMLElement | null>(null);
+const frameRef = ref<HTMLIFrameElement | null>(null);
 
 function init() {
   height.value = `${document.documentElement.clientHeight - 94.5}px`;
-  loading.value = false;
 }
 
+watch(
+  () => props.src,
+  () => {
+    loading.value = true;
+  },
+  { immediate: true },
+);
+
 onMounted(() => {
-  setTimeout(() => {
-    init();
-  }, 300);
+  init();
 });
-// TODO @芋艿：优化：未来使用 vben 自带的内链实现
+// 路由级内链由 layouts 的 IFrameView 处理，这里保留给直接 URL 嵌入使用。
 </script>
 
 <template>
@@ -33,6 +38,7 @@ onMounted(() => {
       style="width: 100%; height: 100%"
       frameborder="no"
       scrolling="auto"
+      @load="loading = false"
     ></iframe>
   </div>
 </template>
