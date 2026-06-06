@@ -13,6 +13,9 @@ import Testing
 @Suite("AuthenticationInterceptor")
 struct AuthenticationInterceptorTests {
 
+    private let testBaseURL = URL(string: "https://auth.test.invalid")!
+    private let testAPIBaseURL = URL(string: "https://api.test.invalid")!
+
     private let validToken = TokenSet(
         accessToken: "valid-access-token",
         refreshToken: "valid-refresh-token",
@@ -37,21 +40,21 @@ struct AuthenticationInterceptorTests {
             validTokenResult: .success("valid-access-token")
         )
         let interceptor = AuthenticationInterceptor(coordinator: coordinator)
-        
-        var request = URLRequest(url: URL(string: "https://example.com")!)
+
+        var request = URLRequest(url: testBaseURL)
         let session = Session.default
-        
+
         let result = await withCheckedContinuation { continuation in
             interceptor.adapt(request, for: session) { result in
                 continuation.resume(returning: result)
             }
         }
-        
+
         guard case .success(let adaptedRequest) = result else {
             Issue.record("Expected success, got failure")
             return
         }
-        
+
         #expect(adaptedRequest.value(forHTTPHeaderField: "Authorization") == "Bearer valid-access-token")
     }
 
@@ -65,16 +68,16 @@ struct AuthenticationInterceptorTests {
             validTokenResult: .failure(APIAuthenticationError.missingToken)
         )
         let interceptor = AuthenticationInterceptor(coordinator: coordinator)
-        
-        var request = URLRequest(url: URL(string: "https://example.com")!)
+
+        var request = URLRequest(url: testBaseURL)
         let session = Session.default
-        
+
         let result = await withCheckedContinuation { continuation in
             interceptor.adapt(request, for: session) { result in
                 continuation.resume(returning: result)
             }
         }
-        
+
         guard case .failure(let error) = result else {
             Issue.record("Expected failure, got success")
             return
@@ -96,23 +99,23 @@ struct AuthenticationInterceptorTests {
             validTokenResult: .success("valid-access-token")
         )
         let interceptor = AuthenticationInterceptor(coordinator: coordinator)
-        
-        var request = URLRequest(url: URL(string: "https://example.com")!)
+
+        var request = URLRequest(url: testBaseURL)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("en-US", forHTTPHeaderField: "Accept-Language")
         let session = Session.default
-        
+
         let result = await withCheckedContinuation { continuation in
             interceptor.adapt(request, for: session) { result in
                 continuation.resume(returning: result)
             }
         }
-        
+
         guard case .success(let adaptedRequest) = result else {
             Issue.record("Expected success, got failure")
             return
         }
-        
+
         #expect(adaptedRequest.value(forHTTPHeaderField: "Authorization") == "Bearer valid-access-token")
         #expect(adaptedRequest.value(forHTTPHeaderField: "Content-Type") == "application/json")
         #expect(adaptedRequest.value(forHTTPHeaderField: "Accept-Language") == "en-US")
@@ -167,21 +170,21 @@ struct AuthenticationInterceptorTests {
             refreshClient: client,
             configuration: configuration
         )
-        
-        var request = URLRequest(url: URL(string: "https://example.com")!)
+
+        var request = URLRequest(url: testBaseURL)
         let session = Session.default
-        
+
         let result = await withCheckedContinuation { continuation in
             interceptor.adapt(request, for: session) { result in
                 continuation.resume(returning: result)
             }
         }
-        
+
         guard case .success(let adaptedRequest) = result else {
             Issue.record("Expected success, got failure")
             return
         }
-        
+
         #expect(adaptedRequest.value(forHTTPHeaderField: "Authorization") == "Bearer valid-access-token")
     }
 
@@ -190,21 +193,21 @@ struct AuthenticationInterceptorTests {
         let repository = MockSessionRepository(token: validToken)
         
         let interceptor = AuthenticationInterceptor(sessionRepository: repository)
-        
-        var request = URLRequest(url: URL(string: "https://example.com")!)
+
+        var request = URLRequest(url: testBaseURL)
         let session = Session.default
-        
+
         let result = await withCheckedContinuation { continuation in
             interceptor.adapt(request, for: session) { result in
                 continuation.resume(returning: result)
             }
         }
-        
+
         guard case .success(let adaptedRequest) = result else {
             Issue.record("Expected success, got failure")
             return
         }
-        
+
         #expect(adaptedRequest.value(forHTTPHeaderField: "Authorization") == "Bearer valid-access-token")
     }
 
@@ -221,23 +224,23 @@ struct AuthenticationInterceptorTests {
             refreshClient: client,
             configuration: configuration
         )
-        
-        var request = URLRequest(url: URL(string: "https://api.example.com/data")!)
+
+        var request = URLRequest(url: testAPIBaseURL.appendingPathComponent("data"))
         let session = Session.default
-        
+
         let adaptResult = await withCheckedContinuation { continuation in
             interceptor.adapt(request, for: session) { result in
                 continuation.resume(returning: result)
             }
         }
-        
+
         guard case .success(let adaptedRequest) = adaptResult else {
             Issue.record("Expected successful adaptation")
             return
         }
-        
+
         #expect(adaptedRequest.value(forHTTPHeaderField: "Authorization") == "Bearer valid-access-token")
-        #expect(adaptedRequest.url?.absoluteString == "https://api.example.com/data")
+        #expect(adaptedRequest.url?.absoluteString == "https://api.test.invalid/data")
     }
 
     @Test("interceptor handles concurrent requests properly")
@@ -249,10 +252,10 @@ struct AuthenticationInterceptorTests {
             refreshClient: client
         )
         let interceptor = AuthenticationInterceptor(coordinator: coordinator)
-        
-        let request1 = URLRequest(url: URL(string: "https://api.example.com/endpoint1")!)
-        let request2 = URLRequest(url: URL(string: "https://api.example.com/endpoint2")!)
-        let request3 = URLRequest(url: URL(string: "https://api.example.com/endpoint3")!)
+
+        let request1 = URLRequest(url: testAPIBaseURL.appendingPathComponent("endpoint1"))
+        let request2 = URLRequest(url: testAPIBaseURL.appendingPathComponent("endpoint2"))
+        let request3 = URLRequest(url: testAPIBaseURL.appendingPathComponent("endpoint3"))
         
         let session = Session.default
         

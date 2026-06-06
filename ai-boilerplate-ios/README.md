@@ -36,6 +36,13 @@ Then open the generated Xcode project/workspace and build with Xcode.
 Update the bundle identifier in the `.xcconfig`/Tuist settings before shipping a
 real app.
 
+## API Configuration
+
+`API_BASE_URL` is defined in `AIBoilerplate/Configurations/XCConfigs/*.xcconfig`
+and injected into `Info.plist`. The template defaults to the local backend at
+`http://127.0.0.1:8000/api`; update the value per environment before connecting
+to a remote backend.
+
 ## Upstream
 
 The project is based on `nimblehq/ios-templates`. See `UPSTREAM.md` and

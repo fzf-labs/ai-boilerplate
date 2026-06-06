@@ -26,9 +26,12 @@ extension Target {
             destinations: .iOS,
             product: .app,
             bundleId: bundleId,
-            deploymentTargets: .iOS("{TARGET_VERSION}"),
+            deploymentTargets: .iOS(Constant.iOSDeploymentTarget),
             infoPlist: "\(name)/Configurations/Plists/Info.plist",
-            sources: ["\(name)/Sources/**"],
+            sources: [
+                "\(name)/Sources/**",
+                "Tuist/Interfaces/SwiftUI/Sources/**"
+            ],
             resources: ["\(name)/Resources/**"],
             dependencies: [
                 // Internal modules
@@ -71,7 +74,7 @@ extension Target {
             destinations: .iOS,
             product: .framework,
             bundleId: module.bundleId(mainBundleId: bundleId),
-            deploymentTargets: .iOS("{TARGET_VERSION}"),
+            deploymentTargets: .iOS(Constant.iOSDeploymentTarget),
             infoPlist: module.infoPlist,
             sources: module.sources,
             resources: module.resources,

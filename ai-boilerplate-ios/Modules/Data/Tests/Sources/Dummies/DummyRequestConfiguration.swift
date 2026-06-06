@@ -9,7 +9,7 @@ import Foundation
 
 struct DummyRequestConfiguration: RequestConfiguration {
 
-    var baseURL: String { "https://example.com" }
+    var baseURL: String { "https://test.invalid" }
 
     var endpoint: String { "" }
 

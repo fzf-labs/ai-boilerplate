@@ -5,14 +5,14 @@
 import Alamofire
 import Foundation
 
-/// This is an example of how we handle login/logout with email password via API requests.
+/// Auth endpoints used by login, logout, and token refresh requests.
 enum AuthRequestConfiguration: RequestConfiguration {
 
     case logIn(username: String, password: String)
     case logOut(accessToken: String)
     case refreshToken(String)
 
-    var baseURL: String { "https://example.com/api" }
+    var baseURL: String { AppConfiguration.apiBaseURL() }
 
     var endpoint: String {
         switch self {
@@ -54,5 +54,20 @@ enum AuthRequestConfiguration: RequestConfiguration {
         default:
             nil
         }
+    }
+}
+
+enum AppConfiguration {
+
+    private static let apiBaseURLKey = "API_BASE_URL"
+    private static let defaultAPIBaseURL = "http://127.0.0.1:8000/api"
+
+    static func apiBaseURL(
+        from infoDictionary: [String: Any]? = Bundle.main.infoDictionary
+    ) -> String {
+        let configuredValue = infoDictionary?[apiBaseURLKey] as? String
+        let value = configuredValue?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+
+        return value.isEmpty || value.hasPrefix("$(") ? defaultAPIBaseURL : value
     }
 }
