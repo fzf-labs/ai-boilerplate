@@ -36,7 +36,7 @@ export function useReleaseFormSchema(
       label: '包名',
       component: 'Input',
       componentProps: {
-        placeholder: '应用唯一包名',
+        placeholder: '已自动填充应用唯一包名',
         disabled: true,
       },
       rules: 'required',
@@ -46,7 +46,7 @@ export function useReleaseFormSchema(
       label: '发布渠道',
       component: 'Select',
       componentProps: {
-        placeholder: '请输入发布渠道',
+        placeholder: '请选择发布渠道',
         allowClear: true,
         options: [
           { label: '官方', value: 'official' },
@@ -241,7 +241,7 @@ export function useReleaseGridFormSchema(): VbenFormSchema[] {
       label: '发布渠道',
       component: 'Select',
       componentProps: {
-        placeholder: '请输入发布渠道',
+        placeholder: '请选择发布渠道',
         allowClear: true,
         options: [
           { label: '官方', value: 'official' },
