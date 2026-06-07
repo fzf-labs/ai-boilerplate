@@ -47,3 +47,12 @@ to a remote backend.
 
 The project is based on `nimblehq/ios-templates`. See `UPSTREAM.md` and
 `LICENSE-NIMBLEHQ` for source and license details.
+
+## More Documentation
+
+- Root operations workflow: `../docs/operations.md`
+- Template selection and tradeoffs: `../docs/technical-decisions.md`
+- Environment configuration: `../docs/environment.md`
+- Release checklist: `../docs/release.md`
+- Troubleshooting: `../docs/troubleshooting.md`
+- Verification matrix: `../docs/verification.md`

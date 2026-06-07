@@ -16,3 +16,12 @@ platform, then run:
 ```bash
 npm run tauri dev
 ```
+
+## More Documentation
+
+- Root operations workflow: `../docs/operations.md`
+- Template selection and tradeoffs: `../docs/technical-decisions.md`
+- Environment configuration: `../docs/environment.md`
+- Release checklist: `../docs/release.md`
+- Troubleshooting: `../docs/troubleshooting.md`
+- Verification matrix: `../docs/verification.md`

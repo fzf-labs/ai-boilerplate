@@ -62,9 +62,22 @@ For the stack rationale behind those choices, see
 
 ## Documentation
 
-- [Operations guide](docs/operations.md): setup, generated artifacts, subtree workflow, and release checks.
-- [Technical decisions](docs/technical-decisions.md): stack choices and rationale for each template.
+- [Operations guide](docs/operations.md): start-work workflow, task priority, generated artifacts, subtree workflow, and release checks.
+- [Technical decisions](docs/technical-decisions.md): stack choices, template tradeoffs, and selection guidance.
 - [Verification commands](docs/verification.md): targeted and full verification commands for every template.
+- [Generated artifacts](docs/generated-artifacts.md): backend API, Swagger, GORM, and frontend client generation flow.
+- [Environment configuration](docs/environment.md): local endpoints, secrets, and per-template environment files.
+- [Troubleshooting](docs/troubleshooting.md): common setup, dependency, verification, and API integration failures.
+- [Release checklist](docs/release.md): pre-publish checks for single-template and cross-template changes.
+
+## Development Workflow
+
+1. Choose the template that owns the product surface you are changing.
+2. Read that template README plus the matching root guide in the documentation list above.
+3. Install dependencies only inside the touched template directory.
+4. Run the smallest verification command from `docs/verification.md` before and after the change when you need a clean baseline.
+5. Keep generated files in sync with their source artifacts.
+6. Before committing, confirm `git status --short` only contains intentional changes.
 
 ## Local Development Notes
 

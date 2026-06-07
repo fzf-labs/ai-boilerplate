@@ -55,3 +55,12 @@ This creates `chrome-extension.zip` from the built `dist` directory.
 - Update `name` in `package.json`.
 - Add extension permissions only when a feature needs them.
 - Keep content-script code isolated from the page DOM unless direct DOM access is required.
+
+## More Documentation
+
+- Root operations workflow: `../docs/operations.md`
+- Template selection and tradeoffs: `../docs/technical-decisions.md`
+- Environment configuration: `../docs/environment.md`
+- Release checklist: `../docs/release.md`
+- Troubleshooting: `../docs/troubleshooting.md`
+- Verification matrix: `../docs/verification.md`

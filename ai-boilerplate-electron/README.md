@@ -47,3 +47,12 @@ npm run build:linux
 `electron-builder.yml` owns package identity, artifact names, and the Electron
 download mirror. Keep mirror settings there so npm does not warn about unknown
 project-level config during type checks and installs.
+
+## More Documentation
+
+- Root operations workflow: `../docs/operations.md`
+- Template selection and tradeoffs: `../docs/technical-decisions.md`
+- Environment configuration: `../docs/environment.md`
+- Release checklist: `../docs/release.md`
+- Troubleshooting: `../docs/troubleshooting.md`
+- Verification matrix: `../docs/verification.md`

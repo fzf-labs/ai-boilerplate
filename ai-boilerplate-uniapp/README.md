@@ -31,3 +31,12 @@ pnpm check:type
 - `VITE_SERVER_BASEURL`：后端 API 地址，默认指向本机后端。
 
 如果不需要某些小程序平台，可以在 `scripts/postupgrade.js` 里直接删掉对应依赖。
+
+## 更多文档
+
+- 根目录操作流程：`../docs/operations.md`
+- 技术选型与模板取舍：`../docs/technical-decisions.md`
+- 生成 API 客户端流程：`../docs/generated-artifacts.md`
+- 环境配置说明：`../docs/environment.md`
+- 常见问题排查：`../docs/troubleshooting.md`
+- 验证命令矩阵：`../docs/verification.md`

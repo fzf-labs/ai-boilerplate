@@ -79,10 +79,33 @@ The same commands are tracked in `docs/verification.md`.
 
 ## Daily Development
 
-- Use this priority order when choosing unattended cleanup or maintenance work:
-  open `P0`/`P1`/`blocker` issues or PRs, failing verification commands, core
-  workflow regressions, user-visible template issues, then low-risk
-  documentation or metadata drift.
+Use this workflow for routine development:
+
+1. Identify the owning template from the root README selection table.
+2. Read the owning template README and any relevant root guide.
+3. Install dependencies only inside the owning template.
+4. Run the smallest verification command from `docs/verification.md` when a
+   clean baseline matters.
+5. Make the smallest change that satisfies the task.
+6. Regenerate artifacts from their source when contracts or database schemas
+   changed.
+7. Run the targeted verification command for every touched template.
+8. Check `git status --short` before committing.
+
+Use this priority order when choosing unattended cleanup or maintenance work:
+
+| Rank | Signal | Action |
+| --- | --- | --- |
+| 1 | Open `P0`, `P1`, `blocker`, or `critical` issues or PRs | Fix or summarize the blocking item first. |
+| 2 | Failing documented verification commands | Reproduce, find root cause, fix, and rerun the command. |
+| 3 | Core workflow regressions | Prioritize setup, generation, auth, API, build, and release flows. |
+| 4 | User-visible template issues | Fix broken copy, links, defaults, and UI paths that a starter user sees. |
+| 5 | Low-risk documentation or metadata drift | Improve docs only when higher-priority signals are absent. |
+| 6 | Product decisions or external-account work | Stop and ask for confirmation before changing behavior. |
+
+If no priority labels or failing checks exist, use open issues and root
+documentation gaps as the next source of truth. Record the source, rationale,
+acceptance criteria, and verification evidence for each task.
 - Start from the template README when working in a specific surface.
 - Use root documentation for cross-template policy, release checks, and subtree
   operations.
@@ -124,6 +147,16 @@ Admin and uni-app API clients are generated from backend Swagger artifacts:
 
 Regenerate clients in the same change as the backend contract update so request
 types, response types, and runtime paths stay aligned.
+
+For the complete generation order and review checklist, see
+`docs/generated-artifacts.md`.
+
+## Environment Configuration
+
+Repository defaults are for local development. Real deployment values belong in
+local config files, CI secrets, platform secret stores, or mobile signing
+systems. See `docs/environment.md` for the per-template file list and local
+endpoint defaults.
 
 ## Native Configuration
 
@@ -170,6 +203,8 @@ history rewrite.
   exact command and failure output in the task summary, then run the closest
   static check for the edited files.
 
+For a template-by-template troubleshooting matrix, see `docs/troubleshooting.md`.
+
 ## Release Checklist
 
 Before merging a change that touches more than one template:
@@ -181,3 +216,5 @@ Before merging a change that touches more than one template:
    changed.
 4. Confirm `git status --short` only contains intended changes.
 5. Commit with a concise message that names the affected template or workflow.
+
+For the expanded release and publishing checklist, see `docs/release.md`.

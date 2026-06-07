@@ -60,3 +60,12 @@ packages:
 
 The project is based on `its-me-debk007/kotlin-android-mvvm-template`. See
 `UPSTREAM.md` and `LICENSE-ITS-ME-DEBK007` for source and license details.
+
+## More Documentation
+
+- Root operations workflow: `../docs/operations.md`
+- Template selection and tradeoffs: `../docs/technical-decisions.md`
+- Environment configuration: `../docs/environment.md`
+- Release checklist: `../docs/release.md`
+- Troubleshooting: `../docs/troubleshooting.md`
+- Verification matrix: `../docs/verification.md`

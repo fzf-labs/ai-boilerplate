@@ -106,3 +106,36 @@ Use this repository as a menu of starting points:
 
 Prefer one primary client per product workflow. Add another template only when a
 specific platform or distribution requirement justifies the extra maintenance.
+
+## Template Tradeoffs
+
+| Template | Choose When | Avoid When | Verification |
+| --- | --- | --- | --- |
+| Backend | You need typed APIs, generated HTTP/gRPC bindings, database access, jobs, or shared contracts. | The change is only client-side copy, routing, or presentation. | `go test ./...` |
+| Admin console | You need internal CRUD, permissions, dense tables, operational forms, or admin-only workflows. | The experience is public marketing, lightweight web content, or mobile-first. | `pnpm check:type --filter=@vben/web-antd` |
+| Uni-app | You need one cross-platform mobile or mini-program client. | You need deep native APIs, custom platform distribution, or native-only performance. | `pnpm check:type` |
+| PC web | You need a lightweight browser app outside the admin console. | The workflow needs admin permissions, dense back-office tables, or native desktop APIs. | `pnpm type-check` |
+| Electron | You need desktop distribution with Chromium and Node integration. | A browser app or smaller native shell can satisfy the workflow. | `npm run typecheck` |
+| Tauri | You need a smaller desktop shell and can support Rust/Tauri prerequisites. | You need broad Node integration in the desktop runtime. | `npm run build` |
+| Chrome extension | You need browser-side tab, page, or productivity workflows. | The feature is a normal web app or needs server-owned state only. | `npm run type-check && npm test` |
+| iOS | You need a native Apple-platform app or native iOS capabilities. | Uni-app can provide the needed mobile workflow with lower maintenance. | `swift build` |
+| Android | You need a native Android app or Android-specific capabilities. | Uni-app can provide the needed mobile workflow with lower maintenance. | `./gradlew detekt test assembleDebug -x validateSigningDebug` |
+
+## Decision Rules
+
+- Start with the backend only when the task changes shared data, contracts,
+  authentication, permissions, async jobs, or API behavior.
+- Start with admin for internal operator workflows and keep the UI dense,
+  scannable, and permission-aware.
+- Start with uni-app for the default mobile surface. Use native iOS or Android
+  only when the product has platform-specific requirements.
+- Start with PC web for public or lightweight browser workflows that do not
+  belong in the admin console.
+- Choose Electron over Tauri when Node integration is a real runtime
+  requirement. Choose Tauri when a smaller desktop footprint matters more.
+- Choose the Chrome extension only when browser context, tabs, or extension
+  permissions are central to the feature.
+
+When a task crosses templates, decide which artifact owns the behavior first.
+Backend contracts and database schemas should lead generated client updates;
+client-only visual or copy changes should stay in the client template.

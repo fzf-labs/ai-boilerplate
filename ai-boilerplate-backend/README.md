@@ -58,3 +58,11 @@ make api-schema-test FILE=admin/v1/user.swagger.json METHOD=GET
 
 Set `TEST_API_URL`, `TEST_ADMIN_USER`, `TEST_ADMIN_PASS`, and `TEST_LOGIN_PATH`
 when testing against a non-default local server.
+
+## More Documentation
+
+- Root operations workflow: `../docs/operations.md`
+- Generated artifact flow: `../docs/generated-artifacts.md`
+- Environment configuration: `../docs/environment.md`
+- Troubleshooting: `../docs/troubleshooting.md`
+- Verification matrix: `../docs/verification.md`

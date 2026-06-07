@@ -49,3 +49,12 @@ before publishing changes that touch shared packages or generated clients.
 - `apps/web-antd/src/api`: generated API clients.
 - `packages` and `internal`: shared UI, request, lint, build, and type config.
 - `scripts/api-gen`: Swagger-to-TypeScript generation script.
+
+## More Documentation
+
+- Root operations workflow: `../docs/operations.md`
+- Template selection and tradeoffs: `../docs/technical-decisions.md`
+- Generated API client flow: `../docs/generated-artifacts.md`
+- Environment configuration: `../docs/environment.md`
+- Troubleshooting: `../docs/troubleshooting.md`
+- Verification matrix: `../docs/verification.md`

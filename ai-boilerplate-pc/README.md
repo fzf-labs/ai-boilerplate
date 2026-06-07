@@ -57,3 +57,11 @@ npm run lint
 - `HomeView` is the main product shell.
 - `BackToTop` stays mounted globally for long operator flows.
 - Router entries are intentionally small so product routes can be added without starter noise.
+
+## More Documentation
+
+- Root operations workflow: `../docs/operations.md`
+- Template selection and tradeoffs: `../docs/technical-decisions.md`
+- Environment configuration: `../docs/environment.md`
+- Troubleshooting: `../docs/troubleshooting.md`
+- Verification matrix: `../docs/verification.md`
