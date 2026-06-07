@@ -847,7 +847,7 @@ const handleAccountChange = (value: any) => {
                       <FormItem label="菜单名称" field="name" required>
                         <Input
                           v-model:value="formData.name"
-                          placeholder="仅支持中文或数字"
+                          placeholder="请输入菜单名称"
                         />
                         <template #extra>
                           <div>仅支持中英文和数字，字数不超过4个汉字</div>
@@ -870,7 +870,7 @@ const handleAccountChange = (value: any) => {
                       <FormItem label="菜单内容" field="key" required>
                         <Input
                           v-model:value="formData.key"
-                          placeholder="仅支持中文或数字"
+                          placeholder="请输入菜单内容"
                         />
                         <template #extra>
                           <div>key值为管理平台创建好的功能key</div>
@@ -884,7 +884,7 @@ const handleAccountChange = (value: any) => {
                       <FormItem label="网页链接" field="url" required>
                         <Input
                           v-model:value="formData.url"
-                          placeholder="公众号链接"
+                          placeholder="请输入公众号链接"
                         />
                         <template #extra>
                           <div>跳转链接请使用已配置的安全域名，且必须以 https:// 开头</div>
@@ -898,19 +898,19 @@ const handleAccountChange = (value: any) => {
                       <FormItem label="AppId" field="appid" required>
                         <Input
                           v-model:value="formData.appid"
-                          placeholder="小程序AppId"
+                          placeholder="请输入小程序 AppId"
                         />
                         <template #extra>
-                          <div>请填写公众号后台已配置的小程序 AppId</div>
+                          <div>请填写与公众号后台配置一致的小程序 AppId</div>
                         </template>
                       </FormItem>
                       <FormItem label="页面路径" field="pagepath" required>
                         <Input
                           v-model:value="formData.pagepath"
-                          placeholder="页面路径"
+                          placeholder="请输入页面路径"
                         />
                         <template #extra>
-                          <div>请填写实际要跳转的小程序页面路径</div>
+                          <div>请填写小程序中实际跳转的页面路径</div>
                         </template>
                       </FormItem>
                     </div>
@@ -931,7 +931,7 @@ const handleAccountChange = (value: any) => {
                       <FormItem label="菜单名称" field="name" required>
                         <Input
                           v-model:value="formData.name"
-                          placeholder="仅支持中文或数字"
+                          placeholder="请输入菜单名称"
                         />
                         <template #extra>
                           <div>仅支持中英文和数字，字数不超过4个汉字</div>

@@ -162,7 +162,7 @@ defineExpose({ settingValues });
       :maxlength="1024"
       :rows="5"
       class="mt-4 w-full"
-      placeholder="例如：童话里的小屋应该是什么样子？"
+      placeholder="请输入画面描述"
       show-count
     />
   </div>

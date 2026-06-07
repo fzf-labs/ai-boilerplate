@@ -48,7 +48,7 @@ export function useModelFormSchema(): VbenFormSchema[] {
       fieldName: 'modelId',
       label: '模型ID',
       componentProps: {
-        placeholder: '请输入模型ID（如：gpt-4-turbo、claude-3-5-sonnet）',
+        placeholder: '请输入模型ID',
       },
       rules: 'required',
     },

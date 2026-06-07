@@ -68,7 +68,6 @@ func (a *AppV1MallOrderService) PlaceOrder(ctx context.Context, req *pb.PlaceOrd
 	// 6. 返回订单信息
 	resp.OrderId = data.ID
 	resp.ActualAmount = data.ActualAmount
-	resp.PaymentInfo = "支付信息待实现（预留支付接口）"
 
 	return resp, nil
 }

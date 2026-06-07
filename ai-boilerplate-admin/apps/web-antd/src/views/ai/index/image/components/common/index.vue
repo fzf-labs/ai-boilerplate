@@ -141,14 +141,14 @@ defineExpose({ settingValues });
   <div class="prompt">
     <b>画面描述</b>
     <p>建议使用“形容词 + 动词 + 风格”的格式，使用“，”隔开</p>
-    <Textarea
-      v-model:value="prompt"
-      :maxlength="1024"
-      :rows="5"
-      class="mt-4 w-full"
-      placeholder="例如：童话里的小屋应该是什么样子？"
-      show-count
-    />
+      <Textarea
+        v-model:value="prompt"
+        :maxlength="1024"
+        :rows="5"
+        class="mt-4 w-full"
+        placeholder="请输入画面描述"
+        show-count
+      />
   </div>
 
   <div class="mt-8 flex flex-col">
@@ -176,7 +176,7 @@ defineExpose({ settingValues });
     <Space wrap class="mt-4 w-full">
       <Select
         v-model:value="otherPlatform"
-        placeholder="Select"
+        placeholder="请选择平台"
         size="large"
         class="!w-80"
         @change="handlerPlatformChange"
@@ -199,7 +199,7 @@ defineExpose({ settingValues });
     <Space wrap class="mt-4 w-full">
       <Select
         v-model:value="modelId"
-        placeholder="Select"
+        placeholder="请选择模型"
         size="large"
         class="!w-80"
       >

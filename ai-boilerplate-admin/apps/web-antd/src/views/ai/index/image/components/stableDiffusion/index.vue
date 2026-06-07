@@ -151,7 +151,7 @@ defineExpose({ settingValues });
       :maxlength="1024"
       :rows="5"
       class="mt-4 w-full"
-      placeholder="例如：童话里的小屋应该是什么样子？"
+      placeholder="请输入画面描述"
       show-count
     />
   </div>
@@ -179,7 +179,7 @@ defineExpose({ settingValues });
     <Space wrap class="mt-4 w-full">
       <Select
         v-model:value="sampler"
-        placeholder="Select"
+        placeholder="请选择采样方法"
         size="large"
         class="!w-80"
       >
@@ -200,7 +200,7 @@ defineExpose({ settingValues });
     <Space wrap class="mt-4 w-full">
       <Select
         v-model:value="clipGuidancePreset"
-        placeholder="Select"
+        placeholder="请选择 CLIP"
         size="large"
         class="!w-80"
       >
@@ -221,7 +221,7 @@ defineExpose({ settingValues });
     <Space wrap class="mt-4 w-full">
       <Select
         v-model:value="stylePreset"
-        placeholder="Select"
+        placeholder="请选择风格"
         size="large"
         class="!w-80"
       >
@@ -266,7 +266,7 @@ defineExpose({ settingValues });
         v-model:value="steps"
         size="large"
         class="!w-80"
-        placeholder="Please input"
+        placeholder="请输入迭代步数"
       />
     </Space>
   </div>
@@ -280,7 +280,7 @@ defineExpose({ settingValues });
         type="number"
         size="large"
         class="!w-80"
-        placeholder="Please input"
+        placeholder="请输入引导系数"
       />
     </Space>
   </div>
@@ -293,7 +293,7 @@ defineExpose({ settingValues });
         v-model:value="seed"
         size="large"
         class="!w-80"
-        placeholder="Please input"
+        placeholder="请输入随机因子"
       />
     </Space>
   </div>

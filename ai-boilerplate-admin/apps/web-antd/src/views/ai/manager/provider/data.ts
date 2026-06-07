@@ -47,7 +47,7 @@ export function usePlatformFormSchema(
       fieldName: 'name',
       label: '平台名称',
       componentProps: {
-        placeholder: '请输入平台名称（如：OpenAI、Anthropic）',
+        placeholder: '请输入平台名称',
       },
       rules: 'required',
     },
