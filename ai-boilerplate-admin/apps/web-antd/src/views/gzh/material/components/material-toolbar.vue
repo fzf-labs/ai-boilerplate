@@ -1,28 +1,41 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 import {
   CloudUploadOutlined,
   DeleteOutlined,
+  DownloadOutlined,
   FilterOutlined,
   ReloadOutlined,
   SearchOutlined,
   SyncOutlined,
 } from '@ant-design/icons-vue';
-import { Button, DatePicker, Flex, Input, Select, Space } from 'ant-design-vue';
+import type { SelectValue } from 'ant-design-vue/es/select';
+import type { SegmentedValue } from 'ant-design-vue/es/segmented/src/segmented';
+import {
+  Button,
+  DatePicker,
+  Flex,
+  Input,
+  Segmented,
+  Select,
+  Space,
+} from 'ant-design-vue';
 
-type MaterialTypeValue = 'image' | 'video' | 'voice';
-
-interface FilterOptions {
-  keyword: string;
-  type?: MaterialTypeValue;
-  dateRange?: [string, string];
-  sizeRange?: [number, number];
-}
+import {
+  MaterialType,
+  materialGroupModeOptions,
+  materialTypeOptions,
+  type MaterialGroupMode,
+  type MaterialToolbarFilters,
+  type MaterialTypeValue,
+} from '../helpers'
 
 const props = defineProps<{
-  filters?: FilterOptions;
+  filters?: MaterialToolbarFilters;
+  exportLoading?: boolean;
   loading?: boolean;
+  tagOptions?: Array<{ label: string; value: string }>;
   selectedCount?: number;
   syncLoading?: boolean;
 }>();
@@ -30,58 +43,40 @@ const props = defineProps<{
 const emits = defineEmits<{
   batchDelete: [];
   clearSelection: [];
+  export: [];
+  groupChange: [groupMode: MaterialGroupMode];
   refresh: [];
-  search: [filters: FilterOptions];
+  search: [filters: MaterialToolbarFilters];
   sync: [];
+  tagChange: [tag?: string];
   upload: [];
 }>();
 
-// Material type constants
-const MaterialType = {
-  IMAGE: 'image',
-  VOICE: 'voice',
-  VIDEO: 'video',
-} as const;
-
-const MaterialTypeLabels: Record<string, string> = {
-  [MaterialType.IMAGE]: '图片',
-  [MaterialType.VOICE]: '语音',
-  [MaterialType.VIDEO]: '视频',
-};
-
 const showAdvancedFilter = ref(false);
-const localFilters = ref<FilterOptions>({
+const localFilters = ref<MaterialToolbarFilters>({
   keyword: props.filters?.keyword || '',
   type: props.filters?.type,
   dateRange: props.filters?.dateRange,
-  sizeRange: props.filters?.sizeRange,
+  groupMode: props.filters?.groupMode || 'none',
+  tag: props.filters?.tag,
 });
 
+watch(
+  () => props.filters,
+  (filters) => {
+    localFilters.value = {
+      keyword: filters?.keyword || '',
+      type: filters?.type,
+      dateRange: filters?.dateRange,
+      groupMode: filters?.groupMode || 'none',
+      tag: filters?.tag,
+    };
+  },
+  { deep: true, immediate: true },
+);
+
 // 素材类型选项
-const materialTypeOptions = [
-  { label: '全部类型', value: undefined },
-  { label: MaterialTypeLabels[MaterialType.IMAGE], value: MaterialType.IMAGE },
-  { label: MaterialTypeLabels[MaterialType.VOICE], value: MaterialType.VOICE },
-  { label: MaterialTypeLabels[MaterialType.VIDEO], value: MaterialType.VIDEO },
-];
-
-// 文件大小选项
-const sizeRangeOptions = [
-  { label: '全部大小', value: 'all' },
-  { label: '小于 1MB', value: 'small' },
-  { label: '1MB - 5MB', value: 'medium' },
-  { label: '5MB - 10MB', value: 'large' },
-  { label: '大于 10MB', value: 'xlarge' },
-];
-
-// 大小范围映射
-const sizeRangeMap: Record<string, [number, number] | undefined> = {
-  all: undefined,
-  small: [0, 1024 * 1024],
-  medium: [1024 * 1024, 5 * 1024 * 1024],
-  large: [5 * 1024 * 1024, 10 * 1024 * 1024],
-  xlarge: [10 * 1024 * 1024, Number.MAX_SAFE_INTEGER],
-};
+const materialTypeSelectOptions = [...materialTypeOptions];
 
 // 计算属性
 const hasSelectedItems = computed(() => (props.selectedCount || 0) > 0);
@@ -95,9 +90,10 @@ const handleSearch = () => {
 const handleResetFilters = () => {
   localFilters.value = {
     keyword: '',
-    type: undefined,
+    type: MaterialType.IMAGE,
     dateRange: undefined,
-    sizeRange: undefined,
+    groupMode: 'none',
+    tag: undefined,
   };
   handleSearch();
 };
@@ -122,6 +118,10 @@ const handleUpload = () => {
   emits('upload');
 };
 
+const handleExport = () => {
+  emits('export');
+};
+
 // 批量删除
 const handleBatchDelete = () => {
   emits('batchDelete');
@@ -132,6 +132,28 @@ const handleClearSelection = () => {
   emits('clearSelection');
 };
 
+const handleTagChange = (value: SelectValue) => {
+  const nextTag =
+    typeof value === 'string' || typeof value === 'number'
+      ? String(value)
+      : undefined;
+
+  localFilters.value.tag = nextTag;
+  emits('tagChange', nextTag);
+  handleSearch();
+};
+
+const handleGroupChange = (value: SegmentedValue) => {
+  const nextGroupMode: MaterialGroupMode =
+    value === 'date' || value === 'tag' || value === 'none'
+      ? value
+      : 'none';
+
+  localFilters.value.groupMode = nextGroupMode;
+  emits('groupChange', nextGroupMode);
+  handleSearch();
+};
+
 // 监听关键词输入
 const handleKeywordChange = (e: Event) => {
   const target = e.target as HTMLInputElement;
@@ -139,8 +161,13 @@ const handleKeywordChange = (e: Event) => {
 };
 
 // 监听类型变化
-const handleTypeChange = (value: any) => {
-  localFilters.value.type = value;
+const handleTypeChange = (value: SelectValue) => {
+  const nextType =
+    typeof value === 'string' || typeof value === 'number'
+      ? (String(value) as MaterialTypeValue)
+      : MaterialType.IMAGE;
+
+  localFilters.value.type = nextType;
   handleSearch();
 };
 
@@ -151,13 +178,6 @@ const handleDateRangeChange = (_dates: any, dateStrings: [string, string]) => {
   handleSearch();
 };
 
-// 监听大小范围变化
-const handleSizeRangeChange = (value: any) => {
-  localFilters.value.sizeRange = value
-    ? sizeRangeMap[value as string]
-    : undefined;
-  handleSearch();
-};
 </script>
 
 <template>
@@ -183,10 +203,26 @@ const handleSizeRangeChange = (value: any) => {
           <!-- 类型筛选 -->
           <Select
             v-model:value="localFilters.type"
-            :options="materialTypeOptions"
+            :options="materialTypeSelectOptions"
             placeholder="选择类型"
             style="width: 120px"
             @change="handleTypeChange"
+          />
+
+          <Select
+            v-if="tagOptions?.length"
+            :allow-clear="true"
+            :options="tagOptions"
+            :value="localFilters.tag"
+            placeholder="标签"
+            style="width: 140px"
+            @change="handleTagChange"
+          />
+
+          <Segmented
+            :options="materialGroupModeOptions"
+            :value="localFilters.groupMode || 'none'"
+            @change="handleGroupChange"
           />
 
           <!-- 高级筛选按钮 -->
@@ -211,6 +247,12 @@ const handleSizeRangeChange = (value: any) => {
           <Button :loading="loading" @click="handleRefresh">
             <ReloadOutlined />
             刷新
+          </Button>
+
+          <!-- 导出 -->
+          <Button :loading="exportLoading" @click="handleExport">
+            <DownloadOutlined />
+            导出
           </Button>
 
           <!-- 同步微信 -->
@@ -239,18 +281,6 @@ const handleSizeRangeChange = (value: any) => {
               v-model:value="localFilters.dateRange"
               format="YYYY-MM-DD"
               @change="handleDateRangeChange"
-            />
-          </div>
-
-          <!-- 文件大小 -->
-          <div class="filter-item">
-            <label>文件大小：</label>
-            <Select
-              v-model:value="localFilters.sizeRange"
-              :options="sizeRangeOptions"
-              placeholder="选择大小范围"
-              style="width: 150px"
-              @change="handleSizeRangeChange"
             />
           </div>
 

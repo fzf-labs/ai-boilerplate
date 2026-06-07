@@ -14,8 +14,11 @@ import {
 } from 'ant-design-vue';
 
 import { request } from '#/api/request';
-
-type MaterialTypeValue = 'image' | 'video' | 'voice';
+import {
+  MaterialType,
+  materialTypeOptions,
+  type MaterialTypeValue,
+} from '../helpers';
 
 interface UploadData {
   appId?: string;
@@ -31,19 +34,6 @@ const emits = defineEmits<{
   close: [];
   success: [];
 }>();
-
-// Material type constants
-const MaterialType = {
-  IMAGE: 'image',
-  VOICE: 'voice',
-  VIDEO: 'video',
-} as const;
-
-const MaterialTypeLabels: Record<string, string> = {
-  [MaterialType.IMAGE]: '图片',
-  [MaterialType.VOICE]: '语音',
-  [MaterialType.VIDEO]: '视频',
-};
 
 // Upload material function
 async function uploadMaterial(formData: FormData) {
@@ -85,13 +75,6 @@ const fileTypeMap = {
     extensions: ['mp4'],
   },
 };
-
-// 素材类型选项
-const materialTypeOptions = [
-  { label: MaterialTypeLabels[MaterialType.IMAGE], value: MaterialType.IMAGE },
-  { label: MaterialTypeLabels[MaterialType.VOICE], value: MaterialType.VOICE },
-  { label: MaterialTypeLabels[MaterialType.VIDEO], value: MaterialType.VIDEO },
-];
 
 // 验证文件
 const validateFile = (file: File, type: MaterialTypeValue): null | string => {

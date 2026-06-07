@@ -6,6 +6,13 @@ import { computed } from 'vue';
 import { CopyOutlined } from '@ant-design/icons-vue';
 import { Button, Descriptions, Modal, Space, Tag } from 'ant-design-vue';
 
+import {
+  getMaterialTypeColor,
+  getMaterialTypeLabel,
+  MaterialType,
+  normalizeMaterialTags,
+} from '../helpers'
+
 const props = defineProps<{
   data?: WxGzhMaterialInfo;
   open: boolean;
@@ -15,22 +22,9 @@ const emits = defineEmits<{
   close: [];
 }>();
 
-// Material type constants
-const MaterialType = {
-  IMAGE: 'image',
-  VOICE: 'voice',
-  VIDEO: 'video',
-} as const;
-
-const MaterialTypeLabels: Record<string, string> = {
-  [MaterialType.IMAGE]: '图片',
-  [MaterialType.VOICE]: '语音',
-  [MaterialType.VIDEO]: '视频',
-};
-
 // 计算属性
 const materialTypeLabel = computed(() => {
-  return props.data?.type ? MaterialTypeLabels[props.data.type] || '' : '';
+  return getMaterialTypeLabel(props.data?.type);
 });
 
 const isImage = computed(() => {
@@ -43,6 +37,10 @@ const isVoice = computed(() => {
 
 const isVideo = computed(() => {
   return props.data?.type === MaterialType.VIDEO;
+});
+
+const materialTags = computed(() => {
+  return normalizeMaterialTags(props.data?.tags);
 });
 
 // 格式化时间
@@ -96,13 +94,21 @@ const handleClose = () => {
 
         <!-- 视频预览 -->
         <div v-else-if="isVideo" class="video-preview">
-          <div v-if="!data.coverURL">🎬</div>
-          <img
-            v-if="data.coverURL"
-            :src="data.coverURL"
-            :alt="data.name"
-            referrerPolicy="no-referrer"
+          <video
+            v-if="data.URL"
+            controls
+            :poster="data.coverURL || ''"
+            :src="data.URL"
+            class="video-player"
           />
+          <div v-else-if="data.coverURL">
+            <img
+              :src="data.coverURL"
+              :alt="data.name"
+              referrerPolicy="no-referrer"
+            />
+          </div>
+          <div v-else>🎬</div>
         </div>
       </div>
 
@@ -114,16 +120,20 @@ const handleClose = () => {
           </Descriptions.Item>
           <Descriptions.Item label="素材类型">
             <Tag
-              :color="
-                data.type === MaterialType.IMAGE
-                  ? 'blue'
-                  : data.type === MaterialType.VOICE
-                    ? 'green'
-                    : 'orange'
-              "
+              :color="getMaterialTypeColor(data.type)"
             >
               {{ materialTypeLabel }}
             </Tag>
+          </Descriptions.Item>
+          <Descriptions.Item label="标签" :span="2">
+            <Space wrap>
+              <Tag v-if="materialTags.length === 0" color="default">
+                -
+              </Tag>
+              <Tag v-for="tag in materialTags" :key="tag" color="processing">
+                {{ tag }}
+              </Tag>
+            </Space>
           </Descriptions.Item>
           <Descriptions.Item label="Media ID">
             <code>{{ data.mediaId || '-' }}</code>

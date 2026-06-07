@@ -8,28 +8,18 @@ import { computed, onMounted, ref, watch } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
-import {
-  CloudUploadOutlined,
-  DeleteOutlined,
-  EyeOutlined,
-  ReloadOutlined,
-  SearchOutlined,
-  SyncOutlined,
-} from '@ant-design/icons-vue';
+import { DeleteOutlined, EyeOutlined } from '@ant-design/icons-vue';
 import {
   Button,
   Card,
   Col,
   Empty,
-  Flex,
-  Input,
   message,
   Pagination,
   Row,
-  Space,
   Spin,
-  Tabs,
   Tooltip,
+  Tag,
 } from 'ant-design-vue';
 
 import {
@@ -39,30 +29,34 @@ import {
   syncWxGzhMaterial,
 } from '#/api/v1/wx-gzh-material';
 import MaterialPreview from '#/views/gzh/material/components/material-preview.vue';
+import MaterialToolbar from '#/views/gzh/material/components/material-toolbar.vue';
 import MaterialUpload from '#/views/gzh/material/components/material-upload.vue';
+import {
+  MaterialType,
+  buildMaterialCsv,
+  buildMaterialTagOptions,
+  filterMaterials,
+  groupMaterials,
+  normalizeMaterialTags,
+  type MaterialGroupMode,
+  type MaterialToolbarFilters,
+} from '#/views/gzh/material/helpers';
+
+import { downloadByData } from '#/utils';
 
 import AccountSelect from '../components/account-select/index.vue';
-
-// Material type constants
-const MaterialType = {
-  IMAGE: 'image',
-  VOICE: 'voice',
-  VIDEO: 'video',
-} as const;
-
-type MaterialTypeValue = (typeof MaterialType)[keyof typeof MaterialType];
-
-const MaterialTypeLabels: Record<string, string> = {
-  [MaterialType.IMAGE]: '图片',
-  [MaterialType.VOICE]: '语音',
-  [MaterialType.VIDEO]: '视频',
-};
 
 const appId = ref<string | undefined>(undefined);
 const loading = ref(false);
 const syncLoading = ref(false);
-const currentType = ref<MaterialTypeValue>(MaterialType.IMAGE);
-const searchKeyword = ref('');
+const exportLoading = ref(false);
+const toolbarFilters = ref<MaterialToolbarFilters>({
+  keyword: '',
+  type: MaterialType.IMAGE,
+  dateRange: undefined,
+  groupMode: 'none',
+  tag: undefined,
+});
 const selectedMaterials = ref<string[]>([]);
 
 // 分页参数
@@ -82,18 +76,34 @@ const uploadVisible = ref(false);
 const currentMaterial = ref<WxGzhMaterialInfo>();
 
 // 计算属性
-const hasSelectedMaterials = computed(() => selectedMaterials.value.length > 0);
-
-// 素材类型选项
-const materialTypeOptions = [
-  { label: MaterialTypeLabels[MaterialType.IMAGE], value: MaterialType.IMAGE },
-  { label: MaterialTypeLabels[MaterialType.VOICE], value: MaterialType.VOICE },
-  { label: MaterialTypeLabels[MaterialType.VIDEO], value: MaterialType.VIDEO },
-];
+const currentType = computed(() => toolbarFilters.value.type || MaterialType.IMAGE);
+const filteredMaterials = computed(() =>
+  filterMaterials(materialList.value, toolbarFilters.value),
+);
+const groupedMaterials = computed(() =>
+  groupMaterials(
+    filteredMaterials.value,
+    toolbarFilters.value.groupMode || 'none',
+  ),
+);
+const tagOptions = computed(() => buildMaterialTagOptions(materialList.value));
 
 const handleAccountChange = (value: any) => {
   appId.value = value;
   selectedMaterials.value = [];
+  toolbarFilters.value = {
+    keyword: '',
+    type: MaterialType.IMAGE,
+    dateRange: undefined,
+    groupMode: 'none',
+    tag: undefined,
+  };
+  pagination.value.current = 1;
+  pagination.value.total = 0;
+  materialList.value = [];
+  currentMaterial.value = undefined;
+  previewVisible.value = false;
+  uploadVisible.value = false;
 };
 
 // 加载素材列表
@@ -108,7 +118,7 @@ const loadMaterialList = async () => {
         pageSize: pagination.value.pageSize,
         appId: appId.value,
         type: currentType.value,
-        name: searchKeyword.value,
+        name: toolbarFilters.value.keyword.trim(),
       },
     });
     materialList.value = res.list || [];
@@ -134,18 +144,58 @@ const loadMaterialStats = async () => {
   }
 };
 
-// 切换素材类型
-const handleTypeChange = (type: MaterialTypeValue) => {
-  currentType.value = type;
-  pagination.value.current = 1;
+const applyToolbarFilters = (nextFilters: Partial<MaterialToolbarFilters>) => {
+  const previousFilters = toolbarFilters.value;
+  const hasKeyword = Object.prototype.hasOwnProperty.call(nextFilters, 'keyword');
+  const hasType = Object.prototype.hasOwnProperty.call(nextFilters, 'type');
+  const hasDateRange = Object.prototype.hasOwnProperty.call(nextFilters, 'dateRange');
+  const hasGroupMode = Object.prototype.hasOwnProperty.call(nextFilters, 'groupMode');
+  const hasTag = Object.prototype.hasOwnProperty.call(nextFilters, 'tag');
+
+  const nextKeyword = hasKeyword
+    ? (nextFilters.keyword || '').trim()
+    : previousFilters.keyword;
+  const nextType = hasType
+    ? nextFilters.type || MaterialType.IMAGE
+    : previousFilters.type || MaterialType.IMAGE;
+  const nextDateRange = hasDateRange
+    ? nextFilters.dateRange
+    : previousFilters.dateRange;
+  const nextGroupMode = hasGroupMode
+    ? nextFilters.groupMode
+    : previousFilters.groupMode;
+  const nextTag = hasTag ? nextFilters.tag : previousFilters.tag;
+
+  const shouldReload =
+    nextKeyword !== previousFilters.keyword || nextType !== previousFilters.type;
+
+  toolbarFilters.value = {
+    keyword: nextKeyword,
+    type: nextType,
+    dateRange: nextDateRange,
+    groupMode: nextGroupMode || 'none',
+    tag: nextTag,
+  };
+
   selectedMaterials.value = [];
-  loadMaterialList();
+
+  if (shouldReload) {
+    pagination.value.current = 1;
+    loadMaterialList();
+  }
 };
 
 // 搜索
-const handleSearch = () => {
-  pagination.value.current = 1;
-  loadMaterialList();
+const handleToolbarSearch = (filters: MaterialToolbarFilters) => {
+  applyToolbarFilters(filters);
+};
+
+const handleTagChange = (tag?: string) => {
+  applyToolbarFilters({ tag });
+};
+
+const handleGroupChange = (groupMode: MaterialGroupMode) => {
+  applyToolbarFilters({ groupMode });
 };
 
 // 分页变化
@@ -159,6 +209,30 @@ const handlePageChange = (page: number, pageSize: number) => {
 const handleRefresh = () => {
   loadMaterialList();
   loadMaterialStats();
+};
+
+const handleExport = () => {
+  if (filteredMaterials.value.length === 0) {
+    message.warning('暂无可导出的素材');
+    return;
+  }
+
+  exportLoading.value = true;
+  try {
+    const fileName = `公众号素材_${appId.value || 'unknown'}_${new Date().toISOString().slice(0, 10)}.csv`;
+    downloadByData(
+      buildMaterialCsv(filteredMaterials.value),
+      fileName,
+      'text/csv;charset=utf-8',
+      '\ufeff',
+    );
+    message.success('导出成功');
+  } catch (error) {
+    console.error('导出失败:', error);
+    message.error('导出失败');
+  } finally {
+    exportLoading.value = false;
+  }
 };
 
 // 同步微信素材
@@ -227,10 +301,16 @@ const handleBatchDelete = async () => {
   }
 };
 
+const handleClearSelection = () => {
+  selectedMaterials.value = [];
+};
+
 // 选择素材
 const handleSelectMaterial = (materialId: string, checked: boolean) => {
   if (checked) {
-    selectedMaterials.value.push(materialId);
+    if (!selectedMaterials.value.includes(materialId)) {
+      selectedMaterials.value.push(materialId);
+    }
   } else {
     const index = selectedMaterials.value.indexOf(materialId);
     if (index !== -1) {
@@ -240,8 +320,16 @@ const handleSelectMaterial = (materialId: string, checked: boolean) => {
 };
 
 // 监听账号变化
-watch(appId, (newValue) => {
-  if (newValue) {
+watch(appId, (newValue, oldValue) => {
+  if (newValue && newValue !== oldValue) {
+    toolbarFilters.value = {
+      keyword: '',
+      type: MaterialType.IMAGE,
+      dateRange: undefined,
+      groupMode: 'none',
+      tag: undefined,
+    };
+    selectedMaterials.value = [];
     loadMaterialList();
     loadMaterialStats();
   }
@@ -297,75 +385,48 @@ onMounted(() => {
       </Card>
 
       <!-- 操作工具栏 -->
-      <Card class="toolbar-card" size="small">
-        <Flex justify="space-between" align="center">
-          <Space>
-            <!-- 搜索 -->
-            <Input.Search
-              v-model:value="searchKeyword"
-              placeholder="搜索素材名称"
-              style="width: 200px"
-              @search="handleSearch"
-            >
-              <template #prefix>
-                <SearchOutlined />
-              </template>
-            </Input.Search>
+      <MaterialToolbar
+        :export-loading="exportLoading"
+        :filters="toolbarFilters"
+        :loading="loading"
+        :selected-count="selectedMaterials.length"
+        :sync-loading="syncLoading"
+        :tag-options="tagOptions"
+        @batch-delete="handleBatchDelete"
+        @clear-selection="handleClearSelection"
+        @export="handleExport"
+        @group-change="handleGroupChange"
+        @refresh="handleRefresh"
+        @search="handleToolbarSearch"
+        @sync="handleSync"
+        @tag-change="handleTagChange"
+        @upload="handleUpload"
+      />
 
-            <!-- 批量操作 -->
-            <Button
-              v-if="hasSelectedMaterials"
-              danger
-              type="primary"
-              @click="handleBatchDelete"
-            >
-              <DeleteOutlined />
-              批量删除 ({{ selectedMaterials.length }})
-            </Button>
-          </Space>
-
-          <Space>
-            <!-- 刷新 -->
-            <Button @click="handleRefresh">
-              <ReloadOutlined />
-              刷新
-            </Button>
-
-            <!-- 同步 -->
-            <Button :loading="syncLoading" @click="handleSync">
-              <SyncOutlined />
-              同步微信
-            </Button>
-
-            <!-- 上传 -->
-            <Button type="primary" @click="handleUpload">
-              <CloudUploadOutlined />
-              上传素材
-            </Button>
-          </Space>
-        </Flex>
-      </Card>
-
-      <!-- 素材类型标签页 -->
+      <!-- 素材内容 -->
       <Card class="content-card">
-        <Tabs
-          :active-key="currentType.toString()"
-          @change="(key) => handleTypeChange(key as MaterialTypeValue)"
-        >
-          <Tabs.TabPane
-            v-for="option in materialTypeOptions"
-            :key="option.value.toString()"
-            :tab="option.label"
-          >
-            <!-- 素材列表 -->
-            <Spin :spinning="loading">
-              <div v-if="materialList.length === 0" class="empty-container">
-                <Empty description="暂无素材" />
+        <Spin :spinning="loading">
+          <div v-if="filteredMaterials.length === 0" class="empty-container">
+            <Empty description="暂无素材" />
+          </div>
+          <template v-else>
+            <div
+              v-for="group in groupedMaterials"
+              :key="group.key"
+              class="material-group"
+            >
+              <div
+                v-if="toolbarFilters.groupMode !== 'none'"
+                class="material-group-header"
+              >
+                <span class="material-group-title">{{ group.label }}</span>
+                <span class="material-group-count">{{ group.items.length }} 项</span>
               </div>
-              <div v-else class="material-grid">
+
+              <div class="material-grid">
                 <div
-                  v-for="material in materialList"
-                  :key="material.id"
+                  v-for="material in group.items"
+                  :key="material.id || material.mediaId || material.name"
                   class="material-item"
                   :class="{
                     selected:
@@ -440,6 +501,19 @@ onMounted(() => {
                     <div class="material-name" :title="material.name">
                       {{ material.name }}
                     </div>
+                    <div
+                      v-if="normalizeMaterialTags(material.tags).length > 0"
+                      class="material-tags"
+                    >
+                      <Tag
+                        v-for="tag in normalizeMaterialTags(material.tags)"
+                        :key="tag"
+                        color="processing"
+                        class="material-tag"
+                      >
+                        {{ tag }}
+                      </Tag>
+                    </div>
                     <div class="material-meta">
                       <span class="material-time">
                         {{
@@ -475,22 +549,22 @@ onMounted(() => {
                   </div>
                 </div>
               </div>
+            </div>
 
-              <!-- 分页 -->
-              <div v-if="materialList.length > 0" class="pagination-container">
-                <Pagination
-                  v-model:current="pagination.current"
-                  v-model:page-size="pagination.pageSize"
-                  :total="pagination.total"
-                  :show-size-changer="true"
-                  :show-quick-jumper="true"
-                  :show-total="(total) => `共 ${total} 条`"
-                  @change="handlePageChange"
-                />
-              </div>
-            </Spin>
-          </Tabs.TabPane>
-        </Tabs>
+            <!-- 分页 -->
+            <div v-if="filteredMaterials.length > 0" class="pagination-container">
+              <Pagination
+                v-model:current="pagination.current"
+                v-model:page-size="pagination.pageSize"
+                :total="pagination.total"
+                :show-size-changer="true"
+                :show-quick-jumper="true"
+                :show-total="(total) => `共 ${total} 条`"
+                @change="handlePageChange"
+              />
+            </div>
+          </template>
+        </Spin>
       </Card>
     </div>
 
@@ -543,16 +617,37 @@ onMounted(() => {
     }
   }
 
-  .toolbar-card {
-    margin-bottom: 16px;
-  }
-
   .content-card {
+    .material-group {
+      & + .material-group {
+        margin-top: 24px;
+      }
+    }
+
+    .material-group-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #f0f0f0;
+
+      .material-group-title {
+        font-size: 14px;
+        font-weight: 500;
+        color: #333;
+      }
+
+      .material-group-count {
+        font-size: 12px;
+        color: #999;
+      }
+    }
+
     .material-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 16px;
-      margin-bottom: 24px;
 
       .material-item {
         position: relative;
@@ -644,6 +739,17 @@ onMounted(() => {
             font-weight: 500;
             color: #333;
             white-space: nowrap;
+          }
+
+          .material-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-bottom: 6px;
+
+            .material-tag {
+              margin-inline-end: 0;
+            }
           }
 
           .material-meta {
