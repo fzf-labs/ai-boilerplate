@@ -42,9 +42,9 @@ README files with the same setup pattern.
 
 ## Documentation
 
-- [Operations guide](docs/operations.md)
-- [Technical decisions](docs/technical-decisions.md)
-- [Verification commands](docs/verification.md)
+- [Operations guide](docs/operations.md): setup, generated artifacts, subtree workflow, and release checks.
+- [Technical decisions](docs/technical-decisions.md): stack choices and rationale for each template.
+- [Verification commands](docs/verification.md): targeted and full verification commands for every template.
 
 ## Local Development Notes
 

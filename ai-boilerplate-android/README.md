@@ -29,10 +29,11 @@ From this directory:
 The app points at the local AI Boilerplate backend by default. Android
 emulators reach the host machine through `10.0.2.2`, so the built-in default is
 `http://10.0.2.2:8000/api/`. To point the app at another API, create a local
-`local.properties` file and set:
+`local.properties` file and set the host that is reachable from the emulator or
+device. For example, for a backend running on another machine in your LAN:
 
 ```properties
-BASE_URL=https://your-api-host.com/api/
+BASE_URL=http://192.168.1.20:8000/api/
 ```
 
 ## Project Identity

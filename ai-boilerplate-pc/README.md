@@ -40,8 +40,8 @@ npm run build
 npm run test:e2e
 # Runs the tests only on Chromium
 npm run test:e2e -- --project=chromium
-# Runs the tests of a specific file
-npm run test:e2e -- tests/example.spec.ts
+# Runs the app smoke test only
+npm run test:e2e -- e2e/vue.spec.ts
 # Runs the tests in debug mode
 npm run test:e2e -- --debug
 ```

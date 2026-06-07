@@ -376,6 +376,7 @@ const implementationNotes = [
             </a>
           </div>
         </div>
-      </footer>
+      </div>
+    </footer>
   </div>
 </template>

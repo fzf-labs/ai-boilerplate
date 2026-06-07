@@ -1,5 +1,7 @@
 import './style.css'
 
+import { isInspectableTabUrl } from './tabs'
+
 type PageInfoResponse = {
   title: string
   url: string
@@ -51,7 +53,7 @@ const refreshTabInfo = async () => {
 
   setText(tabTitle, tab.title || 'Untitled tab')
 
-  if (!tabId || !tab.url?.startsWith('http')) {
+  if (!tabId || !isInspectableTabUrl(tab.url)) {
     setText(pageSummary, 'Open an http or https page to use the content script.')
     setText(contentStatus, 'Not available on this page')
     return

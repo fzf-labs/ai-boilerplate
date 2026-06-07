@@ -9,6 +9,7 @@
     "build": "npm run type-check && vite build",
     "build-only": "vite build",
     "preview": "vite preview",
+    "test": "node --test \"src/**/*.test.ts\"",
     "type-check": "tsc --noEmit",
     "pack:zip": "npm run build && cd dist && zip -qr ../chrome-extension.zip ."
   },

@@ -1,3 +1,8 @@
+import {
+  isExtensionStatusRequest,
+  type ExtensionStatusResponse,
+} from './extension-messages'
+
 chrome.runtime.onInstalled.addListener(async ({ reason }) => {
   if (reason === chrome.runtime.OnInstalledReason.INSTALL) {
     await chrome.storage.local.set({
@@ -7,14 +12,16 @@ chrome.runtime.onInstalled.addListener(async ({ reason }) => {
 })
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message?.type !== 'GET_EXTENSION_STATUS') {
+  if (!isExtensionStatusRequest(message)) {
     return false
   }
 
-  sendResponse({
+  const response: ExtensionStatusResponse = {
     ok: true,
     tabId: sender.tab?.id,
-  })
+  }
+
+  sendResponse(response)
 
   return false
 })

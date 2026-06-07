@@ -51,7 +51,8 @@ border-t-1
 2. 允许仅通过添加边框宽度来向元素添加边框。 (https://github.com/tailwindcss/tailwindcss/pull/116)
 3. [UnoCSS]: 允许使用css变量'--un-default-border-color'覆盖默认边框颜色
 */
-// 这个样式有重大BUG，先去掉！！(2025-08-15)
+// 全局 border reset 会影响 uni-app 内置组件的尺寸计算，保持禁用。
+// 如需恢复，先在 H5、App、微信小程序三个目标验证表单、弹层和 z-paging 列表布局。
 // :not(not),
 // ::before,
 // ::after {
