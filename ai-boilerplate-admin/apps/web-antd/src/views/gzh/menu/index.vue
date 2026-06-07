@@ -901,7 +901,7 @@ const handleAccountChange = (value: any) => {
                           placeholder="小程序AppId"
                         />
                         <template #extra>
-                          <div>输入对应的小程序 AppId</div>
+                          <div>请填写公众号后台已配置的小程序 AppId</div>
                         </template>
                       </FormItem>
                       <FormItem label="页面路径" field="pagepath" required>
@@ -910,7 +910,7 @@ const handleAccountChange = (value: any) => {
                           placeholder="页面路径"
                         />
                         <template #extra>
-                          <div>输入对应的小程序页面路径</div>
+                          <div>请填写实际要跳转的小程序页面路径</div>
                         </template>
                       </FormItem>
                     </div>

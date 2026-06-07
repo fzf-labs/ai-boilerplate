@@ -25,7 +25,7 @@ export function useFormSchema(): VbenFormSchema[] {
       label: '包名',
       component: 'Input',
       componentProps: {
-        placeholder: '请输入应用包名，如：com.fzflabs.aiboilerplate',
+        placeholder: '请输入应用包名，如：com.fzflabs.aiboilerplate.android',
       },
       rules: 'required',
     },

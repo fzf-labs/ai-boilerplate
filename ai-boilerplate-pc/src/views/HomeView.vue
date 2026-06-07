@@ -297,12 +297,26 @@ const testimonials = [
           <div class="cta__panel">
             <div>
               <p class="eyebrow">开始使用</p>
-              <h2>想更快上线并跑通业务吗？</h2>
-              <p>预约演示，我们会根据你的业务模块提供落地方案。</p>
+              <h2>想更快上手并了解落地路径吗？</h2>
+              <p>先看仓库和文档，直接了解各端模板能力。</p>
             </div>
             <div class="cta__actions">
-              <a class="btn btn--primary" href="mailto:hello@ai-boilerplate.com">预约演示</a>
-              <a class="btn btn--ghost" href="mailto:sales@ai-boilerplate.com">联系销售</a>
+              <a
+                class="btn btn--primary"
+                href="https://github.com/fzf-labs/ai-boilerplate"
+                rel="noreferrer"
+                target="_blank"
+              >
+                查看仓库
+              </a>
+              <a
+                class="btn btn--ghost"
+                href="https://github.com/fzf-labs/ai-boilerplate/blob/master/README.md"
+                rel="noreferrer"
+                target="_blank"
+              >
+                阅读文档
+              </a>
             </div>
           </div>
         </div>
@@ -326,19 +340,42 @@ const testimonials = [
             <a href="#security">安全合规</a>
           </div>
           <div>
-            <h4>公司</h4>
+            <h4>资源</h4>
             <a href="#stories">客户</a>
             <a href="#contact">联系</a>
-            <a href="#top">新闻中心</a>
+            <a
+              href="https://github.com/fzf-labs/ai-boilerplate/blob/master/README.md"
+              rel="noreferrer"
+              target="_blank"
+            >
+              项目文档
+            </a>
           </div>
           <div>
             <h4>联系</h4>
-            <p>沪上路 312 号</p>
-            <p>上海</p>
-            <p>hello@ai-boilerplate.com</p>
+            <a
+              href="https://github.com/fzf-labs/ai-boilerplate"
+              rel="noreferrer"
+              target="_blank"
+            >
+              GitHub 仓库
+            </a>
+            <a
+              href="https://github.com/fzf-labs/ai-boilerplate/issues"
+              rel="noreferrer"
+              target="_blank"
+            >
+              问题反馈
+            </a>
+            <a
+              href="https://github.com/fzf-labs/ai-boilerplate/blob/master/README.md"
+              rel="noreferrer"
+              target="_blank"
+            >
+              阅读文档
+            </a>
           </div>
         </div>
-      </div>
-    </footer>
+      </footer>
   </div>
 </template>
