@@ -85,7 +85,8 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 // 高德地图API Key - 从环境变量中获取
-const AMAP_API_KEY = import.meta.env.VITE_AMAP_WEB_KEY;
+const AMAP_API_KEY = import.meta.env.VITE_AMAP_WEB_KEY?.trim() ?? '';
+const hasWeatherApiKey = AMAP_API_KEY.length > 0;
 
 const weatherData = ref<AmapWeatherForecast | null>(null);
 const todayWeather = ref<AmapWeatherCast | null>(null);
@@ -192,8 +193,8 @@ const fetchWeather = async () => {
     error.value = '';
 
     // 检查API Key
-    if (!AMAP_API_KEY) {
-      throw new Error('请在环境变量中配置 VITE_AMAP_WEB_KEY');
+    if (!hasWeatherApiKey) {
+      return;
     }
 
     // 优先使用传入的adcode，否则通过IP定位获取
@@ -319,12 +320,17 @@ const getCurrentWeatherInfo = () => {
 
 // 手动刷新天气数据
 const refreshWeather = async () => {
+  if (!hasWeatherApiKey) return;
   if (loading.value) return; // 防止重复请求
   await fetchWeather();
 };
 
 onMounted(() => {
-  fetchWeather();
+  if (hasWeatherApiKey) {
+    fetchWeather();
+  } else {
+    loading.value = false;
+  }
 });
 </script>
 
@@ -354,7 +360,15 @@ onMounted(() => {
 
     <Spin :spinning="loading" :indicator="LoadingOutlined">
       <div
-        v-if="error"
+        v-if="!hasWeatherApiKey"
+        class="flex items-center justify-center py-8 text-gray-500"
+      >
+        <CloudOutlined class="mr-2" />
+        配置 VITE_AMAP_WEB_KEY 后显示天气
+      </div>
+
+      <div
+        v-else-if="error"
         class="flex items-center justify-center py-8 text-red-500"
       >
         <EyeOutlined class="mr-2" />

@@ -27,9 +27,20 @@ const getActiveTab = async () => {
 }
 
 const getPageInfo = async (tabId: number): Promise<PageInfoResponse> => {
-  return chrome.tabs.sendMessage(tabId, {
-    type: 'GET_PAGE_INFO',
+  const [result] = await chrome.scripting.executeScript({
+    target: { tabId },
+    func: (): PageInfoResponse => ({
+      title: document.title || 'Untitled page',
+      url: location.href,
+      readyState: document.readyState,
+    }),
   })
+
+  if (!result?.result) {
+    throw new Error('Page inspection did not return data')
+  }
+
+  return result.result
 }
 
 const refreshTabInfo = async () => {
@@ -52,8 +63,8 @@ const refreshTabInfo = async () => {
     setText(tabTitle, pageInfo.title)
     setText(contentStatus, `Ready (${pageInfo.readyState})`)
   } catch {
-    setText(pageSummary, 'Refresh the target page, then open the popup again.')
-    setText(contentStatus, 'Content script not connected')
+    setText(pageSummary, 'This page cannot be inspected by the extension.')
+    setText(contentStatus, 'Page access unavailable')
   }
 }
 

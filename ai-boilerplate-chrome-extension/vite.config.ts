@@ -12,7 +12,6 @@ export default defineConfig({
       input: {
         popup: resolve(rootDir, 'popup.html'),
         background: resolve(rootDir, 'src/background.ts'),
-        content: resolve(rootDir, 'src/content.ts'),
       },
       output: {
         entryFileNames: 'assets/[name].js',

@@ -159,6 +159,8 @@ interface AppInfo {
   packageName: string
 }
 
+const fallbackPackageName = import.meta.env.VITE_UNI_APPID || import.meta.env.VITE_APP_TITLE || 'ai-boilerplate'
+
 async function getAppInfo(): Promise<AppInfo> {
   // #ifdef APP-PLUS
   return await new Promise((resolve) => {
@@ -166,7 +168,7 @@ async function getAppInfo(): Promise<AppInfo> {
       resolve({
         version: info?.version || '1.0.0',
         buildNum: Number.parseInt(info?.versionCode || '100', 10),
-        packageName: info?.appid || '__UNI__D1E5001',
+        packageName: info?.appid || fallbackPackageName,
       })
     })
   })
@@ -176,7 +178,7 @@ async function getAppInfo(): Promise<AppInfo> {
   return {
     version: '1.0.0',
     buildNum: 100,
-    packageName: '__UNI__D1E5001',
+    packageName: fallbackPackageName,
   }
   // #endif
 }
