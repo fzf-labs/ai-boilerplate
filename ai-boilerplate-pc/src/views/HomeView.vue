@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const trustLogos = ['云岚会员', '拾光零售', '栖岸内容', '星海社群', '飞霓科技', '诺合服务']
+const moduleBadges = ['Go API', 'Vue Admin', 'Uni-app', 'PC Web', 'Electron', 'Tauri']
 
 const metrics = [
   { value: '1 套', label: '统一运营后台', note: '权限、审计、报表一体化' },
@@ -15,21 +15,21 @@ const securityItems = [
   '公告与消息触达记录',
 ]
 
-const testimonials = [
+const implementationNotes = [
   {
-    quote: '会员体系和支付流程一周内跑通，增长团队终于可以专注拉新。',
-    name: '林语',
-    title: '拾光零售，用户增长负责人',
+    quote: '会员、商品、订单和支付数据模型已经在后端与管理后台形成闭环。',
+    name: '业务基础',
+    title: '适合从运营后台和用户端同步扩展',
   },
   {
-    quote: '公众号粉丝与商城订单打通后，运营动作更精准，复购明显提升。',
-    name: '程远',
-    title: '云岚会员，运营经理',
+    quote: '公众号、消息、帮助中心和通知偏好提供了用户触达的基础能力。',
+    name: '触达链路',
+    title: '适合继续接入真实渠道与内容策略',
   },
   {
-    quote: 'AI 辅助生成内容与图像，节省了大量素材制作时间。',
-    name: '顾岚',
-    title: '栖岸内容，品牌总监',
+    quote: 'AI 文案、图像、音频、视频与对话模块保留了清晰的扩展入口。',
+    name: 'AI 能力',
+    title: '适合按业务场景接入模型和计费',
   },
 ]
 </script>
@@ -46,7 +46,7 @@ const testimonials = [
           <a href="#platform">平台能力</a>
           <a href="#solutions">业务模块</a>
           <a href="#security">安全合规</a>
-          <a href="#stories">客户故事</a>
+          <a href="#stories">落地路径</a>
           <a href="#contact">联系</a>
         </nav>
         <div class="nav__cta">
@@ -130,9 +130,9 @@ const testimonials = [
 
       <section class="section trust">
         <div class="container trust__inner">
-          <p class="trust__label">正在使用 AI Boilerplate 的团队</p>
+          <p class="trust__label">仓库已包含的核心模板</p>
           <div class="trust__logos">
-            <span v-for="logo in trustLogos" :key="logo">{{ logo }}</span>
+            <span v-for="badge in moduleBadges" :key="badge">{{ badge }}</span>
           </div>
         </div>
       </section>
@@ -276,12 +276,12 @@ const testimonials = [
       <section class="section stories" id="stories">
         <div class="container">
           <div class="section-heading">
-            <p class="eyebrow">客户故事</p>
-            <h2>增长与运营团队的共同选择。</h2>
-            <p>从会员留存到内容触达，AI Boilerplate 帮助团队快速落地。</p>
+            <p class="eyebrow">落地路径</p>
+            <h2>从已有模块开始，按业务补齐差异。</h2>
+            <p>从会员留存到内容触达，AI Boilerplate 提供可继续扩展的基础链路。</p>
           </div>
           <div class="quote-grid">
-            <figure v-for="story in testimonials" :key="story.name" class="quote-card">
+            <figure v-for="story in implementationNotes" :key="story.name" class="quote-card">
               <blockquote>"{{ story.quote }}"</blockquote>
               <figcaption>
                 <span>{{ story.name }}</span>
@@ -341,7 +341,7 @@ const testimonials = [
           </div>
           <div>
             <h4>资源</h4>
-            <a href="#stories">客户</a>
+            <a href="#stories">路径</a>
             <a href="#contact">联系</a>
             <a
               href="https://github.com/fzf-labs/ai-boilerplate/blob/master/README.md"

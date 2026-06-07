@@ -11,13 +11,13 @@ const modules = [
   <main class="shell">
     <section class="hero">
       <p class="eyebrow">AI Boilerplate Desktop</p>
-      <h1>Product starter workspace</h1>
+      <h1>Product operations workspace</h1>
       <p class="summary">
-        A compact desktop entry point for checking the product modules that ship with this template.
+        A compact desktop entry point for checking the product modules included in the repository.
       </p>
     </section>
 
-    <section class="module-grid" aria-label="Template modules">
+    <section class="module-grid" aria-label="Product modules">
       <article v-for="module in modules" :key="module.name" class="module-card">
         <span class="module-dot"></span>
         <div>

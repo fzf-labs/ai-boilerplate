@@ -13,7 +13,7 @@ struct HomeView: View {
                 .foregroundColor(.accentColor)
             Text("Signed In")
                 .font(.title2.bold())
-            Text("This starter flow demonstrates the signed-in state that teams can build on with product-specific screens.")
+            Text("Use this authenticated workspace as the entry point for product-specific screens and account actions.")
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.secondary)
 

@@ -28,7 +28,7 @@ struct SettingsView: View {
                 settingRow(
                     title: "Build",
                     systemImage: "number",
-                    detail: "Template"
+                    detail: "Ready"
                 )
             }
         }

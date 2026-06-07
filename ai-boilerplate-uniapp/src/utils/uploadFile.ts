@@ -17,9 +17,11 @@
 /**
  * 上传文件的URL配置
  */
+const serverBaseUrl = import.meta.env?.VITE_SERVER_BASEURL || ''
+
 export const uploadFileUrl = {
   /** 用户头像上传地址 */
-  USER_AVATAR: `${import.meta.env.VITE_SERVER_BASEURL}/user/avatar`,
+  USER_AVATAR: `${serverBaseUrl}/user/avatar`,
 }
 
 /**
@@ -59,6 +61,40 @@ export interface UploadOptions {
   onError?: (err: Error | UniApp.GeneralCallbackResult) => void
   /** 上传完成回调函数（无论成功失败） */
   onComplete?: () => void
+}
+
+export function isFileWithinMaxSize(sizeBytes: number | undefined, maxSizeMB: number) {
+  if (!Number.isFinite(sizeBytes) || sizeBytes === undefined)
+    return true
+  return sizeBytes / 1024 / 1024 <= maxSizeMB
+}
+
+export function parseUploadResponseData<T = unknown>(rawData: string): T {
+  let response: unknown
+  try {
+    response = JSON.parse(rawData)
+  }
+  catch {
+    throw new Error('上传响应解析失败')
+  }
+
+  if (!response || typeof response !== 'object')
+    return response as T
+
+  const record = response as Record<string, unknown>
+  const code = record.code
+  if (typeof code === 'number') {
+    if (code !== 0 && code !== 200) {
+      const message = record.message || record.msg || '上传失败'
+      throw new Error(String(message))
+    }
+    return record.data as T
+  }
+
+  if ('data' in record)
+    return record.data as T
+
+  return response as T
 }
 
 /**
@@ -107,8 +143,7 @@ export function useUpload<T = string>(url: string, formData: Record<string, any>
    * @returns 是否通过检查
    */
   const checkFileSize = (size: number) => {
-    const sizeInMB = size / 1024 / 1024
-    if (sizeInMB > maxSize) {
+    if (!isFileWithinMaxSize(size, maxSize)) {
       uni.showToast({
         title: `文件大小不能超过${maxSize}MB`,
         icon: 'none',
@@ -188,6 +223,10 @@ export function useUpload<T = string>(url: string, formData: Record<string, any>
       sizeType,
       sourceType,
       success: (res) => {
+        const file = Array.isArray(res.tempFiles) ? res.tempFiles[0] : undefined
+        if (!checkFileSize(file?.size))
+          return
+
         // 开始上传
         loading.value = true
         progress.value = 0
@@ -280,17 +319,16 @@ function uploadFile<T>({
       // 确保文件名称合法
       success: (uploadFileRes) => {
         try {
-          // 解析响应数据
-          const { data: _data } = JSON.parse(uploadFileRes.data)
+          const _data = parseUploadResponseData<T>(uploadFileRes.data)
           // 上传成功
           data.value = _data as T
-          onSuccess?.(_data)
+          onSuccess?.(_data as Record<string, any>)
         }
         catch (err) {
           // 响应解析错误
           console.error('解析上传响应失败:', err)
           error.value = true
-          onError?.(new Error('上传响应解析失败'))
+          onError?.(err instanceof Error ? err : new Error('上传响应解析失败'))
         }
       },
       fail: (err) => {

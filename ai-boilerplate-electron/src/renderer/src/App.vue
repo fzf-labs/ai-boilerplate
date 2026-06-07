@@ -13,7 +13,7 @@ const modules = [
   <main class="desktop-shell">
     <section class="intro">
       <p class="eyebrow">AI Boilerplate Electron</p>
-      <h1>Desktop starter ready for product work.</h1>
+      <h1>Desktop workspace for product operations.</h1>
       <p class="summary">
         Use this shell as the Electron entry point for the same backend, admin, and mobile
         workflows that are included in the repository.

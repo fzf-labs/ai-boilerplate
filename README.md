@@ -15,3 +15,9 @@ desktop, and iOS product development.
 - `ai-boilerplate-ios`: SwiftUI iOS boilerplate based on `nimblehq/ios-templates`.
 - `ai-boilerplate-android`: Native Android boilerplate based on
   `its-me-debk007/kotlin-android-mvvm-template`.
+
+## Documentation
+
+- [Operations guide](docs/operations.md)
+- [Technical decisions](docs/technical-decisions.md)
+- [Verification commands](docs/verification.md)

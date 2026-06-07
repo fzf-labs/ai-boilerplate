@@ -37,13 +37,14 @@ const canSubmit = computed(() => {
     && agreeTerms.value
     && !loading.value
 })
+const hasUserAgreementUrl = computed(() => !!AGREEMENT_URLS.userAgreement)
+const hasPrivacyPolicyUrl = computed(() => !!AGREEMENT_URLS.privacyPolicy)
 
 function openAgreement(type: 'userAgreement' | 'privacyPolicy') {
   const url = AGREEMENT_URLS[type]
-  if (!url) {
-    toast.info('请先配置协议链接')
+  if (!url)
     return
-  }
+
   uni.navigateTo({
     url: `/pages-fg/webview/index?url=${encodeURIComponent(url)}`,
   })
@@ -183,9 +184,11 @@ async function doRegister() {
             <wd-checkbox v-model="agreeTerms" shape="square" />
             <view class="agreement-text">
               <text>我已阅读并同意</text>
-              <text class="link" @click.stop="openAgreement('userAgreement')">《用户协议》</text>
+              <text v-if="hasUserAgreementUrl" class="link" @click.stop="openAgreement('userAgreement')">《用户协议》</text>
+              <text v-else>《用户协议》</text>
               <text>和</text>
-              <text class="link" @click.stop="openAgreement('privacyPolicy')">《隐私政策》</text>
+              <text v-if="hasPrivacyPolicyUrl" class="link" @click.stop="openAgreement('privacyPolicy')">《隐私政策》</text>
+              <text v-else>《隐私政策》</text>
             </view>
           </view>
 
