@@ -3,6 +3,10 @@
 Use the smallest command that covers the project you touched. Run from the
 listed directory unless noted otherwise.
 
+Install dependencies inside each template directory before running Node-based
+checks. Backend checks require Go, Android checks require an Android SDK, and
+iOS checks require Swift Package Manager/Xcode tooling.
+
 | Project | Command |
 | --- | --- |
 | Backend | `go test ./...` |
@@ -18,3 +22,19 @@ listed directory unless noted otherwise.
 When a command cannot run because a local SDK, package manager, signing asset,
 or generated workspace is missing, keep the exact command output in the task
 summary and run the targeted static checks that cover the edited files.
+
+## Full Verification Set
+
+For cross-template changes, run every command in the table when the local SDKs
+are available. Record both successful checks and checks skipped because of a
+missing local prerequisite.
+
+## Targeted Verification
+
+For a scoped change, run the command for the touched template first. Examples:
+
+- Admin-only view or API client change: `pnpm check:type --filter=@vben/web-antd`
+- Uni-app page or config change: `pnpm check:type`
+- Backend service or generated API change: `go test ./...`
+- Desktop shell copy/config change: the corresponding `npm run typecheck` or
+  `npm run build`

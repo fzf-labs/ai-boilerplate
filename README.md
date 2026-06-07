@@ -3,6 +3,30 @@
 AI Boilerplate is a collection of starter projects for backend, admin, app,
 desktop, and iOS product development.
 
+## Quick Start
+
+Use the template directory that matches the surface you want to work on. Each
+template owns its dependency install and verification commands.
+
+```bash
+# Backend
+cd ai-boilerplate-backend
+go test ./...
+
+# Admin
+cd ai-boilerplate-admin
+pnpm install
+pnpm check:type --filter=@vben/web-antd
+
+# Uni-app
+cd ai-boilerplate-uniapp
+pnpm install
+pnpm check:type
+```
+
+The desktop, browser extension, native Android, and iOS templates have their own
+README files with the same setup pattern.
+
 ## Templates
 
 - `ai-boilerplate-backend`: Go backend boilerplate.
@@ -21,3 +45,12 @@ desktop, and iOS product development.
 - [Operations guide](docs/operations.md)
 - [Technical decisions](docs/technical-decisions.md)
 - [Verification commands](docs/verification.md)
+
+## Local Development Notes
+
+- Keep dependency installs inside the template directory.
+- Backend API, Swagger, and GORM files are generated; use the backend Makefile
+  targets instead of editing generated artifacts by hand.
+- Admin and uni-app API clients are generated from backend Swagger output.
+- Run the smallest relevant verification command after local changes, and run
+  the full verification set before publishing cross-template changes.

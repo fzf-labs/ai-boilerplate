@@ -24,4 +24,10 @@ pnpm check:type
 
 ## 说明
 
+默认环境文件位于 `env/.env`。首次运行前按目标平台设置：
+
+- `VITE_UNI_APPID`：DCloud/uni-app 应用 ID。
+- `VITE_WX_APPID`：微信小程序 AppID，仅在构建微信小程序时需要。
+- `VITE_SERVER_BASEURL`：后端 API 地址，默认指向本机后端。
+
 如果不需要某些小程序平台，可以在 `scripts/postupgrade.js` 里直接删掉对应依赖。

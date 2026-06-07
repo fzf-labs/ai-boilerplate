@@ -1,1 +1,51 @@
-# AI Boilerplate Frontend
+# AI Boilerplate Admin
+
+Vue 3 admin console template for AI Boilerplate. It is based on the Vben admin
+workspace and includes generated API clients, Ant Design Vue views, shared UI
+packages, and Turbo-powered type checks.
+
+## Setup
+
+Use Node.js 20.10 or newer and pnpm. Run commands from this directory.
+
+```bash
+pnpm install
+pnpm dev:antd
+```
+
+The main app is `apps/web-antd`. Environment files for the app live in
+`apps/web-antd/.env*`.
+
+## API Configuration
+
+`VITE_GLOB_API_URL` controls the API base path used by the request client. The
+development default is `/api`, which is suitable for a local proxy or mock
+server.
+
+Generated admin API clients are produced from backend Swagger files:
+
+```bash
+pnpm api:gen
+```
+
+The generator reads `../ai-boilerplate-backend/doc/swagger/admin` and writes
+client modules under `apps/web-antd/src/api`.
+
+## Verification
+
+```bash
+pnpm check:type --filter=@vben/web-antd
+pnpm test:unit
+pnpm lint
+```
+
+Use the targeted type check for routine template edits. Run the wider checks
+before publishing changes that touch shared packages or generated clients.
+
+## Structure
+
+- `apps/web-antd`: admin application entry point.
+- `apps/web-antd/src/views`: feature pages and CRUD screens.
+- `apps/web-antd/src/api`: generated API clients.
+- `packages` and `internal`: shared UI, request, lint, build, and type config.
+- `scripts/api-gen`: Swagger-to-TypeScript generation script.

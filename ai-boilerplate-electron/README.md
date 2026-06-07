@@ -1,6 +1,8 @@
 # ai-boilerplate-electron
 
-An Electron application with Vue and TypeScript
+Electron desktop shell for AI Boilerplate. It uses Electron Vite, Vue 3, and
+TypeScript to provide a native desktop entry point for the same product modules
+as the backend, admin, and mobile templates.
 
 ## Recommended IDE Setup
 
@@ -11,24 +13,37 @@ An Electron application with Vue and TypeScript
 ### Install
 
 ```bash
-$ npm install
+npm install
 ```
 
 ### Development
 
 ```bash
-$ npm run dev
+npm run dev
+```
+
+### Verification
+
+```bash
+npm run typecheck
+npm run build
 ```
 
 ### Build
 
 ```bash
 # For windows
-$ npm run build:win
+npm run build:win
 
 # For macOS
-$ npm run build:mac
+npm run build:mac
 
 # For Linux
-$ npm run build:linux
+npm run build:linux
 ```
+
+## Packaging Notes
+
+`electron-builder.yml` owns package identity, artifact names, and the Electron
+download mirror. Keep mirror settings there so npm does not warn about unknown
+project-level config during type checks and installs.

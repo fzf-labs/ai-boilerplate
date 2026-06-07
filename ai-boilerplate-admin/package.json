@@ -14,14 +14,13 @@
     "vue vben admin pro",
     "vue3"
   ],
-  "homepage": "https://github.com/vbenjs/vue-vben-admin",
-  "bugs": "https://github.com/vbenjs/vue-vben-admin/issues",
-  "repository": "vbenjs/vue-vben-admin.git",
+  "homepage": "https://github.com/fzf-labs/ai-boilerplate",
+  "bugs": "https://github.com/fzf-labs/ai-boilerplate/issues",
+  "repository": "fzf-labs/ai-boilerplate.git",
   "license": "MIT",
   "author": {
-    "name": "vben",
-    "email": "ann.vben@gmail.com",
-    "url": "https://github.com/anncwb"
+    "name": "fzf-labs",
+    "url": "https://github.com/fzf-labs"
   },
   "type": "module",
   "scripts": {
@@ -99,25 +98,5 @@
     "node": ">=20.10.0",
     "pnpm": ">=9.12.0"
   },
-  "packageManager": "pnpm@10.14.0",
-  "pnpm": {
-    "peerDependencyRules": {
-      "allowedVersions": {
-        "eslint": "*"
-      }
-    },
-    "overrides": {
-      "@ast-grep/napi": "catalog:",
-      "@ctrl/tinycolor": "catalog:",
-      "clsx": "catalog:",
-      "esbuild": "0.25.3",
-      "jiti": "^2.6.1",
-      "pinia": "catalog:",
-      "vue": "catalog:"
-    },
-    "neverBuiltDependencies": [
-      "canvas",
-      "node-gyp"
-    ]
-  }
+  "packageManager": "pnpm@10.14.0"
 }

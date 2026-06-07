@@ -1,11 +1,11 @@
 {
   "name": "@vben/icons",
   "version": "5.5.9",
-  "homepage": "https://github.com/vbenjs/vue-vben-admin",
-  "bugs": "https://github.com/vbenjs/vue-vben-admin/issues",
+  "homepage": "https://github.com/fzf-labs/ai-boilerplate",
+  "bugs": "https://github.com/fzf-labs/ai-boilerplate/issues",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vbenjs/vue-vben-admin.git",
+    "url": "git+https://github.com/fzf-labs/ai-boilerplate.git",
     "directory": "packages/icons"
   },
   "license": "MIT",
