@@ -189,7 +189,7 @@ export function useFormSchema(): VbenFormSchema[] {
       label: '权限标识',
       component: 'Input',
       componentProps: {
-        placeholder: '请输入菜单描述',
+        placeholder: '请输入权限标识',
       },
       dependencies: {
         show: (values) => {

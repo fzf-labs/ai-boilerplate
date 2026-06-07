@@ -43,7 +43,7 @@ export function useFormSchema(): VbenFormSchema[] {
       help: '在微信公众平台（mp.weixin.qq.com）的菜单 [设置与开发 - 公众号设置 - 开发接口管理] 中能找到「开发者ID(AppID)」',
       rules: 'required',
       componentProps: {
-        placeholder: '请输入appId',
+        placeholder: '请输入开发者ID(AppID)',
       },
     },
     {
@@ -53,7 +53,7 @@ export function useFormSchema(): VbenFormSchema[] {
       help: '在微信公众平台（mp.weixin.qq.com）的菜单 [设置与开发 - 公众号设置 - 开发接口管理] 中能找到「开发者密码(AppSecret)」',
       rules: 'required',
       componentProps: {
-        placeholder: '请输入appSecret',
+        placeholder: '请输入开发者密码(AppSecret)',
       },
     },
     {
@@ -62,7 +62,7 @@ export function useFormSchema(): VbenFormSchema[] {
       component: 'Input',
       help: '在微信公众平台（mp.weixin.qq.com）的菜单 [设置与开发 - 公众号设置 - 开发接口管理] 中能找到「服务器地址(URL)」',
       componentProps: {
-        placeholder: '请输入URL',
+        placeholder: '请输入服务器地址(URL)',
       },
     },
     {
@@ -71,7 +71,7 @@ export function useFormSchema(): VbenFormSchema[] {
       component: 'Input',
       help: '在微信公众平台（mp.weixin.qq.com）的菜单 [设置与开发 - 公众号设置 - 开发接口管理] 中能找到「令牌(Token)」',
       componentProps: {
-        placeholder: '请输入token',
+        placeholder: '请输入令牌(Token)',
       },
     },
     {
@@ -80,7 +80,7 @@ export function useFormSchema(): VbenFormSchema[] {
       component: 'Input',
       help: '在微信公众平台（mp.weixin.qq.com）的菜单 [设置与开发 - 公众号设置 - 开发接口管理] 中能找到「消息加解密密钥(EncodingAESKey)」',
       componentProps: {
-        placeholder: '请输入encodingAesKey',
+        placeholder: '请输入消息加解密密钥(EncodingAESKey)',
       },
     },
     {

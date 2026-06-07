@@ -65,7 +65,7 @@ export function useFormSchema(): VbenFormSchema[] {
       component: 'Input',
       rules: z.string().min(1, '请输入跳转链接').max(500),
       componentProps: {
-        placeholder: '外链: https://... 站内: /pages/xxx 或 app://pages/xxx',
+        placeholder: '外链需以 https:// 开头，站内链接需以 /pages/ 或 app:// 开头',
         allowClear: true,
       },
     },

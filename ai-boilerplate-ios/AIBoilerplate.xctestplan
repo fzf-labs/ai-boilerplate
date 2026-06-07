@@ -14,30 +14,37 @@
   "testTargets" : [
     {
       "target" : {
-        "identifier" : "PLACEHOLDER",
+        "identifier" : "AnalyticsTests",
         "containerPath" : "container:AIBoilerplate.xcodeproj",
-        "name" : "DomainTests"
+        "name" : "AnalyticsTests"
       }
     },
     {
       "target" : {
-        "identifier" : "PLACEHOLDER",
-        "containerPath" : "container:AIBoilerplate.xcodeproj",
-        "name" : "AIBoilerplateTests"
-      }
-    },
-    {
-      "target" : {
-        "identifier" : "PLACEHOLDER",
+        "identifier" : "DataTests",
         "containerPath" : "container:AIBoilerplate.xcodeproj",
         "name" : "DataTests"
       }
     },
     {
       "target" : {
-        "identifier" : "PLACEHOLDER",
+        "identifier" : "DomainTests",
+        "containerPath" : "container:AIBoilerplate.xcodeproj",
+        "name" : "DomainTests"
+      }
+    },
+    {
+      "target" : {
+        "identifier" : "ModelTests",
         "containerPath" : "container:AIBoilerplate.xcodeproj",
         "name" : "ModelTests"
+      }
+    },
+    {
+      "target" : {
+        "identifier" : "AIBoilerplateTests",
+        "containerPath" : "container:AIBoilerplate.xcodeproj",
+        "name" : "AIBoilerplateTests"
       }
     }
   ],

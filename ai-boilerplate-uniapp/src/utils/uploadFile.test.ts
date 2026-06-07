@@ -2,8 +2,12 @@ import assert from 'node:assert/strict'
 
 import {
   isFileWithinMaxSize,
+  joinUploadUrl,
   parseUploadResponseData,
 } from './uploadFile'
+
+assert.equal(joinUploadUrl('http://127.0.0.1:8000/', '/upload'), 'http://127.0.0.1:8000/upload')
+assert.equal(joinUploadUrl('', '/upload'), '/upload')
 
 assert.equal(isFileWithinMaxSize(4 * 1024 * 1024, 5), true)
 assert.equal(isFileWithinMaxSize(6 * 1024 * 1024, 5), false)

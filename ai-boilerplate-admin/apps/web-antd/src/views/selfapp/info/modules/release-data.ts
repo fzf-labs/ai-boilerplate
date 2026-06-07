@@ -36,7 +36,7 @@ export function useReleaseFormSchema(
       label: '包名',
       component: 'Input',
       componentProps: {
-        placeholder: '应用包名',
+        placeholder: '应用唯一包名',
         disabled: true,
       },
       rules: 'required',
@@ -187,7 +187,7 @@ export function useReleaseFormSchema(
         placeholder: '请输入更新日志内容',
         rows: 4,
       },
-      defaultValue: '解决了用户提出的问题\n解决了提出问题的用户',
+      defaultValue: '修复已知问题\n优化用户体验',
     },
     {
       fieldName: 'grayStrategy',

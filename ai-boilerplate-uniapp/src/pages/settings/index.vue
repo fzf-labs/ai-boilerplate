@@ -326,7 +326,9 @@ function handleLanguageSelect(payload: { index: number }) {
  */
 async function handleClearCache() {
   try {
+    clearCacheSheetVisible.value = false
     uni.clearStorageSync()
+    await tokenStore.logout()
     toast.success('清除成功')
     fetchCacheInfo()
   }

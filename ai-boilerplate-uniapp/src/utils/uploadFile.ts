@@ -17,11 +17,19 @@
 /**
  * 上传文件的URL配置
  */
+export function joinUploadUrl(baseUrl: string, path: string) {
+  const normalizedBase = baseUrl.replace(/\/+$/, '')
+  const normalizedPath = path.replace(/^\/+/, '')
+  return normalizedBase ? `${normalizedBase}/${normalizedPath}` : `/${normalizedPath}`
+}
+
 const serverBaseUrl = import.meta.env?.VITE_SERVER_BASEURL || ''
 
 export const uploadFileUrl = {
   /** 用户头像上传地址 */
-  USER_AVATAR: `${serverBaseUrl}/user/avatar`,
+  USER_AVATAR: joinUploadUrl(serverBaseUrl, '/user/avatar'),
+  /** 通用文件上传地址 */
+  DEFAULT: joinUploadUrl(serverBaseUrl, '/upload'),
 }
 
 /**
