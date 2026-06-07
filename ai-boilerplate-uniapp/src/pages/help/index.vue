@@ -4,10 +4,10 @@ import type { HelpFaqInfo } from '@/api/v1/help-faq/types'
 import { useToast } from 'wot-design-uni'
 import { listHelpCategories } from '@/api/v1/help-category/helpCategory'
 import { listHelpFaqs } from '@/api/v1/help-faq/helpFaq'
-import HelpHeader from './components/HelpHeader.vue'
 import CategoryGrid from './components/CategoryGrid.vue'
-import HotFaqList from './components/HotFaqList.vue'
 import ErrorState from './components/ErrorState.vue'
+import HelpHeader from './components/HelpHeader.vue'
+import HotFaqList from './components/HotFaqList.vue'
 
 definePage({
   style: {

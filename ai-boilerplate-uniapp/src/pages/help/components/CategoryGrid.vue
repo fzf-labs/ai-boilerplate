@@ -112,11 +112,7 @@ function handleSelect(categoryId?: string) {
   width: 64rpx;
   height: 64rpx;
   border-radius: 16rpx;
-  background: linear-gradient(
-    135deg,
-    rgba(var(--fg-primary-rgb), 0.12) 0%,
-    rgba(var(--fg-primary-rgb), 0.06) 100%
-  );
+  background: linear-gradient(135deg, rgba(var(--fg-primary-rgb), 0.12) 0%, rgba(var(--fg-primary-rgb), 0.06) 100%);
   display: flex;
   align-items: center;
   justify-content: center;

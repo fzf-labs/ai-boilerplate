@@ -13,7 +13,7 @@ const emit = defineEmits<Emits>()
 
 const searchValue = computed({
   get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value),
+  set: value => emit('update:modelValue', value),
 })
 
 function handleSearch() {

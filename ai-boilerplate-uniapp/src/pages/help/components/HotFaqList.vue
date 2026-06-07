@@ -30,7 +30,9 @@ function handleSelect(faq: HelpFaqInfo) {
         </view>
         <text>热门问题</text>
       </view>
-      <wd-tag type="danger" plain size="small">HOT</wd-tag>
+      <wd-tag type="danger" plain size="small">
+        HOT
+      </wd-tag>
     </view>
 
     <view v-if="!loading && faqs.length === 0" class="empty-state">
@@ -46,7 +48,9 @@ function handleSelect(faq: HelpFaqInfo) {
         :style="{ animationDelay: `${index * 0.05}s` }"
         @click="handleSelect(faq)"
       >
-        <view class="faq-index">{{ index + 1 }}</view>
+        <view class="faq-index">
+          {{ index + 1 }}
+        </view>
         <text class="faq-question">{{ faq.question }}</text>
         <wd-icon name="arrow-right" size="28rpx" color="var(--fg-text-muted)" />
       </view>
@@ -112,11 +116,7 @@ function handleSelect(faq: HelpFaqInfo) {
   width: 36rpx;
   height: 36rpx;
   border-radius: 10rpx;
-  background: linear-gradient(
-    135deg,
-    var(--wot-color-primary) 0%,
-    rgba(var(--wot-color-primary-rgb), 0.8) 100%
-  );
+  background: linear-gradient(135deg, var(--wot-color-primary) 0%, rgba(var(--wot-color-primary-rgb), 0.8) 100%);
   color: #fff;
   font-size: 22rpx;
   font-weight: 700;
@@ -164,7 +164,8 @@ function handleSelect(faq: HelpFaqInfo) {
 }
 
 @keyframes fireGlow {
-  0%, 100% {
+  0%,
+  100% {
     filter: drop-shadow(0 0 4rpx rgba(255, 107, 107, 0.3));
   }
   50% {

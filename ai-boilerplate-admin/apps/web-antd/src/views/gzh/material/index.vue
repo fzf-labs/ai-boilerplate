@@ -628,8 +628,8 @@ onMounted(() => {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 12px;
       padding-bottom: 8px;
+      margin-bottom: 12px;
       border-bottom: 1px solid #f0f0f0;
 
       .material-group-title {

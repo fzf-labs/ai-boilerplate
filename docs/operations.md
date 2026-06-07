@@ -8,6 +8,9 @@ Most work should stay inside one template directory. Cross-template changes are
 reserved for shared API contracts, generated client syncs, documentation, or
 release workflow updates.
 
+When choosing a starting point, use the selection guide in the root README or
+`docs/technical-decisions.md` before installing dependencies.
+
 ## Repository Layout
 
 | Path | Purpose |

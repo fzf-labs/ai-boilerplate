@@ -27,6 +27,26 @@ pnpm check:type
 The desktop, browser extension, native Android, and iOS templates have their own
 README files with the same setup pattern.
 
+## Choosing A Template
+
+Pick the template that matches the primary surface of the product first, then
+consult the template README for setup details.
+
+| Need | Start With |
+| --- | --- |
+| Backend API, data layer, generated contracts | `ai-boilerplate-backend` |
+| Internal operations dashboard | `ai-boilerplate-admin` |
+| Cross-platform mobile app or mini-program | `ai-boilerplate-uniapp` |
+| Public browser app or lightweight web shell | `ai-boilerplate-pc` |
+| Desktop app with Chromium and Node integration | `ai-boilerplate-electron` |
+| Smaller-footprint desktop shell | `ai-boilerplate-tauri` |
+| Browser extension workflow | `ai-boilerplate-chrome-extension` |
+| Native iOS app | `ai-boilerplate-ios` |
+| Native Android app | `ai-boilerplate-android` |
+
+For the stack rationale behind those choices, see
+[Technical decisions](docs/technical-decisions.md).
+
 ## Templates
 
 - `ai-boilerplate-backend`: Go backend boilerplate.

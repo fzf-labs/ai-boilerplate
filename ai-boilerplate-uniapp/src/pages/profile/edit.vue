@@ -2,7 +2,7 @@
 import type { UpdateUserInfoReq, UserInfo } from '@/api/v1/user/types'
 import { useToast } from 'wot-design-uni'
 import { getUserInfo, updateUserInfo } from '@/api/v1/user/user'
-import { useUpload, uploadFileUrl } from '@/utils/uploadFile'
+import { uploadFileUrl, useUpload } from '@/utils/uploadFile'
 
 definePage({
   style: {

@@ -1,6 +1,6 @@
 import {
-  useUpload as useFilePickerUpload,
   uploadFileUrl,
+  useUpload as useFilePickerUpload,
 } from '@/utils/uploadFile'
 
 type TfileType = 'image' | 'file'

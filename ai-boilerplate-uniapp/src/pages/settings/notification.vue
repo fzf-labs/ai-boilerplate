@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { useToast } from 'wot-design-uni'
 import type { NotificationCategory, NotificationSettingsInfo, UpdateNotificationSettingsReq } from '@/api/v1/user-notification-settings/types'
+import { useToast } from 'wot-design-uni'
 import { getNotificationSettings, updateNotificationSettings } from '@/api/v1/user-notification-settings/userNotificationSetting'
 import { LOGIN_PAGE } from '@/router/config'
 import { useTokenStore } from '@/store/token'
@@ -146,14 +146,14 @@ onShow(() => {
           <wd-loading />
         </view>
         <wd-cell-group v-else-if="hasCategories" border>
-        <wd-cell
-          v-for="item in categories"
-          :key="item.key"
-          :title="item.title"
-          :label="item.description"
-        >
-          <wd-switch v-model="item.enabled" />
-        </wd-cell>
+          <wd-cell
+            v-for="item in categories"
+            :key="item.key"
+            :title="item.title"
+            :label="item.description"
+          >
+            <wd-switch v-model="item.enabled" />
+          </wd-cell>
         </wd-cell-group>
         <view v-else class="empty-box">
           暂无可用通知类型
