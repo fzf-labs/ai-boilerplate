@@ -57,7 +57,6 @@ const alovaInstance = createAlova({
 
     const { config } = method
     const ignoreAuth = !config.meta?.ignoreAuth
-    console.log('ignoreAuth===>', ignoreAuth)
     // 处理认证信息   自行处理认证问题
     if (ignoreAuth) {
       const token = 'getToken()'
@@ -70,7 +69,6 @@ const alovaInstance = createAlova({
     // 处理动态域名
     if (config.meta?.domain) {
       method.baseURL = config.meta.domain
-      console.log('当前域名', method.baseURL)
     }
   }),
 

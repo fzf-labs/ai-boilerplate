@@ -26,11 +26,13 @@ From this directory:
 ./gradlew detekt test assembleDebug -x validateSigningDebug
 ```
 
-The sample API uses `https://dummyjson.com/` by default. To point the app at
-another API, create a local `local.properties` file and set:
+The app points at the local AI Boilerplate backend by default. Android
+emulators reach the host machine through `10.0.2.2`, so the built-in default is
+`http://10.0.2.2:8000/api/`. To point the app at another API, create a local
+`local.properties` file and set:
 
 ```properties
-BASE_URL=https://example.com/
+BASE_URL=https://your-api-host.com/api/
 ```
 
 ## Project Identity

@@ -23,7 +23,7 @@ final class ApplicationSpec: KIFSpec {
             context("when opens") {
 
                 it("shows its UI components") {
-                    tester().waitForView(withAccessibilityLabel: "Hello, world!")
+                    tester().waitForView(withAccessibilityLabel: "Signed In")
                 }
             }
         }

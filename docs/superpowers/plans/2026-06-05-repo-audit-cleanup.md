@@ -15,71 +15,71 @@
 **Files:**
 - Modify: `ai-boilerplate-admin/packages/effects/access/src/access-control.vue`
 
-- [ ] Remove the stale TODO-only comment block and make the empty-codes case render consistently with the rest of the access helpers.
-- [ ] Add support for an explicit all-vs-any match mode without changing the existing default behavior.
+- [x] Remove the stale TODO-only comment block and make the empty-codes case render consistently with the rest of the access helpers.
+- [x] Add support for an explicit all-vs-any match mode without changing the existing default behavior.
 
 ### Task 2: Native SwiftUI settings screen
 
 **Files:**
 - Modify: `ai-boilerplate-ios/Tuist/Interfaces/SwiftUI/Sources/Presentation/Modules/Settings/SettingsView.swift`
 
-- [ ] Replace the placeholder paragraph with a simple, real settings-style layout that reads like a finished destination screen.
+- [x] Replace the placeholder paragraph with a simple, real settings-style layout that reads like a finished destination screen.
 
 ### Task 3: Uni-app route exclusions
 
 **Files:**
 - Modify: `ai-boilerplate-uniapp/src/router/config.ts`
 
-- [ ] Remove the sample route exclusions so the config only contains intentional paths.
+- [x] Remove the sample route exclusions so the config only contains intentional paths.
 
 ### Task 4: Uni-app native tabbar defaults
 
 **Files:**
 - Modify: `ai-boilerplate-uniapp/src/tabbar/config.ts`
 
-- [ ] Replace the remaining example image references with a real asset from `src/static/tabbar`.
+- [x] Replace the remaining example image references with a real asset from `src/static/tabbar`.
 
 ### Task 5: Profile avatar upload flow
 
 **Files:**
 - Modify: `ai-boilerplate-uniapp/src/pages/profile/edit.vue`
 
-- [ ] Stop saving the temporary local file path directly and upload the chosen image before persisting the user profile.
+- [x] Stop saving the temporary local file path directly and upload the chosen image before persisting the user profile.
 
 ### Task 6: Uni-app dev config noise
 
 **Files:**
 - Modify: `ai-boilerplate-uniapp/vite.config.ts`
 
-- [ ] Remove the startup debug logging and keep the config output clean.
+- [x] Remove the startup debug logging and keep the config output clean.
 
 ### Task 7: Shared tree helper
 
 **Files:**
 - Modify: `ai-boilerplate-admin/apps/web-antd/src/utils/tree.ts`
 
-- [ ] Replace the duplicated implementation with a thin compatibility re-export to the shared helper.
+- [x] Replace the duplicated implementation with a thin compatibility re-export to the shared helper.
 
 ### Task 8: Self-app schema copy
 
 **Files:**
 - Modify: `ai-boilerplate-admin/apps/web-antd/src/views/selfapp/info/data.ts`
 
-- [ ] Replace the generic package-name placeholder with a template-specific example.
+- [x] Replace the generic package-name placeholder with a template-specific example.
 
 ### Task 9: WeChat menu form hints
 
 **Files:**
 - Modify: `ai-boilerplate-admin/apps/web-antd/src/views/gzh/menu/index.vue`
 
-- [ ] Remove the example AppId and page-path hints from the help text and keep the guidance factual.
+- [x] Remove the example AppId and page-path hints from the help text and keep the guidance factual.
 
 ### Task 10: Uni-app settings/legal copy
 
 **Files:**
 - Modify: `ai-boilerplate-uniapp/src/pages/settings/index.vue`
 
-- [ ] Remove the fake support email and hide or replace the empty legal/contact placeholders so the page does not advertise broken links.
+- [x] Remove the fake support email and hide or replace the empty legal/contact placeholders so the page does not advertise broken links.
 
 ### Verification
 
@@ -89,7 +89,11 @@
 - `ai-boilerplate-uniapp/src/pages/profile/edit.vue`
 - `ai-boilerplate-uniapp/src/pages/settings/index.vue`
 
-- [ ] Run `pnpm check:type --filter=@vben/web-antd` from `ai-boilerplate-admin`.
-- [ ] Run `pnpm check:type` from `ai-boilerplate-uniapp`.
-- [ ] Run `swift build` (or the closest package build check available in `ai-boilerplate-ios`).
-- [ ] Commit the finished changes with a concise message.
+- [x] Run `pnpm check:type --filter=@vben/web-antd` from `ai-boilerplate-admin`.
+- [x] Run `pnpm check:type` from `ai-boilerplate-uniapp`.
+- [x] Run `swift build` (or the closest package build check available in `ai-boilerplate-ios`).
+- [x] Run `npm run typecheck` from `ai-boilerplate-electron`.
+- [x] Run `npm run build` from `ai-boilerplate-tauri`.
+- [x] Run `pnpm type-check` from `ai-boilerplate-pc`.
+- [x] Run `./gradlew detekt test assembleDebug -x validateSigningDebug` from `ai-boilerplate-android`.
+- [x] Commit the finished changes with a concise message.

@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "An Electron application with Vue and TypeScript",
   "main": "./out/main/index.js",
-  "author": "example.com",
-  "homepage": "https://electron-vite.org",
+  "author": "fzf-labs",
+  "homepage": "https://github.com/fzf-labs/ai-boilerplate",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint --cache .",

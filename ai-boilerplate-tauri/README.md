@@ -1,7 +1,18 @@
-# Tauri + Vue + TypeScript
+# AI Boilerplate Tauri
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+`ai-boilerplate-tauri` is the Tauri desktop starter for this repository. It
+uses Vue 3 for the renderer and Rust/Tauri for the native shell.
 
-## Recommended IDE Setup
+## Project Setup
 
-- [VS Code](https://code.visualstudio.com/) + [Vue - Official](https://marketplace.visualstudio.com/items?itemName=Vue.volar) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+```bash
+npm install
+npm run build
+```
+
+For native development and packaging, install the Tauri prerequisites for your
+platform, then run:
+
+```bash
+npm run tauri dev
+```

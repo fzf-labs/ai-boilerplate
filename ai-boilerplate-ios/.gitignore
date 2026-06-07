@@ -36,6 +36,10 @@ cookiecutter.json
 #
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 
+## Generated projects/workspaces
+*.xcodeproj/
+*.xcworkspace/
+
 ## User settings
 xcuserdata/
 
@@ -63,6 +67,7 @@ fastlane/FastlaneRunner
 
 # Output folder (Derived Data, Build, ipa, etc)
 Output
+build/
 
 # Tuist
 .tuist-generated
@@ -70,6 +75,7 @@ Output
 # Swift Package Manager
 .build/
 .swiftpm/
+.package.resolved
 
 # JetBrains IDEs
 

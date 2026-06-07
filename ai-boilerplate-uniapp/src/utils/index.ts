@@ -1,6 +1,9 @@
 import type { PageMetaDatum, SubPackages } from '@uni-helper/vite-plugin-uni-pages'
 import { isMpWeixin } from '@uni-helper/uni-env'
 import { pages, subPackages } from '@/pages.json'
+import { parseUrlToObj } from './url'
+
+export { ensureDecodeURIComponent, parseUrlToObj } from './url'
 
 export type PageInstance = Page.PageInstance<AnyObject, object> & { $page: Page.PageInstance<AnyObject, object> & { fullPath: string } }
 
@@ -26,47 +29,13 @@ export function currRoute() {
     }
   }
   const currRoute = lastPage.$page
-  // console.log('lastPage.$page:', currRoute)
-  // console.log('lastPage.$page.fullpath:', currRoute.fullPath)
-  // console.log('lastPage.$page.options:', currRoute.options)
-  // console.log('lastPage.options:', (lastPage as any).options)
   // 经过多端测试，只有 fullPath 靠谱，其他都不靠谱
   const { fullPath } = currRoute
-  // console.log(fullPath)
   // eg: /pages/login/login?redirect=%2Fpages%2Fdemo%2Fbase%2Froute-interceptor (小程序)
   // eg: /pages/login/login?redirect=%2Fpages%2Froute-interceptor%2Findex%3Fname%3Dfeige%26age%3D30(h5)
   return parseUrlToObj(fullPath)
 }
 
-export function ensureDecodeURIComponent(url: string) {
-  if (url.startsWith('%')) {
-    return ensureDecodeURIComponent(decodeURIComponent(url))
-  }
-  return url
-}
-/**
- * 解析 url 得到 path 和 query
- * 比如输入url: /pages/login/login?redirect=%2Fpages%2Fdemo%2Fbase%2Froute-interceptor
- * 输出: {path: /pages/login/login, query: {redirect: /pages/demo/base/route-interceptor}}
- */
-export function parseUrlToObj(url: string) {
-  const [path, queryStr] = url.split('?')
-  // console.log(path, queryStr)
-
-  if (!queryStr) {
-    return {
-      path,
-      query: {},
-    }
-  }
-  const query: Record<string, string> = {}
-  queryStr.split('&').forEach((item) => {
-    const [key, value] = item.split('=')
-    // console.log(key, value)
-    query[key] = ensureDecodeURIComponent(value) // 这里需要统一 decodeURIComponent 一下，可以兼容h5和微信y
-  })
-  return { path, query }
-}
 /**
  * 得到所有的需要登录的 pages，包括主包和分包的
  * 这里设计得通用一点，可以传递 key 作为判断依据，默认是 excludeLoginPath, 与 route-block 配对使用
@@ -84,7 +53,6 @@ export function getAllPages(key?: string) {
   // 这里处理分包
   const subPages: PageMetaDatum[] = []
   ;(subPackages as SubPackages).forEach((subPageObj) => {
-    // console.log(subPageObj)
     const { root } = subPageObj
 
     subPageObj.pages
@@ -97,7 +65,6 @@ export function getAllPages(key?: string) {
       })
   })
   const result = [...mainPages, ...subPages]
-  // console.log(`getAllPages by ${key} result: `, result)
   return result
 }
 
@@ -108,8 +75,6 @@ export function getCurrentPageI18nKey() {
     console.warn('路由不正确')
     return ''
   }
-  console.log(currPage)
-  console.log(currPage.style.navigationBarTitleText)
   return currPage.style?.navigationBarTitleText || ''
 }
 

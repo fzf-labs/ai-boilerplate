@@ -42,9 +42,9 @@ android {
         val baseUrl = if (localPropertiesFile.exists()) {
             localProperties.load(localPropertiesFile.inputStream())
 
-            localProperties.getProperty("BASE_URL", "https://dummyjson.com/")
+            localProperties.getProperty("BASE_URL", "http://10.0.2.2:8000/api/")
         } else {
-            "https://dummyjson.com/"
+            "http://10.0.2.2:8000/api/"
         }
 
         buildConfigField("String", "BASE_URL", "\"${baseUrl}\"")

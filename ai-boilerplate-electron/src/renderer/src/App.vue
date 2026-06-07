@@ -1,26 +1,32 @@
 <script setup lang="ts">
 import Versions from './components/Versions.vue'
 
-const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
+const modules = [
+  'Admin console',
+  'Mobile app',
+  'Backend API',
+  'Desktop shell'
+]
 </script>
 
 <template>
-  <img alt="logo" class="logo" src="./assets/electron.svg" />
-  <div class="creator">Powered by electron-vite</div>
-  <div class="text">
-    Build an Electron app with
-    <span class="vue">Vue</span>
-    and
-    <span class="ts">TypeScript</span>
-  </div>
-  <p class="tip">Please try pressing <code>F12</code> to open the devTool</p>
-  <div class="actions">
-    <div class="action">
-      <a href="https://electron-vite.org/" target="_blank" rel="noreferrer">Documentation</a>
-    </div>
-    <div class="action">
-      <a target="_blank" rel="noreferrer" @click="ipcHandle">Send IPC</a>
-    </div>
-  </div>
-  <Versions />
+  <main class="desktop-shell">
+    <section class="intro">
+      <p class="eyebrow">AI Boilerplate Electron</p>
+      <h1>Desktop starter ready for product work.</h1>
+      <p class="summary">
+        Use this shell as the Electron entry point for the same backend, admin, and mobile
+        workflows that are included in the repository.
+      </p>
+    </section>
+
+    <section class="module-list" aria-label="Included modules">
+      <div v-for="module in modules" :key="module" class="module-item">
+        <span class="status-dot"></span>
+        <span>{{ module }}</span>
+      </div>
+    </section>
+
+    <Versions />
+  </main>
 </template>

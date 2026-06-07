@@ -63,12 +63,10 @@ export default function useUpload<T extends TfileType>(options: TOptions<T> = {}
           // 检查是否包含data字段
           parsedData = jsonData.data || jsonData
         }
-        catch (e) {
+        catch {
           // 如果解析失败，使用原始数据
-          console.log('Response is not JSON, using raw data:', res)
         }
         data.value = parsedData
-        // console.log('上传成功', res)
         success?.(parsedData)
       },
       onError: (err) => {
@@ -87,7 +85,6 @@ export default function useUpload<T extends TfileType>(options: TOptions<T> = {}
     const chooseFileOptions = {
       count: 1,
       success: (res: any) => {
-        console.log('File selected successfully:', res)
         // 小程序中res:{errMsg: "chooseImage:ok", tempFiles: [{fileType: "image", size: 48976, tempFilePath: "http://tmp/5iG1WpIxTaJf3ece38692a337dc06df7eb69ecb49c6b.jpeg"}]}
         // h5中res:{errMsg: "chooseImage:ok", tempFilePaths: "blob:http://localhost:9000/f74ab6b8-a14d-4cb6-a10d-fcf4511a0de5", tempFiles: [File]}
         // h5的File有以下字段：{name: "girl.jpeg", size: 48976, type: "image/jpeg"}

@@ -46,10 +46,7 @@ onLoad(() => {
   needHideNativeTabbar
   && uni.hideTabBar({
     fail(err) {
-      console.log('hideTabBar fail: ', err)
-    },
-    success(res) {
-      // console.log('hideTabBar success: ', res)
+      console.warn('hideTabBar fail: ', err)
     },
   })
 })
@@ -61,10 +58,7 @@ onMounted(() => {
   customTabbarEnable // 另外，支付宝里面，只要是 customTabbar 都需要隐藏
   && uni.hideTabBar({
     fail(err) {
-      console.log('hideTabBar fail: ', err)
-    },
-    success(res) {
-      // console.log('hideTabBar success: ', res)
+      console.warn('hideTabBar fail: ', err)
     },
   })
 })
