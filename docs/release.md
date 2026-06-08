@@ -25,6 +25,21 @@ Examples:
 | Chrome extension runtime message change | Single template | `npm run type-check && npm test` from `ai-boilerplate-chrome-extension`. |
 | Native endpoint or package identity update | Single template | Android or iOS verification command plus manual signing note if applicable. |
 
+## Evidence Format
+
+Record release evidence in this shape before committing or handing off:
+
+| Field | Content |
+| --- | --- |
+| Source | Issue, PR, requirement document, or local failing command. |
+| Scope | Single template, backend contract, shared docs, or cross-template behavior. |
+| Acceptance | Observable result expected by the source. |
+| Verification | Exact command, working directory, and pass/fail result. |
+| Exceptions | Missing SDKs, skipped checks, manual steps, or remaining risks. |
+
+For documentation-only changes, include `git diff --check` and any command whose
+examples or command references were changed.
+
 ## Pre-Publish Steps
 
 1. Confirm the task source and acceptance criteria are recorded in the issue,

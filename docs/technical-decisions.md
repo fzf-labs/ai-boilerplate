@@ -19,6 +19,24 @@ needs justify the native maintenance cost.
 When a task crosses templates, update the source artifact first and regenerate
 downstream clients or generated output in the same commit.
 
+## Decision Matrix
+
+| Template | Primary Audience | Owns | Strengths | Maintenance Cost | Avoid When |
+| --- | --- | --- | --- | --- | --- |
+| Backend | API and platform developers | Data, contracts, auth, jobs, shared response semantics | Typed services, generated HTTP/gRPC, relational data, background jobs | Medium; schema and generated output must stay synchronized | The change is only presentation, copy, or local client routing. |
+| Admin console | Internal operators | CRUD tables, permission-aware forms, dashboards, admin workflows | Dense UI, Vben conventions, generated admin API types | Medium; workspace packages and generated clients add coordination | The experience is public, marketing-oriented, or mobile-first. |
+| Uni-app | Mobile and mini-program users | Cross-platform mobile screens and app-facing requests | One Vue codebase for H5, app, and mini-program targets | Medium-high when platform differences matter | Deep native APIs or store-specific UX dominate the feature. |
+| PC web | Browser users | Lightweight public or operational web shells | Small Vue/Vite surface with simple build flow | Low-medium | The workflow needs admin permissions or native desktop APIs. |
+| Electron | Desktop users | Desktop apps that need Chromium plus Node integration | Broad desktop capability and Node runtime access | High; packaging, signing, and update flow are heavier | A browser app or smaller native shell can satisfy the workflow. |
+| Tauri | Desktop users | Smaller desktop shells with native backing | Smaller runtime footprint and Vite renderer | High; Rust/Tauri prerequisites affect setup | Node integration is central to runtime behavior. |
+| Chrome extension | Browser power users | Tab, page, and extension-permission workflows | Manifest V3 and browser context access | Medium; permissions and store review need care | The feature is a normal web app or server-owned flow. |
+| iOS | Apple-platform users | Native iOS screens and iOS-specific capabilities | SwiftUI, platform APIs, native distribution | High; Xcode, Tuist, signing, and app-store constraints | Uni-app can cover the mobile workflow. |
+| Android | Android users | Native Android screens and Android-specific capabilities | Kotlin baseline, Android SDK, native distribution | High; SDK, Gradle, signing, and store constraints | Uni-app can cover the mobile workflow. |
+
+Use the smallest template whose owned behavior matches the request. A template
+with lower maintenance cost is preferred unless the product requirement clearly
+depends on a heavier runtime or platform-specific API.
+
 ## Backend
 
 - **Go + Kratos**: gives the backend a typed service structure, generated HTTP
@@ -123,6 +141,24 @@ Use this repository as a menu of starting points:
 
 Prefer one primary client per product workflow. Add another template only when a
 specific platform or distribution requirement justifies the extra maintenance.
+
+## Adding Another Surface
+
+Before adding a second client surface to a product flow, confirm all of these
+conditions:
+
+1. The existing primary client cannot meet the requirement without awkward
+   platform-specific compromises.
+2. The new surface has a distinct audience, distribution channel, or runtime
+   capability.
+3. The backend contract or shared data model can support both consumers without
+   divergent semantics.
+4. Verification ownership is clear for both clients.
+5. The release process has a documented way to keep generated clients,
+   endpoints, and environment values aligned.
+
+If any condition is unclear, keep the work in the current surface and document
+the decision point before expanding the repo footprint.
 
 ## Template Tradeoffs
 

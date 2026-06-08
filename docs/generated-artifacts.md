@@ -19,6 +19,24 @@ then run the verification command for every affected consumer.
 Do not hand-edit generated `.pb.go`, Swagger, GORM model, DAO, repository, or
 generated frontend API client files unless the generator itself is the change.
 
+## Contract Operation Checklist
+
+Use this order for backend contract work:
+
+1. Update the source artifact: SQL schema for stored data, protobuf for API
+   shape and validation, or generator code when the tool itself is changing.
+2. Regenerate backend output with the Makefile target that matches the source
+   change.
+3. Regenerate admin and/or uni-app clients only when the Swagger output they
+   consume changed.
+4. Run backend verification before frontend verification so contract failures
+   are caught at the owner first.
+5. Commit source and generated output together.
+
+Acceptance for a contract change means the source file, generated backend
+output, generated client output when required, and all affected verification
+commands are included in the same task result.
+
 ## Backend API Flow
 
 Run these commands from `ai-boilerplate-backend`:
@@ -66,6 +84,18 @@ Do not regenerate clients for UI-only changes, route-label copy, local env
 defaults, or documentation updates. If generated client output changes without a
 matching Swagger change, inspect the generator version and local install before
 committing the diff.
+
+## Generated Drift Triage
+
+When generated files change unexpectedly:
+
+1. Check whether the source artifact changed in the same diff.
+2. Confirm the generator command was run from the documented template directory.
+3. Confirm dependencies were installed with the template's package manager.
+4. Revert unrelated timestamp, formatting, or dependency churn unless the
+   generator intentionally owns it.
+5. If drift remains unexplained, stop and record the generator version and exact
+   command before committing.
 
 ## Review Checklist
 

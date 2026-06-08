@@ -19,6 +19,22 @@ and `docs/verification.md`.
 Stop and ask before changing production credentials, signing setup, live third-
 party account settings, or behavior whose expected product outcome is unclear.
 
+## Escalation Path
+
+If the first response flow does not isolate the issue:
+
+1. Rerun the smallest failing command and save the exact error.
+2. Check the most recent diff and recent commits touching the failing template.
+3. Compare the failing file with a nearby working implementation.
+4. Add temporary diagnostics only at component boundaries, then remove them
+   before committing.
+5. If three separate fix attempts fail, stop and reassess the architecture or
+   task scope before making another code change.
+
+Escalate to the user when the next step requires external accounts, production
+permissions, private signing material, paid services, or a product decision not
+covered by the repo docs.
+
 ## Dependency Install Failures
 
 | Symptom | Check | Fix |
@@ -59,6 +75,19 @@ Generated drift usually shows up as type errors in frontend clients or missing
 Go methods after protobuf edits. Use `docs/generated-artifacts.md` to rerun the
 full generation chain from the source artifact instead of patching generated
 files by hand.
+
+## Documentation Drift
+
+If a command in the docs no longer matches a template:
+
+1. Check the template `package.json`, `Makefile`, `go.mod`, Gradle files, or
+   Swift package first.
+2. Update the root guide and the template README together when both mention the
+   command.
+3. Run the documented command after the edit, or record why local prerequisites
+   prevent it.
+4. Use `git diff --check` for documentation-only changes to catch whitespace and
+   formatting errors.
 
 ## Native Tooling
 

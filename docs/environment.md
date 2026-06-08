@@ -14,6 +14,18 @@ IDs in local environment files or platform secret stores.
 - Keep generated clients pointed at the same backend path shape used by the
   runtime request layer.
 
+## Local Setup Checklist
+
+1. Pick one template and install dependencies only inside that directory.
+2. Copy or create the documented local config file for that template.
+3. Keep loopback defaults for local-only browser or simulator flows.
+4. Use a LAN IP or emulator host alias when a physical device or emulator cannot
+   reach `127.0.0.1`.
+5. Run the template verification command before changing environment-sensitive
+   behavior.
+6. Move real credentials into local files, CI secrets, or platform secret
+   storage before release.
+
 ## Template Files
 
 | Template | Environment Files | Notes |
@@ -41,6 +53,18 @@ Use these defaults unless a template README says otherwise:
 
 When testing on a physical device, replace loopback addresses with a LAN IP that
 the device can reach.
+
+## Device URL Rules
+
+- Browser-based local clients can use `/api` or `127.0.0.1` when the dev server
+  proxies to the backend.
+- Android emulators use `10.0.2.2` to reach services running on the host.
+- iOS simulators can usually use `127.0.0.1`; physical iOS devices need a LAN
+  IP or deployed backend.
+- Mini-program targets must use platform-approved domains for non-local
+  releases.
+- Do not commit production domains to starter defaults unless the product owner
+  explicitly makes that endpoint part of the template.
 
 ## Quick Reference
 

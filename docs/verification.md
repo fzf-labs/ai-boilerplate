@@ -23,6 +23,20 @@ When a command cannot run because a local SDK, package manager, signing asset,
 or generated workspace is missing, keep the exact command output in the task
 summary and run the targeted static checks that cover the edited files.
 
+## Documentation-Only Changes
+
+For root documentation edits that do not change code or generated artifacts,
+run:
+
+```bash
+git diff --check
+```
+
+If the edit changes a documented command, also run that command from the listed
+directory or record the missing local prerequisite. Documentation that changes
+release, generated-artifact, or cross-template workflow guidance should still
+be reviewed against the full verification table before publishing.
+
 ## Full Verification Set
 
 For cross-template changes, run every command in the table when the local SDKs

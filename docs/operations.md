@@ -13,9 +13,6 @@ guide in the root README or `docs/technical-decisions.md` before editing code.
 That keeps the work anchored to the owning artifact and avoids drifting into
 downstream consumers too early.
 
-When choosing a starting point, use the selection guide in the root README or
-`docs/technical-decisions.md` before installing dependencies.
-
 ## Choosing Change Scope
 
 Start by naming the artifact that owns the behavior:
@@ -137,6 +134,43 @@ acceptance criteria, and verification evidence for each task.
 Stop and ask before starting when the highest-priority item requires production
 credentials, external account access, signing assets, customer-specific IDs, or
 a product decision that is not already documented.
+
+## Issue And Requirement Intake
+
+Use this checklist when an issue, PR, or requirement document is the source of a
+task:
+
+1. Record the source link or file path before editing.
+2. Capture the exact acceptance criteria or infer the smallest observable
+   outcome when the source is brief.
+3. Map the request to one owning artifact from the change-scope table.
+4. Check whether any generated output must be refreshed from that source.
+5. Pick the targeted verification command before changing files.
+6. Stop if the requested outcome depends on undocumented product behavior,
+   production accounts, signing credentials, or customer-specific identifiers.
+
+For unattended maintenance, write each chosen task in this form:
+
+| Field | Required Content |
+| --- | --- |
+| Task name | One concrete outcome, not an activity label. |
+| Source | Issue, PR, failing command, document, or file path that justifies the work. |
+| Priority rationale | Which priority rank made this task more important than alternatives. |
+| Acceptance criteria | A binary or observable condition plus the verification command. |
+
+## Template Runbook Quick Reference
+
+| Template | Start Command | Verify Command | Publish Note |
+| --- | --- | --- | --- |
+| Backend | `make run` | `go test ./...` | Regenerate API/GORM output before committing contract changes. |
+| Admin | `pnpm dev:antd` | `pnpm check:type --filter=@vben/web-antd` | Keep CRUD and permission workflows in Ant Design Vue/Vben patterns. |
+| Uni-app | `pnpm dev:h5` | `pnpm check:type` | Check platform-specific URL behavior before app or mini-program release. |
+| PC web | `pnpm dev` | `pnpm type-check` | Keep public browser flows separate from admin-only APIs. |
+| Electron | `npm run dev` | `npm run typecheck` | Keep signing and update-server secrets outside the repo. |
+| Tauri | `npm run tauri dev` | `npm run build` | Treat renderer secrets as public; native secrets belong in platform storage. |
+| Chrome extension | `npm run dev` | `npm run type-check && npm test` | Add manifest permissions only when a feature requires them. |
+| iOS | `tuist generate` | `swift build` | Do not commit real provisioning profiles or signing identities. |
+| Android | `./gradlew assembleDebug -x validateSigningDebug` | `./gradlew detekt test assembleDebug -x validateSigningDebug` | Keep keystores and Firebase service files out of git. |
 
 ## Daily Development
 

@@ -24,6 +24,25 @@ Run commands from the template directory. The detailed setup notes live in each
 template README, and the full verification matrix is in
 [Verification commands](docs/verification.md).
 
+## Workflows At A Glance
+
+Use the root guides before changing shared workflow, generated contracts, or
+more than one template:
+
+| Need | Guide |
+| --- | --- |
+| Decide which template owns a request | [Technical decisions](docs/technical-decisions.md) |
+| Start, prioritize, and scope work | [Operations guide](docs/operations.md) |
+| Configure local endpoints and secrets | [Environment configuration](docs/environment.md) |
+| Regenerate backend, Swagger, GORM, or client output | [Generated artifacts](docs/generated-artifacts.md) |
+| Recover from setup or verification failures | [Troubleshooting](docs/troubleshooting.md) |
+| Publish or hand off a finished change | [Release checklist](docs/release.md) |
+
+If a task crosses templates, update the artifact that owns the behavior first.
+For example, backend schema and API changes lead generated backend output and
+frontend clients; client-only copy and layout changes stay in the client
+template.
+
 ## Choosing A Template
 
 Pick the template that matches the primary surface of the product first, then
@@ -80,9 +99,11 @@ requirements justify the extra maintenance.
 ## Development Workflow
 
 1. Choose the template that owns the product surface you are changing.
-2. Read that template README plus the matching root guide in the documentation list above.
+2. Read that template README plus the matching root guide in the documentation
+   list above.
 3. Install dependencies only inside the touched template directory.
-4. Run the smallest verification command from `docs/verification.md` before and after the change when you need a clean baseline.
+4. Run the smallest verification command from `docs/verification.md` before and
+   after the change when you need a clean baseline.
 5. Keep generated files in sync with their source artifacts.
 6. Before committing, confirm `git status --short` only contains intentional changes.
 
