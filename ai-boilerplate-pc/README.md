@@ -18,8 +18,13 @@ pnpm dev
 ### Type-Check, Compile and Minify for Production
 
 ```sh
+pnpm type-check
 pnpm build
 ```
+
+Use `pnpm type-check` as the first verification command for routine PC web
+changes. Run `pnpm build`, unit tests, or Playwright only when the change touches
+bundling, runtime behavior, or browser workflows.
 
 ### Run Unit Tests with [Vitest](https://vitest.dev/)
 
@@ -57,6 +62,10 @@ pnpm lint
 - `HomeView` is the main product shell.
 - `BackToTop` stays mounted globally for long operator flows.
 - Router entries are intentionally small so product routes can be added without starter noise.
+
+Choose this template for a product-facing browser app that does not need admin
+permissions or desktop-native APIs. Use the admin template for internal CRUD and
+dense operator workflows.
 
 ## More Documentation
 

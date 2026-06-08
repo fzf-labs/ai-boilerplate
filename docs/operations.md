@@ -94,26 +94,30 @@ Use the smallest command that covers the edited project:
 | PC web | `pnpm type-check` |
 | Electron | `npm run typecheck` |
 | Tauri web shell | `npm run build` |
-| Chrome extension | `npm run type-check` |
+| Chrome extension | `npm run type-check && npm test` |
 | Android | `./gradlew detekt test assembleDebug -x validateSigningDebug` |
 | iOS | `swift build` |
 
 The same commands are tracked in `docs/verification.md`.
 
-## Daily Development
+## Start Work
 
-Use this workflow for routine development:
+Use this workflow before changing code or documentation:
 
 1. Identify the owning template from the root README selection table.
-2. Read the owning template README and any relevant root guide.
-3. Install dependencies only inside the owning template.
-4. Run the smallest verification command from `docs/verification.md` when a
+2. Check open issues, pull requests, and local requirement documents for
+   `P0`, `P1`, `blocker`, or `critical` signals.
+3. Read any linked issue, requirement, or recent failing command output before
+   editing.
+4. Read the owning template README and any relevant root guide.
+5. Install dependencies only inside the owning template.
+6. Run the smallest verification command from `docs/verification.md` when a
    clean baseline matters.
-5. Make the smallest change that satisfies the task.
-6. Regenerate artifacts from their source when contracts or database schemas
+7. Make the smallest change that satisfies the task.
+8. Regenerate artifacts from their source when contracts or database schemas
    changed.
-7. Run the targeted verification command for every touched template.
-8. Check `git status --short` before committing.
+9. Run the targeted verification command for every touched template.
+10. Check `git status --short` before committing.
 
 Use this priority order when choosing unattended cleanup or maintenance work:
 
@@ -129,6 +133,13 @@ Use this priority order when choosing unattended cleanup or maintenance work:
 If no priority labels or failing checks exist, use open issues and root
 documentation gaps as the next source of truth. Record the source, rationale,
 acceptance criteria, and verification evidence for each task.
+
+Stop and ask before starting when the highest-priority item requires production
+credentials, external account access, signing assets, customer-specific IDs, or
+a product decision that is not already documented.
+
+## Daily Development
+
 - Start from the template README when working in a specific surface.
 - Use root documentation for cross-template policy, release checks, and subtree
   operations.

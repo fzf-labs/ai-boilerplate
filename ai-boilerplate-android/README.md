@@ -44,6 +44,18 @@ BASE_URL=http://192.168.1.20:8000/api/
 
 Update the application ID and API base URL before shipping a real app.
 
+## Verification And Shipping Notes
+
+Use this command for local verification:
+
+```bash
+./gradlew detekt test assembleDebug -x validateSigningDebug
+```
+
+Keep keystores, signing passwords, Firebase service files, production package
+IDs, and production API hosts outside the repository. Use `local.properties` or
+platform secrets for machine-specific values.
+
 ## Project Structure
 
 The project includes one Android application module, `app`, with these main

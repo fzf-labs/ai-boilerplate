@@ -37,6 +37,13 @@ pnpm check:type
 - `VITE_WX_APPID`：微信小程序 AppID，仅在构建微信小程序时需要。
 - `VITE_SERVER_BASEURL`：后端 API 地址，默认指向本机后端。
 
+平台地址检查：
+
+- H5 本地开发可以使用 `http://127.0.0.1:8000`。
+- App 真机调试需要使用手机可访问的局域网地址。
+- 微信小程序需要使用平台允许的 HTTPS 域名，并配置对应 AppID。
+- 不要把真实小程序密钥、生产域名或平台账号凭据提交到仓库。
+
 如果不需要某些小程序平台，可以在 `scripts/postupgrade.js` 里直接删掉对应依赖。
 
 当 `../ai-boilerplate-backend/doc/swagger/app` 发生变化时，重新生成移动端

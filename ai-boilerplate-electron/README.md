@@ -48,6 +48,13 @@ npm run build:linux
 download mirror. Keep mirror settings there so npm does not warn about unknown
 project-level config during type checks and installs.
 
+Choose Electron when the desktop app needs Chromium plus Node.js integration at
+runtime. Keep signing identities, notarization credentials, update-server
+secrets, and production endpoints outside the repository.
+
+Run `npm run typecheck` for routine code changes. Run the platform build command
+for the target OS before publishing an installer.
+
 ## More Documentation
 
 - Root operations workflow: `../docs/operations.md`

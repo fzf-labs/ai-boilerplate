@@ -26,6 +26,17 @@ the database, Redis, JWT, WeChat, and push-service values for that environment.
 5. If protobuf, Swagger, SQL, or GORM artifacts change, follow the generated
    artifact flow below and regenerate consumers in the same commit.
 
+## Change Checklist
+
+- Data model change: update the SQL source, regenerate GORM artifacts, then run
+  `go test ./...`.
+- API shape change: edit protobuf source, run `make api`, then regenerate any
+  admin or uni-app clients that consume the changed Swagger output.
+- Service logic change: keep the edit inside `internal/service` or the owning
+  data/repository package, then run `go test ./...`.
+- External-account or production-credential change: stop and confirm the target
+  environment before editing checked-in config.
+
 ## Common Commands
 
 ```bash

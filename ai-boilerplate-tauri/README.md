@@ -17,6 +17,14 @@ platform, then run:
 npm run tauri dev
 ```
 
+Choose Tauri when a smaller desktop runtime matters and the native shell can be
+implemented through Tauri/Rust APIs. Use Electron instead when broad Node.js
+integration is a real runtime requirement.
+
+`npm run build` verifies the Vue renderer and production web bundle. Run the
+Tauri native build on the target platform before publishing a desktop artifact,
+and keep signing credentials out of the repository.
+
 ## More Documentation
 
 - Root operations workflow: `../docs/operations.md`

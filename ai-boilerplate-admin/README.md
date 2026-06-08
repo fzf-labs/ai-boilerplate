@@ -22,6 +22,10 @@ The main app is `apps/web-antd`. Environment files for the app live in
 development default is `/api`, which is suitable for a local proxy or mock
 server.
 
+For local backend integration, run the backend service first and point the Vite
+proxy or local gateway at the backend HTTP path. Keep production hostnames and
+tokens out of checked-in `.env` files.
+
 Generated admin API clients are produced from backend Swagger files:
 
 ```bash
@@ -40,6 +44,15 @@ pnpm check:type --filter=@vben/web-antd
 
 If generated output changes without a matching Swagger or generator change,
 inspect the local dependency install before committing the diff.
+
+## Admin Change Checklist
+
+- View, table, form, or route copy: edit only the owning admin files and run
+  `pnpm check:type --filter=@vben/web-antd`.
+- API request or response shape: update backend protobuf and Swagger first, run
+  `pnpm api:gen`, then run the admin type check.
+- Shared package change under `packages` or `internal`: run the targeted app
+  type check first, then wider lint or unit checks before publishing.
 
 ## Verification
 

@@ -15,7 +15,7 @@ iOS checks require Swift Package Manager/Xcode tooling.
 | PC web | `pnpm type-check` |
 | Electron | `npm run typecheck` |
 | Tauri web shell | `npm run build` |
-| Chrome extension | `npm run type-check` |
+| Chrome extension | `npm run type-check && npm test` |
 | Android | `./gradlew detekt test assembleDebug -x validateSigningDebug` |
 | iOS | `swift build` |
 
@@ -36,5 +36,6 @@ For a scoped change, run the command for the touched template first. Examples:
 - Admin-only view or API client change: `pnpm check:type --filter=@vben/web-antd`
 - Uni-app page or config change: `pnpm check:type`
 - Backend service or generated API change: `go test ./...`
+- Chrome extension runtime message or popup change: `npm run type-check && npm test`
 - Desktop shell copy/config change: the corresponding `npm run typecheck` or
   `npm run build`

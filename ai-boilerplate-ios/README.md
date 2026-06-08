@@ -43,6 +43,16 @@ and injected into `Info.plist`. The template defaults to the local backend at
 `http://127.0.0.1:8000/api`; update the value per environment before connecting
 to a remote backend.
 
+## Verification And Shipping Notes
+
+Use `swift build` as the local static verification command. Generate the Tuist
+project and build in Xcode when changing iOS app targets, assets, signing,
+entitlements, or simulator/device behavior.
+
+Keep provisioning profiles, certificates, real team IDs, production bundle IDs,
+and production endpoints out of git unless a product-specific release task
+explicitly requires them.
+
 ## Upstream
 
 The project is based on `nimblehq/ios-templates`. See `UPSTREAM.md` and

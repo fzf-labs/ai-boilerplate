@@ -44,6 +44,16 @@ consult the template README for setup details.
 For the stack rationale behind those choices, see
 [Technical decisions](docs/technical-decisions.md).
 
+When a task crosses templates, start with the artifact that owns the behavior.
+Backend schema and API changes should be made before regenerating admin or
+uni-app clients. Client-only copy, layout, route, and presentation changes
+should stay in the client template that users see.
+
+Avoid adding a second client surface until the product needs that distribution
+target. For example, use uni-app for the default mobile workflow, and choose
+native iOS or Android only when platform-specific APIs, signing, or store
+requirements justify the extra maintenance.
+
 ## Templates
 
 - `ai-boilerplate-backend`: Go backend boilerplate.
