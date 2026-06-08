@@ -79,5 +79,6 @@ before publishing changes that touch shared packages or generated clients.
 - Template selection and tradeoffs: `../docs/technical-decisions.md`
 - Generated API client flow: `../docs/generated-artifacts.md`
 - Environment configuration: `../docs/environment.md`
+- Release checklist: `../docs/release.md`
 - Troubleshooting: `../docs/troubleshooting.md`
 - Verification matrix: `../docs/verification.md`

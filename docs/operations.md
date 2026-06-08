@@ -131,6 +131,12 @@ If no priority labels or failing checks exist, use open issues and root
 documentation gaps as the next source of truth. Record the source, rationale,
 acceptance criteria, and verification evidence for each task.
 
+For broad documentation requests such as "add operations and technical decision
+docs", treat each missing or stale doc link, template README handoff, metadata
+default, and verification-reference mismatch as its own task. Keep the source
+issue attached to each task so future unattended runs can distinguish completed
+documentation coverage from new product work.
+
 Stop and ask before starting when the highest-priority item requires production
 credentials, external account access, signing assets, customer-specific IDs, or
 a product decision that is not already documented.

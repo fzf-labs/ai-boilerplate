@@ -8,13 +8,12 @@
   "description": "ai-boilerplate - 开发模板",
   "generate-time": "2026-01-12",
   "author": {
-    "name": "ai-boilerplate",
-    "zhName": "ai-boilerplate",
-    "email": "ai-boilerplate@ai-boilerplate.com",
+    "name": "fzf-labs",
+    "zhName": "fzf-labs",
     "github": "https://github.com/fzf-labs/ai-boilerplate"
   },
   "license": "MIT",
-  "homepage": "https://ai-boilerplate.com",
+  "homepage": "https://github.com/fzf-labs/ai-boilerplate",
   "repository": "https://github.com/fzf-labs/ai-boilerplate",
   "bugs": {
     "url": "https://github.com/fzf-labs/ai-boilerplate/issues"

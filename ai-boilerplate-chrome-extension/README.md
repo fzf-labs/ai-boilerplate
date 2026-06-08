@@ -25,7 +25,7 @@ npm run dev
 
 Vite serves the popup page for regular UI development. For extension API testing, build the extension and load the `dist` directory in Chrome.
 
-## Build
+## Verification And Build
 
 ```bash
 npm run type-check
@@ -35,9 +35,11 @@ npm run build
 
 The build output is generated in `dist`.
 
-Run `npm run type-check && npm test` before loading or packaging the extension.
-The tests cover runtime message parsing and tab URL filtering, which are the
-core safety checks for the popup and service worker flow.
+Run `npm run type-check && npm test` as the routine verification command before
+loading or packaging the extension. The tests cover runtime message parsing and
+tab URL filtering, which are the core safety checks for the popup and service
+worker flow. Run `npm run build` when checking the final Vite bundle or
+creating a package.
 
 ## Load in Chrome
 

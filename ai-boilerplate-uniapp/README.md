@@ -62,5 +62,6 @@ pnpm check:type
 - 技术选型与模板取舍：`../docs/technical-decisions.md`
 - 生成 API 客户端流程：`../docs/generated-artifacts.md`
 - 环境配置说明：`../docs/environment.md`
+- 发布检查清单：`../docs/release.md`
 - 常见问题排查：`../docs/troubleshooting.md`
 - 验证命令矩阵：`../docs/verification.md`
