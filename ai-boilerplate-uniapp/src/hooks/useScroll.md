@@ -18,7 +18,7 @@ definePage({
 ## 关键文件
 
 - `src/hooks/useScroll.ts`: 提供了核心的滚动逻辑处理 Hook。
-- `src/pages-sub/demo/scroll.vue`: 一个具体的实现示例页面。
+- 你的实际列表页，例如 `src/pages/discover/index.vue`。
 
 ## `useScroll` Hook
 
@@ -61,7 +61,7 @@ const {
 
 ## 示例代码
 
-以下是 `src/pages-sub/demo/scroll.vue` 中的核心代码，展示了如何将 `useScroll` 和 `scroll-view` 结合使用。
+以下是一个接入示例，展示如何将 `useScroll` 和 `scroll-view` 结合使用。
 
 ```vue
 <template>

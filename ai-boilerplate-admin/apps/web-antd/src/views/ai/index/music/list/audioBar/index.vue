@@ -98,7 +98,7 @@ function audioTimeUpdate() {
     <!-- 歌曲信息 -->
     <div class="flex gap-2.5">
       <Image
-        src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+        src="/favicon.svg"
         :width="45"
       />
       <div>

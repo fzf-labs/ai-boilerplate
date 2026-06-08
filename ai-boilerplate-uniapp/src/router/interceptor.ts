@@ -52,7 +52,7 @@ export const navigateToInterceptor = {
     let { path, query: _query } = parseUrlToObj(url)
 
     const myQuery = { ..._query, ...query }
-    // /pages/route-interceptor/index?name=feige&age=30
+    // /pages/discover/index?tab=article
 
     // 处理相对路径
     if (!path.startsWith('/')) {

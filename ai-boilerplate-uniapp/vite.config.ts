@@ -32,7 +32,6 @@ import syncManifestPlugin from './vite-plugins/sync-manifest-plugins'
 export default defineConfig(({ mode }) => {
   // @see https://unocss.dev/
   // const UnoCSS = (await import('unocss/vite')).default
-  // console.log(mode === process.env.NODE_ENV) // true
 
   // mode: 区分生产环境还是开发环境
   // pnpm dev:h5 时得到 => serve development

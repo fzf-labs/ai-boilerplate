@@ -7,6 +7,18 @@ The repository intentionally contains several app surfaces instead of one
 runtime. Each template is meant to be usable on its own, while backend contracts
 and generated clients keep shared product flows aligned.
 
+## Selection In Practice
+
+Start with the smallest template that owns the user-visible behavior. Use the
+backend when schema, API contract, auth, permissions, or background jobs
+change. Use admin for internal CRUD and operator flows, uni-app for
+cross-platform mobile and mini-program flows, PC web for lightweight browser
+shells, and iOS or Android only when platform-specific APIs or distribution
+needs justify the native maintenance cost.
+
+When a task crosses templates, update the source artifact first and regenerate
+downstream clients or generated output in the same commit.
+
 ## Backend
 
 - **Go + Kratos**: gives the backend a typed service structure, generated HTTP

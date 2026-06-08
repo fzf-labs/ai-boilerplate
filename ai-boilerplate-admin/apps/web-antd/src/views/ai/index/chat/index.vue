@@ -319,7 +319,6 @@ function onCompositionstart() {
 }
 
 function onCompositionend() {
-  // console.log('输入结束...')
   setTimeout(() => {
     isComposing.value = false;
   }, 200);

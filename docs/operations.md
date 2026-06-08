@@ -8,6 +8,11 @@ Most work should stay inside one template directory. Cross-template changes are
 reserved for shared API contracts, generated client syncs, documentation, or
 release workflow updates.
 
+When a request is not already mapped to a template, start with the selection
+guide in the root README or `docs/technical-decisions.md` before editing code.
+That keeps the work anchored to the owning artifact and avoids drifting into
+downstream consumers too early.
+
 When choosing a starting point, use the selection guide in the root README or
 `docs/technical-decisions.md` before installing dependencies.
 

@@ -23,7 +23,7 @@ import AccountSelect from '../components/account-select/index.vue';
 const appId = ref();
 
 const handleAccountChange = (value) => {
-  console.log('选择的账号ID:', value);
+  appId.value = value;
 };
 </script>
 ```

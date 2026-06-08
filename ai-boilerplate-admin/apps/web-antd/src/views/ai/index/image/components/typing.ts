@@ -307,12 +307,12 @@ export const Dall3Models: ImageModel[] = [
   {
     key: 'dall-e-3',
     name: 'DALL·E 3',
-    image: `/static/imgs/ai/dall2.jpg`,
+    image: '/favicon.svg',
   },
   {
     key: 'dall-e-2',
     name: 'DALL·E 2',
-    image: `/static/imgs/ai/dall3.jpg`,
+    image: '/favicon.svg',
   },
 ];
 
@@ -320,24 +320,24 @@ export const Dall3StyleList: ImageModel[] = [
   {
     key: 'vivid',
     name: '清晰',
-    image: `/static/imgs/ai/qingxi.jpg`,
+    image: '/favicon.svg',
   },
   {
     key: 'natural',
     name: '自然',
-    image: `/static/imgs/ai/ziran.jpg`,
+    image: '/favicon.svg',
   },
 ];
 export const MidjourneyModels: ImageModel[] = [
   {
     key: 'midjourney',
     name: 'MJ',
-    image: 'https://bigpt8.com/pc/_nuxt/mj.34a61377.png',
+    image: '/favicon.svg',
   },
   {
     key: 'niji',
     name: 'NIJI',
-    image: 'https://bigpt8.com/pc/_nuxt/nj.ca79b143.png',
+    image: '/favicon.svg',
   },
 ];
 export const MidjourneyVersions = [
