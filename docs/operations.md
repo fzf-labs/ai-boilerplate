@@ -11,6 +11,24 @@ release workflow updates.
 When choosing a starting point, use the selection guide in the root README or
 `docs/technical-decisions.md` before installing dependencies.
 
+## Choosing Change Scope
+
+Start by naming the artifact that owns the behavior:
+
+| Change Type | Owning Artifact | Required Follow-up |
+| --- | --- | --- |
+| Database column, table, or relation | Backend SQL and generated backend code | Regenerate protobuf/GORM outputs and run backend tests. |
+| API request, response, route, or permission | Backend protobuf source | Regenerate backend Swagger, then regenerate affected frontend clients. |
+| Admin-only table, form, or operator flow | Admin template | Type-check `@vben/web-antd`; regenerate clients only when Swagger changed. |
+| Mobile app page or mini-program behavior | Uni-app template | Type-check uni-app; update env notes for platform-specific URLs. |
+| Native app package identity or endpoint | iOS or Android template | Keep signing and production identifiers out of git. |
+| Root policy, verification, or release workflow | Root docs and Makefile when needed | Run doc/example checks plus any touched template verification. |
+
+If a change appears to require more than one owning artifact, update the source
+artifact first and treat downstream generated files as consumers. Stop and ask
+before changing product behavior that depends on external accounts, production
+permissions, real signing identities, or customer-specific platform IDs.
+
 ## Repository Layout
 
 | Path | Purpose |

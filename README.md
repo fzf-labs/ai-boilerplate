@@ -8,24 +8,21 @@ desktop, and iOS product development.
 Use the template directory that matches the surface you want to work on. Each
 template owns its dependency install and verification commands.
 
-```bash
-# Backend
-cd ai-boilerplate-backend
-go test ./...
+| Template | Install | First Run | First Verification |
+| --- | --- | --- | --- |
+| Backend | `go mod download` | `make run` | `go test ./...` |
+| Admin | `pnpm install` | `pnpm dev:antd` | `pnpm check:type --filter=@vben/web-antd` |
+| Uni-app | `pnpm install` | `pnpm dev:h5` | `pnpm check:type` |
+| PC web | `pnpm install` | `pnpm dev` | `pnpm type-check` |
+| Electron | `npm install` | `npm run dev` | `npm run typecheck` |
+| Tauri | `npm install` | `npm run tauri dev` | `npm run build` |
+| Chrome extension | `npm install` | `npm run dev` | `npm run type-check && npm test` |
+| iOS | `swift package resolve` | `tuist generate` | `swift build` |
+| Android | `./gradlew help` | `./gradlew assembleDebug -x validateSigningDebug` | `./gradlew detekt test assembleDebug -x validateSigningDebug` |
 
-# Admin
-cd ai-boilerplate-admin
-pnpm install
-pnpm check:type --filter=@vben/web-antd
-
-# Uni-app
-cd ai-boilerplate-uniapp
-pnpm install
-pnpm check:type
-```
-
-The desktop, browser extension, native Android, and iOS templates have their own
-README files with the same setup pattern.
+Run commands from the template directory. The detailed setup notes live in each
+template README, and the full verification matrix is in
+[Verification commands](docs/verification.md).
 
 ## Choosing A Template
 

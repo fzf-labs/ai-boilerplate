@@ -2,6 +2,12 @@
 
 UniApp 移动端模板，基于 unibest。
 
+## 本地开发
+
+从本目录执行命令。使用 H5 开发时默认连接
+`http://127.0.0.1:8000`；真机或小程序调试时，把
+`VITE_SERVER_BASEURL` 改成设备可访问的局域网地址或平台允许的域名。
+
 ## 常用命令
 
 ```bash
@@ -19,6 +25,7 @@ pnpm check:type
 - `src/pages`：业务页面
 - `src/pages-fg`：登录、404 等公共页面
 - `src/router`：路由与登录拦截
+- `src/api`：由后端 app Swagger 生成的 API 客户端
 - `scripts/postupgrade.js`：升级后清理不需要的平台包
 - `uno.config.ts`：UnoCSS 配置
 
@@ -31,6 +38,16 @@ pnpm check:type
 - `VITE_SERVER_BASEURL`：后端 API 地址，默认指向本机后端。
 
 如果不需要某些小程序平台，可以在 `scripts/postupgrade.js` 里直接删掉对应依赖。
+
+当 `../ai-boilerplate-backend/doc/swagger/app` 发生变化时，重新生成移动端
+API 客户端：
+
+```bash
+pnpm api:gen
+pnpm check:type
+```
+
+仅页面文案、样式、路由标题或本地环境默认值变化时，不需要重新生成客户端。
 
 ## 更多文档
 

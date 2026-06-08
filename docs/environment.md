@@ -42,6 +42,20 @@ Use these defaults unless a template README says otherwise:
 When testing on a physical device, replace loopback addresses with a LAN IP that
 the device can reach.
 
+## Quick Reference
+
+| Template | Runtime Value | Local Default | Keep Out Of Git |
+| --- | --- | --- | --- |
+| Backend | Database, Redis, JWT, WeChat, tracing, push service | `configs/config.development.yaml` | Real credentials and production service endpoints. |
+| Admin | `VITE_GLOB_API_URL` | `/api` | Production admin hostnames and tokens. |
+| Uni-app | `VITE_SERVER_BASEURL`, platform app IDs | `http://127.0.0.1:8000` for H5 | Real mini-program IDs, platform secrets, private domains. |
+| PC web | Vite public env values when added | Project-specific local value | Private API keys or admin-only endpoints. |
+| Electron | Renderer env and package identity | Local development defaults | Signing identities, notarization credentials, update server secrets. |
+| Tauri | Renderer env and native secure storage values | Local development defaults | Native secrets and signing credentials. |
+| Chrome extension | Manifest permissions and public env values | Manifest V3 defaults | Store credentials and unnecessary browser permissions. |
+| iOS | `API_BASE_URL`, bundle ID, signing config | `http://127.0.0.1:8000/api` | Provisioning profiles, certificates, real team IDs. |
+| Android | `BASE_URL` in `local.properties` | `http://10.0.2.2:8000/api/` | Keystores, signing passwords, Firebase service files. |
+
 ## Secret Handling
 
 - Backend JWT secrets should be at least 32 characters and unique per audience.

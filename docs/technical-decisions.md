@@ -23,6 +23,11 @@ Database schema changes should flow through SQL, protobuf generation, Go API
 generation, and client generation in that order when a feature crosses the
 backend/frontend boundary.
 
+Use backend generation when the change affects stored data, API shape,
+authorization behavior, or shared response semantics. Do not use backend
+generation for client-only copy, layout, route labels, or presentation defaults.
+Those changes should stay in the client template that owns the experience.
+
 ## Admin Console
 
 - **Vue 3 + TypeScript**: matches the existing Vben-based admin architecture
@@ -139,3 +144,14 @@ specific platform or distribution requirement justifies the extra maintenance.
 When a task crosses templates, decide which artifact owns the behavior first.
 Backend contracts and database schemas should lead generated client updates;
 client-only visual or copy changes should stay in the client template.
+
+## Generation Decision Points
+
+Use this checklist before editing generated files:
+
+| Question | If Yes | If No |
+| --- | --- | --- |
+| Does the API route, method, request, response, or validation rule change? | Edit protobuf source and run backend API generation. | Keep generated API files unchanged. |
+| Does the database table or column shape change? | Update SQL/database source and run GORM generation. | Avoid touching generated model or DAO files. |
+| Does admin or uni-app consume changed Swagger output? | Regenerate the matching frontend API client. | Do not run client generation just to refresh timestamps. |
+| Is the task only UI copy, navigation, or styling? | Change the owning client template directly. | Re-evaluate whether the backend owns the behavior. |

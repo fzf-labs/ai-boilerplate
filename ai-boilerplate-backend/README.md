@@ -17,6 +17,15 @@ The development config lives in `configs/config.development.yaml`. Copy
 `configs/config.example.yaml` when creating environment-specific config and set
 the database, Redis, JWT, WeChat, and push-service values for that environment.
 
+## Local Development Path
+
+1. Run `go mod download`.
+2. Configure local PostgreSQL and Redis in `configs/config.development.yaml`.
+3. Start the service with `make run` when integration testing is needed.
+4. Run `go test ./...` before committing backend changes.
+5. If protobuf, Swagger, SQL, or GORM artifacts change, follow the generated
+   artifact flow below and regenerate consumers in the same commit.
+
 ## Common Commands
 
 ```bash
@@ -58,6 +67,10 @@ make api-schema-test FILE=admin/v1/user.swagger.json METHOD=GET
 
 Set `TEST_API_URL`, `TEST_ADMIN_USER`, `TEST_ADMIN_PASS`, and `TEST_LOGIN_PATH`
 when testing against a non-default local server.
+
+Schema tests target a running HTTP server. If the server depends on external
+accounts or production credentials, do not point the tests at that environment
+without explicit approval.
 
 ## More Documentation
 

@@ -6,25 +6,25 @@ It ships as a product-facing Vue 3 app instead of a generated starter.
 ## Project Setup
 
 ```sh
-npm install
+pnpm install
 ```
 
 ### Compile and Hot-Reload for Development
 
 ```sh
-npm run dev
+pnpm dev
 ```
 
 ### Type-Check, Compile and Minify for Production
 
 ```sh
-npm run build
+pnpm build
 ```
 
 ### Run Unit Tests with [Vitest](https://vitest.dev/)
 
 ```sh
-npm run test:unit
+pnpm test:unit
 ```
 
 ### Run End-to-End Tests with [Playwright](https://playwright.dev)
@@ -34,22 +34,22 @@ npm run test:unit
 npx playwright install
 
 # When testing on CI, must build the project first
-npm run build
+pnpm build
 
 # Runs the end-to-end tests
-npm run test:e2e
+pnpm test:e2e
 # Runs the tests only on Chromium
-npm run test:e2e -- --project=chromium
+pnpm test:e2e -- --project=chromium
 # Runs the app smoke test only
-npm run test:e2e -- e2e/vue.spec.ts
+pnpm test:e2e -- e2e/vue.spec.ts
 # Runs the tests in debug mode
-npm run test:e2e -- --debug
+pnpm test:e2e -- --debug
 ```
 
 ### Lint with [ESLint](https://eslint.org/)
 
 ```sh
-npm run lint
+pnpm lint
 ```
 
 ## Included Surface

@@ -4,6 +4,21 @@ Start with the smallest command that reproduces the failure. Read the full error
 message before changing code, then compare the failing template with its README
 and `docs/verification.md`.
 
+## First Response Flow
+
+1. Run the documented verification command from the template directory.
+2. Confirm whether the failure is deterministic by rerunning the smallest
+   failing command once.
+3. Identify the owning template or generated artifact from the file path in the
+   error.
+4. Compare the failing file with a nearby working example before editing.
+5. If generated output is involved, regenerate from the source artifact instead
+   of patching the generated file by hand.
+6. After the fix, rerun the targeted command and record the exact result.
+
+Stop and ask before changing production credentials, signing setup, live third-
+party account settings, or behavior whose expected product outcome is unclear.
+
 ## Dependency Install Failures
 
 | Symptom | Check | Fix |

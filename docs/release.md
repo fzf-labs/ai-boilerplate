@@ -14,6 +14,17 @@ Classify the change before running checks:
 | Shared root docs or policy only | Run a clean `git status --short` check and any command needed to validate touched examples. |
 | Cross-template behavior | Run every affected template check, then run the full verification set when local SDKs are available. |
 
+Examples:
+
+| Example Change | Scope | Minimum Evidence |
+| --- | --- | --- |
+| Admin CRUD page copy or table column only | Single template | `pnpm check:type --filter=@vben/web-antd` from `ai-boilerplate-admin`. |
+| New backend API field consumed by admin | Backend API or database contract | `go test ./...`, admin `pnpm api:gen`, and admin type check. |
+| New app-facing API response consumed by uni-app | Backend API or database contract | `go test ./...`, uni-app `pnpm api:gen`, and uni-app type check. |
+| Root documentation update | Shared root docs or policy only | `git status --short` plus any command needed to validate examples. |
+| Chrome extension runtime message change | Single template | `npm run type-check && npm test` from `ai-boilerplate-chrome-extension`. |
+| Native endpoint or package identity update | Single template | Android or iOS verification command plus manual signing note if applicable. |
+
 ## Pre-Publish Steps
 
 1. Confirm the task source and acceptance criteria are recorded in the issue,

@@ -53,6 +53,20 @@ Commit the backend contract, generated backend output, generated frontend
 clients, and verification evidence together so consumers do not see a partial
 contract update.
 
+## Frontend Regeneration Triggers
+
+Regenerate a frontend client when any of these source artifacts changed:
+
+| Consumer | Trigger | Command | Verification |
+| --- | --- | --- | --- |
+| Admin | Files under `ai-boilerplate-backend/doc/swagger/admin` changed. | `pnpm api:gen` from `ai-boilerplate-admin` | `pnpm check:type --filter=@vben/web-antd` |
+| Uni-app | Files under `ai-boilerplate-backend/doc/swagger/app` changed. | `pnpm api:gen` from `ai-boilerplate-uniapp` | `pnpm check:type` |
+
+Do not regenerate clients for UI-only changes, route-label copy, local env
+defaults, or documentation updates. If generated client output changes without a
+matching Swagger change, inspect the generator version and local install before
+committing the diff.
+
 ## Review Checklist
 
 - The source artifact that owns the change is included in the commit.

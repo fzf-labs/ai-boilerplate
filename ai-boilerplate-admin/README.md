@@ -31,6 +31,16 @@ pnpm api:gen
 The generator reads `../ai-boilerplate-backend/doc/swagger/admin` and writes
 client modules under `apps/web-antd/src/api`.
 
+Regenerate the client only when backend admin Swagger changed or the generator
+itself changed. After generation, run:
+
+```bash
+pnpm check:type --filter=@vben/web-antd
+```
+
+If generated output changes without a matching Swagger or generator change,
+inspect the local dependency install before committing the diff.
+
 ## Verification
 
 ```bash
