@@ -48,7 +48,7 @@ final class LandingViewModel: ObservableObject {
 
     func continueWithDemoSession() async {
         do {
-            try await sessionRepository.save(tokenSet: DemoTokenSet())
+            try await sessionRepository.save(tokenSet: LocalDemoTokenSet())
             state = .signedIn
             
             // Track successful login event
@@ -71,9 +71,9 @@ final class LandingViewModel: ObservableObject {
     }
 }
 
-private struct DemoTokenSet: TokenSetProtocol {
+private struct LocalDemoTokenSet: TokenSetProtocol {
 
-    let accessToken = "demo-access-token"
-    let refreshToken = "demo-refresh-token"
+    let accessToken = "local-demo-access-token"
+    let refreshToken = "local-demo-refresh-token"
     let expiresAt: Date? = Date().addingTimeInterval(60 * 60 * 24 * 30)
 }

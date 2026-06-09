@@ -11,7 +11,7 @@ struct SignOutView: View {
                 .foregroundColor(.accentColor)
             Text("Signed Out")
                 .font(.title2.bold())
-            Text("A generated project now starts from an unauthenticated state and can transition into a signed-in flow with a local demo session.")
+            Text("You are signed out. Continue with the local demo session to preview the signed-in flow.")
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.secondary)
 

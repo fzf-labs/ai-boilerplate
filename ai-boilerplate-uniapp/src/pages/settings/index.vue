@@ -159,7 +159,7 @@ interface AppInfo {
   packageName: string
 }
 
-const fallbackPackageName = import.meta.env.VITE_UNI_APPID || import.meta.env.VITE_APP_TITLE || 'ai-boilerplate'
+const fallbackPackageName = import.meta.env.VITE_UNI_APPID || import.meta.env.VITE_APP_TITLE || 'com.example.aiboilerplate'
 
 async function getAppInfo(): Promise<AppInfo> {
   // #ifdef APP-PLUS

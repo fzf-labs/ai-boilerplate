@@ -16,6 +16,7 @@ definePage({
 
 const tokenStore = useTokenStore()
 const toast = useToast()
+const appTitle = import.meta.env.VITE_APP_TITLE || 'AI Boilerplate'
 
 const form = reactive({
   username: '',
@@ -152,7 +153,7 @@ onLoad((options) => {
           <wd-icon name="/static/my-icons/smile.svg" size="56rpx" />
         </view>
         <view class="brand-title">
-          ai-boilerplate
+          {{ appTitle }}
         </view>
         <view class="brand-subtitle">
           欢迎回来，登录继续使用

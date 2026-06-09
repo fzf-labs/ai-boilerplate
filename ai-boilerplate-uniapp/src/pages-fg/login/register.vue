@@ -13,6 +13,7 @@ definePage({
 })
 
 const toast = useToast()
+const appTitle = import.meta.env.VITE_APP_TITLE || 'AI Boilerplate'
 const formRef = ref<FormInstance | null>(null)
 const loading = ref(false)
 const agreeTerms = ref(false)
@@ -122,7 +123,7 @@ async function doRegister() {
           <wd-icon name="/static/my-icons/smile.svg" size="56rpx" />
         </view>
         <view class="brand-title">
-          ai-boilerplate
+          {{ appTitle }}
         </view>
         <view class="brand-subtitle">
           创建账号，开始使用
