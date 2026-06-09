@@ -54,6 +54,17 @@ inspect the local dependency install before committing the diff.
 - Shared package change under `packages` or `internal`: run the targeted app
   type check first, then wider lint or unit checks before publishing.
 
+## Ownership Notes
+
+Start in this template for internal operator workflows: CRUD tables, search
+forms, permission-aware actions, dashboards, and back-office copy. Keep those
+changes in `apps/web-antd` unless shared layout, access, or request packages
+are directly affected.
+
+Start in the backend first when an admin page needs a new API field, route,
+permission, validation rule, or response shape. Regenerate this client's API
+modules only after the backend Swagger source has changed.
+
 ## Verification
 
 ```bash

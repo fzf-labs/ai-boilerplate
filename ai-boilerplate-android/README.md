@@ -56,6 +56,23 @@ Keep keystores, signing passwords, Firebase service files, production package
 IDs, and production API hosts outside the repository. Use `local.properties` or
 platform secrets for machine-specific values.
 
+## Ownership Notes
+
+Start here when the task requires native Android APIs, Play Store distribution,
+Android-specific permissions, background services, widgets, or device behavior
+that the uni-app client should not own. Use `ai-boilerplate-uniapp` for ordinary
+cross-platform mobile screens and app-facing flows.
+
+Document the target environment before changing application IDs, signing,
+Firebase configuration, intent filters, or production API hosts. The local
+verification command is:
+
+```bash
+./gradlew detekt test assembleDebug -x validateSigningDebug
+```
+
+Release builds need the product-specific signing setup outside git.
+
 ## Project Structure
 
 The project includes one Android application module, `app`, with these main

@@ -37,6 +37,17 @@ the database, Redis, JWT, WeChat, and push-service values for that environment.
 - External-account or production-credential change: stop and confirm the target
   environment before editing checked-in config.
 
+## Ownership Notes
+
+Start in this template when the task changes database tables, protobuf
+messages, HTTP/gRPC routes, validation, auth, permissions, jobs, or shared
+response semantics. After backend generation, regenerate admin or uni-app API
+clients only when the changed Swagger is consumed by those clients.
+
+Do not use backend generation for client-only copy, page layout, local route
+labels, or placeholder UI defaults. Those changes belong in the template that
+users see.
+
 ## Common Commands
 
 ```bash

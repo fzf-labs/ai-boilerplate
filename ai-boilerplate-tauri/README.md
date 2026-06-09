@@ -25,6 +25,18 @@ integration is a real runtime requirement.
 Tauri native build on the target platform before publishing a desktop artifact,
 and keep signing credentials out of the repository.
 
+## Ownership Notes
+
+Start here when desktop distribution is required and the native work can live in
+Tauri/Rust APIs without broad Node.js integration. If the requirement is only a
+browser route, use `ai-boilerplate-pc`; if the runtime needs Node modules or
+Electron-specific APIs, use `ai-boilerplate-electron`.
+
+Record the target operating system before changing Tauri capabilities,
+installer metadata, updater settings, or signing-related configuration. Use
+`npm run build` for renderer changes and the platform Tauri build before
+publishing native artifacts.
+
 ## More Documentation
 
 - Root operations workflow: `../docs/operations.md`

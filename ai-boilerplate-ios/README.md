@@ -53,6 +53,18 @@ Keep provisioning profiles, certificates, real team IDs, production bundle IDs,
 and production endpoints out of git unless a product-specific release task
 explicitly requires them.
 
+## Ownership Notes
+
+Start here when the task requires native iOS APIs, Apple-specific permission
+flows, widgets, native distribution, or App Store behavior that the uni-app
+client should not own. Use `ai-boilerplate-uniapp` for ordinary cross-platform
+mobile screens that do not depend on native Apple capabilities.
+
+Document the target environment before changing bundle IDs, entitlements,
+signing, push notification configuration, or production endpoints. Use
+`swift build` as the local static check; Tuist/Xcode builds are required when
+changing app targets, assets, signing, or simulator/device behavior.
+
 ## Upstream
 
 The project is based on `nimblehq/ios-templates`. See `UPSTREAM.md` and

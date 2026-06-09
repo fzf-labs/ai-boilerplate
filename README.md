@@ -73,6 +73,24 @@ target. For example, use uni-app for the default mobile workflow, and choose
 native iOS or Android only when platform-specific APIs, signing, or store
 requirements justify the extra maintenance.
 
+## Ownership Rules
+
+- Backend owns data shape, API contracts, auth, permissions, generated Swagger,
+  and server-side jobs.
+- Admin owns internal operator tables, forms, dashboards, and permission-aware
+  management workflows.
+- Uni-app owns the default mobile, H5, app, and mini-program user experience.
+- PC web owns lightweight browser surfaces that are not admin workflows.
+- Electron and Tauri own desktop distribution only when browser-only delivery
+  is not enough.
+- Chrome extension owns browser-context, tab, and content-script behavior.
+- Native iOS and Android own platform-specific APIs, native distribution, and
+  store workflows.
+
+Stop before editing when the requested behavior depends on production
+credentials, external accounts, signing assets, real platform identifiers, or a
+product decision that is not already documented.
+
 ## Templates
 
 - `ai-boilerplate-backend`: Go backend boilerplate.

@@ -67,6 +67,18 @@ Choose this template for a product-facing browser app that does not need admin
 permissions or desktop-native APIs. Use the admin template for internal CRUD and
 dense operator workflows.
 
+## Ownership Notes
+
+Start here for lightweight public browser routes, product-facing copy, simple
+Vue/Vite interaction, and web-only presentation that does not require admin
+permissions. Keep browser shell work separate from admin CRUD so the public
+surface stays small and easy to verify.
+
+Start in the backend first when the page needs a new shared API contract or
+server-owned behavior. Start in Electron or Tauri only when the same workflow
+requires desktop packaging, native APIs, local filesystem access, or runtime
+capabilities that a browser page cannot provide.
+
 ## More Documentation
 
 - Root operations workflow: `../docs/operations.md`

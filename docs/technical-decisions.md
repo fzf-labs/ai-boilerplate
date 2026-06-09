@@ -161,6 +161,25 @@ specific platform or distribution requirement justifies the extra maintenance.
 | Add a native Android capability or Play Store distribution path | Android | Native Android APIs or distribution justify the maintenance. |
 | Add a second surface for an existing flow | Document the decision first | Keep one primary client unless the surface gate is already satisfied. |
 
+## Ownership Scenarios
+
+Use these examples when a request sounds like it could belong to more than one
+template:
+
+| Scenario | Owner | Reason |
+| --- | --- | --- |
+| Add a column to a list that already receives the field from the API | Admin, uni-app, or PC web | The contract already exists; only the owning client presentation changes. |
+| Add a column that is not returned by the API | Backend first | The source contract must change before clients consume it. |
+| Add an operator-only approval action | Admin console | The workflow depends on internal permissions and dense operations UI. |
+| Add a customer-facing mobile purchase flow | Uni-app | The default mobile client owns app and mini-program user journeys. |
+| Add QR scanning with native camera constraints | Native iOS or Android | Platform APIs and permission UX justify native ownership. |
+| Add a tray app that reads local files | Electron or Tauri | Desktop runtime capability is the product requirement. |
+| Add browser tab inspection or content-script behavior | Chrome extension | Extension permissions and browser context own the behavior. |
+
+If the source of truth is unclear, do not split the implementation across
+templates. Write down the suspected owner, the downstream consumers, and the
+verification command that would prove the change before editing.
+
 ## Adding Another Surface
 
 Before adding a second client surface to a product flow, confirm all of these

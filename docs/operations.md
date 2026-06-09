@@ -186,6 +186,34 @@ instead of bundling them into one vague "add docs" change. The usual split is
 missing or stale doc links, template README handoffs, metadata defaults, and
 verification-reference mismatches.
 
+## Unattended Maintenance Workflow
+
+Use this workflow for scheduled cleanup, broad issue discovery, or automation
+that is allowed to choose tasks without another round of planning:
+
+1. Check open issues and pull requests for `P0`, `P1`, `blocker`, or
+   `critical` labels.
+2. Run or inspect the documented verification commands for deterministic
+   failures before choosing docs-only work.
+3. If the checks pass, inspect open issues, root guides, and template READMEs
+   for stale handoffs, missing acceptance criteria, and broken starter
+   defaults.
+4. Select exactly the smallest set of tasks requested by the automation or
+   issue. Each task must have a source, priority rationale, acceptance
+   criteria, and verification command before editing.
+5. Complete tasks one by one. After each task, run the smallest command that
+   proves the acceptance criteria or record why automated verification is not
+   possible.
+6. After the last task, run the affected-template checks and the full
+   verification set when local SDKs are available.
+7. Commit only the files changed for the selected tasks.
+
+Stop and ask before editing when the next task needs production credentials,
+external account access, signing assets, a customer-specific identifier, or an
+undocumented product decision. If no higher-priority labels, failing checks, or
+core workflow regressions exist, broad documentation issues can be split into
+independent doc tasks and handled under the same evidence rules.
+
 ## Template Runbook Quick Reference
 
 | Template | Start Command | Verify Command | Publish Note |

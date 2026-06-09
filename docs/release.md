@@ -40,6 +40,20 @@ Record release evidence in this shape before committing or handing off:
 For documentation-only changes, include `git diff --check` and any command whose
 examples or command references were changed.
 
+When a change contains multiple maintenance tasks, record each task separately
+before the final summary:
+
+| Field | Content |
+| --- | --- |
+| Task | Concrete task name from the issue or automation run. |
+| Source | Issue, PR, requirement file, failing command, or documentation path. |
+| Priority Rationale | Label, failing check, workflow risk, user-visible impact, or docs gap that made it in scope. |
+| Acceptance Criteria | Binary result that proves the task is complete. |
+| Verification Evidence | Command and result, or manual check with the observed result. |
+
+Keep skipped checks explicit. A skipped check needs the exact command, the
+missing local prerequisite, and the closest verification that did run.
+
 ## Pre-Publish Steps
 
 1. Confirm the task source and acceptance criteria are recorded in the issue,

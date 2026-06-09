@@ -55,6 +55,19 @@ secrets, and production endpoints outside the repository.
 Run `npm run typecheck` for routine code changes. Run the platform build command
 for the target OS before publishing an installer.
 
+## Ownership Notes
+
+Start here when desktop packaging, tray/window behavior, native dialogs, local
+filesystem access, or Node.js runtime integration is part of the requirement.
+If the workflow can run as a normal browser page, use `ai-boilerplate-pc`
+instead; if it needs a smaller shell without broad Node integration, compare it
+with `ai-boilerplate-tauri`.
+
+Document the target operating system before changing installer metadata,
+auto-update behavior, or signing-related configuration. Verification for routine
+code is `npm run typecheck`; installer work also needs the matching platform
+build command.
+
 ## More Documentation
 
 - Root operations workflow: `../docs/operations.md`
