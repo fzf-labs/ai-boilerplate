@@ -58,9 +58,8 @@ const [Form, formApi] = useVbenForm({
       component: 'Textarea',
       componentProps: {
         rows: 8,
-        placeholder: '请输入提示词内容（系统角色设定）',
+        placeholder: '请输入提示词内容',
       },
-      help: '定义 AI 的角色、行为风格和回复规则',
     },
   ],
   showDefaultActions: false,

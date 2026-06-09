@@ -140,15 +140,14 @@ defineExpose({ settingValues });
 <template>
   <div class="prompt">
     <b>画面描述</b>
-    <p>建议使用“形容词 + 动词 + 风格”的格式，使用“，”隔开</p>
-      <Textarea
-        v-model:value="prompt"
-        :maxlength="1024"
-        :rows="5"
-        class="mt-4 w-full"
-        placeholder="请输入画面描述"
-        show-count
-      />
+    <Textarea
+      v-model:value="prompt"
+      :maxlength="1024"
+      :rows="5"
+      class="mt-4 w-full"
+      placeholder="请输入画面描述"
+      show-count
+    />
   </div>
 
   <div class="mt-8 flex flex-col">

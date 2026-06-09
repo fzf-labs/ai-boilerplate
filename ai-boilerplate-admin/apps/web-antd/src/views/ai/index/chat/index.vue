@@ -503,7 +503,7 @@ onMounted(async () => {
               @input="handlePromptInput"
               @compositionstart="onCompositionstart"
               @compositionend="onCompositionend"
-              placeholder="问我任何问题...（Shift+Enter 换行，按下 Enter 发送）"
+              placeholder="请输入要发送的内容"
             ></textarea>
             <div class="flex justify-between pb-0 pt-1">
               <div class="flex items-center">

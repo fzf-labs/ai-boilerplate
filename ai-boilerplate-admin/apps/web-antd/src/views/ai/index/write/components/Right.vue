@@ -96,7 +96,7 @@ watch(copied, (val) => {
           v-model:value="compContent"
           auto-size
           :bordered="false"
-          placeholder="生成的内容……"
+          placeholder="生成结果会显示在这里"
         />
       </div>
     </div>

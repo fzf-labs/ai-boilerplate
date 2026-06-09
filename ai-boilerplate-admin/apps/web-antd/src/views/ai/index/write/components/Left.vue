@@ -174,11 +174,11 @@ onMounted(async () => {
       <span>{{ label }}</span>
       <span
         v-if="hint"
+        :title="hint"
         class="text-primary-500 flex cursor-pointer select-none items-center text-xs"
         @click="hintClick"
       >
         <IconifyIcon icon="lucide:circle-help" />
-        {{ hint }}
       </span>
     </h3>
   </DefineLabel>

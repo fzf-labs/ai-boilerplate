@@ -22,27 +22,23 @@ defineExpose({
   <div>
     <Title
       title="音乐/歌词说明"
-      desc="描述您想要的音乐风格和主题，使用流派和氛围而不是特定的艺术家和歌曲"
     >
       <Textarea
         v-model:value="formData.desc"
         :auto-size="{ minRows: 6, maxRows: 6 }"
         :maxlength="1200"
         :show-count="true"
-        placeholder="一首关于糟糕分手的欢快歌曲"
+        placeholder="请输入歌曲描述"
       />
     </Title>
 
-    <Title title="纯音乐" class="mt-5" desc="创建一首没有歌词的歌曲">
+    <Title title="纯音乐" class="mt-5">
       <template #extra>
         <Switch v-model:checked="formData.pure" size="small" />
       </template>
     </Title>
 
-    <Title
-      title="版本"
-      desc="描述您想要的音乐风格和主题，使用流派和氛围而不是特定的艺术家和歌曲"
-    >
+    <Title title="版本">
       <Select
         v-model:value="formData.version"
         class="w-full"

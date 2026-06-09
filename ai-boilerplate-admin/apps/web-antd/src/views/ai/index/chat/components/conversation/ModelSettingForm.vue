@@ -74,7 +74,6 @@ const [Form, formApi] = useVbenForm({
         max: 2,
       },
       rules: 'required',
-      help: '控制生成文本的随机性，0-2之间，值越大越随机',
     },
     {
       fieldName: 'topP',
@@ -88,7 +87,6 @@ const [Form, formApi] = useVbenForm({
         min: 0,
         max: 1,
       },
-      help: '核采样概率阈值，0-1之间',
     },
     {
       fieldName: 'maxTokens',
@@ -102,7 +100,6 @@ const [Form, formApi] = useVbenForm({
         max: 8192,
       },
       rules: 'required',
-      help: '模型回答的最大长度（单位：token）',
     },
     {
       fieldName: 'maxContexts',
@@ -116,7 +113,6 @@ const [Form, formApi] = useVbenForm({
         max: 20,
       },
       rules: 'required',
-      help: '保留的历史对话轮数',
     },
   ],
   showDefaultActions: false,

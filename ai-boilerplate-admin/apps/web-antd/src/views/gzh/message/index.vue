@@ -7,22 +7,19 @@ import { Button } from 'ant-design-vue';
 <template>
   <Page>
     <Button
-      danger
       type="link"
       target="_blank"
-      href="https://github.com/yudaocode/yudao-ui-admin-vue3"
+      href="https://github.com/fzf-labs/ai-boilerplate"
     >
-      该功能支持 Vue3 + element-plus 版本！
+      查看仓库文档
     </Button>
     <br />
     <Button
       type="link"
       target="_blank"
-      href="https://github.com/yudaocode/yudao-ui-admin-vue3/blob/master/src/views/mp/message/index"
+      href="https://github.com/fzf-labs/ai-boilerplate/blob/master/docs/technical-decisions.md"
     >
-      可参考
-      https://github.com/yudaocode/yudao-ui-admin-vue3/blob/master/src/views/mp/message/index
-      代码，pull request 贡献给我们！
+      查看技术选型说明
     </Button>
   </Page>
 </template>
