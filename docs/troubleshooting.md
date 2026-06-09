@@ -89,10 +89,19 @@ If a command in the docs no longer matches a template:
 4. Use `git diff --check` for documentation-only changes to catch whitespace and
    formatting errors.
 
+If every documented verification command passes but an issue still asks for
+more documentation, treat the remaining work as issue triage instead of a hidden
+code failure. Compare the issue body with the root guides, split any real gaps
+into documented tasks with acceptance criteria, and record the passing
+verification baseline in the handoff. If the issue has no remaining observable
+gap, ask before closing or expanding scope.
+
 ## Native Tooling
 
 - iOS warnings about unused package dependencies can be acceptable for a starter
-  template, but `swift build` must still finish successfully.
+  template, but `swift build` must still finish successfully. Record the warning
+  text in release evidence only when it could affect dependency ownership or a
+  future generated project.
 - Android Gradle deprecation warnings are not release blockers by themselves.
   A failed task, missing SDK, signing error, or incompatible Gradle/JDK pairing
   is the actionable failure.

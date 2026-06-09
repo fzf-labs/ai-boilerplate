@@ -25,6 +25,12 @@ integration is a real runtime requirement.
 Tauri native build on the target platform before publishing a desktop artifact,
 and keep signing credentials out of the repository.
 
+Release evidence should distinguish renderer confidence from native packaging
+confidence. Renderer-only changes can cite `npm run build`; changes to Tauri
+capabilities, installer metadata, updater settings, or platform integration need
+the matching Tauri native build on the target operating system plus a signing
+or unsigned-build note.
+
 ## Ownership Notes
 
 Start here when desktop distribution is required and the native work can live in

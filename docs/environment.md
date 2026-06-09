@@ -54,6 +54,21 @@ Use these defaults unless a template README says otherwise:
 When testing on a physical device, replace loopback addresses with a LAN IP that
 the device can reach.
 
+## Override Scope
+
+Treat endpoint overrides as local unless a release task explicitly says
+otherwise:
+
+| Scope | Where To Put It | Verification |
+| --- | --- | --- |
+| Local browser or simulator check | Template env file, local config, or `local.properties` | Run the template verification command after the value changes. |
+| Physical device debugging | LAN IP or platform-approved test domain in local config | Confirm the device can reach the backend before changing code. |
+| CI or preview environment | CI secrets or deployment configuration | Document the variable name, not the secret value. |
+| Production release | Product-owned secret store or platform signing/deployment system | Stop for approval before committing product-specific identifiers. |
+
+Do not commit a production endpoint simply to make a local build pass. Starter
+defaults should stay reusable and safe for new projects.
+
 ## Device URL Rules
 
 - Browser-based local clients can use `/api` or `127.0.0.1` when the dev server

@@ -49,6 +49,11 @@ Use `swift build` as the local static verification command. Generate the Tuist
 project and build in Xcode when changing iOS app targets, assets, signing,
 entitlements, or simulator/device behavior.
 
+Warnings from starter dependencies are not release blockers when `swift build`
+finishes successfully. Record them in the release evidence when they identify
+unused dependency ownership or toolchain drift, and investigate them before
+shipping a product-specific app.
+
 Keep provisioning profiles, certificates, real team IDs, production bundle IDs,
 and production endpoints out of git unless a product-specific release task
 explicitly requires them.

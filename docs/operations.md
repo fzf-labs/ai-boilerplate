@@ -139,6 +139,13 @@ If no priority labels or failing checks exist, use open issues and root
 documentation gaps as the next source of truth. Record the source, rationale,
 acceptance criteria, and verification evidence for each task.
 
+When a full verification baseline passes and the highest-priority source is a
+broad documentation issue, do not create product work just to fill a task list.
+Split the issue into observable workflow gaps such as stale commands, missing
+handoffs, unclear acceptance evidence, environment defaults, release checks, and
+template README mismatches. Each selected task still needs one owning document
+or template README and one verification step.
+
 Common examples:
 
 - A `P0`, `P1`, `blocker`, or `critical` issue or PR outranks everything else.
@@ -185,6 +192,21 @@ For broad documentation work, make separate tasks for the gaps that matter
 instead of bundling them into one vague "add docs" change. The usual split is
 missing or stale doc links, template README handoffs, metadata defaults, and
 verification-reference mismatches.
+
+For a 10-task discovery run, record exactly these fields before editing:
+
+| Field | Required Content |
+| --- | --- |
+| Number | Stable task number from 1 through 10. |
+| Task name | One concrete outcome that can be reviewed independently. |
+| Source | Issue, PR, requirement file, failing command, or docs path. |
+| Priority rationale | The priority rank or observable gap that made it selected. |
+| Acceptance criteria | Binary result plus the targeted verification command. |
+| Verification evidence | Filled after implementation with the exact command result. |
+
+If fewer than 10 locally actionable tasks remain after P0/P1 issues, failing
+checks, and documented workflow gaps are exhausted, stop and ask before
+inventing new product behavior.
 
 ## Unattended Maintenance Workflow
 

@@ -127,6 +127,19 @@ package manager, generated-artifact strategy, runtime target, or verification
 standard. Routine copy edits, generated file refreshes, and narrow page changes
 should stay in the affected template README or code comments instead.
 
+Every new or changed decision should name:
+
+- The source requirement, issue, or failure that forced the decision.
+- The template or shared artifact that owns the behavior.
+- The alternatives rejected and the practical reason they were rejected.
+- The verification command that proves the chosen template still works.
+- Any stop condition such as signing, production credentials, paid services, or
+  product approval.
+
+Do not record a decision only because a tool or framework is newer. The decision
+belongs here when it changes ownership, release evidence, generated artifacts,
+or maintenance cost for future work.
+
 ## Selection Guide
 
 Use this repository as a menu of starting points:

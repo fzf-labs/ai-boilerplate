@@ -85,6 +85,15 @@ defaults, or documentation updates. If generated client output changes without a
 matching Swagger change, inspect the generator version and local install before
 committing the diff.
 
+These changes are explicit non-triggers for generated output:
+
+| Change | Regeneration Needed |
+| --- | --- |
+| Root docs, template README, or release checklist edits | No. Run `git diff --check` and any changed documented command. |
+| Client-only copy, labels, routes, styles, or empty-state defaults | No. Run the owning client type check. |
+| Local endpoint examples or environment documentation | No, unless runtime config files also changed. |
+| Package metadata that does not affect generated API imports | No. Run the affected package check. |
+
 ## Generated Drift Triage
 
 When generated files change unexpectedly:

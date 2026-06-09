@@ -40,6 +40,13 @@ Record release evidence in this shape before committing or handing off:
 For documentation-only changes, include `git diff --check` and any command whose
 examples or command references were changed.
 
+For broad documentation issues, also state whether the related verification
+baseline was already passing before the edit. If it was, acceptance should focus
+on the documented gap that changed, not on unrelated feature work. A docs-only
+issue is ready to hand off when the edited docs name the owner, acceptance
+criteria, and verification command clearly enough for the next maintainer to
+repeat the work without guessing.
+
 When a change contains multiple maintenance tasks, record each task separately
 before the final summary:
 

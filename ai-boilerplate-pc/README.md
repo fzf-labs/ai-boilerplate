@@ -26,6 +26,11 @@ Use `pnpm type-check` as the first verification command for routine PC web
 changes. Run `pnpm build`, unit tests, or Playwright only when the change touches
 bundling, runtime behavior, or browser workflows.
 
+For release evidence, record the exact command that matches the changed surface:
+type-only copy or route work needs `pnpm type-check`, bundle configuration needs
+`pnpm build`, and browser behavior changes need the relevant unit or Playwright
+test in addition to the type check.
+
 ### Run Unit Tests with [Vitest](https://vitest.dev/)
 
 ```sh
