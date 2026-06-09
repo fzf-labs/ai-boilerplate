@@ -4,6 +4,7 @@ import AdapterUniapp from '@alova/adapter-uniapp'
 import { createAlova } from 'alova'
 import { createServerTokenAuthentication } from 'alova/client'
 import VueHook from 'alova/vue'
+import { useTokenStore } from '@/store'
 import { getEnvBaseUrl } from '@/utils'
 import { toLoginPage } from '@/utils/toLoginPage'
 import { ContentTypeEnum, ResultEnum, ShowMessage } from './tools/enum'
@@ -28,15 +29,15 @@ const { onAuthRequired, onResponseRefreshToken } = createServerTokenAuthenticati
     isExpired: (error) => {
       return error.response?.status === ResultEnum.Unauthorized
     },
-    handler: async () => {
-      try {
-        // await authLogin();
-      }
-      catch (error) {
-        // 切换到登录页
-        toLoginPage({ mode: 'reLaunch' })
-        throw error
-      }
+    handler: async (error) => {
+      const tokenStore = useTokenStore()
+      await tokenStore.logout()
+      uni.showToast({
+        title: '登录已过期，请重新登录',
+        icon: 'none',
+      })
+      toLoginPage({ mode: 'reLaunch' })
+      throw error ?? new Error('登录已过期，请重新登录')
     },
   },
 })
@@ -59,14 +60,14 @@ const alovaInstance = createAlova({
     }
 
     const { config } = method
-    const ignoreAuth = !config.meta?.ignoreAuth
+    const needAuth = !config.meta?.ignoreAuth
     // 处理认证信息   自行处理认证问题
-    if (ignoreAuth) {
-      const token = 'getToken()'
+    if (needAuth) {
+      const token = useTokenStore().updateNowTime().validToken
       if (!token) {
         throw new Error('[请求错误]：未登录')
       }
-      // method.config.headers.token = token;
+      method.config.headers.Authorization = `Bearer ${token}`
     }
 
     // 处理动态域名

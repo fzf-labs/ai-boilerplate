@@ -21,6 +21,7 @@ export function useReleaseFormSchema(
     packageMd5?: string,
     minOsVersion?: string,
   ) => void,
+  onParsePackageError?: (message: string) => void,
 ): VbenFormSchema[] {
   return [
     {
@@ -36,7 +37,7 @@ export function useReleaseFormSchema(
       label: '包名',
       component: 'Input',
       componentProps: {
-        placeholder: '已自动填充应用唯一包名',
+        placeholder: '已从自应用信息自动填充包名',
         disabled: true,
       },
       rules: 'required',
@@ -85,12 +86,15 @@ export function useReleaseFormSchema(
                 minOsVersion,
               );
             } else {
-              console.warn('未能从安装包中解析到版本信息');
+              const message = '未能从安装包中解析到版本信息，请手动填写'
+              onParsePackageError?.(message);
             }
-          } catch (error: any) {
+          } catch (error: unknown) {
+            const message = error instanceof Error
+              ? error.message
+              : '解析安装包失败，请手动填写版本信息';
             console.error('解析安装包失败:', error);
-            // 可以在这里显示更友好的错误提示
-            // message.error('解析安装包失败，请手动输入版本信息');
+            onParsePackageError?.(message);
           }
         },
       },

@@ -52,7 +52,7 @@
   {
     // ... 其他配置
     // 注意 unocss 图标需要如下处理：（二选一）
-    // 1）在fg-tabbar.vue页面上引入一下并注释掉（见tabbar/index.vue代码第2行）
+    // 1）在 tabbar/index.vue 中引入并注释掉相关样式
     // 2）配置到 unocss.config.ts 的 safelist 中
     iconType: 'unocss',
     icon: 'i-carbon-code',

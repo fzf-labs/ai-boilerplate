@@ -25,7 +25,7 @@ export function useFormSchema(): VbenFormSchema[] {
       label: '包名',
       component: 'Input',
       componentProps: {
-        placeholder: '请输入应用唯一包名，如 com.example.aiboilerplate',
+        placeholder: '请输入应用唯一包名，如 com.fzflabs.aiboilerplate.admin',
       },
       rules: 'required',
     },
@@ -72,7 +72,7 @@ export function useGridFormSchema(): VbenFormSchema[] {
       label: '包名',
       component: 'Input',
       componentProps: {
-        placeholder: '请输入应用唯一包名，如 com.example.aiboilerplate',
+        placeholder: '请输入应用唯一包名，如 com.fzflabs.aiboilerplate.admin',
         allowClear: true,
       },
     },

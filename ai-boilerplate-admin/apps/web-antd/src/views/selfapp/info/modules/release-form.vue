@@ -55,15 +55,17 @@ const handleParsePackage = async (
   }
   if (minOsVersion) {
     await formApi.setFieldValue('minOsVersion', minOsVersion);
-  } else {
-    console.warn('minOsVersion 为空，未设置');
   }
   message.success('已自动填充版本信息');
 };
 
+const handleParsePackageError = (errorMessage: string) => {
+  message.error(errorMessage);
+};
+
 const [Form, formApi] = useVbenForm({
   layout: 'horizontal',
-  schema: useReleaseFormSchema(handleParsePackage),
+  schema: useReleaseFormSchema(handleParsePackage, handleParsePackageError),
   showDefaultActions: false,
 });
 
@@ -133,6 +135,7 @@ const [Modal, modalApi] = useVbenModal({
       }
     } catch (error) {
       console.error('Failed to submit form:', error);
+      message.error((error as Error)?.message || '提交版本发布失败，请稍后重试');
       modalApi.lock(false);
       // 表单验证错误会自动显示，这里不需要额外处理
     }

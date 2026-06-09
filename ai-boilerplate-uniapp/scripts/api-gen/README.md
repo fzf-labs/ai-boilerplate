@@ -31,12 +31,18 @@ pnpm api:gen
 ```
 src/api/
 ├── v1/
-│   ├── user/          # 用户相关接口
+│   ├── user/
 │   │   ├── index.ts   # 导出文件
 │   │   ├── types.ts   # 类型定义
-│   │   └── wode.ts    # API 函数
-│   ├── home/          # 首页相关接口
-│   ├── profile/       # 个人资料相关接口
+│   │   └── user.ts    # API 函数
+│   ├── home/
+│   │   ├── index.ts
+│   │   ├── types.ts
+│   │   └── home.ts
+│   ├── self-app-release/
+│   │   ├── index.ts
+│   │   ├── types.ts
+│   │   └── selfAppRelease.ts
 │   └── index.ts       # v1 版本统一导出
 └── index.ts           # 所有版本统一导出（如果有多个版本）
 ```
