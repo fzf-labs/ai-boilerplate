@@ -13,6 +13,14 @@ guide in the root README or `docs/technical-decisions.md` before editing code.
 That keeps the work anchored to the owning artifact and avoids drifting into
 downstream consumers too early.
 
+## Task Framing
+
+Use the source to decide the task, not the other way around. When an issue is
+broad, split it into concrete work items such as missing doc links, template
+README handoffs, metadata defaults, and verification-reference mismatches. If
+the request depends on external accounts, production permissions, signing
+assets, or an undocumented product decision, stop and ask instead of guessing.
+
 ## Choosing Change Scope
 
 Start by naming the artifact that owns the behavior:
@@ -131,6 +139,15 @@ If no priority labels or failing checks exist, use open issues and root
 documentation gaps as the next source of truth. Record the source, rationale,
 acceptance criteria, and verification evidence for each task.
 
+Common examples:
+
+- A `P0`, `P1`, `blocker`, or `critical` issue or PR outranks everything else.
+- A deterministic failure in a documented command outranks new feature work.
+- Broken starter defaults, links, and navigation paths are user-visible issues.
+- Docs-only drift stays below anything above it.
+- External accounts, production permissions, and signing assets are stop
+  conditions.
+
 For broad documentation requests such as "add operations and technical decision
 docs", treat each missing or stale doc link, template README handoff, metadata
 default, and verification-reference mismatch as its own task. Keep the source
@@ -163,6 +180,11 @@ For unattended maintenance, write each chosen task in this form:
 | Source | Issue, PR, failing command, document, or file path that justifies the work. |
 | Priority rationale | Which priority rank made this task more important than alternatives. |
 | Acceptance criteria | A binary or observable condition plus the verification command. |
+
+For broad documentation work, make separate tasks for the gaps that matter
+instead of bundling them into one vague "add docs" change. The usual split is
+missing or stale doc links, template README handoffs, metadata defaults, and
+verification-reference mismatches.
 
 ## Template Runbook Quick Reference
 

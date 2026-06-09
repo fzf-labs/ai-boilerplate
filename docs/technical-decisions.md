@@ -19,6 +19,10 @@ needs justify the native maintenance cost.
 When a task crosses templates, update the source artifact first and regenerate
 downstream clients or generated output in the same commit.
 
+The smallest template is the one that owns the behavior, not the one with the
+fewest files. If the request only changes copy, labels, routing, or styling,
+keep it in the client that already owns the experience.
+
 ## Decision Matrix
 
 | Template | Primary Audience | Owns | Strengths | Maintenance Cost | Avoid When |
@@ -142,6 +146,21 @@ Use this repository as a menu of starting points:
 Prefer one primary client per product workflow. Add another template only when a
 specific platform or distribution requirement justifies the extra maintenance.
 
+## Request Examples
+
+| Request | Start With | Why |
+| --- | --- | --- |
+| Add or change schema, auth, permissions, shared contracts, or background jobs | Backend | The backend owns the shared data model and generated clients. |
+| Add an internal CRUD table, form, dashboard, or operator flow | Admin console | The admin template owns dense permission-aware operations. |
+| Add H5, app, or mini-program user screens | Uni-app | It is the default cross-platform mobile client. |
+| Add a lightweight public browser shell or route-only web surface | PC web | It is the smallest browser-based surface in the repo. |
+| Add a desktop tool that needs Chromium plus Node.js | Electron | Node integration is part of the runtime requirement. |
+| Add a smaller desktop shell that can rely on Rust/Tauri | Tauri | Smaller runtime footprint wins when Node is not central. |
+| Add browser-side tab, page, or extension-permission workflow | Chrome extension | Browser context and permissions are the product. |
+| Add a native iOS capability or iPhone-specific distribution path | iOS | Native Apple APIs or App Store distribution justify the maintenance. |
+| Add a native Android capability or Play Store distribution path | Android | Native Android APIs or distribution justify the maintenance. |
+| Add a second surface for an existing flow | Document the decision first | Keep one primary client unless the surface gate is already satisfied. |
+
 ## Adding Another Surface
 
 Before adding a second client surface to a product flow, confirm all of these
@@ -158,7 +177,8 @@ conditions:
    endpoints, and environment values aligned.
 
 If any condition is unclear, keep the work in the current surface and document
-the decision point before expanding the repo footprint.
+the decision point before expanding the repo footprint. Verification ownership
+and release alignment must be written down before a second surface is added.
 
 ## Template Tradeoffs
 
