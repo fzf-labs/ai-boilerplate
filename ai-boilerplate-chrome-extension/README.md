@@ -41,6 +41,11 @@ tab URL filtering, which are the core safety checks for the popup and service
 worker flow. Run `npm run build` when checking the final Vite bundle or
 creating a package.
 
+Manifest permission changes are user-visible and affect Chrome Web Store
+review. When adding or removing a permission, record why the feature needs it,
+run `npm run type-check && npm test`, then run `npm run build` and load the
+generated `dist` directory for a manual extension smoke check.
+
 ## Load in Chrome
 
 1. Open `chrome://extensions`.

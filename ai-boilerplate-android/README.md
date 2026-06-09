@@ -52,9 +52,13 @@ Use this command for local verification:
 ./gradlew detekt test assembleDebug -x validateSigningDebug
 ```
 
-Keep keystores, signing passwords, Firebase service files, production package
-IDs, and production API hosts outside the repository. Use `local.properties` or
-platform secrets for machine-specific values.
+The debug build creates or reuses the local Android debug keystore under the
+current user's home directory. Make sure the JDK `keytool` command is available
+before running the verification command on a fresh machine.
+
+Keep release keystores, signing passwords, Firebase service files, production
+package IDs, and production API hosts outside the repository. Use
+`local.properties` or platform secrets for machine-specific values.
 
 ## Ownership Notes
 

@@ -8,6 +8,11 @@ Most work should stay inside one template directory. Cross-template changes are
 reserved for shared API contracts, generated client syncs, documentation, or
 release workflow updates.
 
+iOS has two setup levels: `swift build` covers local static Swift Package
+verification, while app-target, asset, signing, entitlement, or simulator/device
+changes also need the Tuist/Xcode bootstrap documented in
+`ai-boilerplate-ios/README.md`.
+
 When a request is not already mapped to a template, start with the selection
 guide in the root README or `docs/technical-decisions.md` before editing code.
 That keeps the work anchored to the owning artifact and avoids drifting into
@@ -59,7 +64,8 @@ permissions, real signing identities, or customer-specific platform IDs.
 - pnpm for `ai-boilerplate-admin`, `ai-boilerplate-uniapp`, and `ai-boilerplate-pc`.
 - npm for `ai-boilerplate-electron`, `ai-boilerplate-tauri`, and `ai-boilerplate-chrome-extension`.
 - Go 1.24 for `ai-boilerplate-backend`.
-- Xcode and Swift Package Manager for `ai-boilerplate-ios`.
+- Xcode, Swift Package Manager, Tuist, Ruby/Bundler, and mise for
+  `ai-boilerplate-ios`.
 - Android Studio or a compatible Android SDK for `ai-boilerplate-android`.
 
 Install dependencies inside the template directory you are working on. Do not
@@ -84,7 +90,7 @@ Template dependency commands:
 | Electron | `npm install` |
 | Tauri web shell | `npm install` |
 | Chrome extension | `npm install` |
-| iOS | `swift package resolve` |
+| iOS | `mise install`, `bundle install`, `bundle exec arkana`, then `swift package resolve` when refreshing SPM packages |
 | Android | `./gradlew help` |
 
 ## Local Verification

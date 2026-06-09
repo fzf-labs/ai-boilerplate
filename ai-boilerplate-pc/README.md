@@ -62,6 +62,11 @@ pnpm test:e2e -- --debug
 pnpm lint
 ```
 
+`pnpm lint` runs ESLint with auto-fix enabled, so it may rewrite files. Use
+`pnpm type-check` for a read-only routine verification check, and use
+`pnpm lint` or `pnpm format` when you intend to accept formatting or lint-fix
+changes.
+
 ## Included Surface
 
 - `HomeView` is the main product shell.

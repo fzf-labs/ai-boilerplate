@@ -85,6 +85,11 @@ defaults, or documentation updates. If generated client output changes without a
 matching Swagger change, inspect the generator version and local install before
 committing the diff.
 
+When a task does not require regeneration, record that as evidence instead of
+running a generator just to prove a no-op. The usual evidence is: the source
+Swagger or protobuf path did not change, the edited files are not generated
+client output, and the owning template verification command still passes.
+
 These changes are explicit non-triggers for generated output:
 
 | Change | Regeneration Needed |

@@ -37,7 +37,7 @@ IDs in local environment files or platform secret stores.
 | Electron | `ai-boilerplate-electron` env files when added | Keep package identity in `electron-builder.yml`; keep runtime secrets outside the repo. |
 | Tauri | `ai-boilerplate-tauri` env files when added | Keep renderer values public and move native secrets to platform-specific secure storage. |
 | Chrome extension | `ai-boilerplate-chrome-extension/public/manifest.json` and Vite env files when added | Request browser permissions only when a feature needs them. |
-| iOS | `ai-boilerplate-ios/AIBoilerplate/Configurations/XCConfigs` after Tuist generation | `API_BASE_URL` defaults to the local backend path. Update bundle IDs and endpoints before shipping. |
+| iOS | `ai-boilerplate-ios/AIBoilerplate/Configurations/XCConfigs` after Tuist generation, plus `ai-boilerplate-ios/.env.example` for release automation secrets | `API_BASE_URL` defaults to the local backend path. App Store Connect values belong in local `.env` files or CI secrets. |
 | Android | `ai-boilerplate-android/local.properties` | Set `BASE_URL` for a reachable backend. Android emulators reach the host at `10.0.2.2`. |
 
 ## Local Backend URLs
@@ -103,3 +103,6 @@ defaults should stay reusable and safe for new projects.
   repository.
 - If a value is needed in CI, add it through CI secrets and document the
   variable name without exposing the value.
+- For iOS, keep local API endpoint changes in the generated `.xcconfig` files
+  or product-specific release config, and keep `.env` values limited to
+  Fastlane/App Store Connect automation secrets.

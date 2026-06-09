@@ -17,12 +17,16 @@ template owns its dependency install and verification commands.
 | Electron | `npm install` | `npm run dev` | `npm run typecheck` |
 | Tauri | `npm install` | `npm run tauri dev` | `npm run build` |
 | Chrome extension | `npm install` | `npm run dev` | `npm run type-check && npm test` |
-| iOS | `swift package resolve` | `tuist generate` | `swift build` |
+| iOS | `mise install`, `bundle install`, `bundle exec arkana` | `tuist generate` | `swift build` |
 | Android | `./gradlew help` | `./gradlew assembleDebug -x validateSigningDebug` | `./gradlew detekt test assembleDebug -x validateSigningDebug` |
 
 Run commands from the template directory. The detailed setup notes live in each
 template README, and the full verification matrix is in
 [Verification commands](docs/verification.md).
+
+For iOS, `swift build` is the local static verification command. Generate and
+build the Tuist/Xcode project when changing app targets, assets, signing,
+entitlements, or simulator/device behavior.
 
 ## Workflows At A Glance
 

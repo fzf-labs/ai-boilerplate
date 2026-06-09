@@ -19,6 +19,11 @@ iOS checks require Swift Package Manager/Xcode tooling.
 | Android | `./gradlew detekt test assembleDebug -x validateSigningDebug` |
 | iOS | `swift build` |
 
+For iOS, `swift build` is the reusable static check for the Swift package
+workspace. Changes to generated Xcode targets, app assets, signing,
+entitlements, or simulator/device behavior also need `tuist generate` and an
+Xcode or Tuist build for the affected target.
+
 When a command cannot run because a local SDK, package manager, signing asset,
 or generated workspace is missing, keep the exact command output in the task
 summary and run the targeted static checks that cover the edited files.

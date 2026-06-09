@@ -11,7 +11,7 @@ Classify the change before running checks:
 | --- | --- |
 | Single template | Run that template's command from `docs/verification.md`. |
 | Backend API or database contract | Run backend tests, regenerate affected clients, and type-check each affected frontend client. |
-| Shared root docs or policy only | Run a clean `git status --short` check and any command needed to validate touched examples. |
+| Shared root docs or policy only | Run `git diff --check` and confirm `git status --short` contains only intentional documentation changes. |
 | Cross-template behavior | Run every affected template check, then run the full verification set when local SDKs are available. |
 
 Examples:
@@ -21,7 +21,7 @@ Examples:
 | Admin CRUD page copy or table column only | Single template | `pnpm check:type --filter=@vben/web-antd` from `ai-boilerplate-admin`. |
 | New backend API field consumed by admin | Backend API or database contract | `go test ./...`, admin `pnpm api:gen`, and admin type check. |
 | New app-facing API response consumed by uni-app | Backend API or database contract | `go test ./...`, uni-app `pnpm api:gen`, and uni-app type check. |
-| Root documentation update | Shared root docs or policy only | `git status --short` plus any command needed to validate examples. |
+| Root documentation update | Shared root docs or policy only | `git diff --check`, `git status --short` showing only intended docs, plus any command needed to validate examples. |
 | Chrome extension runtime message change | Single template | `npm run type-check && npm test` from `ai-boilerplate-chrome-extension`. |
 | Native endpoint or package identity update | Single template | Android or iOS verification command plus manual signing note if applicable. |
 
@@ -39,6 +39,12 @@ Record release evidence in this shape before committing or handing off:
 
 For documentation-only changes, include `git diff --check` and any command whose
 examples or command references were changed.
+
+Warnings from a successful verification command are release evidence, not
+automatic blockers. Record warning text when it identifies dependency ownership,
+toolchain drift, deprecation pressure, or a future release risk; treat the task
+as blocked only when the command exits non-zero or the warning exposes an
+unresolved product, signing, credential, or environment decision.
 
 For broad documentation issues, also state whether the related verification
 baseline was already passing before the edit. If it was, acceptance should focus
