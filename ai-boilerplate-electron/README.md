@@ -3,6 +3,7 @@
 Electron desktop shell for AI Boilerplate. It uses Electron Vite, Vue 3, and
 TypeScript to provide a native desktop entry point for the same product modules
 as the backend, admin, and mobile templates.
+Use Node.js 20+ and npm 10.9+ from this directory.
 
 ## Recommended IDE Setup
 

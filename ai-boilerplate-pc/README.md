@@ -2,6 +2,7 @@
 
 `ai-boilerplate-pc` is the browser-based desktop shell for AI Boilerplate.
 It ships as a product-facing Vue 3 app instead of a generated starter.
+Use Node.js 20.19+ and pnpm 10.14+ from this directory.
 
 ## Project Setup
 

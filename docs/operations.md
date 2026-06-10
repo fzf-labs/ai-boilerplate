@@ -129,6 +129,8 @@ Use this workflow before changing code or documentation:
    changed.
 9. Run the targeted verification command for every touched template.
 10. Check `git status --short` before committing.
+11. For starter metadata updates, verify the touched `package.json` identity
+    fields and make sure any lockfile or ignored-artifact churn is intentional.
 
 Use this priority order when choosing unattended cleanup or maintenance work:
 

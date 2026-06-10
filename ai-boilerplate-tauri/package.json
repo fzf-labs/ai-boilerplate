@@ -2,7 +2,17 @@
   "name": "ai-boilerplate-tauri",
   "private": true,
   "version": "0.1.0",
+  "description": "Tauri desktop shell for AI Boilerplate.",
   "type": "module",
+  "homepage": "https://github.com/fzf-labs/ai-boilerplate",
+  "repository": "https://github.com/fzf-labs/ai-boilerplate",
+  "bugs": "https://github.com/fzf-labs/ai-boilerplate/issues",
+  "author": {
+    "name": "fzf-labs",
+    "url": "https://github.com/fzf-labs"
+  },
+  "license": "MIT",
+  "packageManager": "npm@10.9.3",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",

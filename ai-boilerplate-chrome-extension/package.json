@@ -4,6 +4,15 @@
   "private": true,
   "type": "module",
   "description": "Chrome extension boilerplate based on Manifest V3, Vite, and TypeScript.",
+  "homepage": "https://github.com/fzf-labs/ai-boilerplate",
+  "repository": "https://github.com/fzf-labs/ai-boilerplate",
+  "bugs": "https://github.com/fzf-labs/ai-boilerplate/issues",
+  "author": {
+    "name": "fzf-labs",
+    "url": "https://github.com/fzf-labs"
+  },
+  "license": "MIT",
+  "packageManager": "npm@10.9.3",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "npm run type-check && vite build",

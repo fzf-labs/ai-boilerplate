@@ -1,8 +1,18 @@
 {
   "name": "ai-boilerplate-pc",
   "version": "0.0.0",
+  "description": "Browser-based desktop shell for AI Boilerplate.",
   "private": true,
   "type": "module",
+  "homepage": "https://github.com/fzf-labs/ai-boilerplate",
+  "repository": "https://github.com/fzf-labs/ai-boilerplate",
+  "bugs": "https://github.com/fzf-labs/ai-boilerplate/issues",
+  "author": {
+    "name": "fzf-labs",
+    "url": "https://github.com/fzf-labs"
+  },
+  "license": "MIT",
+  "packageManager": "pnpm@10.14.0",
   "engines": {
     "node": "^20.19.0 || >=22.12.0"
   },

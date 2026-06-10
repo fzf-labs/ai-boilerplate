@@ -1,6 +1,7 @@
 # ai-boilerplate-chrome-extension
 
 A lightweight Chrome extension starter built with Manifest V3, Vite, and TypeScript.
+Use Node.js 20+ and npm 10.9+ from this directory.
 
 The template includes the common extension entry points:
 

@@ -2,6 +2,7 @@
 
 `ai-boilerplate-tauri` is the Tauri desktop starter for this repository. It
 uses Vue 3 for the renderer and Rust/Tauri for the native shell.
+Use Node.js 20+ and npm 10.9+ from this directory.
 
 ## Project Setup
 

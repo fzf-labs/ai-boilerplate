@@ -106,5 +106,9 @@ files.
 - Do not rewrite subtree or repository history unless the repository owner asks
   for it explicitly.
 - Keep generated source and generated output in the same commit.
+- For starter metadata edits, keep `package.json` identity fields aligned with
+  the owning template README.
+- Treat lockfiles and ignored build artifacts as intentional only when the
+  task explicitly changes dependencies or generated output.
 - For documentation-only changes, avoid committing dependency lockfile or build
   output churn.

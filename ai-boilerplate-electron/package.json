@@ -1,10 +1,18 @@
 {
   "name": "ai-boilerplate-electron",
   "version": "1.0.0",
-  "description": "An Electron application with Vue and TypeScript",
+  "description": "Electron desktop shell for AI Boilerplate.",
+  "private": true,
   "main": "./out/main/index.js",
-  "author": "fzf-labs",
   "homepage": "https://github.com/fzf-labs/ai-boilerplate",
+  "repository": "https://github.com/fzf-labs/ai-boilerplate",
+  "bugs": "https://github.com/fzf-labs/ai-boilerplate/issues",
+  "author": {
+    "name": "fzf-labs",
+    "url": "https://github.com/fzf-labs"
+  },
+  "license": "MIT",
+  "packageManager": "npm@10.9.3",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint --cache .",
