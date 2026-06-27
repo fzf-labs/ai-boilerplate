@@ -3,6 +3,10 @@
 AI Boilerplate is a collection of starter projects for backend, admin, app,
 desktop, and iOS product development.
 
+## OpenTag Demo
+
+This repository is used for OpenTag end-to-end pull request smoke tests.
+
 ## Templates
 
 - `ai-boilerplate-backend`: Go backend boilerplate.
