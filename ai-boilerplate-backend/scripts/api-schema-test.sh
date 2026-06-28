@@ -138,7 +138,7 @@ test_file() {
     fi
     
     # 执行测试
-    schemathesis "${args[@]}" || true
+    schemathesis "${args[@]}"
 }
 
 # 收集 Swagger 文件

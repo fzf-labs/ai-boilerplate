@@ -15,3 +15,9 @@ desktop, and iOS product development.
 - `ai-boilerplate-ios`: SwiftUI iOS boilerplate based on `nimblehq/ios-templates`.
 - `ai-boilerplate-android`: Native Android boilerplate based on
   `its-me-debk007/kotlin-android-mvvm-template`.
+
+## Verification
+
+See [docs/verification.md](docs/verification.md) for the CI gate commands.
+Mark the workflow as a required check in branch protection to block merges when
+it fails.
