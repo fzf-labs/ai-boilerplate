@@ -1,6 +1,6 @@
 name: "ai-boilerplate-backend"
-env: "development"
-# Copy this file to config.development.yaml for a shared dev environment.
+env: "staging"
+# Copy this file to config.staging.yaml and inject staging secrets before deployment.
 # Never commit real config.*.yaml files with secrets.
 server:
   http:
@@ -86,7 +86,7 @@ client:
 data:
   gorm:
     driver: "postgres"
-    dataSourceName: host=0.0.0.0 port=5432 user=postgres password=dev-db-password dbname=ai_boilerplate sslmode=disable TimeZone=Asia/Shanghai
+    dataSourceName: host=0.0.0.0 port=5432 user=postgres password=staging-db-password dbname=ai_boilerplate sslmode=disable TimeZone=Asia/Shanghai
     maxIdleConn: 10
     maxOpenConn: 60
     connMaxLifeTime: 60s
@@ -96,7 +96,7 @@ data:
     network: "tcp"
     addr: 0.0.0.0:6379
     username: ""
-    password: "dev-redis-password"
+    password: "staging-redis-password"
     db: 1
     dialTimeout: 1s
     readTimeout: 0.4s
@@ -140,24 +140,24 @@ registry:
     updateCacheWhenEmpty: true
 business:
   wx:
-    defaultGzhAppId: "dev-wechat-gzh-appid"
-    defaultXcxAppId: "dev-wechat-xcx-appid"
+    defaultGzhAppId: "staging-wechat-gzh-appid"
+    defaultXcxAppId: "staging-wechat-xcx-appid"
   jwt:
     admin:
-      accessSecret: "dev-admin-jwt-secret-012345678901"
+      accessSecret: "staging-admin-jwt-secret-012345678901"
       refreshAfter: 86400
       accessExpire: 604800
       issuer: "admin"
     kid:
-      accessSecret: "dev-kid-jwt-secret-01234567890123"
+      accessSecret: "staging-kid-jwt-secret-01234567890123"
       refreshAfter: 86400
       accessExpire: 604800
       issuer: "kid"
     parent:
-      accessSecret: "dev-parent-jwt-secret-0123456789"
+      accessSecret: "staging-parent-jwt-secret-0123456789"
       refreshAfter: 86400
       accessExpire: 604800
       issuer: "parent"
   baiduPush:
-    apiKey: "dev-baidu-push-api-key"
-    secretKey: "dev-baidu-push-secret-key"
+    apiKey: "staging-baidu-push-api-key"
+    secretKey: "staging-baidu-push-secret-key"

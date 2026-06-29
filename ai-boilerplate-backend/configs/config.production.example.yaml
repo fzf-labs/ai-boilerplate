@@ -1,6 +1,6 @@
 name: "ai-boilerplate-backend"
-env: "development"
-# Copy this file to config.development.yaml for a shared dev environment.
+env: "production"
+# Template only. Copy to config.production.yaml or inject environment variables for deployment.
 # Never commit real config.*.yaml files with secrets.
 server:
   http:
@@ -44,10 +44,8 @@ server:
         - "POST"
         - "OPTIONS"
       origins:
-        - "http://localhost:3000"
-        - "http://127.0.0.1:3000"
-        - "http://localhost:5173"
-        - "http://127.0.0.1:5173"
+        - "https://admin.example.com"
+        - "https://app.example.com"
   grpc:
     network: "tcp"
     addr: 0.0.0.0:9000
@@ -86,17 +84,17 @@ client:
 data:
   gorm:
     driver: "postgres"
-    dataSourceName: host=0.0.0.0 port=5432 user=postgres password=dev-db-password dbname=ai_boilerplate sslmode=disable TimeZone=Asia/Shanghai
+    dataSourceName: host=prod-postgres.internal port=5432 user=ai_boilerplate password=your_db_password_here dbname=ai_boilerplate sslmode=require TimeZone=Asia/Shanghai
     maxIdleConn: 10
     maxOpenConn: 60
     connMaxLifeTime: 60s
-    showLog: true
+    showLog: false
     tracing: true
   redis:
     network: "tcp"
-    addr: 0.0.0.0:6379
+    addr: prod-redis.internal:6379
     username: ""
-    password: "dev-redis-password"
+    password: "your_redis_password_here"
     db: 1
     dialTimeout: 1s
     readTimeout: 0.4s
@@ -107,27 +105,27 @@ logger:
   type: "zerolog" # std, zerolog, zap
   zap:
     filename: "logs/kratos.log"
-    level: "debug"
+    level: "info"
     maxSize: 100
     maxAge: 10
     maxBackups: 10
 trace:
   batcher: "otlphttp"
-  endpoint: "0.0.0.0:55681"
+  endpoint: "otel-collector:4318"
   insecure: true
-  sampler: "1.0"
-  env: "local"
+  sampler: "0.1"
+  env: "production"
 registry:
   type: "etcd"
   consul:
     scheme: "http"
-    address: "0.0.0.0:8500"
+    address: "consul.internal:8500"
     healthCheck: true
   etcd:
     endpoints:
-      - 0.0.0.0:2379
+      - etcd.internal:2379
   nacos:
-    address: 0.0.0.0
+    address: nacos.internal
     port: 8848
     namespaceId: "public"
     logLevel: "info"
@@ -140,24 +138,24 @@ registry:
     updateCacheWhenEmpty: true
 business:
   wx:
-    defaultGzhAppId: "dev-wechat-gzh-appid"
-    defaultXcxAppId: "dev-wechat-xcx-appid"
+    defaultGzhAppId: "your_wechat_gzh_appid_here"
+    defaultXcxAppId: "your_wechat_xcx_appid_here"
   jwt:
     admin:
-      accessSecret: "dev-admin-jwt-secret-012345678901"
+      accessSecret: "your_jwt_admin_secret_here_min_32_chars"
       refreshAfter: 86400
       accessExpire: 604800
       issuer: "admin"
     kid:
-      accessSecret: "dev-kid-jwt-secret-01234567890123"
+      accessSecret: "your_jwt_kid_secret_here_min_32_chars"
       refreshAfter: 86400
       accessExpire: 604800
       issuer: "kid"
     parent:
-      accessSecret: "dev-parent-jwt-secret-0123456789"
+      accessSecret: "your_jwt_parent_secret_here_min_32_chars"
       refreshAfter: 86400
       accessExpire: 604800
       issuer: "parent"
   baiduPush:
-    apiKey: "dev-baidu-push-api-key"
-    secretKey: "dev-baidu-push-secret-key"
+    apiKey: "your_baidu_push_api_key_here"
+    secretKey: "your_baidu_push_secret_key_here"

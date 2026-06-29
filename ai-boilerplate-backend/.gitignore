@@ -53,6 +53,7 @@ doc/sql/backup/*.log
 # Configuration files (keep only .example files)
 configs/config.*.yaml
 !configs/config.example.yaml
+!configs/config.*.example.yaml
 
 # Docker compose (keep only .example files)
 docker-compose.yml

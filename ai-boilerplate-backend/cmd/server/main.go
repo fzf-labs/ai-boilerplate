@@ -1,9 +1,9 @@
 package main
 
 import (
-	"flag"
 	"os"
 
+	appconfig "github.com/fzf-labs/ai-boilerplate-backend/internal/config"
 	"github.com/fzf-labs/kratos-contrib/bootstrap"
 	"github.com/fzf-labs/kratos-contrib/pkg/mq"
 	_ "go.uber.org/automaxprocs"
@@ -47,8 +47,11 @@ func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server, mqServer mq.Ser
 }
 
 func main() {
-	flag.Parse()
 	cfg, logger, _, _ := bootstrap.Bootstrap(Service)
+	appconfig.ApplyEnvironmentOverrides(cfg)
+	if err := appconfig.ValidateSecurity(cfg); err != nil {
+		panic(err)
+	}
 	app, cleanup, err := wireApp(cfg, logger)
 	if err != nil {
 		panic(err)

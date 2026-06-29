@@ -1,6 +1,6 @@
 name: "ai-boilerplate-backend"
-env: "development"
-# Copy this file to config.development.yaml for a shared dev environment.
+env: "local"
+# Copy this file to config.local.yaml for local-only development.
 # Never commit real config.*.yaml files with secrets.
 server:
   http:
@@ -14,8 +14,8 @@ server:
       enableMetadata: true
       enableValidate: true
       enableCircuitBreaker: true
-      enableRateLimiter: true
-      enableMetrics: true
+      enableRateLimiter: false
+      enableMetrics: false
       limiter:
         window: 1s
         bucket: 100
@@ -26,7 +26,7 @@ server:
         gauge: true
         summary: true
     enableCors: true
-    enablePprof: false
+    enablePprof: true
     cors:
       headers:
         - "Content-Type"
@@ -44,10 +44,7 @@ server:
         - "POST"
         - "OPTIONS"
       origins:
-        - "http://localhost:3000"
-        - "http://127.0.0.1:3000"
-        - "http://localhost:5173"
-        - "http://127.0.0.1:5173"
+        - "*"
   grpc:
     network: "tcp"
     addr: 0.0.0.0:9000
@@ -59,8 +56,8 @@ server:
       enableMetadata: true
       enableValidate: true
       enableCircuitBreaker: true
-      enableRateLimiter: true
-      enableMetrics: true
+      enableRateLimiter: false
+      enableMetrics: false
       limiter:
         window: 1s
         bucket: 100
@@ -86,7 +83,7 @@ client:
 data:
   gorm:
     driver: "postgres"
-    dataSourceName: host=0.0.0.0 port=5432 user=postgres password=dev-db-password dbname=ai_boilerplate sslmode=disable TimeZone=Asia/Shanghai
+    dataSourceName: host=0.0.0.0 port=5432 user=postgres password=local-db-password dbname=ai_boilerplate sslmode=disable TimeZone=Asia/Shanghai
     maxIdleConn: 10
     maxOpenConn: 60
     connMaxLifeTime: 60s
@@ -96,7 +93,7 @@ data:
     network: "tcp"
     addr: 0.0.0.0:6379
     username: ""
-    password: "dev-redis-password"
+    password: "local-redis-password"
     db: 1
     dialTimeout: 1s
     readTimeout: 0.4s
@@ -140,24 +137,24 @@ registry:
     updateCacheWhenEmpty: true
 business:
   wx:
-    defaultGzhAppId: "dev-wechat-gzh-appid"
-    defaultXcxAppId: "dev-wechat-xcx-appid"
+    defaultGzhAppId: "local-wechat-gzh-appid"
+    defaultXcxAppId: "local-wechat-xcx-appid"
   jwt:
     admin:
-      accessSecret: "dev-admin-jwt-secret-012345678901"
+      accessSecret: "local-admin-jwt-secret-012345678901"
       refreshAfter: 86400
       accessExpire: 604800
       issuer: "admin"
     kid:
-      accessSecret: "dev-kid-jwt-secret-01234567890123"
+      accessSecret: "local-kid-jwt-secret-01234567890123"
       refreshAfter: 86400
       accessExpire: 604800
       issuer: "kid"
     parent:
-      accessSecret: "dev-parent-jwt-secret-0123456789"
+      accessSecret: "local-parent-jwt-secret-0123456789"
       refreshAfter: 86400
       accessExpire: 604800
       issuer: "parent"
   baiduPush:
-    apiKey: "dev-baidu-push-api-key"
-    secretKey: "dev-baidu-push-secret-key"
+    apiKey: "local-baidu-push-api-key"
+    secretKey: "local-baidu-push-secret-key"

@@ -29,7 +29,7 @@ RUN --mount=type=cache,target=/go/pkg/mod \
 FROM alpine:3.20
 
 # 重新声明构建参数，使其在当前阶段可用（不设默认值，使用构建时传入的值）
-ARG APP_ENV
+ARG APP_ENV=production
 
 # 安装必要的证书（如果应用程序需要进行 HTTPS 请求）
 RUN apk --no-cache add ca-certificates
@@ -42,6 +42,13 @@ COPY --from=builder /src/bin/server /app/server
 
 # 拷贝配置文件
 COPY --from=builder /src/configs/ /app/configs
+RUN if [ ! -f "/app/configs/config.${APP_ENV}.yaml" ] && [ -f "/app/configs/config.${APP_ENV}.example.yaml" ]; then \
+      cp "/app/configs/config.${APP_ENV}.example.yaml" "/app/configs/config.${APP_ENV}.yaml"; \
+    elif [ "${APP_ENV}" = "testing" ] && [ ! -f "/app/configs/config.${APP_ENV}.yaml" ] && [ -f "/app/configs/config.staging.example.yaml" ]; then \
+      cp "/app/configs/config.staging.example.yaml" "/app/configs/config.${APP_ENV}.yaml"; \
+    elif [ ! -f "/app/configs/config.${APP_ENV}.yaml" ] && [ -f "/app/configs/config.example.yaml" ]; then \
+      cp "/app/configs/config.example.yaml" "/app/configs/config.${APP_ENV}.yaml"; \
+    fi
 
 # 暴露服务端口
 EXPOSE 8000 9000

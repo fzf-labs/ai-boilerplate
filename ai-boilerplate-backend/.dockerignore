@@ -1,0 +1,10 @@
+.git
+.cache
+bin
+*.log
+.env
+
+# Keep deployable images free of untracked real secrets.
+configs/config.*.yaml
+!configs/config.example.yaml
+!configs/config.*.example.yaml
