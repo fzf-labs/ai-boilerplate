@@ -37,20 +37,24 @@ summary and run the targeted static checks that cover the edited files.
 
 ## CI Gate Commands
 
-These commands mirror the quality-gates workflow and should pass before
-publishing cross-template changes.
+These commands mirror the quality-gates workflow. Keep this table aligned with
+the workflow when changing required checks.
 
 | Template | Core verification |
 | --- | --- |
-| Backend | `golangci-lint run --config .golangci.yml ./... -v`, `go test ./...` |
-| Admin | `pnpm lint`, `pnpm check`, `pnpm build` |
-| Uni-app | `pnpm lint`, `pnpm check:type`, `pnpm build` |
-| PC web | `pnpm lint`, `pnpm test:unit`, `pnpm build` |
-| Chrome extension | `npm ci`, `npm run build` |
-| Electron | `npm install --no-audit --no-fund`, `npm run lint`, `npm run build` |
-| Tauri | `cargo check --manifest-path src-tauri/Cargo.toml`, `npm install --no-audit --no-fund`, `npm run build` |
+| Backend | `go test ./...` |
+| Admin | `pnpm check:type --filter=@vben/web-antd` |
+| Uni-app | `pnpm check:type` |
+| PC web | `pnpm type-check` |
+| Chrome extension | `npm run type-check`, `npm test` |
+| Electron | `npm run typecheck` |
+| Tauri | `npm run build` |
 | Android | `./gradlew --no-daemon detekt test assembleDebug -x validateSigningDebug` |
-| iOS | `mise install`, `mise exec -- bundle install`, `mise exec -- bundle exec arkana`, `mise exec -- tuist generate --no-open`, `mise exec -- bundle exec fastlane buildAndTestLane` |
+| iOS | `swift build` |
+
+Stricter lint, production build, Tuist/Fastlane, and platform packaging checks
+are release checks. Run them before publishing when the touched template and
+local prerequisites require them.
 
 ## Documentation-Only Changes
 
