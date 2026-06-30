@@ -18,13 +18,14 @@
     "build": "npm run type-check && vite build",
     "build-only": "vite build",
     "preview": "vite preview",
-    "test": "node --test \"src/**/*.test.ts\"",
+    "test": "tsx --test src/extension-messages.test.ts src/popup/tabs.test.ts",
     "type-check": "tsc --noEmit",
     "pack:zip": "npm run build && cd dist && zip -qr ../chrome-extension.zip ."
   },
   "devDependencies": {
     "@types/chrome": "^0.0.329",
     "@types/node": "^24.10.4",
+    "tsx": "^4.22.4",
     "typescript": "~5.9.3",
     "vite": "^7.3.0"
   }

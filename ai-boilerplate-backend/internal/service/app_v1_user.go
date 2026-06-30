@@ -12,22 +12,46 @@ func NewAppV1UserService(
 	smsCodeRepo *data.SmsCodeRepo,
 	userRepo *data.UserRepo,
 	userMembershipRepo *data.UserMembershipRepo,
+	userMembershipChangeRepo *data.UserMembershipChangeRepo,
+	userMessageRepo *data.UserMessageRepo,
+	helpFeedbackRepo *data.HelpFeedbackRepo,
+	userNotificationSettingRepo *data.UserNotificationSettingRepo,
+	userBindDeviceRepo *data.UserBindDeviceRepo,
+	mallOrderRepo *data.MallOrderRepo,
+	mallActivationCodeRepo *data.MallActivationCodeRepo,
+	smsLogRepo *data.SmsLogRepo,
 ) *AppV1UserService {
 	l := log.NewHelper(log.With(logger, "module", "service/user"))
 	return &AppV1UserService{
-		log:                l,
-		commonRepo:         commonRepo,
-		smsCodeRepo:        smsCodeRepo,
-		userRepo:           userRepo,
-		userMembershipRepo: userMembershipRepo,
+		log:                         l,
+		commonRepo:                  commonRepo,
+		smsCodeRepo:                 smsCodeRepo,
+		userRepo:                    userRepo,
+		userMembershipRepo:          userMembershipRepo,
+		userMembershipChangeRepo:    userMembershipChangeRepo,
+		userMessageRepo:             userMessageRepo,
+		helpFeedbackRepo:            helpFeedbackRepo,
+		userNotificationSettingRepo: userNotificationSettingRepo,
+		userBindDeviceRepo:          userBindDeviceRepo,
+		mallOrderRepo:               mallOrderRepo,
+		mallActivationCodeRepo:      mallActivationCodeRepo,
+		smsLogRepo:                  smsLogRepo,
 	}
 }
 
 type AppV1UserService struct {
 	pb.UnimplementedUserServer
-	log                *log.Helper
-	commonRepo         *data.CommonRepo
-	smsCodeRepo        *data.SmsCodeRepo
-	userRepo           *data.UserRepo
-	userMembershipRepo *data.UserMembershipRepo
+	log                         *log.Helper
+	commonRepo                  *data.CommonRepo
+	smsCodeRepo                 *data.SmsCodeRepo
+	userRepo                    *data.UserRepo
+	userMembershipRepo          *data.UserMembershipRepo
+	userMembershipChangeRepo    *data.UserMembershipChangeRepo
+	userMessageRepo             *data.UserMessageRepo
+	helpFeedbackRepo            *data.HelpFeedbackRepo
+	userNotificationSettingRepo *data.UserNotificationSettingRepo
+	userBindDeviceRepo          *data.UserBindDeviceRepo
+	mallOrderRepo               *data.MallOrderRepo
+	mallActivationCodeRepo      *data.MallActivationCodeRepo
+	smsLogRepo                  *data.SmsLogRepo
 }

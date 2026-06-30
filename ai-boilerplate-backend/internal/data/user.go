@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/constant"
 	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/gorm/ai_boilerplate_repo"
 	"github.com/fzf-labs/gopkg/jwt"
 	"github.com/fzf-labs/goutil/cryptutil"
@@ -87,6 +88,31 @@ func (u *UserRepo) CheckToken(ctx context.Context, token string) (map[string]any
 		return nil, err
 	}
 	return claims, nil
+}
+
+// JwtTokenClear 清理当前 user 的 token
+func (u *UserRepo) JwtTokenClear(ctx context.Context, userID string) error {
+	_ = ctx
+
+	return u.jwt.JwtTokenClear(userID)
+}
+
+// BuildDeletedUserFields 构建账号注销后的用户脱敏字段。
+func (u *UserRepo) BuildDeletedUserFields(userID string) map[string]interface{} {
+	deletedPhone := fmt.Sprintf("deleted_%s", userID)
+	return map[string]interface{}{
+		"phone":          deletedPhone,
+		"password":       "",
+		"salt":           u.GenerateSalt(),
+		"nickname":       "已注销用户",
+		"gender":         int32(0),
+		"avatar":         "",
+		"profile":        "",
+		"other":          nil,
+		"wx_gzh_user_id": "",
+		"wx_gzh_xcx_id":  "",
+		"status":         int32(constant.StatusDisable),
+	}
 }
 
 // UserIdToNickname 根据userIds查询用户昵称

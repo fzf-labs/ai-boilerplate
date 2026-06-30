@@ -1,11 +1,13 @@
 import type { TabBar } from '@uni-helper/vite-plugin-uni-pages'
 import type { RemoveLeadingSlashFromUnion } from '@/typings'
 
+type AppLocationUrl = `/${string}`
+
 /**
  * 原生 tabbar 的单个选项配置
  */
 export type NativeTabBarItem = TabBar['list'][number] & {
-  pagePath: RemoveLeadingSlashFromUnion<_LocationUrl>
+  pagePath: RemoveLeadingSlashFromUnion<AppLocationUrl>
 }
 
 /** badge 显示一个数字或 小红点（样式可以直接在 tabbar/index.vue 里面修改） */
@@ -14,7 +16,7 @@ export type CustomTabBarItemBadge = number | 'dot'
 /** 自定义 tabbar 的单个选项配置 */
 export interface CustomTabBarItem {
   text: string
-  pagePath: RemoveLeadingSlashFromUnion<_LocationUrl>
+  pagePath: RemoveLeadingSlashFromUnion<AppLocationUrl>
   /** 图标类型，不建议用 image 模式，因为需要配置 2 张图，更麻烦 */
   iconType: 'uiLib' | 'unocss' | 'iconfont' | 'image'
   /**
