@@ -1,11 +1,18 @@
 # Verification Commands
 
+The repository CI gate lives in
+[.github/workflows/quality-gates.yml](../.github/workflows/quality-gates.yml).
+Mark that workflow as a required branch-protection check when merges must be
+blocked by verification failures.
+
 Use the smallest command that covers the project you touched. Run from the
 listed directory unless noted otherwise.
 
 Install dependencies inside each template directory before running Node-based
 checks. Backend checks require Go, Android checks require an Android SDK, and
 iOS checks require Swift Package Manager/Xcode tooling.
+
+## Fast Local Checks
 
 | Project | Command |
 | --- | --- |
@@ -27,6 +34,23 @@ Xcode or Tuist build for the affected target.
 When a command cannot run because a local SDK, package manager, signing asset,
 or generated workspace is missing, keep the exact command output in the task
 summary and run the targeted static checks that cover the edited files.
+
+## CI Gate Commands
+
+These commands mirror the quality-gates workflow and should pass before
+publishing cross-template changes.
+
+| Template | Core verification |
+| --- | --- |
+| Backend | `golangci-lint run --config .golangci.yml ./... -v`, `go test ./...` |
+| Admin | `pnpm lint`, `pnpm check`, `pnpm build` |
+| Uni-app | `pnpm lint`, `pnpm check:type`, `pnpm build` |
+| PC web | `pnpm lint`, `pnpm test:unit`, `pnpm build` |
+| Chrome extension | `npm ci`, `npm run build` |
+| Electron | `npm install --no-audit --no-fund`, `npm run lint`, `npm run build` |
+| Tauri | `cargo check --manifest-path src-tauri/Cargo.toml`, `npm install --no-audit --no-fund`, `npm run build` |
+| Android | `./gradlew --no-daemon detekt test assembleDebug -x validateSigningDebug` |
+| iOS | `mise install`, `mise exec -- bundle install`, `mise exec -- bundle exec arkana`, `mise exec -- tuist generate --no-open`, `mise exec -- bundle exec fastlane buildAndTestLane` |
 
 ## Documentation-Only Changes
 

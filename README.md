@@ -112,11 +112,19 @@ product decision that is not already documented.
 
 - [Operations guide](docs/operations.md): start-work workflow, task priority, generated artifacts, subtree workflow, and release checks.
 - [Technical decisions](docs/technical-decisions.md): stack choices, template tradeoffs, and selection guidance.
-- [Verification commands](docs/verification.md): targeted and full verification commands for every template.
+- [Verification commands](docs/verification.md): targeted local checks and CI gate commands for every template.
 - [Generated artifacts](docs/generated-artifacts.md): backend API, Swagger, GORM, and frontend client generation flow.
 - [Environment configuration](docs/environment.md): local endpoints, secrets, and per-template environment files.
 - [Troubleshooting](docs/troubleshooting.md): common setup, dependency, verification, and API integration failures.
 - [Release checklist](docs/release.md): pre-publish checks for single-template and cross-template changes.
+
+## Verification
+
+The repository CI gate lives in
+[.github/workflows/quality-gates.yml](.github/workflows/quality-gates.yml).
+Keep [docs/verification.md](docs/verification.md) aligned with that workflow.
+Mark the workflow as a required branch-protection check when merges must be
+blocked by verification failures.
 
 ## Development Workflow
 

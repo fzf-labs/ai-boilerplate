@@ -1,0 +1,210 @@
+name: Quality Gates
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-gates-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: "20.19.0"
+  JAVA_VERSION: "21"
+
+jobs:
+  backend:
+    name: Backend
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: ai-boilerplate-backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: ai-boilerplate-backend/go.mod
+          cache: true
+          cache-dependency-path: ai-boilerplate-backend/go.sum
+      - name: Install golangci-lint
+        run: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+      - name: Lint
+        run: $(go env GOPATH)/bin/golangci-lint run --config .golangci.yml ./... -v
+      - name: Test
+        run: go test ./...
+
+  admin:
+    name: Admin
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: ai-boilerplate-admin
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: ai-boilerplate-admin/pnpm-lock.yaml
+      - run: corepack enable
+      - run: corepack prepare pnpm@10.14.0 --activate
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm check
+      - run: pnpm build
+
+  uniapp:
+    name: UniApp
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: ai-boilerplate-uniapp
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: ai-boilerplate-uniapp/pnpm-lock.yaml
+      - run: corepack enable
+      - run: corepack prepare pnpm@10.10.0 --activate
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm check:type
+      - run: pnpm build
+
+  pc:
+    name: PC
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: ai-boilerplate-pc
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: ai-boilerplate-pc/pnpm-lock.yaml
+      - run: corepack enable
+      - run: corepack prepare pnpm@10.14.0 --activate
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm test:unit
+      - run: pnpm build
+
+  chrome-extension:
+    name: Chrome Extension
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: ai-boilerplate-chrome-extension
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: ai-boilerplate-chrome-extension/package-lock.json
+      - run: npm ci
+      - run: npm run build
+
+  electron:
+    name: Electron
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    defaults:
+      run:
+        working-directory: ai-boilerplate-electron
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - run: npm install --no-audit --no-fund
+      - run: npm run lint
+      - run: npm run build
+
+  tauri:
+    name: Tauri
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    defaults:
+      run:
+        working-directory: ai-boilerplate-tauri
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - run: npm install --no-audit --no-fund
+      - run: cargo check --manifest-path src-tauri/Cargo.toml
+      - run: npm run build
+
+  android:
+    name: Android
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    defaults:
+      run:
+        working-directory: ai-boilerplate-android
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: gradle
+      - uses: android-actions/setup-android@v3
+      - run: ./gradlew --no-daemon detekt test assembleDebug -x validateSigningDebug
+
+  ios:
+    name: iOS
+    runs-on: macos-latest
+    timeout-minutes: 90
+    defaults:
+      run:
+        working-directory: ai-boilerplate-ios
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cache Bundler
+        uses: actions/cache@v4
+        with:
+          path: ai-boilerplate-ios/vendor/bundle
+          key: ios-bundler-${{ runner.os }}-${{ hashFiles('ai-boilerplate-ios/Gemfile.lock') }}
+          restore-keys: |
+            ios-bundler-${{ runner.os }}-
+      - name: Cache SwiftPM
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/Library/Caches/org.swift.swiftpm
+            ~/Library/Caches/tuist
+          key: ios-swiftpm-${{ runner.os }}-${{ hashFiles('ai-boilerplate-ios/Package.resolved', 'ai-boilerplate-ios/Package.swift', 'ai-boilerplate-ios/Project.swift', 'ai-boilerplate-ios/.mise.toml') }}
+          restore-keys: |
+            ios-swiftpm-${{ runner.os }}-
+      - name: Install Mise
+        run: brew install mise
+      - name: Install toolchain
+        run: mise install
+      - name: Configure Bundler path
+        run: mise exec -- bundle config set path vendor/bundle
+      - name: Install gems
+        run: mise exec -- bundle install --jobs 4 --retry 3
+      - name: Generate secrets
+        run: mise exec -- bundle exec arkana
+      - name: Generate project
+        run: mise exec -- tuist generate --no-open
+      - name: Test
+        run: mise exec -- bundle exec fastlane buildAndTestLane
