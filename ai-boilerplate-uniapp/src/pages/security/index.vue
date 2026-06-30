@@ -3,6 +3,7 @@ import type { BindPhoneReq, ChangePasswordReq, DeleteAccountReq } from '@/api/v1
 import { useMessage, useToast } from 'wot-design-uni'
 import { bindPhone, changePassword, deleteAccount, sendVerifyCode } from '@/api/v1/user/user'
 import { useTokenStore } from '@/store/token'
+import { DELETE_ACCOUNT_POLICY_COPY } from './delete-account-policy'
 
 definePage({
   style: {
@@ -32,7 +33,7 @@ const menuList = [
   {
     title: '注销账号',
     icon: 'delete1',
-    label: '不可恢复，请谨慎操作',
+    label: '清理资料与绑定，保留脱敏账务记录',
     action: 'deleteAccount',
     danger: true,
   },
@@ -402,7 +403,7 @@ onUnload(() => {
     >
       <view class="sheet-form">
         <view class="danger-tip">
-          注销后，账号数据将被永久删除且无法恢复
+          {{ DELETE_ACCOUNT_POLICY_COPY }}
         </view>
         <wd-input
           v-model="deleteAccountForm.password"
