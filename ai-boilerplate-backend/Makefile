@@ -192,7 +192,7 @@ gci:
 .PHONY: api-schema-test
 # API Schema 契约测试 (用法: make api-schema-test [FILE=xxx.swagger.json] [METHOD=GET])
 api-schema-test:
-	@./scripts/api-schema-test.sh $(if $(METHOD),-m $(METHOD),) $(FILE)
+	@TEST_API_URL="$(TEST_API_URL)" TEST_ADMIN_USER="$(TEST_ADMIN_USER)" TEST_ADMIN_PASS="$(TEST_ADMIN_PASS)" TEST_LOGIN_PATH="$(TEST_LOGIN_PATH)" ./scripts/api-schema-test.sh $(if $(METHOD),-m $(METHOD),) $(if $(NO_AUTH),--no-auth,) $(FILE)
 
 # show help
 help:

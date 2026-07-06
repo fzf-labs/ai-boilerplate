@@ -7,10 +7,10 @@ set -e
 
 # ==================== 配置 ====================
 
-API_URL="${TEST_API_URL}"
-ADMIN_USER="${TEST_ADMIN_USER}"
-ADMIN_PASS="${TEST_ADMIN_PASS}"
-LOGIN_PATH="${TEST_LOGIN_PATH}"
+API_URL="${TEST_API_URL:-http://localhost:8000}"
+ADMIN_USER="${TEST_ADMIN_USER:-admin}"
+ADMIN_PASS="${TEST_ADMIN_PASS:-123456}"
+LOGIN_PATH="${TEST_LOGIN_PATH:-/admin/v1/sys_auth/login}"
 SWAGGER_DIR="doc/swagger"
 METHOD="GET"
 VERBOSE=""
