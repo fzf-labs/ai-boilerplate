@@ -84,13 +84,16 @@ The Makefile includes a schema-test entry point for generated Swagger files:
 
 ```bash
 make api-schema-test
-make api-schema-test FILE=admin/v1/user.swagger.json METHOD=GET
+make api-schema-test FILE=doc/swagger/admin/v1/user.swagger.json METHOD=GET
+./scripts/api-schema-test.sh --all -m ALL
 ```
 
 Set `TEST_API_URL`, `TEST_ADMIN_USER`, `TEST_ADMIN_PASS`, and `TEST_LOGIN_PATH`
 when testing against a non-default local server.
 
-Schema tests target a running HTTP server. If the server depends on external
+The default `make api-schema-test` command runs a smoke matrix covering one
+admin Swagger file and one app Swagger file against a running HTTP server. Use
+`--all` for exhaustive contract coverage. If the server depends on external
 accounts or production credentials, do not point the tests at that environment
 without explicit approval.
 

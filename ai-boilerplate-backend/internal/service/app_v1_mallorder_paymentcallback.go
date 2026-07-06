@@ -4,14 +4,12 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
-	"strings"
 	"time"
 
 	pb "github.com/fzf-labs/ai-boilerplate-backend/api/app/v1"
 	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/constant"
 	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/gorm/ai_boilerplate_dao"
 	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/gorm/ai_boilerplate_model"
-	"gorm.io/datatypes"
 )
 
 // PaymentCallback 支付回调接口
@@ -44,25 +42,8 @@ func (a *AppV1MallOrderService) PaymentCallback(ctx context.Context, req *pb.Pay
 	}
 
 	now := time.Now()
-	transactionID := strings.TrimSpace(req.GetTransactionId())
-	if transactionID == "" {
-		transactionID = order.ID
-	}
-	paymentMethod := strings.TrimSpace(req.GetPaymentMethod())
-	if paymentMethod == "" {
-		paymentMethod = order.PaymentMethod
-	}
-	callbackJSON := datatypes.JSON([]byte("{}"))
-	rawCallbackData := strings.TrimSpace(req.GetCallbackData())
-	if rawCallbackData != "" {
-		if json.Valid([]byte(rawCallbackData)) {
-			callbackJSON = datatypes.JSON([]byte(rawCallbackData))
-		} else {
-			encoded, _ := json.Marshal(map[string]string{"raw": rawCallbackData})
-			callbackJSON = datatypes.JSON(encoded)
-		}
-	}
-	paymentRecord, err := a.mallPaymentRecordRepo.FindOneCacheByTransactionID(ctx, transactionID)
+	callbackInput := buildPaymentCallbackInput(order, req)
+	paymentRecord, err := a.mallPaymentRecordRepo.FindOneCacheByTransactionID(ctx, callbackInput.transactionID)
 	if err != nil {
 		resp.Message = "支付记录查询失败"
 		return resp, nil
@@ -70,62 +51,20 @@ func (a *AppV1MallOrderService) PaymentCallback(ctx context.Context, req *pb.Pay
 
 	err = a.commonRepo.Transaction(ctx, func(tx *ai_boilerplate_dao.Query) error {
 		oldOrder := a.mallOrderRepo.DeepCopy(order)
-		order.PaymentMethod = paymentMethod
-		if req.GetPaymentStatus() == 1 {
-			order.PaymentStatus = 1
-			order.PaymentTime = sql.NullTime{Time: now, Valid: true}
-			if order.ProductType == constant.MallProductTypeMembership.String() {
-				order.Status = "completed"
-				order.DeliveryTime = sql.NullTime{Time: now, Valid: true}
-			} else {
-				order.Status = "pendingDelivery"
-			}
-		} else {
-			order.PaymentStatus = 2
-			order.Status = "canceled"
-		}
+		applyPaymentCallbackToOrder(order, req.GetPaymentStatus(), callbackInput.paymentMethod, now)
 		if err := a.mallOrderRepo.UpdateOneCacheWithZeroByTx(ctx, tx, order, oldOrder); err != nil {
 			return err
 		}
 
 		if paymentRecord == nil || paymentRecord.ID == "" {
 			paymentRecord = a.mallPaymentRecordRepo.NewData()
-			paymentRecord.OrderID = order.ID
-			paymentRecord.TransactionID = transactionID
-			paymentRecord.PaymentChannel = paymentMethod
-			paymentRecord.PaymentMethod = paymentMethod
-			paymentRecord.Amount = order.ActualAmount
-			paymentRecord.Currency = order.Currency
-			paymentRecord.Status = int32(constant.StatusEnable)
-			paymentRecord.ThirdPartyOrderNo = order.ID
-			paymentRecord.CreatedAt = now
-			paymentRecord.UpdatedAt = now
-			paymentRecord.PaymentStatus = req.GetPaymentStatus()
-			paymentRecord.ThirdPartyTransactionID = strings.TrimSpace(req.GetTransactionId())
-			paymentRecord.CallbackData = callbackJSON
-			paymentRecord.CallbackTime = sql.NullTime{Time: now, Valid: true}
-			if req.GetPaymentStatus() == 2 {
-				paymentRecord.ErrorMessage = "支付失败"
-			}
+			applyPaymentCallbackToRecord(paymentRecord, order, req.GetPaymentStatus(), callbackInput, now, true)
 			if err := a.mallPaymentRecordRepo.CreateOneCacheByTx(ctx, tx, paymentRecord); err != nil {
 				return err
 			}
 		} else {
 			oldPaymentRecord := a.mallPaymentRecordRepo.DeepCopy(paymentRecord)
-			paymentRecord.PaymentChannel = paymentMethod
-			paymentRecord.PaymentMethod = paymentMethod
-			paymentRecord.Amount = order.ActualAmount
-			paymentRecord.Currency = order.Currency
-			paymentRecord.PaymentStatus = req.GetPaymentStatus()
-			paymentRecord.ThirdPartyTransactionID = strings.TrimSpace(req.GetTransactionId())
-			paymentRecord.CallbackData = callbackJSON
-			paymentRecord.CallbackTime = sql.NullTime{Time: now, Valid: true}
-			paymentRecord.Status = int32(constant.StatusEnable)
-			if req.GetPaymentStatus() == 1 {
-				paymentRecord.ErrorMessage = ""
-			} else {
-				paymentRecord.ErrorMessage = "支付失败"
-			}
+			applyPaymentCallbackToRecord(paymentRecord, order, req.GetPaymentStatus(), callbackInput, now, false)
 			if err := a.mallPaymentRecordRepo.UpdateOneCacheWithZeroByTx(ctx, tx, paymentRecord, oldPaymentRecord); err != nil {
 				return err
 			}

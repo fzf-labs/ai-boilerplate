@@ -78,7 +78,7 @@ func (s *SysMenuRepo) TraverseMenuTree(_ context.Context, menus []*ai_boilerplat
 func (s *SysMenuRepo) TraversePermissions(_ context.Context, menus []*ai_boilerplate_model.SysMenu) ([]string, error) {
 	var permissions []string
 	for _, menu := range menus {
-		if menu.Permission != "" {
+		if menu.Status == int16(constant.StatusEnable) && menu.Permission != "" {
 			permissions = append(permissions, menu.Permission)
 		}
 	}

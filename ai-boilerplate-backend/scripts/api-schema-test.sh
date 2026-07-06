@@ -7,14 +7,18 @@ set -e
 
 # ==================== 配置 ====================
 
-API_URL="${TEST_API_URL}"
-ADMIN_USER="${TEST_ADMIN_USER}"
-ADMIN_PASS="${TEST_ADMIN_PASS}"
-LOGIN_PATH="${TEST_LOGIN_PATH}"
+API_URL="${TEST_API_URL:-http://localhost:8000}"
+ADMIN_USER="${TEST_ADMIN_USER:-admin}"
+ADMIN_PASS="${TEST_ADMIN_PASS:-123456}"
+LOGIN_PATH="${TEST_LOGIN_PATH:-/admin/v1/sys_auth/login}"
 SWAGGER_DIR="doc/swagger"
 METHOD="GET"
 VERBOSE=""
 TOKEN=""
+DEFAULT_SWAGGER_FILES=(
+    "doc/swagger/admin/v1/sys_auth.swagger.json"
+    "doc/swagger/app/v1/user.swagger.json"
+)
 
 # 颜色
 RED='\033[0;31m'
@@ -34,7 +38,7 @@ Swagger Schema API 契约测试工具 (基于 schemathesis)
 Options:
   -u, --url URL       API URL (默认: $API_URL)
   -m, --method M      方法过滤: GET/POST/PUT/DELETE/ALL (默认: GET)
-  -a, --all           测试所有 Swagger 文件
+  -a, --all           测试所有 Swagger 文件（默认仅运行 admin/app smoke 矩阵）
   -v, --verbose       详细输出
   --user USER         用户名 (默认: admin)
   --pass PASS         密码 (默认: 123456)
@@ -43,10 +47,10 @@ Options:
   -h, --help          显示帮助
 
 示例:
-  $0                                              # 测试所有文件的 GET 接口
+  $0                                              # 测试默认 admin/app smoke 矩阵的 GET 接口
   $0 doc/swagger/admin/v1/sys_admin.swagger.json  # 测试指定文件
   $0 -m POST                                      # 测试 POST 接口
-  $0 -m ALL -v                                    # 测试所有方法，详细输出
+  $0 --all -m ALL -v                              # 测试所有文件的所有方法，详细输出
   $0 --url http://api.example.com                 # 指定 API URL
 
 环境变量:
@@ -146,6 +150,46 @@ collect_files() {
     find "$SWAGGER_DIR" -name "*.swagger.json" -type f | grep -v "error_reason" | sort
 }
 
+# 收集默认 smoke 测试文件：至少覆盖一个 admin 和一个 app Swagger
+collect_default_files() {
+    local file
+    for file in "${DEFAULT_SWAGGER_FILES[@]}"; do
+        if [ -f "$file" ]; then
+            echo "$file"
+        else
+            echo -e "${YELLOW}⚠️  默认 Swagger 文件不存在，已跳过: $file${NC}" >&2
+        fi
+    done
+}
+
+run_files() {
+    local files="$1"
+    local count
+    local failed=0
+
+    files=$(echo "$files" | sed '/^$/d')
+    if [ -z "$files" ]; then
+        echo -e "${RED}❌ 未找到可测试的 Swagger 文件${NC}"
+        exit 1
+    fi
+
+    count=$(echo "$files" | wc -l | tr -d ' ')
+    echo -e "\n📁 找到 $count 个 Swagger 文件"
+
+    local file
+    for file in $files; do
+        if ! test_file "$file"; then
+            failed=$((failed + 1))
+            echo -e "${RED}❌ $(basename "$file") 测试失败${NC}"
+        fi
+    done
+
+    if [ "$failed" -gt 0 ]; then
+        echo -e "\n${RED}❌ $failed 个 Swagger 文件测试失败${NC}"
+        exit 1
+    fi
+}
+
 # ==================== 主逻辑 ====================
 
 # 解析参数
@@ -234,17 +278,14 @@ if [ -n "$SWAGGER_FILE" ]; then
         echo -e "${RED}❌ 文件不存在: $SWAGGER_FILE${NC}"
         exit 1
     fi
-    test_file "$SWAGGER_FILE"
+    run_files "$SWAGGER_FILE"
 else
-    # 测试所有文件
-    files=$(collect_files)
-    count=$(echo "$files" | wc -l | tr -d ' ')
-    
-    echo -e "\n📁 找到 $count 个 Swagger 文件"
-    
-    for file in $files; do
-        test_file "$file"
-    done
+    if [ -n "$TEST_ALL" ]; then
+        files=$(collect_files)
+    else
+        files=$(collect_default_files)
+    fi
+    run_files "$files"
 fi
 
 echo -e "\n${GREEN}✅ 测试完成${NC}"
