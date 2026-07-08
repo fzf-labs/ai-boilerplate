@@ -56,6 +56,28 @@ Stricter lint, production build, Tuist/Fastlane, and platform packaging checks
 are release checks. Run them before publishing when the touched template and
 local prerequisites require them.
 
+## Backend Core Test Matrix
+
+Backend P0 changes should keep these flows covered by automated tests before
+running broader integration checks.
+
+| Flow | Coverage target | Local command |
+| --- | --- | --- |
+| Auth/token | Admin and app user token generation/parsing, token claim shape | `go test ./internal/data` |
+| RBAC | Auth whitelist matcher, menu tree filtering, permission de-duplication | `go test ./internal/middleware/auth ./internal/data` |
+| Payment orders | Payment callback input normalization, order status transitions, payment record mapping | `go test ./internal/service` |
+| SMS verification codes | Scene config, code generation, send callback behavior | `go test ./internal/data` |
+| Account deletion | Deleted-user reference and anonymized retained user fields | `go test ./internal/service ./internal/data` |
+| Secret masking | SMS channel API key/secret response masking | `go test ./internal/service` |
+| API schema smoke | One admin Swagger and one app Swagger against a running server | `make api-schema-test` |
+| API schema full | All Swagger files against a running server | `./scripts/api-schema-test.sh --all -m ALL` |
+
+Run backend commands from `ai-boilerplate-backend`. The Go tests use local
+fixtures under `internal/testfixture` and must not depend on production
+accounts. Schema tests require the HTTP server to be running and use
+`TEST_API_URL`, `TEST_ADMIN_USER`, `TEST_ADMIN_PASS`, and `TEST_LOGIN_PATH` for
+non-default environments.
+
 ## Documentation-Only Changes
 
 For root documentation edits that do not change code or generated artifacts,

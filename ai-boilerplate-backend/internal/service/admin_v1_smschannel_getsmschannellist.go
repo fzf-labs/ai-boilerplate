@@ -2,10 +2,8 @@ package service
 
 import (
 	"context"
-	"time"
 
 	pb "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1"
-	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/constant"
 	"github.com/fzf-labs/godb/orm/condition"
 )
 
@@ -71,19 +69,7 @@ func (a *AdminV1SmsChannelService) GetSmsChannelList(ctx context.Context, req *p
 	resp.Total = p.Total
 	if len(list) > 0 {
 		for _, v := range list {
-			resp.List = append(resp.List, &pb.SmsChannelInfo{
-				Id:           v.ID,
-				Name:         v.Name,
-				Operator:     v.Operator,
-				Remark:       v.Remark,
-				APIKey:       v.APIKey,
-				APISecret:    v.APISecret,
-				CallbackURL:  v.CallbackURL,
-				Status:       int32(v.Status),
-				CreatedAt:    v.CreatedAt.Format(time.RFC3339),
-				UpdatedAt:    v.UpdatedAt.Format(time.RFC3339),
-				OperatorName: constant.SmsChannelCodeToName[v.Operator],
-			})
+			resp.List = append(resp.List, smsChannelInfoFromModel(v))
 		}
 	}
 	return resp, nil
