@@ -34,6 +34,20 @@ func (a *AppV1MallOrderService) PaymentCallback(ctx context.Context, req *pb.Pay
 		return resp, nil
 	}
 
+	if err := verifyMockPaymentCallbackSignature(order, req); err != nil {
+		resp.Message = "支付回调验签失败"
+		if a.log != nil {
+			a.log.WithContext(ctx).Warnf("payment callback signature invalid: %v", err)
+		}
+		return resp, nil
+	}
+
+	callbackInput := buildPaymentCallbackInput(order, req)
+	if !isSupportedPaymentChannel(callbackInput.paymentChannel) {
+		resp.Message = "支付渠道不支持"
+		return resp, nil
+	}
+
 	// 2. 校验订单状态
 	if order.PaymentStatus == 1 {
 		resp.Success = true
@@ -42,7 +56,27 @@ func (a *AppV1MallOrderService) PaymentCallback(ctx context.Context, req *pb.Pay
 	}
 
 	now := time.Now()
-	callbackInput := buildPaymentCallbackInput(order, req)
+	if order.PaymentStatus == 2 || order.Status == "canceled" {
+		if req.GetPaymentStatus() == 2 {
+			resp.Success = true
+			resp.Message = "订单已关闭"
+		} else {
+			resp.Message = "订单已关闭,不允许重复支付"
+		}
+		return resp, nil
+	}
+	if order.ExpiredTime.Valid && now.After(order.ExpiredTime.Time) {
+		oldOrder := a.mallOrderRepo.DeepCopy(order)
+		order.PaymentStatus = 2
+		order.Status = "canceled"
+		if err := a.mallOrderRepo.UpdateOneCacheWithZero(ctx, order, oldOrder); err != nil {
+			resp.Message = "订单过期处理失败"
+			return resp, nil
+		}
+		resp.Message = "订单已过期"
+		return resp, nil
+	}
+
 	paymentRecord, err := a.mallPaymentRecordRepo.FindOneCacheByTransactionID(ctx, callbackInput.transactionID)
 	if err != nil {
 		resp.Message = "支付记录查询失败"
@@ -51,7 +85,7 @@ func (a *AppV1MallOrderService) PaymentCallback(ctx context.Context, req *pb.Pay
 
 	err = a.commonRepo.Transaction(ctx, func(tx *ai_boilerplate_dao.Query) error {
 		oldOrder := a.mallOrderRepo.DeepCopy(order)
-		applyPaymentCallbackToOrder(order, req.GetPaymentStatus(), callbackInput.paymentMethod, now)
+		applyPaymentCallbackToOrder(order, req.GetPaymentStatus(), callbackInput.paymentChannel, now)
 		if err := a.mallOrderRepo.UpdateOneCacheWithZeroByTx(ctx, tx, order, oldOrder); err != nil {
 			return err
 		}
@@ -88,16 +122,24 @@ func (a *AppV1MallOrderService) PaymentCallback(ctx context.Context, req *pb.Pay
 		if productConfig.Membership.MembershipType == "" || productConfig.Membership.DurationDays <= 0 {
 			return pb.ErrorReasonActivationCodeProductConfigInvalid()
 		}
-		userMembership, err := a.userMembershipRepo.GetUserActualMembershipInfo(ctx, order.UserID)
+		userMembership, err := a.getOrCreateUserMembershipByTx(ctx, tx, order.UserID)
 		if err != nil {
 			return err
 		}
-		oldUserMembership, _ := json.Marshal(userMembership)
 		oldMembershipData := a.userMembershipRepo.DeepCopy(userMembership)
+		oldUserMembership, _ := json.Marshal(oldMembershipData)
+		oldMembershipType := userMembership.MembershipType
+		oldExpiredAt := userMembership.ExpiredAt.Time
+		if oldMembershipType != constant.MembershipTypeNormal.String() &&
+			userMembership.ExpiredAt.Valid &&
+			userMembership.ExpiredAt.Time.Before(now) {
+			oldMembershipType = constant.MembershipTypeNormal.String()
+			oldExpiredAt = time.Time{}
+		}
 		newMembershipType, newExpiredAt, err := a.userMembershipRepo.CalcMembershipChange(
 			ctx,
-			userMembership.MembershipType,
-			userMembership.ExpiredAt.Time,
+			oldMembershipType,
+			oldExpiredAt,
 			productConfig.Membership.MembershipType,
 			int(productConfig.Membership.DurationDays),
 		)
@@ -136,4 +178,22 @@ func (a *AppV1MallOrderService) PaymentCallback(ctx context.Context, req *pb.Pay
 		resp.Message = "支付失败,订单已取消"
 	}
 	return resp, nil
+}
+
+func (a *AppV1MallOrderService) getOrCreateUserMembershipByTx(ctx context.Context, tx *ai_boilerplate_dao.Query, userID string) (*ai_boilerplate_model.UserMembership, error) {
+	userMembership, err := a.userMembershipRepo.FindOneCacheByUserID(ctx, userID)
+	if err != nil {
+		return nil, err
+	}
+	if userMembership != nil && userMembership.ID != "" {
+		return userMembership, nil
+	}
+	userMembership = a.userMembershipRepo.NewData()
+	userMembership.UserID = userID
+	userMembership.MembershipType = constant.MembershipTypeNormal.String()
+	userMembership.Status = int32(constant.StatusEnable)
+	if err := a.userMembershipRepo.CreateOneCacheByTx(ctx, tx, userMembership); err != nil {
+		return nil, err
+	}
+	return userMembership, nil
 }
