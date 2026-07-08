@@ -2,6 +2,7 @@ package service
 
 import (
 	"encoding/json"
+	"strings"
 	"testing"
 	"time"
 
@@ -20,11 +21,15 @@ func TestBuildPaymentCallbackInputUsesFallbacksAndNormalizesRawCallback(t *testi
 	req.CallbackData = "provider=ok"
 
 	got := buildPaymentCallbackInput(order, req)
-	if got.transactionID != order.ID {
-		t.Fatalf("transactionID = %q, want order id %q", got.transactionID, order.ID)
+	wantTransactionID := buildMockPaymentTransactionID(order.ID)
+	if got.transactionID != wantTransactionID {
+		t.Fatalf("transactionID = %q, want %q", got.transactionID, wantTransactionID)
 	}
-	if got.paymentMethod != order.PaymentMethod {
-		t.Fatalf("paymentMethod = %q, want %q", got.paymentMethod, order.PaymentMethod)
+	if got.paymentChannel != order.PaymentMethod {
+		t.Fatalf("paymentChannel = %q, want %q", got.paymentChannel, order.PaymentMethod)
+	}
+	if got.paymentMethod != paymentMethodH5 {
+		t.Fatalf("paymentMethod = %q, want %q", got.paymentMethod, paymentMethodH5)
 	}
 	if got.thirdPartyTransactionID != "" {
 		t.Fatalf("thirdPartyTransactionID = %q, want empty trimmed value", got.thirdPartyTransactionID)
@@ -116,6 +121,9 @@ func TestApplyPaymentCallbackToRecord(t *testing.T) {
 	if record.OrderID != order.ID || record.TransactionID != req.TransactionId {
 		t.Fatalf("unexpected record identity: %#v", record)
 	}
+	if record.PaymentChannel != paymentChannelWechat || record.PaymentMethod != paymentMethodH5 {
+		t.Fatalf("unexpected record payment route: %#v", record)
+	}
 	if record.Amount != order.ActualAmount || record.Currency != order.Currency {
 		t.Fatalf("unexpected record amount: %#v", record)
 	}
@@ -129,5 +137,43 @@ func TestApplyPaymentCallbackToRecord(t *testing.T) {
 	applyPaymentCallbackToRecord(record, order, 2, input, now, false)
 	if record.PaymentStatus != 2 || record.ErrorMessage != "支付失败" {
 		t.Fatalf("unexpected failed record status: %#v", record)
+	}
+}
+
+func TestMockPaymentCallbackSignature(t *testing.T) {
+	t.Parallel()
+
+	order := testfixture.MallOrder(constant.MallProductTypeMembership.String())
+	transactionID := buildMockPaymentTransactionID(order.ID)
+	now := time.Date(2026, 2, 3, 4, 5, 6, 0, time.UTC)
+	req := testfixture.PaymentCallbackReq(order.ID, 1)
+	req.TransactionId = transactionID
+	req.CallbackData = buildMockPaymentCallbackData(order, transactionID, 1, now)
+
+	if err := verifyMockPaymentCallbackSignature(order, req); err != nil {
+		t.Fatalf("signature should verify: %v", err)
+	}
+
+	req.PaymentStatus = 2
+	if err := verifyMockPaymentCallbackSignature(order, req); err == nil {
+		t.Fatalf("signature should fail after status tampering")
+	}
+}
+
+func TestBuildMockPaymentURLIncludesSignedPrepayPayload(t *testing.T) {
+	t.Parallel()
+
+	order := testfixture.MallOrder(constant.MallProductTypeMembership.String())
+	transactionID := buildMockPaymentTransactionID(order.ID)
+	timestamp := "1770110706"
+	nonce := "fixture-nonce"
+	sign := buildMockPaymentSign(order.ID, transactionID, 0, order.ActualAmount, timestamp, nonce)
+
+	got := buildMockPaymentURL(order, transactionID, timestamp, nonce, sign)
+	if !strings.Contains(got, "https://mock-pay.local/wechat/checkout?") {
+		t.Fatalf("unexpected mock payment url: %s", got)
+	}
+	if !strings.Contains(got, "prepayId="+transactionID) || !strings.Contains(got, "sign="+sign) {
+		t.Fatalf("mock payment url missing signed payload: %s", got)
 	}
 }
