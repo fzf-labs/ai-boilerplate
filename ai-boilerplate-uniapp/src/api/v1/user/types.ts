@@ -107,6 +107,46 @@ export type LoginResponses = {
   default: Status;
 };
 
+export type LogoutReply = object;
+
+export type LogoutReq = object;
+
+export type LogoutResponses = {
+  /**
+   * A successful response.
+   */
+  200: LogoutReply;
+  /**
+   * An unexpected error response.
+   */
+  default: Status;
+};
+
+export type RefreshTokenReply = {
+  /** token */
+  token?: string;
+  /** 过期时间 */
+  expiredAt?: number;
+  /** 刷新时间 */
+  refreshAt?: number;
+};
+
+export type RefreshTokenReq = {
+  /** 刷新token */
+  refreshToken: string;
+};
+
+export type RefreshTokenResponses = {
+  /**
+   * A successful response.
+   */
+  200: RefreshTokenReply;
+  /**
+   * An unexpected error response.
+   */
+  default: Status;
+};
+
 export type RegisterReply = {
   /** 用户ID */
   id?: string;
