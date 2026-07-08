@@ -248,10 +248,12 @@ export const useTokenStore = defineStore(
      */
     const logout = async () => {
       try {
-        // api/v1 目前未提供退出登录接口，这里仅做本地清理
+        const { logout: apiLogout } = await import('@/api/v1/user')
+        await apiLogout({ body: {} })
       }
       catch (error) {
         console.error('退出登录失败:', error)
+        // 不抛出错误，因为我们需要无论如何都清除本地状态
       }
       finally {
         updateNowTime()
@@ -278,8 +280,33 @@ export const useTokenStore = defineStore(
       }
 
       try {
-        // api/v1 目前未提供刷新 token 接口
-        throw new Error('后端未提供 refresh token 接口，请在 api/v1 中补齐后再接入')
+        const currentRefreshToken = isSingleTokenRes(tokenInfo.value)
+          ? ''
+          : isDoubleTokenRes(tokenInfo.value)
+            ? tokenInfo.value.refreshToken
+            : ''
+
+        if (!currentRefreshToken) {
+          throw new Error('无有效的 refreshToken')
+        }
+
+        const { refreshToken: apiFunc } = await import('@/api/v1/user')
+        const res = await apiFunc({ body: { refreshToken: currentRefreshToken } })
+
+        if (!res) {
+          throw new Error('后端返回数据为空')
+        }
+
+        // 将后端响应转换为客户端 token 信息格式
+        const newTokenInfo: IDoubleTokenRes = {
+          accessToken: res.token || '',
+          accessExpiresIn: res.expiredAt ? Math.floor(res.expiredAt / 1000) : 0,
+          refreshToken: res.token || '', // 后端返回新 token，作为刷新后的令牌
+          refreshExpiresIn: res.refreshAt ? Math.floor(res.refreshAt / 1000) : 0,
+        }
+
+        setTokenInfo(newTokenInfo)
+        return newTokenInfo
       }
       catch (error) {
         console.error('刷新token失败:', error)

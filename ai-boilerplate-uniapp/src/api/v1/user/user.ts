@@ -59,6 +59,24 @@ export function login({
   });
 }
 
+/** 退出登录 返回值: An unexpected error response. POST /app/v1/user/logout */
+export function logout({
+  body,
+  options,
+}: {
+  body: API.LogoutReq;
+  options?: CustomRequestOptions_;
+}) {
+  return request<API.LogoutReply>('/app/v1/user/logout', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 修改密码 返回值: An unexpected error response. POST /app/v1/user/password/change */
 export function changePassword({
   body,
@@ -112,6 +130,24 @@ export function updateUserInfo({
   options?: CustomRequestOptions_;
 }) {
   return request<API.UpdateUserInfoReply>('/app/v1/user/profile/update', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 刷新Token 返回值: An unexpected error response. POST /app/v1/user/refresh_token */
+export function refreshToken({
+  body,
+  options,
+}: {
+  body: API.RefreshTokenReq;
+  options?: CustomRequestOptions_;
+}) {
+  return request<API.RefreshTokenReply>('/app/v1/user/refresh_token', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
