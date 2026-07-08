@@ -40,6 +40,10 @@ type UserClient interface {
 	BindPhone(ctx context.Context, in *BindPhoneReq, opts ...grpc.CallOption) (*BindPhoneReply, error)
 	// 注销账号
 	DeleteAccount(ctx context.Context, in *DeleteAccountReq, opts ...grpc.CallOption) (*DeleteAccountReply, error)
+	// 刷新Token
+	RefreshToken(ctx context.Context, in *RefreshTokenReq, opts ...grpc.CallOption) (*RefreshTokenReply, error)
+	// 退出登录
+	Logout(ctx context.Context, in *LogoutReq, opts ...grpc.CallOption) (*LogoutReply, error)
 }
 
 type userClient struct {
@@ -131,6 +135,24 @@ func (c *userClient) DeleteAccount(ctx context.Context, in *DeleteAccountReq, op
 	return out, nil
 }
 
+func (c *userClient) RefreshToken(ctx context.Context, in *RefreshTokenReq, opts ...grpc.CallOption) (*RefreshTokenReply, error) {
+	out := new(RefreshTokenReply)
+	err := c.cc.Invoke(ctx, "/app.v1.User/RefreshToken", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) Logout(ctx context.Context, in *LogoutReq, opts ...grpc.CallOption) (*LogoutReply, error) {
+	out := new(LogoutReply)
+	err := c.cc.Invoke(ctx, "/app.v1.User/Logout", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -153,6 +175,10 @@ type UserServer interface {
 	BindPhone(context.Context, *BindPhoneReq) (*BindPhoneReply, error)
 	// 注销账号
 	DeleteAccount(context.Context, *DeleteAccountReq) (*DeleteAccountReply, error)
+	// 刷新Token
+	RefreshToken(context.Context, *RefreshTokenReq) (*RefreshTokenReply, error)
+	// 退出登录
+	Logout(context.Context, *LogoutReq) (*LogoutReply, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -186,6 +212,12 @@ func (UnimplementedUserServer) BindPhone(context.Context, *BindPhoneReq) (*BindP
 }
 func (UnimplementedUserServer) DeleteAccount(context.Context, *DeleteAccountReq) (*DeleteAccountReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteAccount not implemented")
+}
+func (UnimplementedUserServer) RefreshToken(context.Context, *RefreshTokenReq) (*RefreshTokenReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RefreshToken not implemented")
+}
+func (UnimplementedUserServer) Logout(context.Context, *LogoutReq) (*LogoutReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Logout not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -362,6 +394,42 @@ func _User_DeleteAccount_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_RefreshToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RefreshTokenReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).RefreshToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/app.v1.User/RefreshToken",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).RefreshToken(ctx, req.(*RefreshTokenReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_Logout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LogoutReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).Logout(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/app.v1.User/Logout",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).Logout(ctx, req.(*LogoutReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -404,6 +472,14 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteAccount",
 			Handler:    _User_DeleteAccount_Handler,
+		},
+		{
+			MethodName: "RefreshToken",
+			Handler:    _User_RefreshToken_Handler,
+		},
+		{
+			MethodName: "Logout",
+			Handler:    _User_Logout_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

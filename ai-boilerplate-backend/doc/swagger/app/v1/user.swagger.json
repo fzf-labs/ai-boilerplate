@@ -129,6 +129,46 @@
         ]
       }
     },
+    "/app/v1/user/logout": {
+      "post": {
+        "summary": "退出登录",
+        "operationId": "User_Logout",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.LogoutReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/app.v1.LogoutReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "access token",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "User"
+        ]
+      }
+    },
     "/app/v1/user/password/change": {
       "post": {
         "summary": "修改密码",
@@ -273,6 +313,46 @@
             "description": "Bearer Token",
             "in": "header",
             "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/app/v1/user/refresh_token": {
+      "post": {
+        "summary": "刷新Token",
+        "operationId": "User_RefreshToken",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/app.v1.RefreshTokenReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/app.v1.RefreshTokenReq"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "refresh token",
+            "in": "header",
+            "required": false,
             "type": "string"
           }
         ],
@@ -446,6 +526,47 @@
       "required": [
         "username",
         "password"
+      ]
+    },
+    "app.v1.LogoutReply": {
+      "type": "object",
+      "title": "响应-退出登录"
+    },
+    "app.v1.LogoutReq": {
+      "type": "object",
+      "title": "请求-退出登录"
+    },
+    "app.v1.RefreshTokenReply": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "title": "token"
+        },
+        "expiredAt": {
+          "type": "string",
+          "format": "int64",
+          "title": "过期时间"
+        },
+        "refreshAt": {
+          "type": "string",
+          "format": "int64",
+          "title": "刷新时间"
+        }
+      },
+      "title": "响应-刷新Token"
+    },
+    "app.v1.RefreshTokenReq": {
+      "type": "object",
+      "properties": {
+        "refreshToken": {
+          "type": "string",
+          "title": "刷新token"
+        }
+      },
+      "title": "请求-刷新Token",
+      "required": [
+        "refreshToken"
       ]
     },
     "app.v1.RegisterReply": {

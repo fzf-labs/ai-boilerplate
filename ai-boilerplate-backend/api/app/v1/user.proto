@@ -135,6 +135,42 @@ service User {
       }
     };
   }
+
+  // 刷新Token
+  rpc RefreshToken(RefreshTokenReq) returns (RefreshTokenReply) {
+    option (google.api.http) = {
+      post: "/app/v1/user/refresh_token"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "refresh token"
+          type: STRING
+          required: false
+        }
+      }
+    };
+  }
+
+  // 退出登录
+  rpc Logout(LogoutReq) returns (LogoutReply) {
+    option (google.api.http) = {
+      post: "/app/v1/user/logout"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization"
+          description: "access token"
+          type: STRING
+          required: true
+        }
+      }
+    };
+  }
 }
 
 // 请求-登录
@@ -313,3 +349,27 @@ message DeleteAccountReq {
 
 // 响应-注销账号
 message DeleteAccountReply {}
+
+// 请求-刷新Token
+message RefreshTokenReq {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      required: ["refreshToken"]
+    }
+  };
+
+  string refreshToken = 1 [(buf.validate.field).string = {min_len: 1}]; // 刷新token
+}
+
+// 响应-刷新Token
+message RefreshTokenReply {
+  string token = 1; // token
+  int64 expiredAt = 2; // 过期时间
+  int64 refreshAt = 3; // 刷新时间
+}
+
+// 请求-退出登录
+message LogoutReq {}
+
+// 响应-退出登录
+message LogoutReply {}

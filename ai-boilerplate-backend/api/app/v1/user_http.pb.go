@@ -24,6 +24,8 @@ const OperationUserChangePassword = "/app.v1.User/ChangePassword"
 const OperationUserDeleteAccount = "/app.v1.User/DeleteAccount"
 const OperationUserGetUserInfo = "/app.v1.User/GetUserInfo"
 const OperationUserLogin = "/app.v1.User/Login"
+const OperationUserLogout = "/app.v1.User/Logout"
+const OperationUserRefreshToken = "/app.v1.User/RefreshToken"
 const OperationUserRegister = "/app.v1.User/Register"
 const OperationUserSendVerifyCode = "/app.v1.User/SendVerifyCode"
 const OperationUserUpdateUserInfo = "/app.v1.User/UpdateUserInfo"
@@ -34,6 +36,8 @@ type UserHTTPServer interface {
 	DeleteAccount(context.Context, *DeleteAccountReq) (*DeleteAccountReply, error)
 	GetUserInfo(context.Context, *GetUserInfoReq) (*GetUserInfoReply, error)
 	Login(context.Context, *LoginReq) (*LoginReply, error)
+	Logout(context.Context, *LogoutReq) (*LogoutReply, error)
+	RefreshToken(context.Context, *RefreshTokenReq) (*RefreshTokenReply, error)
 	Register(context.Context, *RegisterReq) (*RegisterReply, error)
 	SendVerifyCode(context.Context, *SendVerifyCodeReq) (*SendVerifyCodeReply, error)
 	UpdateUserInfo(context.Context, *UpdateUserInfoReq) (*UpdateUserInfoReply, error)
@@ -49,6 +53,8 @@ func RegisterUserHTTPServer(s *http.Server, srv UserHTTPServer) {
 	r.POST("/app/v1/user/code/send", _User_SendVerifyCode0_HTTP_Handler(srv))
 	r.POST("/app/v1/user/phone/bind", _User_BindPhone0_HTTP_Handler(srv))
 	r.POST("/app/v1/user/account/delete", _User_DeleteAccount0_HTTP_Handler(srv))
+	r.POST("/app/v1/user/refresh_token", _User_RefreshToken0_HTTP_Handler(srv))
+	r.POST("/app/v1/user/logout", _User_Logout0_HTTP_Handler(srv))
 }
 
 func _User_Login0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
@@ -203,12 +209,52 @@ func _User_DeleteAccount0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context
 	}
 }
 
+func _User_RefreshToken0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in RefreshTokenReq
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationUserRefreshToken)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.RefreshToken(ctx, req.(*RefreshTokenReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*RefreshTokenReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _User_Logout0_HTTP_Handler(srv UserHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in LogoutReq
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationUserLogout)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.Logout(ctx, req.(*LogoutReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*LogoutReply)
+		return ctx.Result(200, reply)
+	}
+}
+
 type UserHTTPClient interface {
 	BindPhone(ctx context.Context, req *BindPhoneReq, opts ...http.CallOption) (rsp *BindPhoneReply, err error)
 	ChangePassword(ctx context.Context, req *ChangePasswordReq, opts ...http.CallOption) (rsp *ChangePasswordReply, err error)
 	DeleteAccount(ctx context.Context, req *DeleteAccountReq, opts ...http.CallOption) (rsp *DeleteAccountReply, err error)
 	GetUserInfo(ctx context.Context, req *GetUserInfoReq, opts ...http.CallOption) (rsp *GetUserInfoReply, err error)
 	Login(ctx context.Context, req *LoginReq, opts ...http.CallOption) (rsp *LoginReply, err error)
+	Logout(ctx context.Context, req *LogoutReq, opts ...http.CallOption) (rsp *LogoutReply, err error)
+	RefreshToken(ctx context.Context, req *RefreshTokenReq, opts ...http.CallOption) (rsp *RefreshTokenReply, err error)
 	Register(ctx context.Context, req *RegisterReq, opts ...http.CallOption) (rsp *RegisterReply, err error)
 	SendVerifyCode(ctx context.Context, req *SendVerifyCodeReq, opts ...http.CallOption) (rsp *SendVerifyCodeReply, err error)
 	UpdateUserInfo(ctx context.Context, req *UpdateUserInfoReq, opts ...http.CallOption) (rsp *UpdateUserInfoReply, err error)
@@ -279,6 +325,32 @@ func (c *UserHTTPClientImpl) Login(ctx context.Context, in *LoginReq, opts ...ht
 	pattern := "/app/v1/user/login"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationUserLogin))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *UserHTTPClientImpl) Logout(ctx context.Context, in *LogoutReq, opts ...http.CallOption) (*LogoutReply, error) {
+	var out LogoutReply
+	pattern := "/app/v1/user/logout"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationUserLogout))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *UserHTTPClientImpl) RefreshToken(ctx context.Context, in *RefreshTokenReq, opts ...http.CallOption) (*RefreshTokenReply, error) {
+	var out RefreshTokenReply
+	pattern := "/app/v1/user/refresh_token"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationUserRefreshToken))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {

@@ -5,75 +5,11 @@ package v1
 import (
 	fmt "fmt"
 	errors "github.com/go-kratos/kratos/v2/errors"
-	runtime "runtime"
-	strconv "strconv"
 )
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the kratos package it is being compiled against.
 const _ = errors.SupportPackageIsVersion1
-
-type ErrorReasonErrors struct {
-	code    int
-	reason  string
-	message string
-	i18n    map[string]string
-	err     error
-	args    []interface{}
-	lang    string
-	line    string
-}
-
-func (e *ErrorReasonErrors) Error() *errors.Error {
-	metadata := map[string]string{}
-	if e.err != nil {
-		metadata["cause"] = e.err.Error()
-	}
-	if e.line != "" {
-		metadata["line"] = e.line
-	}
-	message := e.message
-	if e.lang != "" {
-		if _, ok := e.i18n[e.lang]; ok {
-			message = e.i18n[e.lang]
-		}
-	}
-	if len(e.args) > 0 {
-		message = fmt.Sprintf(message, e.args...)
-	}
-	return errors.New(e.code, e.reason, message).WithMetadata(metadata)
-}
-
-type Option func(gen *ErrorReasonErrors)
-
-func WithError(err error) Option {
-	return func(e *ErrorReasonErrors) {
-		e.err = err
-	}
-}
-
-func WithFmtMsg(args ...interface{}) Option {
-	return func(e *ErrorReasonErrors) {
-		e.args = args
-	}
-}
-
-func WithLine() Option {
-	var fileLine string
-	_, file, line, ok := runtime.Caller(2)
-	if ok {
-		fileLine = file + ":" + strconv.Itoa(line)
-	}
-	return func(e *ErrorReasonErrors) {
-		e.line = fileLine
-	}
-}
-
-func WithI18N(lang string) Option {
-	return func(e *ErrorReasonErrors) {
-		e.lang = lang
-	}
-}
 
 func IsRequestCanceledErr(err error) bool {
 	if err == nil {
@@ -87,21 +23,8 @@ func ErrorRequestCanceledErr(format string, args ...interface{}) *errors.Error {
 	return errors.New(409, ErrorReason_RequestCanceledErr.String(), fmt.Sprintf(format, args...))
 }
 
-func ErrorReasonRequestCanceledErr(opts ...Option) *errors.Error {
-	e := &ErrorReasonErrors{
-		code:    409,
-		reason:  ErrorReason_RequestCanceledErr.String(),
-		message: "RequestCanceledErr",
-		lang:    "zh_CN",
-		i18n: map[string]string{
-			"en_US": "Request canceled",
-			"zh_CN": "请求取消",
-		},
-	}
-	for _, o := range opts {
-		o(e)
-	}
-	return e.Error()
+func ErrorMessageRequestCanceledErr() *errors.Error {
+	return errors.New(409, ErrorReason_RequestCanceledErr.String(), "RequestCanceledErr")
 }
 
 func IsRequestTimeoutErr(err error) bool {
@@ -116,21 +39,8 @@ func ErrorRequestTimeoutErr(format string, args ...interface{}) *errors.Error {
 	return errors.New(409, ErrorReason_RequestTimeoutErr.String(), fmt.Sprintf(format, args...))
 }
 
-func ErrorReasonRequestTimeoutErr(opts ...Option) *errors.Error {
-	e := &ErrorReasonErrors{
-		code:    409,
-		reason:  ErrorReason_RequestTimeoutErr.String(),
-		message: "RequestTimeoutErr",
-		lang:    "zh_CN",
-		i18n: map[string]string{
-			"en_US": "Request timeout",
-			"zh_CN": "请求超时",
-		},
-	}
-	for _, o := range opts {
-		o(e)
-	}
-	return e.Error()
+func ErrorMessageRequestTimeoutErr() *errors.Error {
+	return errors.New(409, ErrorReason_RequestTimeoutErr.String(), "RequestTimeoutErr")
 }
 
 func IsRequestFrequentErr(err error) bool {
@@ -145,21 +55,8 @@ func ErrorRequestFrequentErr(format string, args ...interface{}) *errors.Error {
 	return errors.New(409, ErrorReason_RequestFrequentErr.String(), fmt.Sprintf(format, args...))
 }
 
-func ErrorReasonRequestFrequentErr(opts ...Option) *errors.Error {
-	e := &ErrorReasonErrors{
-		code:    409,
-		reason:  ErrorReason_RequestFrequentErr.String(),
-		message: "RequestFrequentErr",
-		lang:    "zh_CN",
-		i18n: map[string]string{
-			"en_US": "Request frequent",
-			"zh_CN": "请求频繁",
-		},
-	}
-	for _, o := range opts {
-		o(e)
-	}
-	return e.Error()
+func ErrorMessageRequestFrequentErr() *errors.Error {
+	return errors.New(409, ErrorReason_RequestFrequentErr.String(), "RequestFrequentErr")
 }
 
 func IsAPIInternalErr(err error) bool {
@@ -174,21 +71,8 @@ func ErrorAPIInternalErr(format string, args ...interface{}) *errors.Error {
 	return errors.New(409, ErrorReason_APIInternalErr.String(), fmt.Sprintf(format, args...))
 }
 
-func ErrorReasonAPIInternalErr(opts ...Option) *errors.Error {
-	e := &ErrorReasonErrors{
-		code:    409,
-		reason:  ErrorReason_APIInternalErr.String(),
-		message: "APIInternalErr",
-		lang:    "zh_CN",
-		i18n: map[string]string{
-			"en_US": "API internal error",
-			"zh_CN": "API内部错误",
-		},
-	}
-	for _, o := range opts {
-		o(e)
-	}
-	return e.Error()
+func ErrorMessageAPIInternalErr() *errors.Error {
+	return errors.New(409, ErrorReason_APIInternalErr.String(), "APIInternalErr")
 }
 
 func IsAPIThirdErr(err error) bool {
@@ -203,21 +87,8 @@ func ErrorAPIThirdErr(format string, args ...interface{}) *errors.Error {
 	return errors.New(409, ErrorReason_APIThirdErr.String(), fmt.Sprintf(format, args...))
 }
 
-func ErrorReasonAPIThirdErr(opts ...Option) *errors.Error {
-	e := &ErrorReasonErrors{
-		code:    409,
-		reason:  ErrorReason_APIThirdErr.String(),
-		message: "APIThirdErr",
-		lang:    "zh_CN",
-		i18n: map[string]string{
-			"en_US": "API third error",
-			"zh_CN": "第三方API错误",
-		},
-	}
-	for _, o := range opts {
-		o(e)
-	}
-	return e.Error()
+func ErrorMessageAPIThirdErr() *errors.Error {
+	return errors.New(409, ErrorReason_APIThirdErr.String(), "APIThirdErr")
 }
 
 func IsParamError(err error) bool {
@@ -232,21 +103,8 @@ func ErrorParamError(format string, args ...interface{}) *errors.Error {
 	return errors.New(409, ErrorReason_ParamError.String(), fmt.Sprintf(format, args...))
 }
 
-func ErrorReasonParamError(opts ...Option) *errors.Error {
-	e := &ErrorReasonErrors{
-		code:    409,
-		reason:  ErrorReason_ParamError.String(),
-		message: "ParamError",
-		lang:    "zh_CN",
-		i18n: map[string]string{
-			"en_US": "Param error",
-			"zh_CN": "参数错误",
-		},
-	}
-	for _, o := range opts {
-		o(e)
-	}
-	return e.Error()
+func ErrorMessageParamError() *errors.Error {
+	return errors.New(409, ErrorReason_ParamError.String(), "ParamError")
 }
 
 func IsDataSQLError(err error) bool {
@@ -261,21 +119,8 @@ func ErrorDataSQLError(format string, args ...interface{}) *errors.Error {
 	return errors.New(500, ErrorReason_DataSQLError.String(), fmt.Sprintf(format, args...))
 }
 
-func ErrorReasonDataSQLError(opts ...Option) *errors.Error {
-	e := &ErrorReasonErrors{
-		code:    500,
-		reason:  ErrorReason_DataSQLError.String(),
-		message: "DataSQLError",
-		lang:    "zh_CN",
-		i18n: map[string]string{
-			"en_US": "Data SQL error",
-			"zh_CN": "数据SQL错误",
-		},
-	}
-	for _, o := range opts {
-		o(e)
-	}
-	return e.Error()
+func ErrorMessageDataSQLError() *errors.Error {
+	return errors.New(500, ErrorReason_DataSQLError.String(), "DataSQLError")
 }
 
 func IsDataRedisErr(err error) bool {
@@ -290,21 +135,8 @@ func ErrorDataRedisErr(format string, args ...interface{}) *errors.Error {
 	return errors.New(500, ErrorReason_DataRedisErr.String(), fmt.Sprintf(format, args...))
 }
 
-func ErrorReasonDataRedisErr(opts ...Option) *errors.Error {
-	e := &ErrorReasonErrors{
-		code:    500,
-		reason:  ErrorReason_DataRedisErr.String(),
-		message: "DataRedisErr",
-		lang:    "zh_CN",
-		i18n: map[string]string{
-			"en_US": "Data Redis error",
-			"zh_CN": "数据Redis错误",
-		},
-	}
-	for _, o := range opts {
-		o(e)
-	}
-	return e.Error()
+func ErrorMessageDataRedisErr() *errors.Error {
+	return errors.New(500, ErrorReason_DataRedisErr.String(), "DataRedisErr")
 }
 
 func IsDataMQErr(err error) bool {
@@ -319,21 +151,8 @@ func ErrorDataMQErr(format string, args ...interface{}) *errors.Error {
 	return errors.New(500, ErrorReason_DataMQErr.String(), fmt.Sprintf(format, args...))
 }
 
-func ErrorReasonDataMQErr(opts ...Option) *errors.Error {
-	e := &ErrorReasonErrors{
-		code:    500,
-		reason:  ErrorReason_DataMQErr.String(),
-		message: "DataMQErr",
-		lang:    "zh_CN",
-		i18n: map[string]string{
-			"en_US": "Data MQ error",
-			"zh_CN": "数据MQ错误",
-		},
-	}
-	for _, o := range opts {
-		o(e)
-	}
-	return e.Error()
+func ErrorMessageDataMQErr() *errors.Error {
+	return errors.New(500, ErrorReason_DataMQErr.String(), "DataMQErr")
 }
 
 func IsDataFormattingError(err error) bool {
@@ -348,21 +167,8 @@ func ErrorDataFormattingError(format string, args ...interface{}) *errors.Error 
 	return errors.New(500, ErrorReason_DataFormattingError.String(), fmt.Sprintf(format, args...))
 }
 
-func ErrorReasonDataFormattingError(opts ...Option) *errors.Error {
-	e := &ErrorReasonErrors{
-		code:    500,
-		reason:  ErrorReason_DataFormattingError.String(),
-		message: "DataFormattingError",
-		lang:    "zh_CN",
-		i18n: map[string]string{
-			"en_US": "Data formatting error",
-			"zh_CN": "数据格式化错误",
-		},
-	}
-	for _, o := range opts {
-		o(e)
-	}
-	return e.Error()
+func ErrorMessageDataFormattingError() *errors.Error {
+	return errors.New(500, ErrorReason_DataFormattingError.String(), "DataFormattingError")
 }
 
 func IsDataProcessingError(err error) bool {
@@ -377,21 +183,8 @@ func ErrorDataProcessingError(format string, args ...interface{}) *errors.Error 
 	return errors.New(409, ErrorReason_DataProcessingError.String(), fmt.Sprintf(format, args...))
 }
 
-func ErrorReasonDataProcessingError(opts ...Option) *errors.Error {
-	e := &ErrorReasonErrors{
-		code:    409,
-		reason:  ErrorReason_DataProcessingError.String(),
-		message: "DataProcessingError",
-		lang:    "zh_CN",
-		i18n: map[string]string{
-			"en_US": "Data processing error",
-			"zh_CN": "数据处理错误",
-		},
-	}
-	for _, o := range opts {
-		o(e)
-	}
-	return e.Error()
+func ErrorMessageDataProcessingError() *errors.Error {
+	return errors.New(409, ErrorReason_DataProcessingError.String(), "DataProcessingError")
 }
 
 func IsDataRecordNotFound(err error) bool {
@@ -406,21 +199,8 @@ func ErrorDataRecordNotFound(format string, args ...interface{}) *errors.Error {
 	return errors.New(409, ErrorReason_DataRecordNotFound.String(), fmt.Sprintf(format, args...))
 }
 
-func ErrorReasonDataRecordNotFound(opts ...Option) *errors.Error {
-	e := &ErrorReasonErrors{
-		code:    409,
-		reason:  ErrorReason_DataRecordNotFound.String(),
-		message: "DataRecordNotFound",
-		lang:    "zh_CN",
-		i18n: map[string]string{
-			"en_US": "Data record not found",
-			"zh_CN": "数据记录未找到",
-		},
-	}
-	for _, o := range opts {
-		o(e)
-	}
-	return e.Error()
+func ErrorMessageDataRecordNotFound() *errors.Error {
+	return errors.New(409, ErrorReason_DataRecordNotFound.String(), "DataRecordNotFound")
 }
 
 func IsDataDuplicateRecord(err error) bool {
@@ -435,21 +215,8 @@ func ErrorDataDuplicateRecord(format string, args ...interface{}) *errors.Error 
 	return errors.New(409, ErrorReason_DataDuplicateRecord.String(), fmt.Sprintf(format, args...))
 }
 
-func ErrorReasonDataDuplicateRecord(opts ...Option) *errors.Error {
-	e := &ErrorReasonErrors{
-		code:    409,
-		reason:  ErrorReason_DataDuplicateRecord.String(),
-		message: "DataDuplicateRecord",
-		lang:    "zh_CN",
-		i18n: map[string]string{
-			"en_US": "Data duplicate record",
-			"zh_CN": "数据重复",
-		},
-	}
-	for _, o := range opts {
-		o(e)
-	}
-	return e.Error()
+func ErrorMessageDataDuplicateRecord() *errors.Error {
+	return errors.New(409, ErrorReason_DataDuplicateRecord.String(), "DataDuplicateRecord")
 }
 
 func IsTokenNotRequest(err error) bool {
@@ -464,21 +231,8 @@ func ErrorTokenNotRequest(format string, args ...interface{}) *errors.Error {
 	return errors.New(401, ErrorReason_TokenNotRequest.String(), fmt.Sprintf(format, args...))
 }
 
-func ErrorReasonTokenNotRequest(opts ...Option) *errors.Error {
-	e := &ErrorReasonErrors{
-		code:    401,
-		reason:  ErrorReason_TokenNotRequest.String(),
-		message: "TokenNotRequest",
-		lang:    "zh_CN",
-		i18n: map[string]string{
-			"en_US": "Token not requested",
-			"zh_CN": "Token未请求",
-		},
-	}
-	for _, o := range opts {
-		o(e)
-	}
-	return e.Error()
+func ErrorMessageTokenNotRequest() *errors.Error {
+	return errors.New(401, ErrorReason_TokenNotRequest.String(), "TokenNotRequest")
 }
 
 func IsTokenFormatErr(err error) bool {
@@ -493,21 +247,8 @@ func ErrorTokenFormatErr(format string, args ...interface{}) *errors.Error {
 	return errors.New(401, ErrorReason_TokenFormatErr.String(), fmt.Sprintf(format, args...))
 }
 
-func ErrorReasonTokenFormatErr(opts ...Option) *errors.Error {
-	e := &ErrorReasonErrors{
-		code:    401,
-		reason:  ErrorReason_TokenFormatErr.String(),
-		message: "TokenFormatErr",
-		lang:    "zh_CN",
-		i18n: map[string]string{
-			"en_US": "Token format error",
-			"zh_CN": "Token格式错误",
-		},
-	}
-	for _, o := range opts {
-		o(e)
-	}
-	return e.Error()
+func ErrorMessageTokenFormatErr() *errors.Error {
+	return errors.New(401, ErrorReason_TokenFormatErr.String(), "TokenFormatErr")
 }
 
 func IsTokenExpiredErr(err error) bool {
@@ -522,21 +263,8 @@ func ErrorTokenExpiredErr(format string, args ...interface{}) *errors.Error {
 	return errors.New(401, ErrorReason_TokenExpiredErr.String(), fmt.Sprintf(format, args...))
 }
 
-func ErrorReasonTokenExpiredErr(opts ...Option) *errors.Error {
-	e := &ErrorReasonErrors{
-		code:    401,
-		reason:  ErrorReason_TokenExpiredErr.String(),
-		message: "TokenExpiredErr",
-		lang:    "zh_CN",
-		i18n: map[string]string{
-			"en_US": "Token expired",
-			"zh_CN": "Token过期",
-		},
-	}
-	for _, o := range opts {
-		o(e)
-	}
-	return e.Error()
+func ErrorMessageTokenExpiredErr() *errors.Error {
+	return errors.New(401, ErrorReason_TokenExpiredErr.String(), "TokenExpiredErr")
 }
 
 func IsTokenInvalidErr(err error) bool {
@@ -551,21 +279,8 @@ func ErrorTokenInvalidErr(format string, args ...interface{}) *errors.Error {
 	return errors.New(401, ErrorReason_TokenInvalidErr.String(), fmt.Sprintf(format, args...))
 }
 
-func ErrorReasonTokenInvalidErr(opts ...Option) *errors.Error {
-	e := &ErrorReasonErrors{
-		code:    401,
-		reason:  ErrorReason_TokenInvalidErr.String(),
-		message: "TokenInvalidErr",
-		lang:    "zh_CN",
-		i18n: map[string]string{
-			"en_US": "Token invalid",
-			"zh_CN": "Token无效",
-		},
-	}
-	for _, o := range opts {
-		o(e)
-	}
-	return e.Error()
+func ErrorMessageTokenInvalidErr() *errors.Error {
+	return errors.New(401, ErrorReason_TokenInvalidErr.String(), "TokenInvalidErr")
 }
 
 func IsTokenErr(err error) bool {
@@ -580,21 +295,8 @@ func ErrorTokenErr(format string, args ...interface{}) *errors.Error {
 	return errors.New(401, ErrorReason_TokenErr.String(), fmt.Sprintf(format, args...))
 }
 
-func ErrorReasonTokenErr(opts ...Option) *errors.Error {
-	e := &ErrorReasonErrors{
-		code:    401,
-		reason:  ErrorReason_TokenErr.String(),
-		message: "TokenErr",
-		lang:    "zh_CN",
-		i18n: map[string]string{
-			"en_US": "Token error",
-			"zh_CN": "Token错误",
-		},
-	}
-	for _, o := range opts {
-		o(e)
-	}
-	return e.Error()
+func ErrorMessageTokenErr() *errors.Error {
+	return errors.New(401, ErrorReason_TokenErr.String(), "TokenErr")
 }
 
 // 账号已存在
@@ -612,21 +314,8 @@ func ErrorAccountAlreadyExists(format string, args ...interface{}) *errors.Error
 }
 
 // 账号已存在
-func ErrorReasonAccountAlreadyExists(opts ...Option) *errors.Error {
-	e := &ErrorReasonErrors{
-		code:    409,
-		reason:  ErrorReason_AccountAlreadyExists.String(),
-		message: "AccountAlreadyExists",
-		lang:    "zh_CN",
-		i18n: map[string]string{
-			"en_US": "Account already exists",
-			"zh_CN": "账号已存在",
-		},
-	}
-	for _, o := range opts {
-		o(e)
-	}
-	return e.Error()
+func ErrorMessageAccountAlreadyExists() *errors.Error {
+	return errors.New(409, ErrorReason_AccountAlreadyExists.String(), "AccountAlreadyExists")
 }
 
 // 账号不存在
@@ -644,21 +333,8 @@ func ErrorAccountNotFound(format string, args ...interface{}) *errors.Error {
 }
 
 // 账号不存在
-func ErrorReasonAccountNotFound(opts ...Option) *errors.Error {
-	e := &ErrorReasonErrors{
-		code:    409,
-		reason:  ErrorReason_AccountNotFound.String(),
-		message: "AccountNotFound",
-		lang:    "zh_CN",
-		i18n: map[string]string{
-			"en_US": "Account not found",
-			"zh_CN": "账号不存在",
-		},
-	}
-	for _, o := range opts {
-		o(e)
-	}
-	return e.Error()
+func ErrorMessageAccountNotFound() *errors.Error {
+	return errors.New(409, ErrorReason_AccountNotFound.String(), "AccountNotFound")
 }
 
 // 账号密码错误
@@ -676,21 +352,8 @@ func ErrorAccountPasswordError(format string, args ...interface{}) *errors.Error
 }
 
 // 账号密码错误
-func ErrorReasonAccountPasswordError(opts ...Option) *errors.Error {
-	e := &ErrorReasonErrors{
-		code:    409,
-		reason:  ErrorReason_AccountPasswordError.String(),
-		message: "AccountPasswordError",
-		lang:    "zh_CN",
-		i18n: map[string]string{
-			"en_US": "Account password error",
-			"zh_CN": "账号密码错误",
-		},
-	}
-	for _, o := range opts {
-		o(e)
-	}
-	return e.Error()
+func ErrorMessageAccountPasswordError() *errors.Error {
+	return errors.New(409, ErrorReason_AccountPasswordError.String(), "AccountPasswordError")
 }
 
 // 账号无数据访问权限
@@ -708,21 +371,8 @@ func ErrorAccountNoDataPermission(format string, args ...interface{}) *errors.Er
 }
 
 // 账号无数据访问权限
-func ErrorReasonAccountNoDataPermission(opts ...Option) *errors.Error {
-	e := &ErrorReasonErrors{
-		code:    409,
-		reason:  ErrorReason_AccountNoDataPermission.String(),
-		message: "AccountNoDataPermission",
-		lang:    "zh_CN",
-		i18n: map[string]string{
-			"en_US": "Account no data permission",
-			"zh_CN": "账号无数据访问权限",
-		},
-	}
-	for _, o := range opts {
-		o(e)
-	}
-	return e.Error()
+func ErrorMessageAccountNoDataPermission() *errors.Error {
+	return errors.New(409, ErrorReason_AccountNoDataPermission.String(), "AccountNoDataPermission")
 }
 
 // 菜单操作失败
@@ -740,21 +390,8 @@ func ErrorMenuOperationFailed(format string, args ...interface{}) *errors.Error 
 }
 
 // 菜单操作失败
-func ErrorReasonMenuOperationFailed(opts ...Option) *errors.Error {
-	e := &ErrorReasonErrors{
-		code:    409,
-		reason:  ErrorReason_MenuOperationFailed.String(),
-		message: "MenuOperationFailed",
-		lang:    "zh_CN",
-		i18n: map[string]string{
-			"en_US": "Menu operation failed:%s",
-			"zh_CN": "菜单操作失败:%s",
-		},
-	}
-	for _, o := range opts {
-		o(e)
-	}
-	return e.Error()
+func ErrorMessageMenuOperationFailed() *errors.Error {
+	return errors.New(409, ErrorReason_MenuOperationFailed.String(), "MenuOperationFailed")
 }
 
 // 素材上传失败
@@ -772,21 +409,8 @@ func ErrorMaterialUploadFailed(format string, args ...interface{}) *errors.Error
 }
 
 // 素材上传失败
-func ErrorReasonMaterialUploadFailed(opts ...Option) *errors.Error {
-	e := &ErrorReasonErrors{
-		code:    409,
-		reason:  ErrorReason_MaterialUploadFailed.String(),
-		message: "MaterialUploadFailed",
-		lang:    "zh_CN",
-		i18n: map[string]string{
-			"en_US": "Material upload failed",
-			"zh_CN": "素材上传失败",
-		},
-	}
-	for _, o := range opts {
-		o(e)
-	}
-	return e.Error()
+func ErrorMessageMaterialUploadFailed() *errors.Error {
+	return errors.New(409, ErrorReason_MaterialUploadFailed.String(), "MaterialUploadFailed")
 }
 
 // 存储器不存在
@@ -804,21 +428,8 @@ func ErrorStorageNotFound(format string, args ...interface{}) *errors.Error {
 }
 
 // 存储器不存在
-func ErrorReasonStorageNotFound(opts ...Option) *errors.Error {
-	e := &ErrorReasonErrors{
-		code:    409,
-		reason:  ErrorReason_StorageNotFound.String(),
-		message: "StorageNotFound",
-		lang:    "zh_CN",
-		i18n: map[string]string{
-			"en_US": "Storage not found",
-			"zh_CN": "存储器不存在",
-		},
-	}
-	for _, o := range opts {
-		o(e)
-	}
-	return e.Error()
+func ErrorMessageStorageNotFound() *errors.Error {
+	return errors.New(409, ErrorReason_StorageNotFound.String(), "StorageNotFound")
 }
 
 // 存储器获取配置失败
@@ -836,21 +447,8 @@ func ErrorStorageGetConfigFailed(format string, args ...interface{}) *errors.Err
 }
 
 // 存储器获取配置失败
-func ErrorReasonStorageGetConfigFailed(opts ...Option) *errors.Error {
-	e := &ErrorReasonErrors{
-		code:    409,
-		reason:  ErrorReason_StorageGetConfigFailed.String(),
-		message: "StorageGetConfigFailed",
-		lang:    "zh_CN",
-		i18n: map[string]string{
-			"en_US": "Storage get config failed",
-			"zh_CN": "存储器获取配置失败",
-		},
-	}
-	for _, o := range opts {
-		o(e)
-	}
-	return e.Error()
+func ErrorMessageStorageGetConfigFailed() *errors.Error {
+	return errors.New(409, ErrorReason_StorageGetConfigFailed.String(), "StorageGetConfigFailed")
 }
 
 // 短信验证码发送频率限制
@@ -868,21 +466,8 @@ func ErrorSmsFrequencyLimit(format string, args ...interface{}) *errors.Error {
 }
 
 // 短信验证码发送频率限制
-func ErrorReasonSmsFrequencyLimit(opts ...Option) *errors.Error {
-	e := &ErrorReasonErrors{
-		code:    429,
-		reason:  ErrorReason_SmsFrequencyLimit.String(),
-		message: "SmsFrequencyLimit",
-		lang:    "zh_CN",
-		i18n: map[string]string{
-			"en_US": "SMS verification code frequency limit exceeded",
-			"zh_CN": "短信验证码发送频率超限",
-		},
-	}
-	for _, o := range opts {
-		o(e)
-	}
-	return e.Error()
+func ErrorMessageSmsFrequencyLimit() *errors.Error {
+	return errors.New(429, ErrorReason_SmsFrequencyLimit.String(), "SmsFrequencyLimit")
 }
 
 // 短信验证码无效
@@ -900,19 +485,6 @@ func ErrorSmsCodeInvalid(format string, args ...interface{}) *errors.Error {
 }
 
 // 短信验证码无效
-func ErrorReasonSmsCodeInvalid(opts ...Option) *errors.Error {
-	e := &ErrorReasonErrors{
-		code:    409,
-		reason:  ErrorReason_SmsCodeInvalid.String(),
-		message: "SmsCodeInvalid",
-		lang:    "zh_CN",
-		i18n: map[string]string{
-			"en_US": "SMS verification code invalid",
-			"zh_CN": "短信验证码无效",
-		},
-	}
-	for _, o := range opts {
-		o(e)
-	}
-	return e.Error()
+func ErrorMessageSmsCodeInvalid() *errors.Error {
+	return errors.New(409, ErrorReason_SmsCodeInvalid.String(), "SmsCodeInvalid")
 }

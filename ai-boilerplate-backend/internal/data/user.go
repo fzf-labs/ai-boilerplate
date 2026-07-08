@@ -97,6 +97,24 @@ func (u *UserRepo) JwtTokenClear(ctx context.Context, userID string) error {
 	return u.jwt.JwtTokenClear(userID)
 }
 
+// RefreshToken 刷新token
+func (u *UserRepo) RefreshToken(ctx context.Context, refreshToken string) (*jwt.Token, error) {
+	_ = ctx
+
+	claims, err := u.jwt.ParseToken(refreshToken)
+	if err != nil {
+		return nil, err
+	}
+	if ok, token := u.jwt.JwtBlackTokenCheck(claims); ok && token != nil {
+		return token, nil
+	}
+	token, _, err := u.jwt.RefreshToken(claims)
+	if err != nil {
+		return nil, err
+	}
+	return token, nil
+}
+
 // BuildDeletedUserFields 构建账号注销后的用户脱敏字段。
 func (u *UserRepo) BuildDeletedUserFields(userID string) map[string]interface{} {
 	deletedPhone := fmt.Sprintf("deleted_%s", userID)

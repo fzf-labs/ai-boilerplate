@@ -39,5 +39,12 @@ func (a *AppV1UserService) ChangePassword(ctx context.Context, req *pb.ChangePas
 	if err := a.userRepo.UpdateOneCacheWithZero(ctx, data, oldData); err != nil {
 		return nil, pb.ErrorReasonDataSQLError(pb.WithError(err))
 	}
+
+	// 修改密码后，清理该用户的所有token
+	if err := a.userRepo.JwtTokenClear(ctx, userID); err != nil {
+		a.log.Warnf("修改密码后清理token失败: %v", err)
+		// 不返回错误，因为token清理失败不应该影响密码修改的成功
+	}
+
 	return resp, nil
 }
