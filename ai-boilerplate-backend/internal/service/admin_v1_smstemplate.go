@@ -10,12 +10,14 @@ func NewAdminV1SmsTemplateService(
 	logger log.Logger,
 	smsTemplateRepo *data.SmsTemplateRepo,
 	smsChannelRepo *data.SmsChannelRepo,
+	smsLogRepo *data.SmsLogRepo,
 ) *AdminV1SmsTemplateService {
 	l := log.NewHelper(log.With(logger, "module", "service/smsTemplate"))
 	return &AdminV1SmsTemplateService{
 		log:             l,
 		smsTemplateRepo: smsTemplateRepo,
 		smsChannelRepo:  smsChannelRepo,
+		smsLogRepo:      smsLogRepo,
 	}
 }
 
@@ -24,4 +26,5 @@ type AdminV1SmsTemplateService struct {
 	log             *log.Helper
 	smsTemplateRepo *data.SmsTemplateRepo
 	smsChannelRepo  *data.SmsChannelRepo
+	smsLogRepo      *data.SmsLogRepo
 }

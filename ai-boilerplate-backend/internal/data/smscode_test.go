@@ -44,6 +44,9 @@ func TestSmsCodeConfigByScene(t *testing.T) {
 			if got.CodeLength != 6 {
 				t.Fatalf("CodeLength = %d, want 6", got.CodeLength)
 			}
+			if got.MaxCheckAttempts != 5 {
+				t.Fatalf("MaxCheckAttempts = %d, want 5", got.MaxCheckAttempts)
+			}
 		})
 	}
 }
