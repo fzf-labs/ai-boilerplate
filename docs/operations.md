@@ -280,6 +280,8 @@ When API definitions or database tables change, regenerate from
 `ai-boilerplate-backend` with the matching Makefile target instead of editing
 generated files by hand:
 
+- `make migrate-up` applies database migrations from `db/migrations`; run it
+  before GORM or protobuf generation that depends on a schema change.
 - `make sqltopb <admin|app> <tables>` creates protobuf definitions from SQL.
 - `make api` regenerates Go API, HTTP, gRPC, validation, errors, and Swagger
   artifacts.

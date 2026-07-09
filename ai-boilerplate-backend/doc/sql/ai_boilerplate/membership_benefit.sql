@@ -24,4 +24,4 @@ COMMENT ON COLUMN public.membership_benefit.deleted_at IS '删除时间';
 ALTER TABLE ONLY public.membership_benefit ADD CONSTRAINT membership_benefit_pkey PRIMARY KEY (id);
 CREATE INDEX membership_benefit_membership_code_idx ON public.membership_benefit USING btree (membership_type);
 CREATE INDEX membership_benefit_sort_order_idx ON public.membership_benefit USING btree (sort);
-CREATE UNIQUE INDEX membership_benefit_type_key_idx ON public.membership_benefit USING btree (membership_type, benefit_key);
+CREATE UNIQUE INDEX membership_benefit_membership_type_benefit_key_idx ON public.membership_benefit USING btree (membership_type, benefit_key);
