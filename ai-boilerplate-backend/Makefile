@@ -3,14 +3,18 @@ GOHOSTOS:=$(shell go env GOHOSTOS)
 GOPATH:=$(shell go env GOPATH)
 VERSION=$(shell git describe --tags --always)
 # Database Configuration
-DB_TYPE=postgres
-DB_HOST=127.0.0.1
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=123456
-DB_NAME=ai_boilerplate
-DB_DSN=host=$(DB_HOST) port=$(DB_PORT) user=$(DB_USER) password=$(DB_PASSWORD) dbname=$(DB_NAME) sslmode=disable
-DB_TABLES=
+DB_TYPE?=postgres
+DB_HOST?=127.0.0.1
+DB_PORT?=5432
+DB_USER?=postgres
+DB_PASSWORD?=123456
+DB_NAME?=ai_boilerplate
+DB_DSN?=host=$(DB_HOST) port=$(DB_PORT) user=$(DB_USER) password=$(DB_PASSWORD) dbname=$(DB_NAME) sslmode=disable
+DB_TABLES?=
+GOOSE_VERSION?=v3.26.0
+MIGRATION_DIR?=./db/migrations
+MIGRATION_DRIVER?=$(DB_TYPE)
+MIGRATION_DSN?=$(DB_DSN)
 # Apifox Configuration
 APIFOX_PROJECT_ID=xxxx
 APIFOX_PROJECT_TOKEN=xxx
@@ -53,6 +57,7 @@ init:
 	go install github.com/google/wire/cmd/wire@latest
 	go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
 	go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
+	go install github.com/pressly/goose/v3/cmd/goose@$(GOOSE_VERSION)
 
 .PHONY: api
 # generate api proto
@@ -114,6 +119,37 @@ sqldump:
 # 数据库备份 (使用 MODE=schema 仅结构, MODE=data 仅数据, 默认完整备份)
 sqlbackup:
 	@./scripts/sql-backup.sh $(if $(filter schema,$(MODE)),--schema-only,$(if $(filter data,$(MODE)),--data-only,))
+
+
+.PHONY: migrate-install
+# 安装数据库迁移工具 goose
+migrate-install:
+	go install github.com/pressly/goose/v3/cmd/goose@$(GOOSE_VERSION)
+
+.PHONY: migrate-up
+# 执行数据库迁移
+migrate-up:
+	@goose -dir "$(MIGRATION_DIR)" "$(MIGRATION_DRIVER)" "$(MIGRATION_DSN)" up
+
+.PHONY: migrate-down
+# 回滚最近一次数据库迁移
+migrate-down:
+	@goose -dir "$(MIGRATION_DIR)" "$(MIGRATION_DRIVER)" "$(MIGRATION_DSN)" down
+
+.PHONY: migrate-status
+# 查看数据库迁移状态
+migrate-status:
+	@goose -dir "$(MIGRATION_DIR)" "$(MIGRATION_DRIVER)" "$(MIGRATION_DSN)" status
+
+.PHONY: migrate-create
+# 创建新的数据库迁移文件 (用法: make migrate-create NAME=add_user_index)
+migrate-create:
+	@if [ -z "$(NAME)" ]; then \
+		echo "错误: 必须指定 NAME 参数"; \
+		echo "使用方法: make migrate-create NAME=add_user_index"; \
+		exit 1; \
+	fi
+	@goose -dir "$(MIGRATION_DIR)" create "$(NAME)" sql
 
 
 .PHONY: sqltopb

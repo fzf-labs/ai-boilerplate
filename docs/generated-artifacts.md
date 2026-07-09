@@ -11,7 +11,8 @@ then run the verification command for every affected consumer.
 | Backend protobuf APIs | `ai-boilerplate-backend/api/**/*.proto` | `ai-boilerplate-backend` |
 | Backend Go API bindings | Backend protobuf APIs | `make api` |
 | Backend Swagger files | Backend protobuf APIs | `make api` |
-| GORM model, DAO, repository code | SQL schema under `ai-boilerplate-backend/doc/sql` and database state | `make gorm` |
+| Database runtime schema | SQL migrations under `ai-boilerplate-backend/db/migrations` | `make migrate-up` |
+| GORM model, DAO, repository code | Applied database schema and SQL snapshots under `ai-boilerplate-backend/doc/sql` | `make gorm` |
 | Backend data and service scaffolding | Backend protobuf APIs and database tables | `make pbtocode` |
 | Admin API clients | Backend Swagger under `ai-boilerplate-backend/doc/swagger/admin` | `pnpm api:gen` in `ai-boilerplate-admin` |
 | Uni-app API clients | Backend Swagger under `ai-boilerplate-backend/doc/swagger/app` | `pnpm api:gen` in `ai-boilerplate-uniapp` |
@@ -25,13 +26,16 @@ Use this order for backend contract work:
 
 1. Update the source artifact: SQL schema for stored data, protobuf for API
    shape and validation, or generator code when the tool itself is changing.
-2. Regenerate backend output with the Makefile target that matches the source
+2. For database changes, add a migration under `ai-boilerplate-backend/db/migrations`,
+   keep `ai-boilerplate-backend/doc/sql` snapshots in sync, and apply the
+   migration to the database used for generation.
+3. Regenerate backend output with the Makefile target that matches the source
    change.
-3. Regenerate admin and/or uni-app clients only when the Swagger output they
+4. Regenerate admin and/or uni-app clients only when the Swagger output they
    consume changed.
-4. Run backend verification before frontend verification so contract failures
+5. Run backend verification before frontend verification so contract failures
    are caught at the owner first.
-5. Commit source and generated output together.
+6. Commit source and generated output together.
 
 Acceptance for a contract change means the source file, generated backend
 output, generated client output when required, and all affected verification
@@ -42,6 +46,7 @@ commands are included in the same task result.
 Run these commands from `ai-boilerplate-backend`:
 
 ```bash
+make migrate-up
 make sqltopb admin table_name
 make api
 make gorm DB_TABLES=table_name
@@ -51,6 +56,8 @@ go test ./...
 
 Use `app` instead of `admin` in `make sqltopb` for app-facing APIs. If the
 change spans both API surfaces, regenerate both surfaces before running tests.
+Do not run GORM or protobuf generation from a database that has not applied the
+matching migration.
 
 ## Frontend Client Flow
 
