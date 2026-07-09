@@ -4,6 +4,7 @@ import (
 	"flag"
 	"os"
 
+	"github.com/fzf-labs/ai-boilerplate-backend/internal/security"
 	"github.com/fzf-labs/kratos-contrib/bootstrap"
 	"github.com/fzf-labs/kratos-contrib/pkg/mq"
 	_ "go.uber.org/automaxprocs"
@@ -49,6 +50,7 @@ func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server, mqServer mq.Ser
 func main() {
 	flag.Parse()
 	cfg, logger, _, _ := bootstrap.Bootstrap(Service)
+	logger = security.NewRedactingLogger(logger)
 	app, cleanup, err := wireApp(cfg, logger)
 	if err != nil {
 		panic(err)

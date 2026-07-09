@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"time"
 
 	pb "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1"
 	"github.com/fzf-labs/godb/orm/condition"
@@ -48,20 +47,7 @@ func (a *AdminV1WxGzhAccountService) GetWxGzhAccountList(ctx context.Context, re
 	resp.Total = p.Total
 	if len(list) > 0 {
 		for _, v := range list {
-			resp.List = append(resp.List, &pb.WxGzhAccountInfo{
-				Id:             v.ID,
-				Name:           v.Name,
-				Account:        v.Account,
-				AppId:          v.AppID,
-				AppSecret:      v.AppSecret,
-				URL:            v.URL,
-				Token:          v.Token,
-				EncodingAesKey: v.EncodingAesKey,
-				QrCodeURL:      v.QrCodeURL,
-				Remark:         v.Remark,
-				CreatedAt:      v.CreatedAt.Format(time.RFC3339),
-				UpdatedAt:      v.UpdatedAt.Format(time.RFC3339),
-			})
+			resp.List = append(resp.List, wxGzhAccountInfoFromModel(v))
 		}
 	}
 	return resp, nil

@@ -98,6 +98,10 @@ defaults should stay reusable and safe for new projects.
 ## Secret Handling
 
 - Backend JWT secrets should be at least 32 characters and unique per audience.
+- Backend third-party credential encryption requires
+  `AI_BOILERPLATE_CREDENTIAL_KEY` (or the documented compatibility aliases);
+  set it from local environment files, CI secrets, or KMS-injected deployment
+  secrets. See [Sensitive Field Handling](security-sensitive-fields.md).
 - Third-party API keys belong in local config files or deployment secrets.
 - Mobile signing files and desktop signing identities must stay outside the
   repository.

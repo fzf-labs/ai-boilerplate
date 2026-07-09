@@ -7,6 +7,7 @@ import (
 
 	pb "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1"
 	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/constant"
+	"github.com/fzf-labs/ai-boilerplate-backend/internal/security"
 	"github.com/fzf-labs/ai-boilerplate-backend/internal/service"
 	"github.com/fzf-labs/kratos-contrib/meta"
 	"github.com/go-kratos/kratos/v2/errors"
@@ -89,9 +90,9 @@ func AdminAuth(
 							IP:        ip,
 							URI:       tr.RequestURI,
 							Useragent: tr.UserAgent(),
-							Header:    string(headerJSON),
-							Req:       string(reqJSON),
-							Resp:      string(replyJSON),
+							Header:    string(security.RedactJSONBytes(headerJSON)),
+							Req:       string(security.RedactJSONBytes(reqJSON)),
+							Resp:      string(security.RedactJSONBytes(replyJSON)),
 						})
 					}
 				}()

@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"time"
 
 	pb "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1"
 	"github.com/fzf-labs/godb/orm/condition"
@@ -48,18 +47,7 @@ func (a *AdminV1AiProviderPlatformService) GetAiProviderPlatformList(ctx context
 	resp.Total = p.Total
 	if len(list) > 0 {
 		for _, v := range list {
-			resp.List = append(resp.List, &pb.AiProviderPlatformInfo{
-				Id:        v.ID,
-				Platform:  v.Platform,
-				Name:      v.Name,
-				APIURL:    v.APIURL,
-				APIKey:    v.APIKey,
-				DocURL:    v.DocURL,
-				Sort:      v.Sort,
-				Status:    v.Status,
-				CreatedAt: v.CreatedAt.Format(time.RFC3339),
-				UpdatedAt: v.UpdatedAt.Format(time.RFC3339),
-			})
+			resp.List = append(resp.List, aiProviderPlatformInfoFromModel(v))
 		}
 	}
 	return resp, nil

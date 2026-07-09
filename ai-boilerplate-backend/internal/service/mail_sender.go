@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/gorm/ai_boilerplate_model"
+	"github.com/fzf-labs/ai-boilerplate-backend/internal/security"
 	"github.com/fzf-labs/goutil/uuidutil"
 )
 
@@ -38,9 +39,13 @@ func sendSMTPMail(account *ai_boilerplate_model.MailAccount, fromName, toMail, s
 
 	addr := account.Host + ":" + strconv.Itoa(int(account.Port))
 	message := buildSMTPMessage(account.Mail, fromName, toMail, subject, body)
+	password, err := security.DecryptSecret(account.Password)
+	if err != nil {
+		return messageID, err
+	}
 	var auth smtp.Auth
-	if strings.TrimSpace(account.Username) != "" || strings.TrimSpace(account.Password) != "" {
-		auth = smtp.PlainAuth("", account.Username, account.Password, account.Host)
+	if strings.TrimSpace(account.Username) != "" || strings.TrimSpace(password) != "" {
+		auth = smtp.PlainAuth("", account.Username, password, account.Host)
 	}
 
 	if !account.SslEnable {

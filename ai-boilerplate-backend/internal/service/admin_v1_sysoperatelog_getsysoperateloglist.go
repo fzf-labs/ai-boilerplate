@@ -6,6 +6,7 @@ import (
 
 	pb "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1"
 	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/constant"
+	"github.com/fzf-labs/ai-boilerplate-backend/internal/security"
 	"github.com/fzf-labs/godb/orm/condition"
 	"github.com/fzf-labs/kratos-contrib/meta"
 )
@@ -84,9 +85,9 @@ func (a *AdminV1SysOperateLogService) GetSysOperateLogList(ctx context.Context, 
 				IP:        v.IP,
 				URI:       v.URI,
 				Useragent: v.Useragent,
-				Header:    v.Header.String(),
-				Req:       v.Req.String(),
-				Resp:      v.Resp.String(),
+				Header:    security.RedactText(v.Header.String()),
+				Req:       security.RedactText(v.Req.String()),
+				Resp:      security.RedactText(v.Resp.String()),
 				CreatedAt: v.CreatedAt.Format(time.RFC3339),
 				TraceId:   v.TraceID,
 				Nickname:  adminMap[v.AdminID],

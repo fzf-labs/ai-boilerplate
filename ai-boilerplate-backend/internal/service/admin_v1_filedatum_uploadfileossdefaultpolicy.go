@@ -8,6 +8,7 @@ import (
 	pb "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1"
 	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/constant"
 	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/gorm/ai_boilerplate_model"
+	"github.com/fzf-labs/ai-boilerplate-backend/internal/security"
 	"github.com/fzf-labs/goutil/fileutil"
 	"github.com/fzf-labs/goutil/jsonutil"
 	"github.com/volcengine/volc-sdk-golang/service/sts"
@@ -89,7 +90,11 @@ func (a *AdminV1FileDatumService) volcengineConfig(_ context.Context, fileConfig
 	}
 	config := pb.StorageConfig{}
 	if fileConfig.Config.String() != "" {
-		err := jsonutil.Unmarshal(fileConfig.Config, &config)
+		configJSON, err := security.DecryptJSONSecrets(fileConfig.Config)
+		if err != nil {
+			return nil, err
+		}
+		err = jsonutil.Unmarshal(configJSON, &config)
 		if err != nil {
 			return nil, err
 		}
