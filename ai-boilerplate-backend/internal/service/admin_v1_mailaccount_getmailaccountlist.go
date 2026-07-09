@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"time"
 
 	pb "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1"
 	"github.com/fzf-labs/godb/orm/condition"
@@ -48,19 +47,7 @@ func (a *AdminV1MailAccountService) GetMailAccountList(ctx context.Context, req 
 	resp.Total = p.Total
 	if len(list) > 0 {
 		for _, v := range list {
-			resp.List = append(resp.List, &pb.MailAccountInfo{
-				Id:        v.ID,
-				Mail:      v.Mail,
-				Username:  v.Username,
-				Password:  v.Password,
-				Host:      v.Host,
-				Port:      v.Port,
-				SslEnable: v.SslEnable,
-				Status:    v.Status,
-				Remark:    v.Remark,
-				CreatedAt: v.CreatedAt.Format(time.RFC3339),
-				UpdatedAt: v.UpdatedAt.Format(time.RFC3339),
-			})
+			resp.List = append(resp.List, mailAccountInfoFromModel(v))
 		}
 	}
 	return resp, nil

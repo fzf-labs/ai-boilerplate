@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"time"
 
 	pb "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1"
 )
@@ -14,17 +13,6 @@ func (a *AdminV1AiProviderPlatformService) GetAiProviderPlatformInfo(ctx context
 	if err != nil {
 		return nil, pb.ErrorReasonDataSQLError(pb.WithError(err))
 	}
-	resp.Info = &pb.AiProviderPlatformInfo{
-		Id:        data.ID,
-		Platform:  data.Platform,
-		Name:      data.Name,
-		APIURL:    data.APIURL,
-		APIKey:    data.APIKey,
-		DocURL:    data.DocURL,
-		Sort:      data.Sort,
-		Status:    data.Status,
-		CreatedAt: data.CreatedAt.Format(time.RFC3339),
-		UpdatedAt: data.UpdatedAt.Format(time.RFC3339),
-	}
+	resp.Info = aiProviderPlatformInfoFromModel(data)
 	return resp, nil
 }

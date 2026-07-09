@@ -4,7 +4,7 @@ CREATE TABLE public.ai_provider_platform (
     platform character varying(255) NOT NULL,
     name character varying(255) NOT NULL,
     api_url character varying(500),
-    api_key character varying(500),
+    api_key character varying(1024),
     doc_url character varying(500),
     sort integer,
     status integer DEFAULT 1 NOT NULL,

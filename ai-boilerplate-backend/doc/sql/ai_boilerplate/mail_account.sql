@@ -2,7 +2,7 @@ CREATE TABLE public.mail_account (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     mail character varying(255) NOT NULL,
     username character varying(255) NOT NULL,
-    password character varying(255) NOT NULL,
+    password character varying(1024) NOT NULL,
     host character varying(255) NOT NULL,
     port integer NOT NULL,
     ssl_enable boolean,

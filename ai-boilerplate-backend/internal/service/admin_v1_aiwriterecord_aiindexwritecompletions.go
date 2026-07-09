@@ -8,6 +8,7 @@ import (
 	"github.com/cloudwego/eino/schema"
 	pb "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1"
 	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/constant"
+	"github.com/fzf-labs/ai-boilerplate-backend/internal/security"
 	"github.com/fzf-labs/kratos-contrib/meta"
 	"github.com/fzf-labs/kratos-contrib/pkg/sse"
 	"github.com/go-kratos/kratos/v2/transport/http"
@@ -60,7 +61,11 @@ func (a *AdminV1AiWriteRecordService) AiIndexWriteCompletionsHandler(ctx http.Co
 		if platformRecord == nil || platformRecord.ID == "" {
 			return nil, pb.ErrorReasonDataRecordNotFound()
 		}
-		if platformRecord.APIKey == "" {
+		apiKey, err := security.DecryptSecret(platformRecord.APIKey)
+		if err != nil {
+			return nil, pb.ErrorReasonDataSQLError(pb.WithError(err))
+		}
+		if apiKey == "" {
 			return nil, pb.ErrorReasonParamError()
 		}
 		if strings.ToLower(platformRecord.Platform) != "ark" {
@@ -69,7 +74,7 @@ func (a *AdminV1AiWriteRecordService) AiIndexWriteCompletionsHandler(ctx http.Co
 
 		config := &ark.ChatModelConfig{
 			Model:  modelRecord.ModelID,
-			APIKey: platformRecord.APIKey,
+			APIKey: apiKey,
 		}
 		if platformRecord.APIURL != "" {
 			config.BaseURL = platformRecord.APIURL

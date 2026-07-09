@@ -6,7 +6,9 @@ import (
 
 	"github.com/ArtisanCloud/PowerWeChat/v3/src/kernel"
 	"github.com/ArtisanCloud/PowerWeChat/v3/src/officialAccount"
+	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/gorm/ai_boilerplate_model"
 	"github.com/fzf-labs/ai-boilerplate-backend/internal/data/gorm/ai_boilerplate_repo"
+	"github.com/fzf-labs/ai-boilerplate-backend/internal/security"
 	"github.com/go-kratos/kratos/v2/log"
 )
 
@@ -30,8 +32,34 @@ type WxGzhAccountRepo struct {
 	defaultGzhAccount *officialAccount.OfficialAccount
 }
 
+func (r *WxGzhAccountRepo) CreateOneCache(ctx context.Context, data *ai_boilerplate_model.WxGzhAccount) error {
+	if err := encryptWxGzhAccountSecrets(data); err != nil {
+		return err
+	}
+	return r.WxGzhAccountRepo.CreateOneCache(ctx, data)
+}
+
+func (r *WxGzhAccountRepo) UpdateOneCacheWithZero(ctx context.Context, newData *ai_boilerplate_model.WxGzhAccount, oldData *ai_boilerplate_model.WxGzhAccount) error {
+	if err := prepareWxGzhAccountSecretsForUpdate(newData, oldData); err != nil {
+		return err
+	}
+	return r.WxGzhAccountRepo.UpdateOneCacheWithZero(ctx, newData, oldData)
+}
+
 // 创建公众号客户端
 func (r *WxGzhAccountRepo) NewOfficialAccountClient(appID string, appSecret string, token string, aesKey string) (*officialAccount.OfficialAccount, error) {
+	appSecret, err := security.DecryptSecret(appSecret)
+	if err != nil {
+		return nil, err
+	}
+	token, err = security.DecryptSecret(token)
+	if err != nil {
+		return nil, err
+	}
+	aesKey, err = security.DecryptSecret(aesKey)
+	if err != nil {
+		return nil, err
+	}
 	userConfig := &officialAccount.UserConfig{
 		AppID:     appID,     // 公众号appid
 		Secret:    appSecret, // 公众号app secret
@@ -93,4 +121,56 @@ func (r *WxGzhAccountRepo) GetDefaultGzhAccountClient(ctx context.Context) (*off
 		r.defaultGzhAccount = officialAccount
 	}
 	return r.defaultGzhAccount, nil
+}
+
+func encryptWxGzhAccountSecrets(data *ai_boilerplate_model.WxGzhAccount) error {
+	if data == nil {
+		return nil
+	}
+	appSecret, err := security.EncryptSecret(data.AppSecret)
+	if err != nil {
+		return err
+	}
+	token, err := security.EncryptSecret(data.Token)
+	if err != nil {
+		return err
+	}
+	encodingAesKey, err := security.EncryptSecret(data.EncodingAesKey)
+	if err != nil {
+		return err
+	}
+	data.AppSecret = appSecret
+	data.Token = token
+	data.EncodingAesKey = encodingAesKey
+	return nil
+}
+
+func prepareWxGzhAccountSecretsForUpdate(newData *ai_boilerplate_model.WxGzhAccount, oldData *ai_boilerplate_model.WxGzhAccount) error {
+	if newData == nil {
+		return nil
+	}
+	oldAppSecret := ""
+	oldToken := ""
+	oldEncodingAesKey := ""
+	if oldData != nil {
+		oldAppSecret = oldData.AppSecret
+		oldToken = oldData.Token
+		oldEncodingAesKey = oldData.EncodingAesKey
+	}
+	appSecret, err := security.PrepareSecretForUpdate(newData.AppSecret, oldAppSecret)
+	if err != nil {
+		return err
+	}
+	token, err := security.PrepareSecretForUpdate(newData.Token, oldToken)
+	if err != nil {
+		return err
+	}
+	encodingAesKey, err := security.PrepareSecretForUpdate(newData.EncodingAesKey, oldEncodingAesKey)
+	if err != nil {
+		return err
+	}
+	newData.AppSecret = appSecret
+	newData.Token = token
+	newData.EncodingAesKey = encodingAesKey
+	return nil
 }

@@ -6,7 +6,6 @@ import (
 
 	pb "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1"
 	"github.com/fzf-labs/godb/orm/condition"
-	"github.com/fzf-labs/goutil/jsonutil"
 )
 
 // GetFileConfigList 文件配置表-列表数据查询
@@ -49,8 +48,7 @@ func (a *AdminV1FileConfigService) GetFileConfigList(ctx context.Context, req *p
 	resp.Total = p.Total
 	if len(list) > 0 {
 		for _, v := range list {
-			config := &pb.StorageConfig{}
-			err = jsonutil.Unmarshal(v.Config, config)
+			config, err := storageConfigFromJSON(v.Config, true)
 			if err != nil {
 				return nil, pb.ErrorReasonDataSQLError(pb.WithError(err))
 			}

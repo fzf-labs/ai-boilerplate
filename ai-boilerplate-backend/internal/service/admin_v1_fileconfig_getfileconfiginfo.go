@@ -4,7 +4,6 @@ import (
 	"context"
 
 	pb "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1"
-	"github.com/fzf-labs/goutil/jsonutil"
 	"github.com/fzf-labs/goutil/timeutil"
 )
 
@@ -15,12 +14,9 @@ func (a *AdminV1FileConfigService) GetFileConfigInfo(ctx context.Context, req *p
 	if err != nil {
 		return nil, pb.ErrorReasonDataSQLError(pb.WithError(err))
 	}
-	config := &pb.StorageConfig{}
-	if data.Config.String() != "" {
-		err = jsonutil.Unmarshal(data.Config, config)
-		if err != nil {
-			return nil, pb.ErrorReasonDataSQLError(pb.WithError(err))
-		}
+	config, err := storageConfigFromJSON(data.Config, true)
+	if err != nil {
+		return nil, pb.ErrorReasonDataSQLError(pb.WithError(err))
 	}
 	resp.Info = &pb.FileConfigInfo{
 		Id:        data.ID,

@@ -4,6 +4,7 @@ import (
 	"context"
 
 	pb "github.com/fzf-labs/ai-boilerplate-backend/api/admin/v1"
+	"github.com/fzf-labs/ai-boilerplate-backend/internal/security"
 	"gorm.io/datatypes"
 )
 
@@ -17,9 +18,9 @@ func (a *AdminV1SysOperateLogService) CreateSysOperateLog(ctx context.Context, r
 	data.IP = req.GetIP()
 	data.URI = req.GetURI()
 	data.Useragent = req.GetUseragent()
-	data.Header = datatypes.JSON(req.GetHeader())
-	data.Req = datatypes.JSON(req.Req)
-	data.Resp = datatypes.JSON(req.Resp)
+	data.Header = datatypes.JSON(security.RedactText(req.GetHeader()))
+	data.Req = datatypes.JSON(security.RedactText(req.GetReq()))
+	data.Resp = datatypes.JSON(security.RedactText(req.GetResp()))
 	err := a.sysOperateLogRepo.CreateOneCache(ctx, data)
 	if err != nil {
 		return nil, pb.ErrorReasonDataSQLError(pb.WithError(err))
