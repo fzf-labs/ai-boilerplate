@@ -20,6 +20,8 @@ func NewAppV1UserService(
 	mallOrderRepo *data.MallOrderRepo,
 	mallActivationCodeRepo *data.MallActivationCodeRepo,
 	smsLogRepo *data.SmsLogRepo,
+	smsTemplateRepo *data.SmsTemplateRepo,
+	smsChannelRepo *data.SmsChannelRepo,
 ) *AppV1UserService {
 	l := log.NewHelper(log.With(logger, "module", "service/user"))
 	return &AppV1UserService{
@@ -36,6 +38,8 @@ func NewAppV1UserService(
 		mallOrderRepo:               mallOrderRepo,
 		mallActivationCodeRepo:      mallActivationCodeRepo,
 		smsLogRepo:                  smsLogRepo,
+		smsTemplateRepo:             smsTemplateRepo,
+		smsChannelRepo:              smsChannelRepo,
 	}
 }
 
@@ -54,4 +58,6 @@ type AppV1UserService struct {
 	mallOrderRepo               *data.MallOrderRepo
 	mallActivationCodeRepo      *data.MallActivationCodeRepo
 	smsLogRepo                  *data.SmsLogRepo
+	smsTemplateRepo             *data.SmsTemplateRepo
+	smsChannelRepo              *data.SmsChannelRepo
 }

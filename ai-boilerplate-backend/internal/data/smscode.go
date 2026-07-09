@@ -77,12 +77,13 @@ const (
 
 // SmsCodeConfig 短信验证码配置
 type SmsCodeConfig struct {
-	Scene        SmsCodeScene  // 使用场景
-	HourlyLimit  int           // 每小时发送限制
-	DailyLimit   int           // 每天发送限制
-	CodeTTL      time.Duration // 验证码有效期
-	FrequencyTTL time.Duration // 频率限制TTL
-	CodeLength   int           // 验证码长度（只支持数字）
+	Scene            SmsCodeScene  // 使用场景
+	HourlyLimit      int           // 每小时发送限制
+	DailyLimit       int           // 每天发送限制
+	CodeTTL          time.Duration // 验证码有效期
+	FrequencyTTL     time.Duration // 频率限制TTL
+	CodeLength       int           // 验证码长度（只支持数字）
+	MaxCheckAttempts int           // 最大错误次数
 }
 
 // SmsCodeData 短信验证码数据结构
@@ -113,12 +114,13 @@ type SmsCodeRepo struct {
 // GetSmsConfig 获取短信验证码配置
 func (s *SmsCodeRepo) GetSmsConfig(scene SmsCodeScene) SmsCodeConfig {
 	baseConfig := SmsCodeConfig{
-		Scene:        scene,
-		HourlyLimit:  3,
-		DailyLimit:   10,
-		CodeTTL:      5 * time.Minute,
-		FrequencyTTL: 24 * time.Hour,
-		CodeLength:   6, // 6位数字验证码
+		Scene:            scene,
+		HourlyLimit:      3,
+		DailyLimit:       10,
+		CodeTTL:          5 * time.Minute,
+		FrequencyTTL:     24 * time.Hour,
+		CodeLength:       6, // 6位数字验证码
+		MaxCheckAttempts: 5,
 	}
 	// 根据场景调整配置
 	switch scene {
@@ -154,7 +156,7 @@ func (s *SmsCodeRepo) CheckSmsCodeFrequency(ctx context.Context, scene SmsCodeSc
 		return pb.ErrorReasonDataRedisErr(pb.WithError(err))
 	}
 	if hourCount >= config.HourlyLimit {
-		return pb.ErrorReasonSmsFrequencyLimit(pb.WithFmtMsg(fmt.Sprintf("一小时内最多发送%d次短信验证码", config.HourlyLimit)))
+		return pb.ErrorReasonSmsFrequencyLimit(pb.WithFmtMsg("一小时内最多发送%d次短信验证码", config.HourlyLimit))
 	}
 	// 检查日限制
 	dayCountStr, err := s.data.rueidis.Do(ctx, s.data.rueidis.B().Hget().Key(cacheKey).Field("day").Build()).AsInt64()
@@ -163,7 +165,7 @@ func (s *SmsCodeRepo) CheckSmsCodeFrequency(ctx context.Context, scene SmsCodeSc
 		return pb.ErrorReasonDataRedisErr(pb.WithError(err))
 	}
 	if dayCount >= config.DailyLimit {
-		return pb.ErrorReasonSmsFrequencyLimit(pb.WithFmtMsg(fmt.Sprintf("一天内最多发送%d次短信验证码", config.DailyLimit)))
+		return pb.ErrorReasonSmsFrequencyLimit(pb.WithFmtMsg("一天内最多发送%d次短信验证码", config.DailyLimit))
 	}
 	return nil
 }
@@ -238,7 +240,9 @@ func (s *SmsCodeRepo) SetSmsCode(ctx context.Context, data *SmsCodeData) error {
 
 // CheckSmsCode 验证短信验证码
 func (s *SmsCodeRepo) CheckSmsCode(ctx context.Context, scene SmsCodeScene, codeID string, inputCode string) (*SmsCodeData, error) {
+	config := s.GetSmsConfig(scene)
 	cacheKey := constant.UserSmsCode.Key(string(scene), codeID)
+	failKey := constant.UserSmsCode.Key(string(scene), codeID, "fail")
 	cacheValue, err := s.data.rueidis.Do(ctx, s.data.rueidis.B().Get().Key(cacheKey).Build()).ToString()
 	if err != nil {
 		if rueidis.IsRedisNil(err) {
@@ -253,17 +257,32 @@ func (s *SmsCodeRepo) CheckSmsCode(ctx context.Context, scene SmsCodeScene, code
 	}
 	// 检查验证码是否匹配
 	if data.Code != inputCode {
+		failCount, incrErr := s.data.rueidis.Do(ctx, s.data.rueidis.B().Incrby().Key(failKey).Increment(1).Build()).ToInt64()
+		if incrErr != nil {
+			return nil, pb.ErrorReasonDataRedisErr(pb.WithError(incrErr))
+		}
+		_ = s.data.rueidis.Do(ctx, s.data.rueidis.B().Expire().Key(failKey).Seconds(int64(config.CodeTTL.Seconds())).Build()).Error()
+		if int(failCount) >= config.MaxCheckAttempts {
+			_ = s.data.rueidis.Do(ctx, s.data.rueidis.B().Del().Key(cacheKey).Build()).Error()
+			_ = s.data.rueidis.Do(ctx, s.data.rueidis.B().Del().Key(failKey).Build()).Error()
+			return nil, pb.ErrorReasonSmsCodeInvalid(pb.WithFmtMsg("验证码错误次数过多，请重新获取"))
+		}
 		return nil, pb.ErrorReasonSmsCodeInvalid(pb.WithFmtMsg("验证码错误"))
 	}
 	// 检查场景是否匹配
 	if data.Scene != scene {
 		return nil, pb.ErrorReasonSmsCodeInvalid(pb.WithFmtMsg("验证码场景不匹配"))
 	}
+	_ = s.data.rueidis.Do(ctx, s.data.rueidis.B().Del().Key(failKey).Build()).Error()
 	return &data, nil
 }
 
 // ClearSmsCode 清除短信验证码
 func (s *SmsCodeRepo) ClearSmsCode(ctx context.Context, scene SmsCodeScene, codeID string) error {
 	cacheKey := constant.UserSmsCode.Key(string(scene), codeID)
-	return s.data.rueidis.Do(ctx, s.data.rueidis.B().Del().Key(cacheKey).Build()).Error()
+	if err := s.data.rueidis.Do(ctx, s.data.rueidis.B().Del().Key(cacheKey).Build()).Error(); err != nil {
+		return err
+	}
+	failKey := constant.UserSmsCode.Key(string(scene), codeID, "fail")
+	return s.data.rueidis.Do(ctx, s.data.rueidis.B().Del().Key(failKey).Build()).Error()
 }
